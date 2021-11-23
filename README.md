@@ -1,4 +1,4 @@
-# ys
+# Artifact
 
 ## Project setup
 ```

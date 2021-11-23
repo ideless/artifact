@@ -1,9 +1,9 @@
 <template>
     <div :class="btnClass" @click="click">
-        <span class="fill">
+        <span class="blank">
             <slot />
         </span>
-        <span class="blank">
+        <span class="fill">
             <slot />
         </span>
     </div>
@@ -55,6 +55,15 @@ export default {
     overflow: hidden;
     user-select: none;
 }
+.blank {
+    background: white;
+    color: #3694ff;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
 .fill {
     background: #3694ff;
     color: white;
@@ -66,27 +75,10 @@ export default {
     clip-path: polygon(0 0, 60% 0, 40% 100%, 0 100%);
     transition: clip-path 200ms ease;
 }
-.blank {
-    background: white;
-    color: #3694ff;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    clip-path: polygon(60% 0, 100% 0, 100% 100%, 40% 100%);
-    transition: clip-path 200ms ease;
-}
 .value-button.one .fill {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
-.value-button.one .blank {
-    clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
-}
 .value-button.zero .fill {
     clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
-}
-.value-button.zero .blank {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 </style>

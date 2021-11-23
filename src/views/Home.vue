@@ -245,6 +245,7 @@ export default {
     font-size: 16px;
     font-weight: bold;
     overflow-y: auto;
+    user-select: none;
 }
 /* Hide scrollbar for Chrome, Safari and Opera */
 .layout-right::-webkit-scrollbar {

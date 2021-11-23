@@ -32,6 +32,7 @@ export default {
             defp: 'defendPercentage',
             em: 'elementalMastery',
             er: 'recharge',
+            hb: 'cureEffect',
             cr: 'critical',
             cd: 'criticalDamage',
             pyro: 'fireBonus',
