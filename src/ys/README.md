@@ -118,8 +118,8 @@ Minor affix cannot be the same as the main affix.
 By enhancing an artifact to level 4, 8, 12, 16, and 20, one minor affix
 would be rolled and increased. If an artifact has less than 4 minor affixes,
 a new minor affix would be rolled, which cannot confict with existing
-main/minor affixes and obeys the minor affix distribution. If an artifact
-has exactly 4 minor affixes, one of the 4 minor affix would be chosen
+main/minor affixes and follows the minor affix distribution. If an artifact
+has exactly 4 minor affixes, one of the 4 minor affix would be rolled
 with equal probability. One increment of a minor affix takes one of 4
 possible values with equal probability, 70%, 80%, 90% and 100% of the
 maximum value.
@@ -147,12 +147,68 @@ See more on the [distribution of affixes](https://bbs.nga.cn/read.php?tid=259546
 
 Three statistics are considered important to the evaluation of an artifact's
 potential: **expected affix number**, **maximum affix number** and
-**minimum affix number**. Here the "affix" refers toe minor affixes
-because main affixes are fixed. As minor affix increment value takes
+**minimum affix number**. Here "affix" refers to minor affixes
+because main affixes are fixed. As minor affix increment takes
 4 possible values, the affix number of a minor affix is defined to be the
-ratio of its value divided by the maxnimum one-time increment of this
+ratio of its value divided by the maximum one-time increment of this
 minor affix. The affix number of an artifact is defined to be an weighted
 sum of each minor affix number, given the weight of each minor affix customed
 by users. This is because certain minor affixes are considered useless while
 others are usually more valuable. Weight of a minor affix must be between
 0 and 1.
+
+For an artifact, let $\alpha$ be the main affix, $a_{i}$ be a minor affix,
+$A$ be the set of all minor affixes, $p( a_{i})$ be the pick weight,
+$w( a_{i})$ be customized affix weight, $v^{*}( a_{i})$ be the maximum
+one-time increment, and $v( a_{i})$ be the current affix value. Expected,
+minimum and maximum affix numbers are refered to by
+$\overline{S} ,S_{min} ,S_{max}$, respectively.
+
+### Artifacts with 3 minor affixes
+
+Let $a_{1} ,a_{2} ,a_{3}$ be the 3 minor affixes. Affix enhancement times
+$n=5$. Expected affix number is
+$$
+\begin{aligned}
+\overline{S} = & \sum _{i=1,2,3} w( a_{i})\left(\frac{v( a_{i})}{v^{*}( a_{i})} +4\times \frac{1}{4} \times 0.85\right)\\
+ & +\frac{\sum _{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} w( a) p( a)}{\sum _{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} p( a)} \times \left( 0.85+4\times \frac{1}{4} \times 0.85\right).
+\end{aligned}
+$$
+Maximum affix number is
+$$
+\begin{aligned}
+a_{4} = & \operatorname{arg\ max}_{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} w( a) ,\\
+a^{*} = & \operatorname{arg\ max}_{a\in \{a_{1} ,a_{2} ,a_{3} ,a_{4}\}} w( a) ,\\
+S_{\min} = & \sum _{i=1,2,3} w( a_{i})\frac{v( a_{i})}{v^{*}( a_{i})} +w( a_{4}) +4w\left( a^{*}\right).
+\end{aligned}
+$$
+Minimum affix number is
+$$
+\begin{aligned}
+a_{4} = & \operatorname{arg\ min}_{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} w( a) ,\\
+a^{*} = & \operatorname{arg\ min}_{a\in \{a_{1} ,a_{2} ,a_{3} ,a_{4}\}} w( a) ,\\
+S_{\max} = & \sum _{i=1,2,3} w( a_{i})\frac{v( a_{i})}{v^{*}( a_{i})} +0.7\times \left( w( a_{4}) +4w\left( a^{*}\right)\right).
+\end{aligned}
+$$
+
+### Artifact with 4 minor affixes
+
+Let $a_{1} ,a_{2} ,a_{3} ,a_{4}$ be the 4 minor affixes. Affix enhancement times is $n$.
+Expected affix number is
+$$
+\overline{S} =\sum _{i=1,2,3,4} w( a_{i})\left(\frac{v( a_{i})}{v^{*}( a_{i})} +n\times \frac{1}{4} \times 0.85\right).
+$$
+Maximum affix number is
+$$
+\begin{aligned}
+a^{*} = & \operatorname{arg\ max}_{a\in \{a_{1} ,a_{2} ,a_{3} ,a_{4}\}} w( a) ,\\
+S_{\max} = & \sum _{i=1,2,3,4} w( a_{i})\frac{v( a_{i})}{v^{*}( a_{i})} +n\cdot w\left( a^{*}\right).
+\end{aligned}
+$$
+Minimum affix number is
+$$
+\begin{aligned}
+a^{*} = & \operatorname{arg\ min}_{a\in \{a_{1} ,a_{2} ,a_{3} ,a_{4}\}} w( a) ,\\
+S_{\min} = & \sum _{i=1,2,3,4} w( a_{i})\frac{v( a_{i})}{v^{*}( a_{i})} +0.75n\cdot w\left( a^{*}\right).
+\end{aligned}
+$$
