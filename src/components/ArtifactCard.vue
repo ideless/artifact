@@ -156,7 +156,7 @@ export default {
     height: 20px;
     color: white;
     text-align: center;
-    line-height: 22px;
+    line-height: 20px;
     display: flex;
 }
 .min-an {
@@ -179,7 +179,7 @@ export default {
     height: 20px;
     color: white;
     text-align: center;
-    line-height: 22px;
+    line-height: 20px;
     background: #66c238;
 }
 </style>

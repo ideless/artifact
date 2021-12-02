@@ -48,7 +48,7 @@ export default {
     display: inline-block;
     border-radius: 3px;
     box-shadow: 0 0 2px 0 #0007;
-    line-height: 42px;
+    line-height: 38px;
     text-align: center;
     cursor: pointer;
     position: relative;

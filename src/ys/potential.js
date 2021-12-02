@@ -68,7 +68,7 @@ function availableAffixSet(artifact) {
  * @param {Object} w User minor affix weight object
  */
 function expectedAffixNumber(artifact, w) {
-    validateArtifact(artifact)
+    // validateArtifact(artifact)
     let n = Math.ceil((20 - artifact.level) / 4) // n.o. upgrades
     let S = 0
     if (artifact.minorAffixes.length == 3) {
@@ -93,7 +93,7 @@ function expectedAffixNumber(artifact, w) {
  * @param {Object} w User minor affix weight object
  */
 function maximumAffixNumber(artifact, w) {
-    validateArtifact(artifact)
+    // validateArtifact(artifact)
     let n = Math.ceil((20 - artifact.level) / 4) // n.o. upgrades
     let S = 0, A = new Set()
     for (let a of artifact.minorAffixes) {
@@ -117,7 +117,7 @@ function maximumAffixNumber(artifact, w) {
  * @param {Object} w User minor affix weight object
  */
 function minimumAffixNumber(artifact, w) {
-    validateArtifact(artifact)
+    // validateArtifact(artifact)
     let n = Math.ceil((20 - artifact.level) / 4) // n.o. upgrades
     let S = 0, A = new Set()
     for (let a of artifact.minorAffixes) {
@@ -141,7 +141,7 @@ function minimumAffixNumber(artifact, w) {
  * @param {Object} w User minor affix weight object
  */
 function currentAffixNumber(artifact, w) {
-    validateArtifact(artifact)
+    // validateArtifact(artifact)
     let S = 0
     for (let a of artifact.minorAffixes) {
         S += w[a.key] * a.value / MinorAffixStat[a.key].v
@@ -149,4 +149,5 @@ function currentAffixNumber(artifact, w) {
     return S
 }
 
+export { validateArtifact }
 export { expectedAffixNumber, maximumAffixNumber, minimumAffixNumber, currentAffixNumber }

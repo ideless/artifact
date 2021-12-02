@@ -1,5 +1,6 @@
 import { Affix, Artifact } from "../artifact"
 import { whatis } from "./utils"
+import { assert } from "../error"
 
 export default {
     keymap: {
@@ -21,7 +22,9 @@ export default {
             TenacityoftheMillelith: 'tenacityOfTheMillelith',
             PaleFlame: 'paleFlame',
             ShimenawasReminiscence: 'shimenawaReminiscence',
-            EmblemofSeveredFate: 'emblemOfSeveredFate'
+            EmblemofSeveredFate: 'emblemOfSeveredFate',
+            HuskofOpulentDreams: 'huskOfOpulentDreams',
+            OceanHuedClam: 'oceanHuedClam',
         },
         affix: {
             hp: 'lifeStatic',
@@ -57,6 +60,7 @@ export default {
      */
     loads(json) {
         let mona = JSON.parse(json)
+        assert(mona.version == '1', 'Unsupported version')
         let ret = []
         const mtypes = ['flower', 'feather', 'sand', 'cup', 'head']
         for (let mtype of mtypes) {
