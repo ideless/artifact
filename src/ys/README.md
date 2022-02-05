@@ -4,11 +4,11 @@
 
 Artifacts have **rarity** 1-5 and **level** 0-20.
 
-There are 5 **type**s of artifacts:
+There are 5 **slot**s of artifacts:
 
-| Artifact type      | `Artifact.type` |
+| Artifact slot      | `Artifact.slot` |
 | ------------------ | --------------- |
-| Flower of Life     | `life`          |
+| Flower of Life     | `flower`        |
 | Plume of Death     | `plume`         |
 | Sands of Eon       | `sands`         |
 | Goblet of Eonothem | `goblet`        |
@@ -22,7 +22,7 @@ Each artifact belongs to some artifact **set**, which includes (up to 2021-11-19
 | Adventurer                | `Adventurer`             | 1-3    |
 | Lucky Dog                 | `LuckyDog`               | 1-3    |
 | Traveling Doctor          | `TravelingDoctor`        | 1-3    |
-| Resolution of Sojourner   | `ResolutionofSojourner`  | 3-4    |
+| Resolution of Sojourner   | `ResolutionOfSojourner`  | 3-4    |
 | Tiny Miracle              | `TinyMiracle`            | 3-4    |
 | Berserker                 | `Berserker`              | 3-4    |
 | Instructor                | `Instructor`             | 3-4    |
@@ -32,29 +32,29 @@ Each artifact belongs to some artifact **set**, which includes (up to 2021-11-19
 | Martial Artist            | `MartialArtist`          | 3-4    |
 | Gambler                   | `Gambler`                | 3-4    |
 | Scholar                   | `Scholar`                | 3-4    |
-| Prayers for Illumination  | `PrayersforIllumination` | 3-4    |
-| Prayers for Destiny       | `PrayersforDestiny`      | 3-4    |
-| Prayers for Wisdom        | `PrayersforWisdom`       | 3-4    |
-| Prayers to Springtime     | `PrayerstoSpringtime`    | 3-4    |
+| Prayers for Illumination  | `PrayersForIllumination` | 3-4    |
+| Prayers for Destiny       | `PrayersForDestiny`      | 3-4    |
+| Prayers for Wisdom        | `PrayersForWisdom`       | 3-4    |
+| Prayers to Springtime     | `PrayersToSpringtime`    | 3-4    |
 | Gladiator's Finale        | `GladiatorsFinale`       | 4-5    |
 | Wanderer's Troupe         | `WanderersTroupe`        | 4-5    |
 | Thunder­soother           | `Thundersoother`         | 4-5    |
 | Thundering Fury           | `ThunderingFury`         | 4-5    |
 | Maiden Beloved            | `MaidenBeloved`          | 4-5    |
 | Viridescent Venerer       | `ViridescentVenerer`     | 4-5    |
-| Crimson Witch of Flames   | `CrimsonWitchofFlames`   | 4-5    |
+| Crimson Witch of Flames   | `CrimsonWitchOfFlames`   | 4-5    |
 | Lavawalker                | `Lavawalker`             | 4-5    |
 | Noblesse Oblige           | `NoblesseOblige`         | 4-5    |
 | Bloodstained Chivalry     | `BloodstainedChivalry`   | 4-5    |
 | Archaic Petra             | `ArchaicPetra`           | 4-5    |
 | Retracing Bolide          | `RetracingBolide`        | 4-5    |
 | Blizzard Strayer          | `BlizzardStrayer`        | 4-5    |
-| Heart of Depth            | `HeartofDepth`           | 4-5    |
-| Tenacity of the Millelith | `TenacityoftheMillelith` | 4-5    |
+| Heart of Depth            | `HeartOfDepth`           | 4-5    |
+| Tenacity of the Millelith | `TenacityOfTheMillelith` | 4-5    |
 | Pale Flame                | `PaleFlame`              | 4-5    |
 | Shimenawa's Reminiscence  | `ShimenawasReminiscence` | 4-5    |
-| Emblem of Severed Fate    | `EmblemofSeveredFate`    | 4-5    |
-| Husk of Opulent Dreams    | `HuskofOpulentDreams`    | 4-5    |
+| Emblem of Severed Fate    | `EmblemOfSeveredFate`    | 4-5    |
+| Husk of Opulent Dreams    | `HuskOfOpulentDreams`    | 4-5    |
 | Ocean-Hued Clam           | `OceanHuedClam`          | 4-5    |
 
 Rarity 5 artifacts have one **main affix** and 3-4 **minor affixes**.
@@ -89,28 +89,28 @@ Distribution of main affixes depends on the type of artifacts:
 | ------------------ | ----------------- | ----------- | --------- |
 | Flower of Life     | HP                | 1           | 4780      |
 | Plume of Death     | ATK               | 1           | 311       |
-| Sands of Eon       | HP%               | 8           | 0.466     |
-| Sands of Eon       | ATK%              | 8           | 0.466     |
-| Sands of Eon       | DEF%              | 8           | 0.583     |
+| Sands of Eon       | HP%               | 8           | 46.6      |
+| Sands of Eon       | ATK%              | 8           | 46.6      |
+| Sands of Eon       | DEF%              | 8           | 58.3      |
 | Sands of Eon       | Elemental Mastery | 3           | 186.5     |
-| Sands of Eon       | Energy Recharge%  | 3           | 0.518     |
-| Goblet of Eonothem | HP%               | 17          | 0.466     |
-| Goblet of Eonothem | ATK%              | 17          | 0.466     |
-| Goblet of Eonothem | DEF%              | 16          | 0.583     |
-| Goblet of Eonothem | Pyro DMG%         | 4           | 0.466     |
-| Goblet of Eonothem | Hydro DMG%        | 4           | 0.466     |
-| Goblet of Eonothem | Electro DMG%      | 4           | 0.466     |
-| Goblet of Eonothem | Anemo DMG%        | 4           | 0.466     |
-| Goblet of Eonothem | Cryo DMG%         | 4           | 0.466     |
-| Goblet of Eonothem | Geo DMG%          | 4           | 0.466     |
-| Goblet of Eonothem | Physical DMG%     | 4           | 0.583     |
+| Sands of Eon       | Energy Recharge%  | 3           | 51.8      |
+| Goblet of Eonothem | HP%               | 17          | 46.6      |
+| Goblet of Eonothem | ATK%              | 17          | 46.6      |
+| Goblet of Eonothem | DEF%              | 16          | 58.3      |
+| Goblet of Eonothem | Pyro DMG%         | 4           | 46.6      |
+| Goblet of Eonothem | Hydro DMG%        | 4           | 46.6      |
+| Goblet of Eonothem | Electro DMG%      | 4           | 46.6      |
+| Goblet of Eonothem | Anemo DMG%        | 4           | 46.6      |
+| Goblet of Eonothem | Cryo DMG%         | 4           | 46.6      |
+| Goblet of Eonothem | Geo DMG%          | 4           | 46.6      |
+| Goblet of Eonothem | Physical DMG%     | 4           | 58.3      |
 | Goblet of Eonothem | Elemental Mastery | 2           | 186.5     |
-| Circlet of Logos   | HP%               | 11          | 0.466     |
-| Circlet of Logos   | ATK%              | 11          | 0.466     |
-| Circlet of Logos   | DEF%              | 11          | 0.583     |
-| Circlet of Logos   | Crit Rate%        | 5           | 0.311     |
-| Circlet of Logos   | Crit DMG%         | 5           | 0.622     |
-| Circlet of Logos   | Healing Bonus     | 5           | 0.359     |
+| Circlet of Logos   | HP%               | 11          | 46.6      |
+| Circlet of Logos   | ATK%              | 11          | 46.6      |
+| Circlet of Logos   | DEF%              | 11          | 58.3      |
+| Circlet of Logos   | Crit Rate%        | 5           | 31.1      |
+| Circlet of Logos   | Crit DMG%         | 5           | 62.2      |
+| Circlet of Logos   | Healing Bonus     | 5           | 35.9      |
 | Circlet of Logos   | Elemental Mastery | 2           | 186.5     |
 
 Distribution of minor affixes does not depend on the type of artifacts.
@@ -131,13 +131,13 @@ Distribution of minor affixes is:
 | HP                | 6           | 298.75    |
 | ATK               | 6           | 19.45     |
 | DEF               | 6           | 23.15     |
-| HP%               | 4           | 0.0583    |
-| ATK%              | 4           | 0.0583    |
-| DEF%              | 4           | 0.0729    |
+| HP%               | 4           | 5.83      |
+| ATK%              | 4           | 5.83      |
+| DEF%              | 4           | 7.29      |
 | Elemental Mastery | 4           | 23.31     |
-| Energy Recharge%  | 4           | 0.0648    |
-| Crit Rate%        | 3           | 0.0389    |
-| Crit DMG%         | 3           | 0.0777    |
+| Energy Recharge%  | 4           | 6.48      |
+| Crit Rate%        | 3           | 3.89      |
+| Crit DMG%         | 3           | 7.77      |
 
 See more on the [distribution of affixes](https://bbs.nga.cn/read.php?tid=25954661&fav=aebe13b2).
 
@@ -146,11 +146,11 @@ See more on the [distribution of affixes](https://bbs.nga.cn/read.php?tid=259546
 > In this section, only rarity 5 artifacts are considered.
 
 Three statistics are considered important to the evaluation of an artifact's
-potential: **expected affix number**, **maximum affix number** and
+potential: **average affix number**, **maximum affix number** and
 **minimum affix number**. Here "affix" refers to minor affixes
 because main affixes are fixed. As minor affix increment takes
 4 possible values, the affix number of a minor affix is defined to be the
-ratio of its value divided by the maximum one-time increment of this
+ratio of its value divided by the average one-time increment of this
 minor affix. The affix number of an artifact is defined to be an weighted
 sum of each minor affix number, given the weight of each minor affix customed
 by users. This is because certain minor affixes are considered useless while
@@ -159,19 +159,19 @@ others are usually more valuable. Weight of a minor affix must be between
 
 For an artifact, let $\alpha$ be the main affix, $a_{i}$ be a minor affix,
 $A$ be the set of all minor affixes, $p( a_{i})$ be the pick weight,
-$w( a_{i})$ be customized affix weight, $v^{*}( a_{i})$ be the maximum
-one-time increment, and $v( a_{i})$ be the current affix value. Expected,
+$w( a_{i})$ be customized affix weight, $v^*( a_{i})$ be the maximum
+one-time increment, and $v( a_{i})$ be the current affix value. Average,
 minimum and maximum affix numbers are refered to by
 $\overline{S} ,S_{min} ,S_{max}$, respectively.
 
 ### Artifacts with 3 minor affixes
 
-Let $a_{1} ,a_{2} ,a_{3}$ be the 3 minor affixes. Affix enhancement times
-$n=5$. Expected affix number is
+Let $a_{1} ,a_{2} ,a_{3}$ be the 3 minor affixes. Affix enhancement number
+$n=5$. Average affix number is
 $$
 \begin{aligned}
-\overline{S} = & \sum _{i=1,2,3} w( a_{i})\left(\frac{v( a_{i})}{v^{*}( a_{i})} +4\times \frac{1}{4} \times 0.85\right)\\
- & +\frac{\sum _{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} w( a) p( a)}{\sum _{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} p( a)} \times \left( 0.85+4\times \frac{1}{4} \times 0.85\right).
+\overline{S} = & \sum _{i=1,2,3} w( a_{i})\left(\frac{v( a_{i})}{0.85\cdot v^{*}( a_{i})} +4\times \frac{1}{4}\right)\\
+ & +\frac{\sum _{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} w( a) p( a)}{\sum _{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} p( a)} \times \left( 1+4\times \frac{1}{4}\right)
 \end{aligned}
 $$
 Maximum affix number is
@@ -179,7 +179,7 @@ $$
 \begin{aligned}
 a_{4} = & \operatorname{arg\ max}_{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} w( a) ,\\
 a^{*} = & \operatorname{arg\ max}_{a\in \{a_{1} ,a_{2} ,a_{3} ,a_{4}\}} w( a) ,\\
-S_{\min} = & \sum _{i=1,2,3} w( a_{i})\frac{v( a_{i})}{v^{*}( a_{i})} +w( a_{4}) +4w\left( a^{*}\right).
+S_{\min} = & \sum _{i=1,2,3} w( a_{i})\frac{v( a_{i})}{0.85\cdot v^{*}( a_{i})} +(w( a_{4}) +4w\left( a^{*}\right))\times \frac{1}{0.85}
 \end{aligned}
 $$
 Minimum affix number is
@@ -187,28 +187,28 @@ $$
 \begin{aligned}
 a_{4} = & \operatorname{arg\ min}_{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} w( a) ,\\
 a^{*} = & \operatorname{arg\ min}_{a\in \{a_{1} ,a_{2} ,a_{3} ,a_{4}\}} w( a) ,\\
-S_{\max} = & \sum _{i=1,2,3} w( a_{i})\frac{v( a_{i})}{v^{*}( a_{i})} +0.7\times \left( w( a_{4}) +4w\left( a^{*}\right)\right).
+S_{\max} = & \sum _{i=1,2,3} w( a_{i})\frac{v( a_{i})}{0.85\cdot v^{*}( a_{i})} +\left( w( a_{4}) +4w\left( a^{*}\right)\right)\times \frac{0.7}{0.85}
 \end{aligned}
 $$
 
 ### Artifact with 4 minor affixes
 
-Let $a_{1} ,a_{2} ,a_{3} ,a_{4}$ be the 4 minor affixes. Affix enhancement times is $n$.
-Expected affix number is
+Let $a_{1} ,a_{2} ,a_{3} ,a_{4}$ be the 4 minor affixes. Affix enhancement number is $n$.
+Average affix number is
 $$
-\overline{S} =\sum _{i=1,2,3,4} w( a_{i})\left(\frac{v( a_{i})}{v^{*}( a_{i})} +n\times \frac{1}{4} \times 0.85\right).
+\overline{S} =\sum _{i=1,2,3,4} w( a_{i})\left(\frac{v( a_{i})}{0.85\cdot v^{*}( a_{i})} +n\times \frac{1}{4}\right)
 $$
 Maximum affix number is
 $$
 \begin{aligned}
 a^{*} = & \operatorname{arg\ max}_{a\in \{a_{1} ,a_{2} ,a_{3} ,a_{4}\}} w( a) ,\\
-S_{\max} = & \sum _{i=1,2,3,4} w( a_{i})\frac{v( a_{i})}{v^{*}( a_{i})} +n\cdot w\left( a^{*}\right).
+S_{\max} = & \sum _{i=1,2,3,4} w( a_{i})\frac{v( a_{i})}{0.85\cdot v^{*}( a_{i})} +n\cdot w\left( a^{*}\right)\times \frac{1}{0.85}
 \end{aligned}
 $$
 Minimum affix number is
 $$
 \begin{aligned}
 a^{*} = & \operatorname{arg\ min}_{a\in \{a_{1} ,a_{2} ,a_{3} ,a_{4}\}} w( a) ,\\
-S_{\min} = & \sum _{i=1,2,3,4} w( a_{i})\frac{v( a_{i})}{v^{*}( a_{i})} +0.75n\cdot w\left( a^{*}\right).
+S_{\min} = & \sum _{i=1,2,3,4} w( a_{i})\frac{v( a_{i})}{0.85\cdot v^{*}( a_{i})} +n\cdot w\left( a^{*}\right)\times \frac{0.7}{0.85}
 \end{aligned}
 $$

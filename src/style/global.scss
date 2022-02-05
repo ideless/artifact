@@ -1,0 +1,28 @@
+$widget-height: 38px;
+$primary-color: #3694ff;
+$green: #66c238;
+
+body {
+    box-sizing: border-box;
+}
+* {
+    box-sizing: inherit;
+    padding: 0;
+    margin: 0;
+}
+.pop-enter-active,
+.pop-leave-active {
+    transition: all 200ms ease;
+}
+.pop-enter-from,
+.pop-leave-to {
+    opacity: 0;
+    transform: scale(0.9);
+}
+.section {
+    padding: 0 40px;
+}
+.section-content {
+    margin-top: 24px;
+    padding: 0 10px;
+}

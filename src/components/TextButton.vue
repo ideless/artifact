@@ -1,48 +1,50 @@
+<script lang="ts" setup>
+import { computed } from "vue"
+const props = defineProps<{
+    disabled?: boolean
+}>()
+const emit = defineEmits<{
+    (e: 'click'): void
+}>()
+const btnClass = computed(() => {
+    return {
+        'text-button': true,
+        disabled: props.disabled
+    }
+})
+const click = () => {
+    if (!props.disabled) {
+        emit('click')
+    }
+}
+</script>
+
 <template>
-    <div :class="{ 'text-button': true, disabled }" @click="click">
+    <div :class="btnClass" @click="click">
         <slot />
     </div>
 </template>
 
-<script>
-export default {
-    props: {
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    emits: ["click"],
-    methods: {
-        click() {
-            if (!this.disabled) {
-                this.$emit("click");
-            }
-        },
-    },
-};
-</script>
-
-<style scoped>
+<style lang="scss" scoped>
 .text-button {
     width: 85px;
-    height: 38px;
+    height: $widget-height;
     display: inline-block;
     color: white;
-    background: #3694ff;
+    background: $primary-color;
     border-radius: 3px;
     box-shadow: 0 0 2px 0 #0007;
-    line-height: 38px;
+    line-height: $widget-height;
     text-align: center;
     cursor: pointer;
     user-select: none;
-}
-.text-button:hover {
-    filter: brightness(110%);
-}
-.text-button.disabled {
-    filter: none;
-    opacity: 0.7;
-    cursor: not-allowed;
+    &:hover {
+        filter: brightness(110%);
+    }
+    &.disabled {
+        filter: none;
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
 }
 </style>
