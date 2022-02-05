@@ -19,7 +19,7 @@ const pieceName = computed(() => {
     return `${name} · ${slot}`
 })
 const pieceImgSrc = computed(() => {
-    return `/assets/artifacts/${props.artifact.set}/${props.artifact.slot}.png`
+    return `./assets/artifacts/${props.artifact.set}/${props.artifact.slot}.png`
 })
 const affixName = (key: string) => {
     let name: string = (chs.affix as any)[key]
@@ -55,7 +55,7 @@ const affnum = computed(() => {
     }
 })
 const lockImgSrc = computed(() => {
-    return props.artifact.data.lock ? '/assets/lock.png' : '/assets/unlock.png'
+    return props.artifact.data.lock ? './assets/lock.png' : './assets/unlock.png'
 })
 const artifactCardClass = computed(() => ({
     'artifact-card': true,
@@ -65,6 +65,7 @@ const artifactCardClass = computed(() => ({
 const select = (evt: MouseEvent) => {
     emit('flipSelect', evt.shiftKey)
 }
+const starImgSrc = './assets/stars.png'
 </script>
 
 <template>
@@ -74,7 +75,7 @@ const select = (evt: MouseEvent) => {
                 <div class="piece-name">{{ pieceName }}</div>
                 <div class="main-affix-name">{{ main.name }}</div>
                 <div class="main-affix-value">{{ main.value }}</div>
-                <img src="/assets/stars.png" />
+                <img :src="starImgSrc" />
             </div>
             <img :src="pieceImgSrc" />
         </div>
