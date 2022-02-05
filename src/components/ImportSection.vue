@@ -80,7 +80,7 @@ const exportArts = () => {
     document.body.removeChild(element);
 }
 const openTutorial = () => {
-    window.open('/tutorial', '_blank')
+    window.open('./tutorial', '_blank')
 }
 </script>
 
