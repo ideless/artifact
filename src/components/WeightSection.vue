@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import SectionTitle from './SectionTitle.vue';
 import ValueButton from './ValueButton.vue';
-import chs from "../ys/locale/chs.json"
+import PresetLoader from './PresetLoader.vue';
+import chs from "../ys/locale/chs"
 import { useStore } from '../store';
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 const store = useStore()
 const setWeight = (key: string, value: number) => {
     store.commit('setWeight', { key, value })
@@ -19,11 +20,13 @@ const weightJson = computed<string>({
         store.commit('setWeightJson', { json })
     }
 })
+const showLoader = ref(true)
 </script>
 
 <template>
     <div class="section">
         <section-title title="词条权重">
+            <span @click="showLoader = true">预设</span>
             <span v-show="store.state.useWeightJson" @click="useWeightJson(false)">基本</span>
             <span v-show="!store.state.useWeightJson" @click="useWeightJson(true)">高级</span>
         </section-title>
@@ -39,6 +42,7 @@ const weightJson = computed<string>({
             <textarea class="json-input" v-model="weightJson" />
         </div>
     </div>
+    <preset-loader v-model="showLoader" />
 </template>
 
 <style>

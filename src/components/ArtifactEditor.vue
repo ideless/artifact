@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue'
 import data from '../ys/data';
-import chs from '../ys/locale/chs.json'
+import chs from '../ys/locale/chs'
 import { useStore } from '../store';
 import { Affix } from '../ys/artifact';
 const props = defineProps<{
@@ -31,7 +31,7 @@ const minor4key = ref('')
 const minor4value = ref(0)
 const affixes = data.minorKeys.map(key => ({
     value: key,
-    label: (chs.affix as any)[key]
+    label: chs.affix[key]
 }))
 watch(() => props.index, (index) => {
     for (let a of store.state.artifacts) {

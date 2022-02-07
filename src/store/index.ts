@@ -2,7 +2,7 @@ import { InjectionKey } from 'vue'
 import { createStore, useStore as baseUseStore, Store } from 'vuex'
 import { Artifact } from '../ys/artifact'
 import { IState } from './types'
-import chs from '../ys/locale/chs.json'
+import chs from '../ys/locale/chs'
 import data from '../ys/data'
 
 export const key: InjectionKey<Store<IState>> = Symbol()
@@ -71,7 +71,7 @@ export const store = createStore<IState>({
                 if (key in s) {
                     ret.push({
                         key,
-                        value: (chs.set as any)[key].name,
+                        value: chs.set[key].name,
                         tip: s[key].toString(),
                     });
                 }
@@ -89,7 +89,7 @@ export const store = createStore<IState>({
             for (let key in chs.slot) {
                 ret.push({
                     key,
-                    value: (chs.slot as any)[key],
+                    value: chs.slot[key],
                     tip: "",
                 });
             }
@@ -109,7 +109,7 @@ export const store = createStore<IState>({
             for (let key of l) {
                 ret.push({
                     key,
-                    value: (chs.affix as any)[key],
+                    value: chs.affix[key],
                     tip: "",
                 });
             }
@@ -120,7 +120,7 @@ export const store = createStore<IState>({
             for (let key in chs.set) {
                 sets.push({
                     key,
-                    value: (chs.set as any)[key].name
+                    value: chs.set[key].name
                 })
             }
             return sets
@@ -130,7 +130,7 @@ export const store = createStore<IState>({
             for (let key in chs.slot) {
                 slots.push({
                     key,
-                    value: (chs.slot as any)[key]
+                    value: chs.slot[key]
                 })
             }
             return slots
@@ -140,7 +140,7 @@ export const store = createStore<IState>({
             for (let key of data.mainKeys.all) {
                 mains.push({
                     key,
-                    value: (chs.affix as any)[key]
+                    value: chs.affix[key]
                 })
             }
             return mains
@@ -178,6 +178,13 @@ export const store = createStore<IState>({
                 if (s.has(a.data.index)) {
                     a.data.lock = payload.lock
                 }
+            }
+        },
+        usePreset(state, payload) {
+            if (state.useWeightJson) {
+                state.weightJson = JSON.stringify(payload.weight)
+            } else {
+                state.weight = payload.weight
             }
         }
     },

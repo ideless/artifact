@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { Edit } from '@element-plus/icons-vue'
 import { Artifact } from '../ys/artifact';
-import chs from '../ys/locale/chs.json'
+import chs from '../ys/locale/chs'
 const props = defineProps<{
     artifact: Artifact,
     selected?: boolean
@@ -14,15 +14,15 @@ const emit = defineEmits<{
     (e: 'edit'): void
 }>()
 const pieceName = computed(() => {
-    let name = (chs.set as any)[props.artifact.set].name
-    let slot = (chs.slot as any)[props.artifact.slot][2] // "花","羽"...
+    let name = chs.set[props.artifact.set].name
+    let slot = chs.slot[props.artifact.slot][2] // "花","羽"...
     return `${name} · ${slot}`
 })
 const pieceImgSrc = computed(() => {
     return `./assets/artifacts/${props.artifact.set}/${props.artifact.slot}.png`
 })
 const affixName = (key: string) => {
-    let name: string = (chs.affix as any)[key]
+    let name: string = chs.affix[key]
     if (name.endsWith('%')) {
         name = name.substring(0, name.length - 1)
     }
