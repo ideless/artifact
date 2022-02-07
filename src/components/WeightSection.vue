@@ -20,7 +20,7 @@ const weightJson = computed<string>({
         store.commit('setWeightJson', { json })
     }
 })
-const showLoader = ref(true)
+const showLoader = ref(false)
 </script>
 
 <template>
