@@ -63,7 +63,7 @@ export default {
     },
     loads(json: string) {
         let mona = JSON.parse(json)
-        assert(mona.version == '1', 'Unsupported version')
+        // assert(mona.version == '1', 'Unsupported version')
         let ret = []
         const mtypes = ['flower', 'feather', 'sand', 'cup', 'head']
         for (let mtype of mtypes) {
