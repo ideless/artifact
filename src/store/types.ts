@@ -29,4 +29,5 @@ export interface IState {
     useWeightJson: boolean
     sortBy: string
     canExport: boolean
+    nReload: number
 }

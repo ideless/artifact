@@ -13,12 +13,8 @@ const useWeightJson = (use: boolean) => {
     store.commit('useWeightJson', { use })
 }
 const weightJson = computed<string>({
-    get() {
-        return store.state.weightJson
-    },
-    set(json) {
-        store.commit('setWeightJson', { json })
-    }
+    get() { return store.state.weightJson },
+    set(json) { store.commit('setWeightJson', { json }) }
 })
 const showLoader = ref(false)
 </script>

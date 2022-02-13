@@ -4,17 +4,12 @@ import LayoutRight from './components/LayoutRight.vue';
 </script>
 
 <template>
-    <div class="root">
-        <layout-left />
-        <layout-right />
-    </div>
-    <div class="hidden">
-        <input type="file" ref="file-input" />
-    </div>
+    <layout-left />
+    <layout-right />
 </template>
 
 <style lang="scss">
-.root {
+#app {
     position: absolute;
     left: 0;
     right: 0;

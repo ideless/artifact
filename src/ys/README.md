@@ -59,7 +59,7 @@ Each artifact belongs to some artifact **set**, which includes (up to 2021-11-19
 
 Rarity 5 artifacts have one **main affix** and 3-4 **minor affixes**.
 
-| Affix name        | `Affix.name` | main or minor |
+| Affix name        | `Affix.key`  | main or minor |
 | ----------------- | ------------ | ------------- |
 | HP                | `hp`         | main/minor    |
 | ATK               | `atk`        | main/minor    |
@@ -71,14 +71,14 @@ Rarity 5 artifacts have one **main affix** and 3-4 **minor affixes**.
 | Energy Recharge%  | `er`         | main/minor    |
 | Crit Rate%        | `cr`         | main/minor    |
 | Crit DMG%         | `cd`         | main/minor    |
-| Pyro DMG%         | `pyro`       | main          |
-| Hydro DMG%        | `hydro`      | main          |
-| Dendro DMG%       | `dendro`     | main          |
-| Electro DMG%      | `electro`    | main          |
-| Anemo DMG%        | `anemo`      | main          |
-| Cryo DMG%         | `cryo`       | main          |
-| Geo DMG%          | `geo`        | main          |
-| Physical DMG%     | `physical`   | main          |
+| Pyro DMG%         | `pyroDB`     | main          |
+| Hydro DMG%        | `hydroDB`    | main          |
+| Dendro DMG%       | `dendroDB`   | main          |
+| Electro DMG%      | `electroDB`  | main          |
+| Anemo DMG%        | `anemoDB`    | main          |
+| Cryo DMG%         | `cryoDB`     | main          |
+| Geo DMG%          | `geoDB`      | main          |
+| Physical DMG%     | `physicalDB` | main          |
 | Healing Bonus     | `hb`         | main          |
 
 See more on the [basics of artifacts](https://genshin-impact.fandom.com/wiki/Artifacts).

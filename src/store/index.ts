@@ -45,6 +45,7 @@ export const store = createStore<IState>({
             useWeightJson: false,
             sortBy: 'avg',
             canExport: false,
+            nReload: 0,
         }
         return ret
     },
@@ -150,6 +151,9 @@ export const store = createStore<IState>({
         useWeightJson(state, payload) {
             state.useWeightJson = payload.use
         },
+        setWeightJson(state, payload) {
+            state.weightJson = payload.json
+        },
         setWeight(state, payload) {
             state.weight[payload.key] = payload.value
         },
@@ -236,6 +240,7 @@ export const store = createStore<IState>({
             }
             // update
             state.filteredArtifacts = ret;
+            state.nReload++
         },
         updArtifact({ state, dispatch }, payload) {
             for (let a of state.filteredArtifacts) {

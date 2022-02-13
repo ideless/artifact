@@ -25,6 +25,7 @@ declare module 'vue' {
     ImportSection: typeof import('./src/components/ImportSection.vue')['default']
     LayoutLeft: typeof import('./src/components/LayoutLeft.vue')['default']
     LayoutRight: typeof import('./src/components/LayoutRight.vue')['default']
+    PresetLoader: typeof import('./src/components/PresetLoader.vue')['default']
     RangeSlider: typeof import('./src/components/RangeSlider.vue')['default']
     SectionTitle: typeof import('./src/components/SectionTitle.vue')['default']
     SortSection: typeof import('./src/components/SortSection.vue')['default']

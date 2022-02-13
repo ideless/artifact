@@ -2,7 +2,8 @@
 import ArtifactCard from './ArtifactCard.vue';
 import ArtifactEditor from './ArtifactEditor.vue';
 import { useStore } from '../store';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
+import type { ElScrollbar } from 'element-plus'
 const store = useStore()
 const stat = computed(() => {
     let nAll = store.state.filteredArtifacts.length
@@ -107,11 +108,15 @@ const edit = (index: number) => {
     editorIndex.value = index
     showEditor.value = true
 }
+const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
+watch(() => store.state.nReload, () => {
+    scrollbarRef.value!.setScrollTop(0)
+})
 </script>
 
 <template>
     <div class="layout-left">
-        <el-scrollbar>
+        <el-scrollbar ref="scrollbarRef">
             <div class="artifact-stats">{{ stat }}</div>
             <div class="artifacts">
                 <artifact-card

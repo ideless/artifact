@@ -6,9 +6,7 @@ import SortSection from './SortSection.vue';
 import TextButton from './TextButton.vue';
 import { useStore } from '../store';
 const store = useStore()
-const start = () => {
-    store.dispatch('updFilteredArtifacts')
-}
+const start = () => { store.dispatch('updFilteredArtifacts') }
 </script>
 
 <template>

@@ -67,7 +67,6 @@ const applyDisabled = computed(() => {
 })
 const apply = () => {
     if (typeof preset.value == 'number') {
-        console.log(Preset.presets[preset.value])
         store.commit('usePreset', { weight: Preset.presets[preset.value] })
         emit('update:modelValue', false)
     }
