@@ -30,21 +30,21 @@ export const store = createStore<IState>({
             },
             useFilterPro: false,
             weight: {
-                hp: 0,
-                atk: 0,
-                def: 0,
-                hpp: 0,
-                atkp: 0.5,
-                defp: 0,
-                em: 0.5,
-                er: 0.5,
-                cr: 1,
-                cd: 1,
-                hpprop: 0,
-                defprop : 0,
+                hp: 0.3,
+                atk: 0.5,
+                def: 0.3,
+                hpp: 1,
+                atkp: 1,
+                defp: 1,
+                em: 1,
+                er: 1,
+                cr: 1.5,
+                cd: 1.5,
+                hpprop: 0.5,
+                defprop : 0.5,
                 main: 0.5,
             },
-            weightJson: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}',
+            weightJson: '{"hp":0.3,"atk":0.5,"def":0.3,"hpp":1,"atkp":1,"defp":1,"em":1,"er":1,"cr":1.5,"cd":1.5}',
             useWeightJson: false,
             sortBy: 'tot',
             canExport: false,
@@ -189,10 +189,12 @@ export const store = createStore<IState>({
         },
         delete(state, payload) {          
             let s: Set<number> = new Set(payload.indices)
+            let i = 0
             for (let a of state.artifacts) {
                 if (s.has(a.data.index)) {
-                    state.artifacts.splice(a.data.index,1)
+                    state.artifacts.splice(i,1)
                 }
+                i++
             }
             store.dispatch('updFilteredArtifacts')
         },

@@ -11,6 +11,7 @@
     "sass": "^1.49.0",
     "vue": "^3.2.25",
     "vue-router": "4.0",
+    "vue3-image-viewer": "^4.3.28",
     "vuex": "4.0"
   },
   "devDependencies": {
