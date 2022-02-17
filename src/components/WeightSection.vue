@@ -12,10 +12,10 @@ const setWeight = (key: string, value: number) => {
 const useWeightJson = (use: boolean) => {
     store.commit('useWeightJson', { use })
 }
-const weightJson = computed<string>({
-    get() { return store.state.weightJson },
-    set(json) { store.commit('setWeightJson', { json }) }
-})
+// const weightJson = computed<string>({
+//      get() { return store.state.weightJson },
+//      set(json) { store.commit('setWeightJson', { json }) }
+//  })
 const showLoader = ref(false)
 </script>
 
@@ -34,8 +34,21 @@ const showLoader = ref(false)
                 @update:model-value="setWeight(key as string, $event)"
             >{{ (chs.affix as any)[key] }}</value-button>
         </div>
+        <!--
         <div class="section-content" v-show="store.state.useWeightJson">
             <textarea class="json-input" v-model="weightJson" />
+        </div>
+        -->
+        <div class="section-content" v-show="store.state.useWeightJson">
+            <el-form :inline="true">
+                <el-form-item 
+                    v-for="(_, key) in store.state.weight"
+                    :key="key"
+                    :label=chs.affix[key]
+                >
+                    <el-input v-model="store.state.weight[key]" style="width:45px"/>
+                </el-form-item>
+            </el-form>
         </div>
     </div>
     <preset-loader v-model="showLoader" />

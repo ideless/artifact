@@ -40,10 +40,13 @@ export const store = createStore<IState>({
                 er: 0.5,
                 cr: 1,
                 cd: 1,
+                hpprop: 0,
+                defprop : 0,
+                main: 0.5,
             },
             weightJson: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}',
             useWeightJson: false,
-            sortBy: 'avg',
+            sortBy: 'tot',
             canExport: false,
             nReload: 0,
         }
@@ -184,6 +187,15 @@ export const store = createStore<IState>({
                 }
             }
         },
+        delete(state, payload) {          
+            let s: Set<number> = new Set(payload.indices)
+            for (let a of state.artifacts) {
+                if (s.has(a.data.index)) {
+                    state.artifacts.splice(a.data.index,1)
+                }
+            }
+            store.dispatch('updFilteredArtifacts')
+        },
         usePreset(state, payload) {
             if (state.useWeightJson) {
                 state.weightJson = JSON.stringify(payload.weight)
@@ -227,7 +239,8 @@ export const store = createStore<IState>({
                 ));
             }
             // weight
-            let weight = state.useWeightJson ? JSON.parse(state.weightJson) : state.weight
+            //let weight = state.useWeightJson ? JSON.parse(state.weightJson) : state.weight
+            let weight = state.weight
             // update affix numbers
             for (let a of ret) {
                 a.updateAffnum(weight)

@@ -3,7 +3,7 @@ import { ref, computed, watch } from 'vue'
 import data from '../ys/data';
 import chs from '../ys/locale/chs'
 import { useStore } from '../store';
-import { Affix } from '../ys/artifact';
+import { Affix, Artifact } from '../ys/artifact';
 const props = defineProps<{
     modelValue: boolean,
     index: number
@@ -34,72 +34,91 @@ const affixes = data.minorKeys.map(key => ({
     label: chs.affix[key]
 }))
 watch(() => props.index, (index) => {
-    for (let a of store.state.artifacts) {
-        if (a.data.index === index) {
-            level.value = a.level
-            if (a.minors.length >= 1) {
-                minor1key.value = a.minors[0].key
-                minor1value.value = a.minors[0].value
-            } else {
-                minor1key.value = ''
-                minor1value.value = 0
+    if(index==-1){
+        level.value=0
+        minor1key.value = ''
+        minor1value.value = 0
+        minor2key.value = ''
+        minor2value.value = 0
+        minor3key.value = ''
+        minor3value.value = 0
+        minor4key.value = ''
+        minor4value.value = 0
+        return
+    }else{
+        for (let a of store.state.artifacts) {
+            if (a.data.index === index) {
+                level.value = a.level
+                if (a.minors.length >= 1) {
+                    minor1key.value = a.minors[0].key
+                    minor1value.value = a.minors[0].value
+                } else {
+                    minor1key.value = ''
+                    minor1value.value = 0
+                }
+                if (a.minors.length >= 2) {
+                    minor2key.value = a.minors[1].key
+                    minor2value.value = a.minors[1].value
+                } else {
+                    minor2key.value = ''
+                    minor2value.value = 0
+                }
+                if (a.minors.length >= 3) {
+                    minor3key.value = a.minors[2].key
+                    minor3value.value = a.minors[2].value
+                } else {
+                    minor3key.value = ''
+                    minor3value.value = 0
+                }
+                if (a.minors.length >= 4) {
+                    minor4key.value = a.minors[3].key
+                    minor4value.value = a.minors[3].value
+                } else {
+                    minor4key.value = ''
+                    minor4value.value = 0
+                }
+                return
             }
-            if (a.minors.length >= 2) {
-                minor2key.value = a.minors[1].key
-                minor2value.value = a.minors[1].value
-            } else {
-                minor2key.value = ''
-                minor2value.value = 0
-            }
-            if (a.minors.length >= 3) {
-                minor3key.value = a.minors[2].key
-                minor3value.value = a.minors[2].value
-            } else {
-                minor3key.value = ''
-                minor3value.value = 0
-            }
-            if (a.minors.length >= 4) {
-                minor4key.value = a.minors[3].key
-                minor4value.value = a.minors[3].value
-            } else {
-                minor4key.value = ''
-                minor4value.value = 0
-            }
-            return
         }
     }
 })
 const save = () => {
-    for (let a of store.state.filteredArtifacts) {
-        if (a.data.index === props.index) {
-            let lv = level.value
-            let minors = []
-            if (minor1key.value && minor1value.value) {
-                minors.push(new Affix({
-                    key: minor1key.value,
-                    value: minor1value.value
-                }))
+    if(props.index==-1){
+        store.state.artifacts.push(new Artifact(
+            //无圣遗物种类主词条等，待补充
+        ))
+    }else{
+        for (let a of store.state.filteredArtifacts) {
+            if (a.data.index === props.index) {
+                let lv = level.value
+                let minors = []
+                if (minor1key.value && minor1value.value) {
+                    minors.push(new Affix({
+                        key: minor1key.value,
+                        value: minor1value.value
+                    }))
+                }
+                if (minor2key.value && minor2value.value) {
+                    minors.push(new Affix({
+                        key: minor2key.value,
+                        value: minor2value.value
+                    }))
+                }
+                if (minor3key.value && minor3value.value) {
+                    minors.push(new Affix({
+                        key: minor3key.value,
+                        value: minor3value.value
+                    }))
+                }
+                if (minor4key.value && minor4value.value) {
+                    minors.push(new Affix({
+                        key: minor4key.value,
+                        value: minor4value.value
+                    }))
+                }
+                store.dispatch('updArtifact', { index: props.index, level: lv, minors })
+                break
             }
-            if (minor2key.value && minor2value.value) {
-                minors.push(new Affix({
-                    key: minor2key.value,
-                    value: minor2value.value
-                }))
-            }
-            if (minor3key.value && minor3value.value) {
-                minors.push(new Affix({
-                    key: minor3key.value,
-                    value: minor3value.value
-                }))
-            }
-            if (minor4key.value && minor4value.value) {
-                minors.push(new Affix({
-                    key: minor4key.value,
-                    value: minor4value.value
-                }))
-            }
-            store.dispatch('updArtifact', { index: props.index, level: lv, minors })
-            break
         }
     }
     emit('update:modelValue', false)

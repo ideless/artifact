@@ -3,6 +3,7 @@ import ArtifactCard from './ArtifactCard.vue';
 import ArtifactEditor from './ArtifactEditor.vue';
 import { useStore } from '../store';
 import { computed, ref, watch } from 'vue';
+
 import type { ElScrollbar } from 'element-plus'
 const store = useStore()
 const stat = computed(() => {
@@ -93,6 +94,14 @@ const unlockSelection = () => {
     store.commit('setLock', { lock: false, indices: selection.value })
     selection.value = []
 }
+const addSelection = () => {
+    editorIndex.value = -1
+    showEditor.value = true
+}
+const deleteSelection = () => {
+    store.commit('delete', { indices: selection.value })
+    selection.value = []
+}
 const cancelSelect = () => {
     selectMode.value = false
     setTimeout(() => {
@@ -138,6 +147,9 @@ watch(() => store.state.nReload, () => {
                     <span class="btn" @click="lockSelection">加锁</span>
                     <span class="btn" @click="unlockSelection">解锁</span>
                     <span class="split">|</span>
+                    <span class="btn" @click="deleteSelection">删除</span>
+                    <!-- <span class="btn" @click="addSelection">增加</span>
+                    <span class="split">|</span> -->
                     <span class="btn" @click="cancelSelect">取消</span>
                     <div class="selection-stat">{{ selectionStat }}</div>
                 </div>

@@ -51,7 +51,8 @@ const affnum = computed(() => {
         cur: a.cur.toFixed(1),
         avg: a.avg.toFixed(1),
         max: a.max.toFixed(1),
-        min: a.min.toFixed(1),
+        md:  a.md.toFixed(1),
+        tot: a.tot.toFixed(1),
     }
 })
 const lockImgSrc = computed(() => {
@@ -77,12 +78,15 @@ const starImgSrc = './assets/stars.png'
                 <div class="main-affix-value">{{ main.value }}</div>
                 <img :src="starImgSrc" />
             </div>
-            <img :src="pieceImgSrc" />
+            <div class="picture">
+                <img :src="pieceImgSrc" />
+            </div> 
         </div>
         <div class="body">
             <div class="body-head">
                 <span class="level">{{ level }}</span>
-                <span class="cur-an">{{ affnum.cur }}</span>
+                <span class="md-an">{{ affnum.md }}</span>
+                <span class="tot-an">{{ affnum.tot }}</span>
                 <div class="lock-img-container">
                     <img :src="lockImgSrc" @click="emit('flipLock')" />
                 </div>
@@ -91,7 +95,7 @@ const starImgSrc = './assets/stars.png'
                 <div class="minor-affix" v-for="a in minors">{{ a }}</div>
             </div>
             <div class="affix-numbers" v-if="artifact.level < 20">
-                <div class="min-an">最小{{ affnum.min }}</div>
+                <div class="cur-an">当前{{ affnum.cur }}</div>
                 <div class="avg-an">期望{{ affnum.avg }}</div>
                 <div class="max-an">最大{{ affnum.max }}</div>
             </div>
@@ -157,6 +161,14 @@ const starImgSrc = './assets/stars.png'
                 font-size: 18px;
             }
         }
+        .picture{
+            width:100px; 
+            height:100px;
+        } 
+        .picture img{
+            width:100px; 
+            height:100px;
+        } 
     }
     .body {
         display: flex;
@@ -169,7 +181,12 @@ const starImgSrc = './assets/stars.png'
                 @extend %tag;
                 background-color: #333;
             }
-            .cur-an {
+            .md-an {
+                @extend %tag;
+                background-color: #2a82e4;
+                margin-left: 5px;
+            }
+            .tot-an {
                 @extend %tag;
                 background-color: #66c238;
                 margin-left: 5px;
@@ -199,7 +216,7 @@ const starImgSrc = './assets/stars.png'
             text-align: center;
             line-height: 20px;
             display: flex;
-            .min-an {
+            .cur-an {
                 background: #a6a6a6;
                 width: 33.3%;
             }
