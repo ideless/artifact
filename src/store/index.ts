@@ -38,13 +38,13 @@ export const store = createStore<IState>({
                 defp: 1,
                 em: 1,
                 er: 1,
-                cr: 1.5,
-                cd: 1.5,
+                cr: 1.2,
+                cd: 1.2,
                 hpprop: 0.5,
                 defprop : 0.5,
                 main: 0.5,
             },
-            weightJson: '{"hp":0.3,"atk":0.5,"def":0.3,"hpp":1,"atkp":1,"defp":1,"em":1,"er":1,"cr":1.5,"cd":1.5}',
+            //weightJson: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}',
             useWeightJson: false,
             sortBy: 'tot',
             canExport: false,
@@ -154,9 +154,9 @@ export const store = createStore<IState>({
         useWeightJson(state, payload) {
             state.useWeightJson = payload.use
         },
-        setWeightJson(state, payload) {
-            state.weightJson = payload.json
-        },
+        // setWeightJson(state, payload) {
+        //     state.weightJson = payload.json
+        // },
         setWeight(state, payload) {
             state.weight[payload.key] = payload.value
         },
@@ -198,12 +198,15 @@ export const store = createStore<IState>({
             }
             store.dispatch('updFilteredArtifacts')
         },
+        // usePreset(state, payload) {
+        //     if (state.useWeightJson) {
+        //         state.weightJson = JSON.stringify(payload.weight)
+        //     } else {
+        //         state.weight = payload.weight
+        //     }
+        // }
         usePreset(state, payload) {
-            if (state.useWeightJson) {
-                state.weightJson = JSON.stringify(payload.weight)
-            } else {
                 state.weight = payload.weight
-            }
         }
     },
     actions: {

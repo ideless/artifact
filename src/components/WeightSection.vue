@@ -46,7 +46,7 @@ const showLoader = ref(false)
                     :key="key"
                     :label=chs.affix[key]
                 >
-                    <el-input v-model="store.state.weight[key]" style="width:45px"/>
+                    <el-input v-model.number="store.state.weight[key]" style="width:45px"/>
                 </el-form-item>
             </el-form>
         </div>

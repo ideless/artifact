@@ -25,7 +25,7 @@ export interface IState {
     weight: {
         [key: string]: number
     },
-    weightJson: string
+    //weightJson: string
     useWeightJson: boolean
     sortBy: string
     canExport: boolean
