@@ -25,6 +25,8 @@ interface IData {
             }
         }
     }
+    set: string[]
+    slot: string[]
 }
 
 export default <IData>{
@@ -95,4 +97,8 @@ export default <IData>{
                 'hb': { p: 0.1666, v: 0.1 },
                 'em': { p: 0.1458, v: 0.04 }},
     },
+    set:['GladiatorsFinale','WanderersTroupe','Thundersoother','ThunderingFury','MaidenBeloved','ViridescentVenerer','CrimsonWitchOfFlames','Lavawalker',
+    'NoblesseOblige','BloodstainedChivalry','ArchaicPetra','RetracingBolide','BlizzardStrayer','HeartOfDepth','TenacityOfTheMillelith','PaleFlame',
+    'ShimenawasReminiscence','EmblemOfSeveredFate','HuskOfOpulentDreams','OceanHuedClam'],
+    slot:['flower','plume','sands','goblet','circlet']
 }

@@ -11,11 +11,17 @@ const sortBy = computed({
         store.commit('setSortBy', { sort })
     }
 })
+const setSortOrder = (use: boolean) => {
+    store.commit('setSortOrder', { use })
+}
 </script>
 
 <template>
     <div class="section">
-        <section-title title="排序" />
+        <section-title title="排序">
+        <span v-show="store.state.sortord" @click="setSortOrder(false)">倒序</span>
+        <span v-show="!store.state.sortord" @click="setSortOrder(true)">正序</span>
+        </section-title>
         <div class="section-content">
             <el-radio class="sort" v-model="sortBy" label="tot">按圣遗物评分</el-radio>
             <el-radio class="sort" v-model="sortBy" label="md">按副词条评分</el-radio>

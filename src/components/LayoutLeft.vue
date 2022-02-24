@@ -94,10 +94,6 @@ const unlockSelection = () => {
     store.commit('setLock', { lock: false, indices: selection.value })
     selection.value = []
 }
-const addSelection = () => {
-    editorIndex.value = -1
-    showEditor.value = true
-}
 const deleteSelection = () => {
     store.commit('delete', { indices: selection.value })
     selection.value = []
@@ -148,8 +144,7 @@ watch(() => store.state.nReload, () => {
                     <span class="btn" @click="unlockSelection">解锁</span>
                     <span class="split">|</span>
                     <span class="btn" @click="deleteSelection">删除</span>
-                    <!-- <span class="btn" @click="addSelection">增加</span>
-                    <span class="split">|</span> -->
+                    <span class="split">|</span>
                     <span class="btn" @click="cancelSelect">取消</span>
                     <div class="selection-stat">{{ selectionStat }}</div>
                 </div>

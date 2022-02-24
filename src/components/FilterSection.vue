@@ -115,6 +115,22 @@ const deselectAll = (filterProKey: string) => {
                     :label="s.key"
                 >{{ s.value }}</el-checkbox>
             </el-checkbox-group>
+            <div class="filter">
+                <span class="filter-name">等级：</span>
+                <range-slider
+                    class="filter-ctrl"
+                    :model-value="store.state.filterPro.lvRange"
+                    @update:model-value="setFilterPro('lvRange', $event)"
+                />
+            </div>
+            <div class="filter">
+                <span class="filter-name">评分：</span>
+                <range-slider
+                    class="filter-ctrl"
+                    :model-value="store.state.filterPro.score"
+                    @update:model-value="setFilterPro('score', $event)"
+                />
+            </div>
         </div>
     </div>
 </template>
