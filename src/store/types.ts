@@ -13,16 +13,23 @@ export interface IState {
         set: string
         slot: string
         main: string
+        location: string
+        lock: string
         lvRange: number[]
     }
     filterPro: {
         set: string[]
         slot: string[]
         main: string[]
+        location: string[]
+        lock: string[]
         lvRange: number[]
     }
     useFilterPro: boolean
     weight: {
+        [key: string]: number
+    },
+    weightInUse: {
         [key: string]: number
     },
     weightJson: string

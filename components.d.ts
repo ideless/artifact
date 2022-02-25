@@ -6,6 +6,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     ArtifactCard: typeof import('./src/components/ArtifactCard.vue')['default']
     ArtifactEditor: typeof import('./src/components/ArtifactEditor.vue')['default']
+    DataExport: typeof import('./src/components/DataExport.vue')['default']
     DropSelect: typeof import('./src/components/DropSelect.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
@@ -16,7 +17,9 @@ declare module 'vue' {
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElOptionGroup: typeof import('element-plus/es')['ElOptionGroup']
     ElRadio: typeof import('element-plus/es')['ElRadio']
+    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']

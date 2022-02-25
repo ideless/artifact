@@ -14,7 +14,7 @@
 
 yas-lock是一个圣遗物扫描、加解锁的Windows端程序。yas-lock是由我对wormtql的 [yas](https://github.com/wormtql/yas) 的代码做少量改动（增加加解锁功能、修复bug等），并在个人电脑上编译的，主要版权归于wormtql，仅供学习交流之用。
 
-[下载地址（约23MB）](https://github.com/ideless/yas-lock/releases/download/v1.0.0/yas-lock.exe) | [项目地址](https://github.com/ideless/yas-lock)
+[下载地址（约23MB）](https://github.com/ideless/yas-lock/releases/public/download/yas-lock.exe) | [项目地址](https://github.com/ideless/yas-lock)
 
 下载后最好放在一个单独的文件夹内，后续产生的数据文件都位于此文件夹内。
 
@@ -34,7 +34,7 @@ yas-lock是一个圣遗物扫描、加解锁的Windows端程序。yas-lock是由
 
 ![](./img/3749.png)
 
-此时yas-lock应当自动开始扫描背包了，不要操作键鼠，耐心等待一会即可（1500个圣遗物约3分钟）。按鼠标右键可以提前终止扫描。扫描完成后会生成3个文件：mona.json, genmo.json, good.json。它们分别是[莫娜占卜铺](https://www.mona-uranai.com)、[原魔计算器](https://genshin.mingyulab.com/)和[Genshin Optimizor](https://frzyc.github.io/genshin-optimizer/)三个工具的圣遗物数据格式。
+此时yas-lock应当自动开始扫描背包了，不要操作键鼠，耐心等待一会即可（1500个圣遗物约3-4分钟）。按鼠标右键可以提前终止扫描。扫描完成后会生成3个文件：mona.json, genmo.json, good.json。它们分别是[莫娜占卜铺](https://www.mona-uranai.com)、[原魔计算器](https://genshin.mingyulab.com/)和[Genshin Optimizor](https://frzyc.github.io/genshin-optimizer/)三个工具的圣遗物数据格式。
 
 ![](./img/5201.png)
 

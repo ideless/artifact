@@ -30,7 +30,8 @@ interface IArtifact {
     rarity: number
     level: number
     lock: boolean
-    main: Affix
+    location: string
+    mainKey: string
     minors: Affix[]
     data: {
         index: number
@@ -50,7 +51,8 @@ export class Artifact implements IArtifact {
     rarity = 0
     level = 0
     lock = false
-    main = new Affix()
+    location = ''
+    mainKey = ''
     minors: Affix[] = []
     data = {
         index: 0,
@@ -59,13 +61,13 @@ export class Artifact implements IArtifact {
     }
     constructor(obj?: any) {
         if (obj) {
-            obj = JSON.parse(JSON.stringify(obj))
             this.set = obj.set
             this.slot = obj.slot
             this.rarity = obj.rarity
             this.level = obj.level
             this.lock = obj.lock
-            this.main = new Affix(obj.main)
+            this.location = obj.location
+            this.mainKey = obj.mainKey
             for (let o of obj.minors) {
                 this.minors.push(new Affix(o))
             }
@@ -82,7 +84,7 @@ export class Artifact implements IArtifact {
         // Refer to ./README.md for symbols and equations
         this.data.affnum = { cur: 0, avg: 0, min: 0, max: 0 }
         let A: Set<string> = new Set(), Ac = new Set(data.minorKeys), sum_w = 0
-        Ac.delete(this.main.key)
+        Ac.delete(this.mainKey)
         for (let a of this.minors) {
             this.data.affnum.cur += w[a.key] * a.value / data.minorStat[a.key].v / 0.85
             A.add(a.key)

@@ -330,6 +330,7 @@ export default <ITranslation>{
         KaedeharaKazuha: "枫原万叶",
         Kaeya: "凯亚",
         KamisatoAyaka: "神里绫华",
+        KamisatoAyato: "神里绫人",
         Keqing: "刻晴",
         Klee: "可莉",
         KujouSara: "九条裟罗",
@@ -353,10 +354,11 @@ export default <ITranslation>{
         Xiao: "魈",
         Xingqiu: "行秋",
         Xinyan: "辛焱",
+        YaeMiko: "八重神子",
         Yanfei: "烟绯",
         Yoimiya: "宵宫",
         YunJin: "云堇",
-        Zhongli: "钟离"
+        Zhongli: "钟离",
     },
     preset: [
         "攻充",

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
 import SectionTitle from './SectionTitle.vue';
 import DropSelect from './DropSelect.vue';
 import RangeSlider from './RangeSlider.vue';
@@ -61,6 +60,24 @@ const deselectAll = (filterProKey: string) => {
                 />
             </div>
             <div class="filter">
+                <span class="filter-name">角色：</span>
+                <drop-select
+                    class="filter-ctrl"
+                    :items="store.getters.filterLocations"
+                    :model-value="store.state.filter.location"
+                    @update:model-value="setFilter('location', $event)"
+                />
+            </div>
+            <div class="filter">
+                <span class="filter-name">锁：</span>
+                <drop-select
+                    class="filter-ctrl"
+                    :items="store.getters.filterLocks"
+                    :model-value="store.state.filter.lock"
+                    @update:model-value="setFilter('lock', $event)"
+                />
+            </div>
+            <div class="filter">
                 <span class="filter-name">等级：</span>
                 <range-slider
                     class="filter-ctrl"
@@ -80,7 +97,7 @@ const deselectAll = (filterProKey: string) => {
                 style="margin-top: 10px;"
             >
                 <el-checkbox
-                    class="check"
+                    class="check p2"
                     v-for="s in store.getters.filterProSets"
                     :label="s.key"
                 >{{ s.value }}</el-checkbox>
@@ -95,7 +112,7 @@ const deselectAll = (filterProKey: string) => {
                 style="margin-top: 10px;"
             >
                 <el-checkbox
-                    class="check small"
+                    class="check p5"
                     v-for="s in store.getters.filterProSlots"
                     :label="s.key"
                 >{{ s.value }}</el-checkbox>
@@ -110,11 +127,47 @@ const deselectAll = (filterProKey: string) => {
                 style="margin-top: 10px;"
             >
                 <el-checkbox
-                    class="check"
+                    class="check p2"
                     v-for="s in store.getters.filterProMains"
                     :label="s.key"
                 >{{ s.value }}</el-checkbox>
             </el-checkbox-group>
+            <section-title title="角色">
+                <span @click="selectAll('location', store.getters.filterProLocations)">全选</span>
+                <span @click="deselectAll('location')">全不选</span>
+            </section-title>
+            <el-checkbox-group
+                :model-value="store.state.filterPro.location"
+                @update:model-value="setFilterPro('location', $event)"
+                style="margin-top: 10px;"
+            >
+                <el-checkbox
+                    class="check p3"
+                    v-for="s in store.getters.filterProLocations"
+                    :label="s.key"
+                >{{ s.value }}</el-checkbox>
+            </el-checkbox-group>
+            <section-title title="锁">
+                <span @click="selectAll('lock', store.getters.filterProLocks)">全选</span>
+                <span @click="deselectAll('lock')">全不选</span>
+            </section-title>
+            <el-checkbox-group
+                :model-value="store.state.filterPro.lock"
+                @update:model-value="setFilterPro('lock', $event)"
+                style="margin-top: 10px;"
+            >
+                <el-checkbox
+                    class="check p2"
+                    v-for="s in store.getters.filterProLocks"
+                    :label="s.key"
+                >{{ s.value }}</el-checkbox>
+            </el-checkbox-group>
+            <section-title title="等级" />
+            <range-slider
+                class="filter-ctrl"
+                :model-value="store.state.filterPro.lvRange"
+                @update:model-value="setFilterPro('lvRange', $event)"
+            />
         </div>
     </div>
 </template>
@@ -137,10 +190,15 @@ const deselectAll = (filterProKey: string) => {
 .check {
     --el-checkbox-font-size: 16px;
     --el-checkbox-font-weight: bold;
-    --el-checkbox-font-color: #444;
+    --el-checkbox-text-color: #444;
     height: 30px;
-    width: 170px;
-    &.small {
+    &.p2 {
+        width: 170px;
+    }
+    &.p3 {
+        width: 100px;
+    }
+    &.p5 {
         width: 50px;
     }
 }

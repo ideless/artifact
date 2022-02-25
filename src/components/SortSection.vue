@@ -26,7 +26,7 @@ const sortBy = computed({
     </div>
 </template>
 
-<style>
+<style lang="scss">
 .sort {
     --el-radio-font-size: 16px;
     --el-radio-font-weight: bold;
