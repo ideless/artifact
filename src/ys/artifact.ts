@@ -40,6 +40,7 @@ interface IArtifact {
             min: number
             max: number
             md: number
+            ma: number
             tot: number
         }
         score:{
@@ -59,7 +60,7 @@ export class Artifact implements IArtifact {
     minors: Affix[] = []
     data = {
         index: 0,
-        affnum: { cur: 0, avg: 0, min: 0, max: 0, md: 0, tot: 0 },
+        affnum: { cur: 0, avg: 0, min: 0, max: 0, md: 0, ma: 0, tot: 0 },
         score: { 'life':0, 'attack':0, 'defend':0, 'critical':0, 'elementalMastery':0, 'recharge':0 },
         lock: false,
     }
@@ -86,7 +87,7 @@ export class Artifact implements IArtifact {
     }
     updateAffnum(w: { [key: string]: number }) {
         // Refer to ./README.md for symbols and equations
-        this.data.affnum = { cur: 0, avg: 0, min: 0, max: 0, md: 0, tot: 0}
+        this.data.affnum = { cur: 0, avg: 0, min: 0, max: 0, md: 0, ma: 0, tot: 0}
         let A: Set<string> = new Set(), Ac = new Set(data.minorKeys), sum_w = 0
         Ac.delete(this.main.key)
         for (let a of this.minors) {
@@ -199,9 +200,11 @@ export class Artifact implements IArtifact {
                         break 
                     case 'defend':
                         this.data.affnum.md=this.data.score['critical']+this.data.score['defend']+this.data.score['elementalMastery']+this.data.score['recharge']+w['defprop']*this.data.score['attack']
+                        this.data.affnum.ma=this.data.affnum.ma - w['main'] * 0.5
                         break 
                     case 'life':
                         this.data.affnum.md=this.data.score['critical']+this.data.score['life']+this.data.score['elementalMastery']+this.data.score['recharge']+w['hpprop']*this.data.score['attack'] 
+                        this.data.affnum.ma=this.data.affnum.ma - w['main'] * 0.5
                         break 
                     }
                 }      
@@ -210,6 +213,14 @@ export class Artifact implements IArtifact {
                 }
             }
         //total score
-        this.data.affnum.tot = this.data.affnum.md + w['main'] * data.mainWeight[this.slot][this.main.key].p / data.mainWeight[this.slot][this.main.key].v
+        this.data.affnum.ma = this.data.affnum.ma + w['main'] * data.mainWeight[this.slot][this.main.key].p / data.mainWeight[this.slot][this.main.key].v
+        if(this.main.key!='atk' && this.main.key!='hp'){
+            if(data.setweight[this.set][this.main.key]<0){
+                this.data.affnum.ma = this.data.affnum.ma + 0.5 * w['set'] * data.setweight[this.set][this.main.key]
+            }else{
+                this.data.affnum.ma = this.data.affnum.ma + w['set'] * data.setweight[this.set][this.main.key]
+            }
+        }
+        this.data.affnum.tot = this.data.affnum.md + this.data.affnum.ma
     }
 }

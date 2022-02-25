@@ -45,6 +45,7 @@ export const store = createStore<IState>({
                 hpprop: 0.5,
                 defprop : 0.5,
                 main: 0.5,
+                set:0.3
             },
             //weightJson: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}',
             useWeightJson: false,
