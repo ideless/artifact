@@ -1,5 +1,7 @@
 import { argmax, argmin, assert } from "./utils"
 import data from "./data"
+import build from "./build"
+import distr from "./distr"
 
 interface IAffix {
     key: string
@@ -41,6 +43,11 @@ interface IArtifact {
             min: number
             max: number
         }
+        score: number
+        charScores: Array<{
+            charKey: string
+            score: number
+        }>
         lock: boolean
     }
 }
@@ -57,6 +64,8 @@ export class Artifact implements IArtifact {
     data = {
         index: 0,
         affnum: { cur: 0, avg: 0, min: 0, max: 0 },
+        score: 0,
+        charScores: [] as Array<{ charKey: string, score: number }>,
         lock: false,
     }
     constructor(obj?: any) {
@@ -122,5 +131,48 @@ export class Artifact implements IArtifact {
             astar_key = argmin(w, A) as string
             this.data.affnum.min = this.data.affnum.cur + n * w[astar_key] * 0.7 / 0.85
         }
+    }
+    /**
+     * updateScore() will change this.data.affnum.
+     * CALL IT BEFORE updateAffnum() !
+     */
+    updateScore() {
+        this.data.score = 0
+        this.data.charScores = []
+        for (let charKey in build) {
+            // main
+            if (!build[charKey].main[this.slot].includes(this.mainKey)) {
+                continue
+            }
+            // set
+            let p_set = 1
+            if (build[charKey].set[4].includes(this.set)) {
+                p_set = 5 / 6
+            } else if (build[charKey].set[2].includes(this.set)) {
+                p_set = 1 / 2
+            } else {
+                p_set = 1 / 5
+            }
+            // distr
+            let minors = build[charKey].minors
+            if (!(minors in distr)) {
+                continue
+            }
+            let weight: any = { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0, defp: 0, em: 0, er: 0, cr: 0, cd: 0 }
+            for (let m of minors.split(',')) {
+                weight[m] = 1
+            }
+            this.updateAffnum(weight)
+            let main = (this.mainKey in distr[minors]) ? this.mainKey : ''
+            let index = Math.min(Math.ceil(this.data.affnum.avg * 8.5), 90)
+            let p_minor = distr[minors][main][index]
+            let p_main = data.mainDistr[this.slot][this.mainKey]
+            let p_low = 1 - p_main * (1 - p_minor);
+            // let p = (1 - (1 - p_set) * p_main) * p_low
+            let p = p_set * p_low
+            this.data.charScores.push({ charKey, score: p })
+            this.data.score = Math.max(this.data.score, p)
+        }
+        this.data.charScores.sort((a, b) => b.score - a.score)
     }
 }

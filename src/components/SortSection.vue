@@ -21,6 +21,7 @@ const sortBy = computed({
             <el-radio class="sort" v-model="sortBy" label="min">按满级最小词条数</el-radio>
             <el-radio class="sort" v-model="sortBy" label="avg">按满级期望词条数</el-radio>
             <el-radio class="sort" v-model="sortBy" label="max">按满级最大词条数</el-radio>
+            <el-radio class="sort" v-model="sortBy" label="score">智能排序(beta)</el-radio>
             <el-radio class="sort" v-model="sortBy" label>不排序</el-radio>
         </div>
     </div>

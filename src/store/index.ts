@@ -47,7 +47,7 @@ export const store = createStore<IState>({
             weightInUse: { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0.5, defp: 0, em: 0.5, er: 0.5, cr: 1, cd: 1 },
             weightJson: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}',
             useWeightJson: false,
-            sortBy: 'avg', // 'avg', 'min', 'max', 'cur'
+            sortBy: 'avg', // 'avg', 'min', 'max', 'cur', 'score'
             canExport: false,
             nReload: 0, // for UI refreshing
             loading: false
@@ -219,10 +219,14 @@ export const store = createStore<IState>({
                 state.weightInUse = state.useWeightJson ? JSON.parse(state.weightJson) : { ...state.weight }
                 // update affix numbers
                 for (let a of ret) {
+                    if (state.sortBy == 'score')
+                        a.updateScore()
                     a.updateAffnum(state.weightInUse)
                 }
                 // sort
-                if (state.sortBy) { // sort in descending order of affix number
+                if (state.sortBy == 'score') { // sort in descending order of score
+                    ret.sort((a, b) => b.data.score - a.data.score)
+                } else if (state.sortBy) { // sort in descending order of affix number
                     ret.sort((a, b) => (b.data.affnum as any)[state.sortBy] - (a.data.affnum as any)[state.sortBy]);
                 } else { // sort in ascending order of index
                     ret.sort((a, b) => a.data.index - b.data.index)
