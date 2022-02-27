@@ -11,16 +11,23 @@ const sortBy = computed({
         store.commit('setSortBy', { sort })
     }
 })
+const setSortOrder = (use: boolean) => {
+    store.commit('setSortOrder', { use })
+}
 </script>
 
 <template>
     <div class="section">
-        <section-title title="排序" />
+        <section-title title="排序">
+        <span v-show="store.state.sortord" @click="setSortOrder(false)">倒序</span>
+        <span v-show="!store.state.sortord" @click="setSortOrder(true)">正序</span>
+        </section-title>
         <div class="section-content">
+            <el-radio class="sort" v-model="sortBy" label="tot">按圣遗物评分</el-radio>
+            <el-radio class="sort" v-model="sortBy" label="md">按副词条评分</el-radio>
+            <el-radio class="sort" v-model="sortBy" label="avg">按期望词条数</el-radio>
+            <el-radio class="sort" v-model="sortBy" label="max">按最大词条数</el-radio>
             <el-radio class="sort" v-model="sortBy" label="cur">按当前词条数</el-radio>
-            <el-radio class="sort" v-model="sortBy" label="min">按满级最小词条数</el-radio>
-            <el-radio class="sort" v-model="sortBy" label="avg">按满级期望词条数</el-radio>
-            <el-radio class="sort" v-model="sortBy" label="max">按满级最大词条数</el-radio>
             <el-radio class="sort" v-model="sortBy" label>不排序</el-radio>
         </div>
     </div>

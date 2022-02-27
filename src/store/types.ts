@@ -20,14 +20,16 @@ export interface IState {
         slot: string[]
         main: string[]
         lvRange: number[]
+        score: number[]
     }
     useFilterPro: boolean
     weight: {
         [key: string]: number
     },
-    weightJson: string
+    //weightJson: string
     useWeightJson: boolean
     sortBy: string
+    sortord: boolean
     canExport: boolean
     nReload: number
 }

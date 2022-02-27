@@ -301,7 +301,11 @@ export default <ITranslation>{
         anemoDB: "风元素伤害加成",
         cryoDB: "冰元素伤害加成",
         geoDB: "岩元素伤害加成",
-        physicalDB: "物理伤害加成"
+        physicalDB: "物理伤害加成",
+        main: '主属性系数',
+        set: '套装系数',
+        hpprop: '生攻转化率',
+        defprop : '防攻转化率',
     },
     slot: {
         flower: "生之花",

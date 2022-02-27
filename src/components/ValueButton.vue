@@ -9,7 +9,7 @@ const emit = defineEmits<{
 const btnClass = computed(() => {
     return {
         "value-button": true,
-        one: props.modelValue == 1,
+        one: props.modelValue >= 1,
         zero: props.modelValue == 0
     }
 })

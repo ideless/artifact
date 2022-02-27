@@ -27,23 +27,30 @@ export const store = createStore<IState>({
                 slot,
                 main,
                 lvRange: [0, 20],
+                score: [0,20]
+                
             },
             useFilterPro: false,
             weight: {
-                hp: 0,
-                atk: 0,
-                def: 0,
-                hpp: 0,
-                atkp: 0.5,
-                defp: 0,
-                em: 0.5,
-                er: 0.5,
-                cr: 1,
-                cd: 1,
+                hp: 0.3,
+                atk: 0.5,
+                def: 0.3,
+                hpp: 1,
+                atkp: 1,
+                defp: 1,
+                em: 1,
+                er: 1,
+                cr: 1.5,
+                cd: 1.5,
+                hpprop: 0.5,
+                defprop : 0.5,
+                main: 0.5,
+                set:0.3
             },
-            weightJson: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}',
+            //weightJson: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}',
             useWeightJson: false,
-            sortBy: 'avg',
+            sortBy: 'tot',
+            sortord:false,
             canExport: false,
             nReload: 0,
         }
@@ -151,9 +158,9 @@ export const store = createStore<IState>({
         useWeightJson(state, payload) {
             state.useWeightJson = payload.use
         },
-        setWeightJson(state, payload) {
-            state.weightJson = payload.json
-        },
+        // setWeightJson(state, payload) {
+        //     state.weightJson = payload.json
+        // },
         setWeight(state, payload) {
             state.weight[payload.key] = payload.value
         },
@@ -168,6 +175,9 @@ export const store = createStore<IState>({
         },
         setSortBy(state, payload) {
             state.sortBy = payload.sort
+        },
+        setSortOrder(state, payload) {
+            state.sortord = payload.use
         },
         flipLock(state, payload) {
             for (let a of state.artifacts) {
@@ -184,12 +194,26 @@ export const store = createStore<IState>({
                 }
             }
         },
-        usePreset(state, payload) {
-            if (state.useWeightJson) {
-                state.weightJson = JSON.stringify(payload.weight)
-            } else {
-                state.weight = payload.weight
+        delete(state, payload) {          
+            let s: Set<number> = new Set(payload.indices)
+            let i = 0
+            for (let a of state.artifacts) {
+                if (s.has(a.data.index)) {
+                    state.artifacts.splice(i,1)
+                }
+                i++
             }
+            store.dispatch('updFilteredArtifacts')
+        },
+        // usePreset(state, payload) {
+        //     if (state.useWeightJson) {
+        //         state.weightJson = JSON.stringify(payload.weight)
+        //     } else {
+        //         state.weight = payload.weight
+        //     }
+        // }
+        usePreset(state, payload) {
+                state.weight = payload.weight
         }
     },
     actions: {
@@ -225,16 +249,26 @@ export const store = createStore<IState>({
                     state.filterPro.lvRange[0] <= a.level &&
                     a.level <= state.filterPro.lvRange[1]
                 ));
+                ret = ret.filter((a) => (
+                    state.filterPro.score[0] <= a.data.affnum[state.sortBy] &&
+                    a.data.affnum[state.sortBy] <= state.filterPro.score[1]
+                ));
             }
             // weight
-            let weight = state.useWeightJson ? JSON.parse(state.weightJson) : state.weight
+            //let weight = state.useWeightJson ? JSON.parse(state.weightJson) : state.weight
+            let weight = state.weight
             // update affix numbers
             for (let a of ret) {
                 a.updateAffnum(weight)
             }
             // sort
             if (state.sortBy) { // sort in descending order of affix number
-                ret.sort((a, b) => (b.data.affnum as any)[state.sortBy] - (a.data.affnum as any)[state.sortBy]);
+                if(state.sortord){
+                    ret.sort((a, b) => (a.data.affnum as any)[state.sortBy] - (b.data.affnum as any)[state.sortBy]);
+                }
+                else{
+                    ret.sort((a, b) => (b.data.affnum as any)[state.sortBy] - (a.data.affnum as any)[state.sortBy]);
+                }
             } else { // sort in ascending order of index
                 ret.sort((a, b) => a.data.index - b.data.index)
             }
@@ -245,6 +279,9 @@ export const store = createStore<IState>({
         updArtifact({ state, dispatch }, payload) {
             for (let a of state.filteredArtifacts) {
                 if (a.data.index == payload.index) {
+                    a.set = payload.set
+                    a.slot = payload.slot
+                    a.main = payload.mainkey
                     a.level = payload.level
                     a.minors = payload.minors
                     break
