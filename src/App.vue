@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import LayoutLeft from './components/LayoutLeft.vue';
 import LayoutRight from './components/LayoutRight.vue';
+import { useStore } from './store';
 import { onMounted, ref } from 'vue';
 import { Download } from '@element-plus/icons-vue'
 import axios from 'axios'
 import cookie from './store/cookie';
+
+const store = useStore()
+const loadingSrc = './assets/loading.gif'
 
 const showUpdateDialog = ref(false)
 const message = ref('Hello')
@@ -57,6 +61,11 @@ onMounted(() => {
             <p style="white-space: pre-wrap;">{{ yasUpdLog }}</p>
         </div>
     </el-dialog>
+    <transition name="fade">
+        <div class="modal" v-show="store.state.loading">
+            <img :src="loadingSrc" />
+        </div>
+    </transition>
 </template>
 
 <style lang="scss">
@@ -76,5 +85,18 @@ onMounted(() => {
     p:not(:first-child) {
         margin-top: 10px;
     }
+}
+.modal {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fffa;
+    color: black;
 }
 </style>

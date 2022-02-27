@@ -50,6 +50,7 @@ export const store = createStore<IState>({
             sortBy: 'avg', // 'avg', 'min', 'max', 'cur'
             canExport: false,
             nReload: 0, // for UI refreshing
+            loading: false
         }
     },
     getters: {
@@ -131,9 +132,6 @@ export const store = createStore<IState>({
                 { key: 'false', value: '解锁' },
             ]
         },
-        weightInUse(state) {
-            return state.useWeightJson ? JSON.parse(state.weightJson) : state.weight
-        }
     },
     mutations: {
         useWeightJson(state, payload) {
@@ -186,50 +184,54 @@ export const store = createStore<IState>({
             state.artifacts = payload.artifacts
             dispatch('updFilteredArtifacts')
         },
-        updFilteredArtifacts({ state, getters }) {
-            let ret = state.artifacts
-            // filter
-            if (!state.useFilterPro) { // basic filter
-                if (state.filter.set)
-                    ret = ret.filter(a => a.set == state.filter.set);
-                if (state.filter.slot)
-                    ret = ret.filter(a => a.slot == state.filter.slot);
-                if (state.filter.main)
-                    ret = ret.filter(a => a.mainKey == state.filter.main);
-                if (state.filter.location != 'all')
-                    ret = ret.filter(a => a.location == state.filter.location)
-                if (state.filter.lock)
-                    ret = ret.filter(a => a.lock.toString() == state.filter.lock)
-                ret = ret.filter(a => (
-                    state.filter.lvRange[0] <= a.level &&
-                    a.level <= state.filter.lvRange[1]
-                ));
-            } else { // filter pro
-                ret = ret.filter(a => state.filterPro.set.includes(a.set));
-                ret = ret.filter(a => state.filterPro.slot.includes(a.slot));
-                ret = ret.filter(a => state.filterPro.main.includes(a.mainKey));
-                ret = ret.filter(a => state.filterPro.location.includes(a.location))
-                ret = ret.filter(a => state.filterPro.lock.includes(a.lock.toString()))
-                ret = ret.filter(a => (
-                    state.filterPro.lvRange[0] <= a.level &&
-                    a.level <= state.filterPro.lvRange[1]
-                ));
-            }
-            // weight
-            state.weightInUse = state.useWeightJson ? JSON.parse(state.weightJson) : { ...state.weight }
-            // update affix numbers
-            for (let a of ret) {
-                a.updateAffnum(state.weightInUse)
-            }
-            // sort
-            if (state.sortBy) { // sort in descending order of affix number
-                ret.sort((a, b) => (b.data.affnum as any)[state.sortBy] - (a.data.affnum as any)[state.sortBy]);
-            } else { // sort in ascending order of index
-                ret.sort((a, b) => a.data.index - b.data.index)
-            }
-            // update
-            state.filteredArtifacts = ret;
-            state.nReload++
+        updFilteredArtifacts({ state }) {
+            state.loading = true
+            setTimeout(() => {
+                let ret = state.artifacts
+                // filter
+                if (!state.useFilterPro) { // basic filter
+                    if (state.filter.set)
+                        ret = ret.filter(a => a.set == state.filter.set);
+                    if (state.filter.slot)
+                        ret = ret.filter(a => a.slot == state.filter.slot);
+                    if (state.filter.main)
+                        ret = ret.filter(a => a.mainKey == state.filter.main);
+                    if (state.filter.location != 'all')
+                        ret = ret.filter(a => a.location == state.filter.location)
+                    if (state.filter.lock)
+                        ret = ret.filter(a => a.lock.toString() == state.filter.lock)
+                    ret = ret.filter(a => (
+                        state.filter.lvRange[0] <= a.level &&
+                        a.level <= state.filter.lvRange[1]
+                    ));
+                } else { // filter pro
+                    ret = ret.filter(a => state.filterPro.set.includes(a.set));
+                    ret = ret.filter(a => state.filterPro.slot.includes(a.slot));
+                    ret = ret.filter(a => state.filterPro.main.includes(a.mainKey));
+                    ret = ret.filter(a => state.filterPro.location.includes(a.location))
+                    ret = ret.filter(a => state.filterPro.lock.includes(a.lock.toString()))
+                    ret = ret.filter(a => (
+                        state.filterPro.lvRange[0] <= a.level &&
+                        a.level <= state.filterPro.lvRange[1]
+                    ));
+                }
+                // weight
+                state.weightInUse = state.useWeightJson ? JSON.parse(state.weightJson) : { ...state.weight }
+                // update affix numbers
+                for (let a of ret) {
+                    a.updateAffnum(state.weightInUse)
+                }
+                // sort
+                if (state.sortBy) { // sort in descending order of affix number
+                    ret.sort((a, b) => (b.data.affnum as any)[state.sortBy] - (a.data.affnum as any)[state.sortBy]);
+                } else { // sort in ascending order of index
+                    ret.sort((a, b) => a.data.index - b.data.index)
+                }
+                // update
+                state.filteredArtifacts = ret;
+                state.nReload++
+                state.loading = false
+            }, 250)
         },
         updArtifact({ state, dispatch }, payload) {
             for (let a of state.filteredArtifacts) {

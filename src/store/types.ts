@@ -37,4 +37,5 @@ export interface IState {
     sortBy: string
     canExport: boolean
     nReload: number
+    loading: boolean
 }
