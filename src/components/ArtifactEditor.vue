@@ -54,7 +54,7 @@ const affnum = computed(() => {
     a.minors.push(new Affix({key:minor1key.value,value: minor1value.value}))
     a.minors.push(new Affix({key:minor2key.value,value: minor2value.value}))
     a.minors.push(new Affix({key:minor3key.value,value: minor3value.value}))
-    a.minors.push(new Affix({key:minor4key.value,value: minor4value.value}))
+    if(minor4key.value!=''){a.minors.push(new Affix({key:minor4key.value,value: minor4value.value}))}
     a.updateAffnum(store.state.weight)
     return {
         cur: a.data.affnum.cur.toFixed(2),
