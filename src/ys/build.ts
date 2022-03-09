@@ -8,6 +8,7 @@ interface IBuild {
             [slotKey: string]: string[]
         }
         minors: string
+        // weight: number
     }
 }
 

@@ -139,25 +139,9 @@ export class Artifact implements IArtifact {
     updateScore() {
         this.data.score = 0
         this.data.charScores = []
-        for (let charKey in build) {
-            // main
-            if (!build[charKey].main[this.slot].includes(this.mainKey)) {
-                continue
-            }
-            // set
-            let p_set = 1
-            if (build[charKey].set[4].includes(this.set)) {
-                p_set = 5 / 6
-            } else if (build[charKey].set[2].includes(this.set)) {
-                p_set = 1 / 2
-            } else {
-                p_set = 1 / 5
-            }
-            // distr
-            let minors = build[charKey].minors
-            if (!(minors in distr)) {
-                continue
-            }
+        // preprocess
+        let minorScores: any = {}
+        for (let minors in distr) {
             let weight: any = { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0, defp: 0, em: 0, er: 0, cr: 0, cd: 0 }
             for (let m of minors.split(',')) {
                 weight[m] = 1
@@ -167,9 +151,25 @@ export class Artifact implements IArtifact {
             let index = Math.min(Math.ceil(this.data.affnum.avg * 8.5), 90)
             let p_minor = distr[minors][main][index]
             let p_main = data.mainDistr[this.slot][this.mainKey]
-            let p_low = 1 - p_main * (1 - p_minor);
-            // let p = (1 - (1 - p_set) * p_main) * p_low
-            let p = p_set * p_low
+            minorScores[minors] = 1 - p_main * (1 - p_minor);
+            // console.log(minors, this.data.affnum.avg, p_minor, p_main, 1 - p_main * (1 - p_minor))
+        }
+        for (let charKey in build) {
+            // main
+            if (!build[charKey].main[this.slot].includes(this.mainKey)) {
+                continue
+            }
+            // set
+            let n_set = 1
+            if (build[charKey].set[4].includes(this.set)) {
+                n_set = 1
+            } else if (build[charKey].set[2].includes(this.set)) {
+                n_set = 2
+            } else {
+                n_set = 5
+            }
+            // distr
+            let p = Math.pow(minorScores[build[charKey].minors], n_set)
             this.data.charScores.push({ charKey, score: p })
             this.data.score = Math.max(this.data.score, p)
         }
