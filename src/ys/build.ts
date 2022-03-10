@@ -95,21 +95,7 @@ export default <IBuild>{
             goblet: ['defp'],
             circlet: ['defp', 'hb']
         },
-        minors: 'cr,defp,em,er'
-    },
-    TravelerGeo: {
-        set: {
-            2: ['GladiatorsFinale', 'ShimenawasReminiscence'],
-            4: ['ArchaicPetra', 'NoblesseOblige']
-        },
-        main: {
-            flower: ['hp'],
-            plume: ['atk'],
-            sands: ['atkp'],
-            goblet: ['geoDB'],
-            circlet: ['cr', 'cd']
-        },
-        minors: 'atkp,cd,cr'
+        minors: 'defp,em,er'
     },
     YunJin: {
         set: {
@@ -123,7 +109,7 @@ export default <IBuild>{
             goblet: ['defp'],
             circlet: ['defp']
         },
-        minors: 'cr,defp,em,er'
+        minors: 'defp,em,er'
     },
     Diluc: {
         set: {
@@ -263,7 +249,7 @@ export default <IBuild>{
             goblet: ['hpp'],
             circlet: ['hpp']
         },
-        minors: 'cr,er,hpp'
+        minors: 'er,hpp'
     },
     Tartaglia: {
         set: {
@@ -459,7 +445,7 @@ export default <IBuild>{
             goblet: ['cryoDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em,er'
+        minors: 'atkp,cd,cr,em'
     },
     Shenhe: {
         set: {
@@ -473,7 +459,7 @@ export default <IBuild>{
             goblet: ['atkp'],
             circlet: ['atkp']
         },
-        minors: 'atkp,cr,er'
+        minors: 'atkp,er'
     },
     Venti: {
         set: {
@@ -515,7 +501,7 @@ export default <IBuild>{
             goblet: ['em', 'anemoDB'],
             circlet: ['cr', 'cd', 'em']
         },
-        minors: 'atkp,cd,cr,em,er'
+        minors: 'em,er'
     },
     KaedeharaKazuha: {
         set: {
@@ -529,7 +515,7 @@ export default <IBuild>{
             goblet: ['anemoDB', 'em', 'atkp'],
             circlet: ['cr', 'cd', 'em', 'atkp']
         },
-        minors: 'atkp,cd,cr,em,er'
+        minors: 'em,er'
     },
     Xiao: {
         set: {
@@ -558,20 +544,6 @@ export default <IBuild>{
             circlet: ['em', 'hb', 'atkp']
         },
         minors: 'atkp,em,er'
-    },
-    TravelerAnemo: {
-        set: {
-            2: [''],
-            4: ['ViridescentVenerer']
-        },
-        main: {
-            flower: ['hp'],
-            plume: ['atk'],
-            sands: ['atkp', 'em'],
-            goblet: ['anemoDB', 'em'],
-            circlet: ['cr', 'cd', 'em']
-        },
-        minors: 'atkp,cd,cr,em,er'
     },
     Keqing: {
         set: {
@@ -641,7 +613,7 @@ export default <IBuild>{
             goblet: ['electroDB', 'physicalDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em'
+        minors: 'atkp,cd,cr'
     },
     RaidenShogun: {
         set: {
@@ -670,6 +642,48 @@ export default <IBuild>{
             circlet: ['cr', 'cd']
         },
         minors: 'atkp,cd,cr,er'
+    },
+    YaeMiko: {
+        set: {
+            2: ['ShimenawasReminiscence', 'GladiatorsFinale'],
+            4: ['ThunderingFury', 'Thundersoother', 'TenacityOfTheMillelith']
+        },
+        main: {
+            flower: ['hp'],
+            plume: ['atk'],
+            sands: ['atkp'],
+            goblet: ['electroDB'],
+            circlet: ['cr', 'cd']
+        },
+        minors: 'atkp,cd,cr,em,er'
+    },
+    TravelerAnemo: {
+        set: {
+            2: [''],
+            4: ['ViridescentVenerer']
+        },
+        main: {
+            flower: ['hp'],
+            plume: ['atk'],
+            sands: ['atkp', 'em'],
+            goblet: ['anemoDB', 'em'],
+            circlet: ['cr', 'cd', 'em']
+        },
+        minors: 'em,er'
+    },
+    TravelerGeo: {
+        set: {
+            2: ['GladiatorsFinale', 'ShimenawasReminiscence'],
+            4: ['ArchaicPetra', 'NoblesseOblige']
+        },
+        main: {
+            flower: ['hp'],
+            plume: ['atk'],
+            sands: ['atkp'],
+            goblet: ['geoDB'],
+            circlet: ['cr', 'cd']
+        },
+        minors: 'atkp,cd,cr'
     },
     TravelerElectro: {
         set: {
