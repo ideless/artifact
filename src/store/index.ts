@@ -1,166 +1,105 @@
 import { InjectionKey } from 'vue'
 import { createStore, useStore as baseUseStore, Store } from 'vuex'
-import { Artifact } from '../ys/artifact'
+import { ArtifactScoreWeight, Artifact } from '../ys/artifact'
 import { IState } from './types'
 import chs from '../ys/locale/chs'
 import data from '../ys/data'
 
+function countArtifactAttr(artifacts: Artifact[], key: keyof Artifact) {
+    let s: { [key: string]: number } = {}
+    for (let a of artifacts) {
+        let akey = ''
+        if (key=='main'){
+            akey = a[key].key
+        }else{
+            akey = a[key].toString()
+        }  
+        s[akey] = (akey in s) ? s[akey] + 1 : 1
+    }
+    return s
+}
 export const key: InjectionKey<Store<IState>> = Symbol()
-
 export const store = createStore<IState>({
     state: () => {
-        let set = [], slot = [], main = []
+        let set = [], slot = [], main = [], location = ['']
         for (let key in chs.set) set.push(key)
         for (let key in chs.slot) slot.push(key)
         for (let key of data.mainKeys.all) main.push(key)
-        let ret = {
+        for (let key in chs.character) location.push(key)
+        return {
             artifacts: [],
             filteredArtifacts: [],
             filter: {
                 set: '',
                 slot: '',
-                main: '',
-                lvRange: [0, 20],
-            },
-            filterPro: {
-                set,
-                slot,
-                main,
+                main: '', // mainKey should be better
+                location: 'all', // 'all' is a temporary workaround, fix it later
+                lock: '', // '', 'true', 'false'
                 lvRange: [0, 20],
                 score: [0,20]
-                
             },
+            filterBatch: [],
             useFilterPro: false,
-            weight: {
-                hp: 0.3,
-                atk: 0.5,
-                def: 0.3,
-                hpp: 1,
-                atkp: 1,
-                defp: 1,
-                em: 1,
-                er: 1,
-                cr: 1.5,
-                cd: 1.5,
-                hpprop: 0.5,
-                defprop : 0.5,
-                main: 0.5,
-                set:0.3
-            },
-            //weightJson: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}',
+            useFilterBatch: -1,  // -1 notwork, 0~length-1 select one
+            weight: new ArtifactScoreWeight(),
             useWeightJson: false,
             sortBy: 'tot',
             sortord:false,
             canExport: false,
-            nReload: 0,
+            nReload: 0,// for UI refreshing
+            loading: false
         }
-        return ret
     },
     getters: {
         filterSets(state) {
-            let cnt = 0,
-                s: { [key: string]: number } = {};
-            for (let a of state.artifacts) {
-                cnt++;
-                if (a.set in s) {
-                    s[a.set]++;
-                } else {
-                    s[a.set] = 1;
-                }
-            }
-            let ret = [
-                {
-                    key: "",
-                    value: "全部",
-                    tip: cnt.toString(),
-                },
-            ];
+            let ret = [{ key: "", value: "全部", tip: state.artifacts.length.toString() }],
+                s = countArtifactAttr(state.artifacts, 'set')
             for (let key in chs.set) {
-                if (key in s) {
-                    ret.push({
-                        key,
-                        value: chs.set[key].name,
-                        tip: s[key].toString(),
-                    });
-                }
+                if (key in s)
+                    ret.push({ key, value: chs.set[key].name, tip: s[key].toString() });
             }
             return ret;
         },
-        filterSlots() {
-            let ret = [
-                {
-                    key: "",
-                    value: "全部",
-                    tip: "",
-                },
-            ];
+        filterSlots(state) {
+            let ret = [{ key: "", value: "全部", tip: state.artifacts.length.toString() }],
+                s = countArtifactAttr(state.artifacts, 'slot')
             for (let key in chs.slot) {
-                ret.push({
-                    key,
-                    value: chs.slot[key],
-                    tip: "",
-                });
+                if (key in s)
+                    ret.push({ key, value: chs.slot[key], tip: s[key].toString() });
             }
             return ret;
         },
         filterMains(state) {
-            let l: string[] = state.filter.slot
-                ? (data.mainKeys as any)[state.filter.slot]
-                : data.mainKeys.all;
-            let ret = [
-                {
-                    key: "",
-                    value: "全部",
-                    tip: "",
-                },
-            ];
-            for (let key of l) {
-                ret.push({
-                    key,
-                    value: chs.affix[key],
-                    tip: "",
-                });
+            let ret = [{ key: "", value: "全部", tip: state.artifacts.length.toString() }],
+                s = countArtifactAttr(state.artifacts, 'main')
+            for (let key of data.mainKeys.all) {
+                if (key in s)
+                    ret.push({ key, value: chs.affix[key], tip: s[key].toString() });
             }
             return ret;
         },
-        filterProSets() {
-            let sets = []
-            for (let key in chs.set) {
-                sets.push({
-                    key,
-                    value: chs.set[key].name
-                })
+        filterLocations(state) {
+            let ret = [{ key: "all", value: "全部", tip: state.artifacts.length.toString() }],
+                s = countArtifactAttr(state.artifacts, 'location')
+            if ('' in s) ret.push({ key: '', value: "闲置", tip: s[''].toString() })
+            for (let key in chs.character) {
+                if (key in s)
+                    ret.push({ key, value: chs.character[key], tip: s[key].toString() })
             }
-            return sets
+            return ret
         },
-        filterProSlots() {
-            let slots = []
-            for (let key in chs.slot) {
-                slots.push({
-                    key,
-                    value: chs.slot[key]
-                })
-            }
-            return slots
-        },
-        filterProMains() {
-            let mains = []
-            for (let key of data.mainKeys.all) {
-                mains.push({
-                    key,
-                    value: chs.affix[key]
-                })
-            }
-            return mains
+        filterLocks(state) {
+            let ret = [{ key: "", value: "全部", tip: state.artifacts.length.toString() }],
+                s = countArtifactAttr(state.artifacts, 'lock')
+            if ('true' in s) ret.push({ key: 'true', value: '加锁', tip: s['true'].toString() })
+            if ('false' in s) ret.push({ key: 'false', value: '解锁', tip: s['false'].toString() })
+            return ret
         },
     },
     mutations: {
         useWeightJson(state, payload) {
             state.useWeightJson = payload.use
         },
-        // setWeightJson(state, payload) {
-        //     state.weightJson = payload.json
-        // },
         setWeight(state, payload) {
             state.weight[payload.key] = payload.value
         },
@@ -169,9 +108,6 @@ export const store = createStore<IState>({
         },
         setFilter(state, payload) {
             (state.filter as any)[payload.key] = payload.value
-        },
-        setFilterPro(state, payload) {
-            (state.filterPro as any)[payload.key] = payload.value
         },
         setSortBy(state, payload) {
             state.sortBy = payload.sort
@@ -182,7 +118,7 @@ export const store = createStore<IState>({
         flipLock(state, payload) {
             for (let a of state.artifacts) {
                 if (a.data.index == payload.index) {
-                    a.data.lock = !a.data.lock
+                    a.lock = !a.lock
                 }
             }
         },
@@ -190,7 +126,7 @@ export const store = createStore<IState>({
             let s: Set<number> = new Set(payload.indices)
             for (let a of state.artifacts) {
                 if (s.has(a.data.index)) {
-                    a.data.lock = payload.lock
+                    a.lock = payload.lock
                 }
             }
         },
@@ -205,15 +141,12 @@ export const store = createStore<IState>({
             }
             store.dispatch('updFilteredArtifacts')
         },
-        // usePreset(state, payload) {
-        //     if (state.useWeightJson) {
-        //         state.weightJson = JSON.stringify(payload.weight)
-        //     } else {
-        //         state.weight = payload.weight
-        //     }
-        // }
         usePreset(state, payload) {
                 state.weight = payload.weight
+        },
+        filterBatchIndex(state, payload) {
+            state.useFilterBatch = payload
+            store.dispatch('updFilteredArtifacts')
         }
     },
     actions: {
@@ -222,68 +155,121 @@ export const store = createStore<IState>({
             state.artifacts = payload.artifacts
             dispatch('updFilteredArtifacts')
         },
+        setLockByFilterBatch({ state }) {
+            // TODO two different lock, which is right?
+
+            let newLock = [];
+            for (let i = 0; i < state.artifacts.length; i ++ )
+                newLock.push(state.artifacts[i].lock);
+            if (state.filterBatch.length === 0) {
+                ElNotification({
+                    type: 'error',
+                    title: '一条规则都没有！',
+                })
+                return;
+            }
+            for (let i = 0; i < state.filterBatch.length; i ++ ) {
+                let filter = state.filterBatch[i].filter;
+                // let ruleResult = [];
+                if (state.filterBatch[i].lock == 'disabled')
+                    continue
+                const filterRes = filter.filter(state.artifacts)
+                for (const j of filterRes)
+                    newLock[j] = state.filterBatch[i].lock == 'lock';
+                // for (let j = 0; j < state.artifacts.length; j ++ )
+                //     if (filter.filterOne(state.artifacts[j])) {
+                //         // ruleResult.push(JSON.parse(JSON.stringify(state.artifacts[j])));
+                //         newLock[j] = state.filterBatch[i].lock == 'lock';
+                //     }
+                // console.log(state.filterBatch[i], ruleResult);
+            }
+            for (let i = 0; i < state.artifacts.length; i ++ )
+                state.artifacts[i].lock = newLock[i];
+            ElNotification({
+                type: 'success',
+                title: '批量规则应用成功',
+            })
+        },
         updFilteredArtifacts({ state }) {
-            let ret = state.artifacts
-            // filter
-            if (!state.useFilterPro) { // basic filter
-                if (state.filter.set) {
-                    ret = ret.filter((a) => a.set == state.filter.set);
+            state.loading = true
+            setTimeout(() => {
+                let ret = state.artifacts
+                // weight
+                if (state.useFilterPro && state.useFilterBatch == -1) {
+                    ElNotification({
+                        type: 'warning',
+                        title: '未选择过滤规则',
+                        message: '显示全部圣遗物。如果要进行过滤请选择过滤规则。'
+                    })
                 }
-                if (state.filter.slot) {
-                    ret = ret.filter((a) => a.slot == state.filter.slot);
+                else if (state.useFilterPro) {
+                    // use specified filterbatch
+                    let filter = state.filterBatch[state.useFilterBatch].filter;
+                    const filterRes = filter.filter(state.artifacts)
+                    ret = []
+                    for (const j of filterRes)
+                        ret.push(state.artifacts[j])
+                    ret = ret.filter(a => filter.filterOne(a));
+                    state.weight = state.filterBatch[state.useFilterBatch].filter.scoreWeight;
                 }
-                if (state.filter.main) {
-                    ret = ret.filter(
-                        (a) => a.main.key == state.filter.main
-                    );
+                else { // basic filter
+                    if (state.filter.set)
+                    ret = ret.filter(a => a.set == state.filter.set);
+                    if (state.filter.slot)
+                        ret = ret.filter(a => a.slot == state.filter.slot);
+                    if (state.filter.main)
+                        ret = ret.filter(a => a.main.key == state.filter.main);
+                    if (state.filter.location != 'all')
+                        ret = ret.filter(a => a.location == state.filter.location)
+                    if (state.filter.lock)
+                        ret = ret.filter(a => a.lock.toString() == state.filter.lock)
+                    ret = ret.filter(a => (
+                        state.filter.lvRange[0] <= a.level &&
+                        a.level <= state.filter.lvRange[1]
+                    ));
+                    if (state.sortBy) {
+                        ret = ret.filter((a) => (
+                            state.filter.score[0] <= a.data.affnum[state.sortBy] &&
+                            a.data.affnum[state.sortBy] <= state.filter.score[1]
+                        ));
+                    }
                 }
-                ret = ret.filter((a) => (
-                    state.filter.lvRange[0] <= a.level &&
-                    a.level <= state.filter.lvRange[1]
-                ));
-            } else { // filter pro
-                ret = ret.filter((a) => state.filterPro.set.includes(a.set));
-                ret = ret.filter((a) => state.filterPro.slot.includes(a.slot));
-                ret = ret.filter((a) => state.filterPro.main.includes(a.main.key));
-                ret = ret.filter((a) => (
-                    state.filterPro.lvRange[0] <= a.level &&
-                    a.level <= state.filterPro.lvRange[1]
-                ));
-                ret = ret.filter((a) => (
-                    state.filterPro.score[0] <= a.data.affnum[state.sortBy] &&
-                    a.data.affnum[state.sortBy] <= state.filterPro.score[1]
-                ));
-            }
-            // weight
-            //let weight = state.useWeightJson ? JSON.parse(state.weightJson) : state.weight
-            let weight = state.weight
-            // update affix numbers
-            for (let a of ret) {
-                a.updateAffnum(weight)
-            }
-            // sort
-            if (state.sortBy) { // sort in descending order of affix number
-                if(state.sortord){
-                    ret.sort((a, b) => (a.data.affnum as any)[state.sortBy] - (b.data.affnum as any)[state.sortBy]);
+                let weight = state.weight
+                // update affix numbers
+                for (let a of ret) {
+                    a.updateAffnum(weight)
                 }
-                else{
-                    ret.sort((a, b) => (b.data.affnum as any)[state.sortBy] - (a.data.affnum as any)[state.sortBy]);
+                // sort
+                if (state.sortBy) { // sort in descending order of affix number
+                    if(state.sortord){
+                        ret.sort((a, b) => (a.data.affnum as any)[state.sortBy] - (b.data.affnum as any)[state.sortBy]);
+                    }
+                    else{
+                        ret.sort((a, b) => (b.data.affnum as any)[state.sortBy] - (a.data.affnum as any)[state.sortBy]);
+                    }
+                } else { // sort in ascending order of index
+                    ret.sort((a, b) => a.data.index - b.data.index)
                 }
-            } else { // sort in ascending order of index
-                ret.sort((a, b) => a.data.index - b.data.index)
-            }
-            // update
-            state.filteredArtifacts = ret;
-            state.nReload++
+                // update
+                state.filteredArtifacts = ret;
+                state.nReload++
+                state.loading = false
+            }, 250)
         },
         updArtifact({ state, dispatch }, payload) {
             for (let a of state.filteredArtifacts) {
                 if (a.data.index == payload.index) {
-                    a.set = payload.set
-                    a.slot = payload.slot
-                    a.main = payload.mainkey
-                    a.level = payload.level
-                    a.minors = payload.minors
+                    if (payload.toSwap) {
+                        for (let b of state.artifacts) {
+                            if (b.location == payload.newArt.location && b.slot == payload.newArt.slot) {
+                                b.location = a.location
+                                break
+                            }
+                        }
+                    }
+                    a.location = payload.newArt.location
+                    a.level = payload.newArt.level
+                    a.minors = payload.newArt.minors
                     break
                 }
             }

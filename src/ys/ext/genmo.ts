@@ -5,7 +5,7 @@ import { whatis } from "../utils"
 
 export default {
     keymap: {
-        set: {
+        set: <{ [key: string]: string }>{
             GladiatorsFinale: 'gladiators_finale',
             WanderersTroupe: 'wanderers_troupe',
             Thundersoother: 'thundersoother',
@@ -27,7 +27,7 @@ export default {
             HuskOfOpulentDreams: 'husk_of_opulent_dreams',
             OceanHuedClam: 'divine_chorus',
         },
-        affix: {
+        affix: <{ [key: string]: string }>{
             hp: 'flatHP',
             atk: 'flatATK',
             def: 'flatDEF',
@@ -47,12 +47,26 @@ export default {
             geoDB: 'geoDamage',
             physicalDB: 'physicalDamage',
         },
-        slot: {
+        slot: <{ [key: string]: string }>{
             flower: 'flower',
             plume: 'plume',
             sands: 'eon',
             goblet: 'goblet',
             circlet: 'circlet',
+        }
+    },
+    getSubStatType(artifact: Artifact, index: number) {
+        if (index < artifact.minors.length) {
+            return this.keymap.affix[artifact.minors[index].key]
+        } else {
+            return 'flatATK'
+        }
+    },
+    getSubStatValue(artifact: Artifact, index: number) {
+        if (index < artifact.minors.length) {
+            return artifact.minors[index].value
+        } else {
+            return 0
         }
     },
     loads(json: string) {
@@ -99,5 +113,26 @@ export default {
             ret.push(artifact)
         }
         return ret
+    },
+    dumps(artifacts: Artifact[]) {
+        let genmo: any[] = []
+        for (let a of artifacts) {
+            genmo.push({
+                asKey: this.keymap.set[a.set],
+                rarity: a.rarity,
+                slot: this.keymap.slot[a.slot],
+                level: a.level,
+                mainStat: this.keymap.affix[a.main.key],
+                subStat1Type: this.getSubStatType(a, 0),
+                subStat1Value: this.getSubStatValue(a, 0),
+                subStat2Type: this.getSubStatType(a, 1),
+                subStat2Value: this.getSubStatValue(a, 1),
+                subStat3Type: this.getSubStatType(a, 2),
+                subStat3Value: this.getSubStatValue(a, 2),
+                subStat4Type: this.getSubStatType(a, 3),
+                subStat4Value: this.getSubStatValue(a, 3),
+            })
+        }
+        return JSON.stringify(genmo)
     }
 }

@@ -4,7 +4,7 @@ import { assert, whatis } from "../utils"
 
 export default {
     keymap: {
-        affix: {
+        affix: <{ [key: string]: string }>{
             hp: 'hp',
             atk: 'atk',
             def: 'def',
@@ -38,6 +38,7 @@ export default {
                 slot: a.slotKey,
                 level: a.level,
                 rarity: a.rarity,
+                location: a.location,
                 lock: a.lock,
                 main: {
                     key: mainKey,
@@ -53,5 +54,24 @@ export default {
             ret.push(artifact)
         }
         return ret
+    },
+    dumps(artifacts: Artifact[]) {
+        let good = { format: 'GOOD', version: 1, source: 'yas-lock', artifacts: <any[]>[] }
+        for (let a of artifacts) {
+            good.artifacts.push({
+                setKey: a.set,
+                slotKey: a.slot,
+                level: a.level,
+                rarity: a.rarity,
+                lock: a.lock,
+                location: a.location,
+                mainStatKey: this.keymap.affix[a.main.key],
+                substats: a.minors.map(m => ({
+                    key: this.keymap.affix[m.key],
+                    value: m.value
+                }))
+            })
+        }
+        return JSON.stringify(good)
     }
 }

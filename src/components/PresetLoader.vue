@@ -68,8 +68,8 @@ const applyDisabled = computed(() => {
 const apply = () => {
     if (typeof preset.value == 'number') {
         let w=Preset.presets[preset.value]
-        w['hpprop']=0.5
-        w['defprop']=0.5
+        w['hpprop']=0
+        w['defprop']=0
         w['main']=0.5
         w['set']=0.3
         store.commit('usePreset', { weight: w })

@@ -1,25 +1,37 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed } from 'vue'
 import { Edit } from '@element-plus/icons-vue'
-import { Artifact } from '../ys/artifact';
+import { Affix, Artifact } from '../ys/artifact';
 import chs from '../ys/locale/chs'
+import data from '../ys/data';
+import { useStore } from '../store';
 const props = defineProps<{
     artifact: Artifact,
     selected?: boolean
     selectMode?: boolean
+    disabled?: boolean
 }>()
 const emit = defineEmits<{
     (e: 'flipSelect', shiftKey: boolean): void,
     (e: 'flipLock'): void,
     (e: 'edit'): void
 }>()
+const store = useStore()
 const pieceName = computed(() => {
-    let name = chs.set[props.artifact.set].name
-    let slot = chs.slot[props.artifact.slot][2] // "花","羽"...
-    return `${name} · ${slot}`
+    if (props.artifact.set in chs.set && props.artifact.slot in chs.slot) {
+        let name = chs.set[props.artifact.set].name
+        let slot = chs.slot[props.artifact.slot][2] // "花","羽"...
+        return `${name} · ${slot}`
+    } else {
+        return '未知'
+    }
 })
 const pieceImgSrc = computed(() => {
-    return `./assets/artifacts/${props.artifact.set}/${props.artifact.slot}.png`
+     if (props.artifact.set in chs.set) {
+        return `./assets/artifacts/${props.artifact.set}/${props.artifact.slot}.png`
+    } else {
+        return ''
+    }
 })
 const affixName = (key: string) => {
     let name: string = chs.affix[key]
@@ -29,9 +41,15 @@ const affixName = (key: string) => {
     return name
 }
 const main = computed(() => {
-    return {
-        name: affixName(props.artifact.main.key),
-        value: props.artifact.main.valueString()
+    if (props.artifact.main.key in data.mainStat) {
+        let key = props.artifact.main.key,
+            value = data.mainStat[props.artifact.main.key][props.artifact.level]
+        return {
+            name: chs.affix[key],
+            value: new Affix({ key, value }).valueString()
+        }
+    } else {
+        return { name: '未知', value: 0 }
     }
 })
 const level = computed(() => {
@@ -41,22 +59,32 @@ const minors = computed(() => {
     let ret = []
     for (let a of props.artifact.minors) {
         let name = affixName(a.key)
-        ret.push(`· ${name}+${a.valueString()}`);
+        let weight = store.state.weight
+        if (store.state.useFilterBatch != -1)
+            weight = store.state.filterBatch[store.state.useFilterBatch].filter.scoreWeight
+        ret.push({
+            text: `· ${name}+${a.valueString()}`,
+            style: `opacity: ${weight[a.key] > 0 ? 1 : 0.5};`
+        });
     }
     return ret;
 })
 const affnum = computed(() => {
-    let a = props.artifact.data.affnum
+    let a = props.artifact.data
     return {
-        cur: a.cur.toFixed(1),
-        avg: a.avg.toFixed(1),
-        max: a.max.toFixed(1),
-        md:  a.md.toFixed(1),
-        tot: a.tot.toFixed(1),
+        cur: a.affnum.cur.toFixed(2),
+        md:  a.affnum.md.toFixed(2),
+        tot: a.affnum.tot.toFixed(2),
+        atk: a.score.attack.toFixed(1),
+        hp: a.score.life.toFixed(1),
+        def: a.score.defend.toFixed(1),
+        er: a.score.recharge.toFixed(1),
+        em: a.score.elementalMastery.toFixed(1),
+        crit: a.score.critical.toFixed(1),
     }
 })
 const lockImgSrc = computed(() => {
-    return props.artifact.data.lock ? './assets/lock.png' : './assets/unlock.png'
+    return props.artifact.lock ? './assets/lock.png' : './assets/unlock.png'
 })
 const artifactCardClass = computed(() => ({
     'artifact-card': true,
@@ -67,6 +95,18 @@ const select = (evt: MouseEvent) => {
     emit('flipSelect', evt.shiftKey)
 }
 const starImgSrc = './assets/stars.png'
+const charSrc = computed<string>(() => {
+    if (props.artifact.location in chs.character) {
+        return `./assets/char_sides/${props.artifact.location}.png`
+    } else {
+        return ''
+    }
+})
+const flipLock = () => {
+    if (!props.disabled) {
+        emit('flipLock')
+    }
+}
 </script>
 
 <template>
@@ -85,24 +125,30 @@ const starImgSrc = './assets/stars.png'
         <div class="body">
             <div class="body-head">
                 <span class="level">{{ level }}</span>
-                <span class="md-an">{{ affnum.md }}</span>
-                <span class="tot-an">{{ affnum.tot }}</span>
+                <span class="score">{{ affnum.atk}}攻 | {{ affnum.hp}}生 | {{ affnum.def}}防<br/>
+                {{ affnum.crit}}暴 | {{ affnum.er}}充 | {{ affnum.em}}精</span>
                 <div class="lock-img-container">
-                    <img :src="lockImgSrc" @click="emit('flipLock')" />
+                     <img :src="lockImgSrc" @click="flipLock" :class="disabled ? 'disabled' : ''" />
                 </div>
             </div>
             <div class="minor-affixes">
-                <div class="minor-affix" v-for="a in minors">{{ a }}</div>
+                 <div class="minor-affix" v-for="(a, index) in minors" :key="index" :style="a.style">{{ a.text }}</div>
             </div>
             <div class="affix-numbers" v-if="artifact.level < 20">
                 <div class="cur-an">当前{{ affnum.cur }}</div>
-                <div class="avg-an">期望{{ affnum.avg }}</div>
-                <div class="max-an">最大{{ affnum.max }}</div>
+                <div class="md-an">期望{{ affnum.md }}</div>
+                <div class="tot-an">总分{{ affnum.tot }}</div>
             </div>
-            <div class="full-an" v-else>已满级，{{ affnum.cur }}词条</div>
+            <div class="affix-full" v-else>
+                <div class="md-an">已满级{{ affnum.md }}</div>
+                <div class="tot-an">总分{{ affnum.tot }}</div>
+            </div>
         </div>
-        <div class="select-box" @click="select" />
-        <div class="edit-box" @click="emit('edit')">
+       <div class="location" v-show="charSrc">
+            <img :src="charSrc" />
+        </div>
+        <div class="select-box" @click="select" v-show="!disabled" />
+        <div class="edit-box" @click="emit('edit')" v-show="!disabled">
             <el-icon :size="16">
                 <edit />
             </el-icon>
@@ -119,6 +165,11 @@ const starImgSrc = './assets/stars.png'
     background-color: black;
     color: white;
 }
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
 .artifact-card {
     user-select: none;
     box-shadow: 0 0 2px 0 #0007;
@@ -129,7 +180,6 @@ const starImgSrc = './assets/stars.png'
     font-size: 12px;
     font-weight: bold;
     border-radius: 3px;
-    overflow: hidden;
     position: relative;
     word-break: keep-all;
     .head {
@@ -175,21 +225,15 @@ const starImgSrc = './assets/stars.png'
         flex-direction: column;
         .body-head {
             display: flex;
-            padding: 10px 12px;
+            padding: 8px 12px;
             align-items: center;
             .level {
                 @extend %tag;
                 background-color: #333;
             }
-            .md-an {
-                @extend %tag;
-                background-color: #2a82e4;
-                margin-left: 5px;
-            }
-            .tot-an {
-                @extend %tag;
-                background-color: #66c238;
-                margin-left: 5px;
+            .score {
+                padding: 0px 5px;
+                color: #2a82e4;
             }
             .lock-img-container {
                 flex: 1;
@@ -199,6 +243,9 @@ const starImgSrc = './assets/stars.png'
                     width: 20px;
                     height: 20px;
                     cursor: pointer;
+                    &.disabled {
+                        cursor: default;
+                    }
                 }
             }
         }
@@ -220,16 +267,16 @@ const starImgSrc = './assets/stars.png'
                 background: #a6a6a6;
                 width: 33.3%;
             }
-            .avg-an {
+            .md-an {
                 background: #2a82e4;
                 width: 33.3%;
             }
-            .max-an {
-                background: #ff5733;
+            .tot-an {
+                background: #66c238;
                 width: 33.3%;
             }
         }
-        .full-an {
+        .affix-full {
             position: absolute;
             left: 0;
             bottom: 0;
@@ -238,13 +285,37 @@ const starImgSrc = './assets/stars.png'
             color: white;
             text-align: center;
             line-height: 20px;
-            background: #66c238;
+            display: flex;
+            .md-an {
+                background: #2a82e4;
+                width: 50%;
+            }
+            .tot-an {
+                background: #66c238;
+                width: 50%;
+            }
+        }
+    }
+    .location {
+    position: absolute;
+    right: -8px;
+    top: -8px;
+    background-color: #333d51e0;
+    border: 2px solid #e9e5dc;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    img {
+        height: 44px;
         }
     }
     .select-box {
         position: absolute;
-        right: 10px;
-        top: 10px;
+        left: -5px;
+        top: -5px;
         width: 20px;
         height: 20px;
         border-radius: 3px;

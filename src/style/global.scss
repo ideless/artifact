@@ -5,11 +5,6 @@ $green: #66c238;
 body {
     box-sizing: border-box;
 }
-* {
-    box-sizing: inherit;
-    padding: 0;
-    margin: 0;
-}
 .pop-enter-active,
 .pop-leave-active {
     transition: all 200ms ease;
@@ -18,6 +13,14 @@ body {
 .pop-leave-to {
     opacity: 0;
     transform: scale(0.9);
+}
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 200ms ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 .section {
     padding: 0 40px;

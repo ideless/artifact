@@ -6,6 +6,7 @@ import mona from '../ys/ext/mona';
 import good from '../ys/ext/good';
 import genmo from '../ys/ext/genmo';
 import { useStore } from '../store';
+import { download } from '../store/utils';
 const store = useStore()
 const msg = ref('')
 const ok = ref(false)
@@ -70,14 +71,7 @@ const exportArts = () => {
         }
     }
     indices.sort((a, b) => a - b)
-    let indicesJson = encodeURIComponent(JSON.stringify(indices))
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + indicesJson);
-    element.setAttribute('download', 'lock.json');
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    download(JSON.stringify(indices), 'lock.json')
 }
 const openTutorial = () => {
     window.open('./tutorial', '_blank')

@@ -26,7 +26,7 @@ const showLoader = ref(false)
             <span v-show="store.state.useWeightJson" @click="useWeightJson(false)">基本</span>
             <span v-show="!store.state.useWeightJson" @click="useWeightJson(true)">高级</span>
         </section-title>
-        <div style="margin-top: 14px;" v-show="!store.state.useWeightJson">
+        <div style="margin-top: 14px;" v-show="store.state.useFilterBatch == -1 && !store.state.useWeightJson">
             <value-button
                 class="weight-button"
                 v-for="(_, key) in store.state.weight"
@@ -39,14 +39,16 @@ const showLoader = ref(false)
             <textarea class="json-input" v-model="weightJson" />
         </div>
         -->
-        <div class="section-content" v-show="store.state.useWeightJson">
+        <div class="section-content" v-show="store.state.useWeightJson || store.state.useFilterBatch != -1">
+            <div class="filter-hint-div" v-show="store.state.useFilterBatch != -1">已选择过滤规则，当前使用过滤规则内的词条权重</div>
             <el-form :inline="true">
                 <el-form-item 
                     v-for="(_, key) in store.state.weight"
                     :key="key"
-                    :label=chs.affix[key]
+                    :label="chs.affix[key] + (chs.affix[key].length >= 5 ? '' : '&emsp;'.repeat(5 - chs.affix[key].length))"
+                    style="width: 50%; margin-right: 0"
                 >
-                    <el-input v-model.number="store.state.weight[key]" style="width:45px"/>
+                    <el-input class="weight-input" v-model.number="store.state.weight[key]" type="number" step="0.1"></el-input>
                 </el-form-item>
             </el-form>
         </div>
@@ -54,7 +56,7 @@ const showLoader = ref(false)
     <preset-loader v-model="showLoader" />
 </template>
 
-<style>
+<style lang="scss">
 .weight-button {
     margin: 10px 10px 0 10px;
 }
@@ -69,5 +71,15 @@ const showLoader = ref(false)
     box-shadow: 0 0 2px 0 #0007;
     background: white;
     line-height: 1.5;
+}
+.weight-input {
+    width: 80px;
+    > * {
+        padding-right: 0px
+    }
+}
+.filter-hint-div {
+    text-align: center;
+    margin: 20px;
 }
 </style>

@@ -25,13 +25,13 @@ interface IData {
             }
         }
     }
-    set: string[]
-    slot: string[]
     setweight:{
         [key: string]: {
             [key: string]:number
         }
     }
+    set: string[]
+    slot: string[]
 }
 
 export default <IData>{
@@ -406,4 +406,4 @@ export default <IData>{
                     'hb': 10.0,
                     'cr': -8.4515,
                     'cd': -7.3413}}
-}
+                }

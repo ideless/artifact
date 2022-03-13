@@ -1,4 +1,5 @@
-import { Artifact } from '../ys/artifact'
+import { Artifact, ArtifactScoreWeight } from '../ys/artifact'
+import { FilterBatchOne } from '../ys/artifactFilter'
 
 export interface IOption {
     key: string
@@ -13,23 +14,19 @@ export interface IState {
         set: string
         slot: string
         main: string
-        lvRange: number[]
-    }
-    filterPro: {
-        set: string[]
-        slot: string[]
-        main: string[]
+        location: string
+        lock: string
         lvRange: number[]
         score: number[]
     }
+    filterBatch: FilterBatchOne[]
     useFilterPro: boolean
-    weight: {
-        [key: string]: number
-    },
-    //weightJson: string
+    useFilterBatch: number
+    weight: ArtifactScoreWeight,
     useWeightJson: boolean
     sortBy: string
     sortord: boolean
     canExport: boolean
     nReload: number
+    loading: boolean
 }

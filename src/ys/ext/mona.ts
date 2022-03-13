@@ -1,9 +1,10 @@
 import { Affix, Artifact } from "../artifact"
+import data from "../data"
 import { whatis, assert } from "../utils"
 
 export default {
     keymap: {
-        set: {
+        set: <{ [key: string]: string }>{
             GladiatorsFinale: 'gladiatorFinale',
             WanderersTroupe: 'wandererTroupe',
             Thundersoother: 'thunderSmoother',
@@ -25,7 +26,7 @@ export default {
             HuskOfOpulentDreams: 'huskOfOpulentDreams',
             OceanHuedClam: 'oceanHuedClam',
         },
-        affix: {
+        affix: <{ [key: string]: string }>{
             hp: 'lifeStatic',
             atk: 'attackStatic',
             def: 'defendStatic',
@@ -45,7 +46,7 @@ export default {
             geoDB: 'rockBonus',
             physicalDB: 'physicalBonus',
         },
-        slot: {
+        slot: <{ [key: string]: string }>{
             flower: 'flower',
             plume: 'feather',
             sands: 'sand',
@@ -89,5 +90,27 @@ export default {
             }
         }
         return ret
+    },
+    dumps(artifacts: Artifact[]) {
+        let mona: { [key: string]: any[] } = { flower: [], feather: [], sand: [], cup: [], head: [] }
+        for (let a of artifacts) {
+            let type = this.keymap.slot[a.slot]
+            mona[type].push({
+                setName: this.keymap.set[a.set],
+                position: type,
+                mainTag: {
+                    name: this.keymap.affix[a.main.key],
+                    value: data.mainStat[a.main.key][a.level]
+                },
+                normalTags: a.minors.map(m => ({
+                    name: this.keymap.affix[m.key],
+                    value: ['hp', 'atk', 'def', 'em'].includes(m.key) ? m.value : m.value / 100
+                })),
+                omit: false,
+                star: a.rarity,
+                level: a.level,
+            })
+        }
+        return JSON.stringify(mona)
     }
 }

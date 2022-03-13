@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import ArtifactCard from './ArtifactCard.vue';
 import ArtifactEditor from './ArtifactEditor.vue';
+import DataExport from './DataExport.vue';
 import { useStore } from '../store';
 import { computed, ref, watch } from 'vue';
-
 import type { ElScrollbar } from 'element-plus'
+import { Artifact } from '../ys/artifact';
 const store = useStore()
 const stat = computed(() => {
     let nAll = store.state.filteredArtifacts.length
     let nFull = 0, nLock = 0
     for (let a of store.state.filteredArtifacts) {
         if (a.level == 20) nFull++
-        if (a.data.lock) nLock++
+        if (a.lock) nLock++
     }
     return `共${nAll}个圣遗物，满级${nFull}个，加锁${nLock}个，解锁${nAll - nLock}个`
 })
@@ -107,14 +108,24 @@ const cancelSelect = () => {
 const selectionStat = computed(() => {
     return `已选中 ${selection.value.length}/${store.state.filteredArtifacts.length}`
 })
+// editor
 const showEditor = ref(false)
 const editorIndex = ref(-1)
 const edit = (index: number) => {
     editorIndex.value = index
     showEditor.value = true
 }
+// export
+const showExport = ref(false)
+const artifactsToExport = ref<Artifact[]>([])
+const exportSelection = () => {
+    artifactsToExport.value = store.state.filteredArtifacts.filter(a => selectionSet.value.has(a.data.index))
+    showExport.value = true
+}
+// scrollbar
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
 watch(() => store.state.nReload, () => {
+    selection.value = []
     scrollbarRef.value!.setScrollTop(0)
 })
 </script>
@@ -144,6 +155,7 @@ watch(() => store.state.nReload, () => {
                     <span class="btn" @click="unlockSelection">解锁</span>
                     <span class="split">|</span>
                     <span class="btn" @click="deleteSelection">删除</span>
+                    <span class="btn" @click="exportSelection">部分导出</span>
                     <span class="split">|</span>
                     <span class="btn" @click="cancelSelect">取消</span>
                     <div class="selection-stat">{{ selectionStat }}</div>
@@ -152,6 +164,7 @@ watch(() => store.state.nReload, () => {
         </el-scrollbar>
     </div>
     <artifact-editor v-model="showEditor" :index="editorIndex" />
+    <data-export v-model="showExport" :artifacts="artifactsToExport" />
 </template>
 
 <style lang="scss" scoped>

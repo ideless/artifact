@@ -1,0 +1,41 @@
+name: Build Test
+
+on: [ push, pull_request ]
+jobs:
+  build:
+    runs-on: windows-latest
+    name: Build
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          architecture: 'x64'
+      - uses: szenius/set-timezone@v1.0
+        with:
+          timezoneLinux: "Asia/Shanghai"
+          timezoneMacos: "Asia/Shanghai"
+          timezoneWindows: "China Standard Time"
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Replace registry
+        run: (Get-content yarn.lock) | Foreach-Object {$_ -replace "registry.nlark.com", "r.cnpmjs.org"} | Set-Content yarn.lock
+      - name: Install dependencies
+        run: yarn
+      - name: Install missing dependency
+        run: npm install @types/node --save-dev
+      - name: Unsafe-Build
+        run: yarn build
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist/

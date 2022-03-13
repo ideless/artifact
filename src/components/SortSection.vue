@@ -24,16 +24,14 @@ const setSortOrder = (use: boolean) => {
         </section-title>
         <div class="section-content">
             <el-radio class="sort" v-model="sortBy" label="tot">按圣遗物评分</el-radio>
-            <el-radio class="sort" v-model="sortBy" label="md">按副词条评分</el-radio>
-            <el-radio class="sort" v-model="sortBy" label="avg">按期望词条数</el-radio>
-            <el-radio class="sort" v-model="sortBy" label="max">按最大词条数</el-radio>
+            <el-radio class="sort" v-model="sortBy" label="md">按期望词条数</el-radio>
             <el-radio class="sort" v-model="sortBy" label="cur">按当前词条数</el-radio>
             <el-radio class="sort" v-model="sortBy" label>不排序</el-radio>
         </div>
     </div>
 </template>
 
-<style>
+<style lang="scss">
 .sort {
     --el-radio-font-size: 16px;
     --el-radio-font-weight: bold;
