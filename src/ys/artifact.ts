@@ -137,7 +137,7 @@ export class Artifact implements IArtifact {
         this.data.charScores = []
         // preprocess
         let count: any = { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0, defp: 0, em: 0, er: 0, cr: 0, cd: 0 }
-        this.minors.forEach(a => count[a.key] += Math.round(10 * a.value / data.minorStat[a.key].v))
+        this.minors.forEach(a => count[a.key] += Math.ceil(Math.round(10 * a.value / data.minorStat[a.key].v) / 10))
         let levelKey = Math.floor(this.level / 4).toString()
         let minorScores: any = {}
         for (let minors in distr) {
@@ -145,8 +145,9 @@ export class Artifact implements IArtifact {
             let index = minors.split(',').reduce((a, b) => a + count[b], 0)
             let p_minor = distr[minors][main][levelKey][index]
             let p_main = data.mainDistr[this.slot][this.mainKey]
-            minorScores[minors] = 1 - p_main * (1 - p_minor);
-            // console.log(minors, this.data.affnum.avg, p_minor, p_main, 1 - p_main * (1 - p_minor))
+            minorScores[minors] = Math.pow(p_minor, Math.ceil(20 * p_main))
+            // minorScores[minors] = Math.pow(p_minor, p_main)
+            console.log(minors, minorScores[minors])
         }
         for (let charKey in build) {
             // main
@@ -154,11 +155,12 @@ export class Artifact implements IArtifact {
                 continue
             }
             // set
-            let n_set = 5
+            // let n_set = 1
+            let n_set = 2
             if (build[charKey].set[4].includes(this.set)) {
                 n_set = 1
             } else if (build[charKey].set[2].includes(this.set)) {
-                n_set = 2
+                n_set = 1
             }
             // distr
             let p = Math.pow(minorScores[build[charKey].minors], n_set)

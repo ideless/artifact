@@ -90,11 +90,12 @@ for minor in minors:
             for s, k, m, n in product(range(2), range(5), range(10), range(length)):
                 t = 3 + level + s
                 p[n] += P_n_m[n][m]*P_m_tk[m][t][k]*P_k_s[k][s]*P_s[s]
-            d = distr[minor][main][level] = [0 for _ in range(length)]
+            d = distr[minor][main][level] = []
             S = 0
             for n in range(length):
-                d[n] = round(S, 3)
                 S += p[n]
+                if n % 10 == 0:
+                    d.append(round(S, 4))
             # print(d)
             # exit()
 
