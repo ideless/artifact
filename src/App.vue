@@ -20,7 +20,7 @@ const claim = () => {
 }
 const updYas = () => {
     claim()
-    window.open('https://github.com/ideless/yas-lock/releases/latest/download/yas-lock.exe', '_blank')
+    window.open('https://ghproxy.com/https://github.com/ideless/yas-lock/releases/latest/download/yas-lock.exe', '_blank')
 }
 
 onMounted(() => {
