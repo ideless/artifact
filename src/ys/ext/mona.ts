@@ -25,6 +25,8 @@ export default {
             EmblemOfSeveredFate: 'emblemOfSeveredFate',
             HuskOfOpulentDreams: 'huskOfOpulentDreams',
             OceanHuedClam: 'oceanHuedClam',
+            VermillionHereafter: "VermillionHereafter",
+            EchoesOfAnOffering: "EchoesOfAnOffering",
         },
         affix: <{ [key: string]: string }>{
             hp: 'lifeStatic',

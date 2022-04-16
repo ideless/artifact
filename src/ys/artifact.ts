@@ -1,7 +1,10 @@
 import { argmax, argmin, assert } from "./utils"
 import data from "./data"
 import build from "./build"
-import distr from "./distr"
+import { affnumDistr } from "./gacha/artifact"
+
+const AffnumDistrCache: { [key: string]: any } = {}
+const WeightCache: { [key: string]: any } = {}
 
 interface IAffix {
     key: string
@@ -132,41 +135,82 @@ export class Artifact implements IArtifact {
             this.data.affnum.min = this.data.affnum.cur + n * w[astar_key] * 0.7 / 0.85
         }
     }
+    getAvgAffnum(w: { [key: string]: number }) {
+        let A: Set<string> = new Set(), Ac = new Set(data.minorKeys), sum_w = 0, cur = 0
+        Ac.delete(this.mainKey)
+        for (let a of this.minors) {
+            cur += w[a.key] * a.value / data.minorStat[a.key].v
+            A.add(a.key)
+            Ac.delete(a.key)
+            sum_w += w[a.key]
+        }
+        if (this.minors.length == 3) {
+            let dn = 0, nm = 0 // denominator and numerator
+            Ac.forEach(a_key => {
+                nm += w[a_key] * data.minorStat[a_key].p
+                dn += data.minorStat[a_key].p
+            })
+            return cur + 0.85 * sum_w + 1.7 * nm / dn // 0.85*2=1.7
+        } else { // this.minors.length == 4
+            let n = Math.ceil((20 - this.level) / 4) // n.o. upgrades
+            return cur + n * sum_w / 4 * 0.85
+        }
+    }
     updateScore() {
         this.data.score = 0
         this.data.charScores = []
-        // preprocess
-        let count: any = { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0, defp: 0, em: 0, er: 0, cr: 0, cd: 0 }
-        this.minors.forEach(a => count[a.key] += Math.ceil(Math.round(10 * a.value / data.minorStat[a.key].v) / 10))
-        let levelKey = Math.floor(this.level / 4).toString()
-        let minorScores: any = {}
-        for (let minors in distr) {
-            let main = (this.mainKey in distr[minors]) ? this.mainKey : ''
-            let index = minors.split(',').reduce((a, b) => a + count[b], 0)
-            let p_minor = distr[minors][main][levelKey][index]
-            let p_main = data.mainDistr[this.slot][this.mainKey]
-            minorScores[minors] = Math.pow(p_minor, Math.ceil(20 * p_main))
-            // minorScores[minors] = Math.pow(p_minor, p_main)
-            console.log(minors, minorScores[minors])
+        function get_weight(minors: string) {
+            if (minors in WeightCache) return WeightCache[minors]
+            return WeightCache[minors] = JSON.parse(minors)
+        }
+        const AffnumCache: { [key: string]: number } = {}
+        function get_affnum(artifact: Artifact, minors: string, weight: { [key: string]: number }) {
+            if (minors in AffnumCache) return AffnumCache[minors]
+            let s = artifact.getAvgAffnum(weight)
+            // for (let m of artifact.minors) {
+            //     s += weight[m.key] * m.value / data.minorStat[m.key].v
+            // }
+            // here 'affnum' should be Math.round('current affnum' * 10)
+            return AffnumCache[minors] = Math.round(s * 10)
+        }
+        function get_affnum_distr(minors: string, main: string, weight: { [key: string]: number }) {
+            let distr_key = minors + '|' + main
+            if (distr_key in AffnumDistrCache) return AffnumDistrCache[distr_key]
+            let d = affnumDistr(main, weight)
+            return AffnumDistrCache[distr_key] = d
+        }
+        const ScoreCache: { [key: string]: number } = {}
+        function get_score(minors: string, slot: string, main: string, distr: number[], affnum: number) {
+            if (minors in ScoreCache) return ScoreCache[minors]
+            let p = data.mainDistr[slot][main] / 5
+            let x = affnum >= distr.length ? 1 : distr[affnum]
+            return ScoreCache[minors] = (p * x + 1 - p) ** 100
         }
         for (let charKey in build) {
-            // main
-            if (!build[charKey].main[this.slot].includes(this.mainKey)) {
+            // if the main stat is not recommanded, skip
+            if (!build[charKey].main[this.slot].includes(this.mainKey))
                 continue
-            }
-            // set
-            // let n_set = 1
+            // set factor
             let n_set = 2
             if (build[charKey].set[4].includes(this.set)) {
                 n_set = 1
             } else if (build[charKey].set[2].includes(this.set)) {
                 n_set = 1
             }
-            // distr
-            let p = Math.pow(minorScores[build[charKey].minors], n_set)
-            if (p < 0.001) continue
-            this.data.charScores.push({ charKey, score: p })
-            this.data.score = Math.max(this.data.score, p)
+            // get score
+            let weight = get_weight(build[charKey].minors)
+            let affnum = get_affnum(this, build[charKey].minors, weight)
+            let distr = get_affnum_distr(build[charKey].minors, this.mainKey, weight)
+            let score = get_score(build[charKey].minors, this.slot, this.mainKey, distr, affnum) ** n_set
+            // console.log(charKey, build[charKey].minors)
+            // console.log(weight)
+            // console.log(affnum)
+            // console.log(distr)
+            // console.log(score)
+            // update
+            if (score < 0.001) continue
+            this.data.charScores.push({ charKey, score })
+            this.data.score = Math.max(this.data.score, score)
         }
         this.data.charScores.sort((a, b) => b.score - a.score)
     }

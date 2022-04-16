@@ -1,3 +1,7 @@
+/**
+ * Data parsed from https://ngabbs.com/read.php?tid=27859119
+ */
+
 interface IBuild {
     [characterKey: string]: {
         set: {
@@ -25,7 +29,7 @@ export default <IBuild>{
             goblet: ['geoDB', 'defp'],
             circlet: ['cr', 'cd']
         },
-        minors: 'cd,cr,defp,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.25,"defp":0.5,"em":0,"er":0.5,"cr":1,"cd":1}'
     },
     Ningguang: {
         set: {
@@ -39,7 +43,7 @@ export default <IBuild>{
             goblet: ['geoDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0,"er":0.25,"cr":1,"cd":1}'
     },
     Zhongli: {
         set: {
@@ -53,7 +57,7 @@ export default <IBuild>{
             goblet: ['geoDB', 'hpp'],
             circlet: ['cr', 'cd', 'hpp']
         },
-        minors: 'atkp,cd,cr,er,hpp'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0.5,"atkp":0.5,"defp":0,"em":0,"er":0.25,"cr":1,"cd":1}'
     },
     Albedo: {
         set: {
@@ -67,7 +71,7 @@ export default <IBuild>{
             goblet: ['geoDB'],
             circlet: ['cr', 'cd', 'defp']
         },
-        minors: 'cd,cr,defp'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.25,"defp":0.5,"em":0,"er":0.25,"cr":1,"cd":1}'
     },
     AratakiItto: {
         set: {
@@ -81,7 +85,7 @@ export default <IBuild>{
             goblet: ['geoDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,defp,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0.5,"em":0,"er":0.5,"cr":1,"cd":1}'
     },
     Gorou: {
         set: {
@@ -95,7 +99,7 @@ export default <IBuild>{
             goblet: ['defp'],
             circlet: ['defp', 'hb']
         },
-        minors: 'defp,em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.25,"defp":1,"em":0.25,"er":1,"cr":0.5,"cd":0.25}'
     },
     YunJin: {
         set: {
@@ -109,7 +113,7 @@ export default <IBuild>{
             goblet: ['defp'],
             circlet: ['defp']
         },
-        minors: 'defp,em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.25,"defp":1,"em":0.25,"er":1,"cr":0.5,"cd":0.25}'
     },
     Diluc: {
         set: {
@@ -123,7 +127,7 @@ export default <IBuild>{
             goblet: ['pyroDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.25,"cr":1,"cd":1}'
     },
     HuTao: {
         set: {
@@ -137,7 +141,7 @@ export default <IBuild>{
             goblet: ['pyroDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em,hpp'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0.5,"atkp":0.25,"defp":0,"em":0.5,"er":0.25,"cr":1,"cd":1}'
     },
     Klee: {
         set: {
@@ -151,7 +155,7 @@ export default <IBuild>{
             goblet: ['pyroDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.25,"cr":1,"cd":1}'
     },
     Xiangling: {
         set: {
@@ -165,7 +169,7 @@ export default <IBuild>{
             goblet: ['pyroDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}'
     },
     Bennett: {
         set: {
@@ -179,7 +183,7 @@ export default <IBuild>{
             goblet: ['hpp'],
             circlet: ['hb', 'hpp']
         },
-        minors: 'er,hpp'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":1,"atkp":0.25,"defp":0,"em":0.25,"er":1,"cr":0.25,"cd":0.25}'
     },
     Yanfei: {
         set: {
@@ -193,7 +197,7 @@ export default <IBuild>{
             goblet: ['pyroDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.25,"cr":1,"cd":1}'
     },
     Amber: {
         set: {
@@ -207,7 +211,7 @@ export default <IBuild>{
             goblet: ['pyroDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.25,"cr":1,"cd":1}'
     },
     Xinyan: {
         set: {
@@ -221,7 +225,7 @@ export default <IBuild>{
             goblet: ['defp', 'physicalDB'],
             circlet: ['cr', 'cd', 'defp']
         },
-        minors: 'atkp,cd,cr,defp,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0.5,"em":0,"er":0.5,"cr":1,"cd":1}'
     },
     Yoimiya: {
         set: {
@@ -235,7 +239,7 @@ export default <IBuild>{
             goblet: ['pyroDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.25,"cr":1,"cd":1}'
     },
     Thoma: {
         set: {
@@ -249,7 +253,7 @@ export default <IBuild>{
             goblet: ['hpp'],
             circlet: ['hpp']
         },
-        minors: 'er,hpp'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":1,"atkp":0.25,"defp":0,"em":0.25,"er":1,"cr":0.5,"cd":0.25}'
     },
     Tartaglia: {
         set: {
@@ -263,7 +267,7 @@ export default <IBuild>{
             goblet: ['hydroDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.25,"cr":1,"cd":1}'
     },
     Xingqiu: {
         set: {
@@ -275,9 +279,9 @@ export default <IBuild>{
             plume: ['atk'],
             sands: ['atkp', 'er'],
             goblet: ['hydroDB'],
-            circlet: ['cr', 'cd', 'atkp']
+            circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}'
     },
     Mona: {
         set: {
@@ -291,7 +295,7 @@ export default <IBuild>{
             goblet: ['atkp'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.5,"cr":1,"cd":1}'
     },
     Barbara: {
         set: {
@@ -305,7 +309,7 @@ export default <IBuild>{
             goblet: ['hpp'],
             circlet: ['hb', 'hpp']
         },
-        minors: 'er,hpp'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":1,"atkp":0.25,"defp":0,"em":0.25,"er":1,"cr":0.5,"cd":0.25}'
     },
     SangonomiyaKokomi: {
         set: {
@@ -319,7 +323,21 @@ export default <IBuild>{
             goblet: ['hydroDB', 'hpp'],
             circlet: ['hb']
         },
-        minors: 'atkp,em,er,hpp'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":1,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":0,"cd":0}'
+    },
+    KamisatoAyato: {
+        set: {
+            2: [],
+            4: ['EchoesOfAnOffering', 'GladiatorsFinale', 'HeartOfDepth']
+        },
+        main: {
+            flower: ['hp'],
+            plume: ['atk'],
+            sands: ['hpp', 'er'],
+            goblet: ['hydroDB', 'hpp'],
+            circlet: ['hb']
+        },
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0.25,"atkp":0.5,"defp":0,"em":0.25,"er":0.25,"cr":1,"cd":1}'
     },
     Ganyu: {
         set: {
@@ -329,11 +347,11 @@ export default <IBuild>{
         main: {
             flower: ['hp'],
             plume: ['atk'],
-            sands: ['atkp', 'er'],
-            goblet: ['cryoDB', 'atkp'],
-            circlet: ['cr', 'cd', 'atkp']
+            sands: ['atkp'],
+            goblet: ['cryoDB'],
+            circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.25,"cr":1,"cd":1}'
     },
     Qiqi: {
         set: {
@@ -347,7 +365,7 @@ export default <IBuild>{
             goblet: ['atkp'],
             circlet: ['hb', 'atkp']
         },
-        minors: 'atkp,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":1,"defp":0,"em":0,"er":1,"cr":0.25,"cd":0.25}'
     },
     KamisatoAyaka: {
         set: {
@@ -357,11 +375,11 @@ export default <IBuild>{
         main: {
             flower: ['hp'],
             plume: ['atk'],
-            sands: ['atkp', 'er'],
-            goblet: ['cryoDB', 'atkp'],
-            circlet: ['cr', 'cd', 'atkp']
+            sands: ['atkp'],
+            goblet: ['cryoDB'],
+            circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.5,"cr":1,"cd":1}'
     },
     Chongyun: {
         set: {
@@ -375,7 +393,7 @@ export default <IBuild>{
             goblet: ['cryoDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.25,"cr":1,"cd":1}'
     },
     Rosaria: {
         set: {
@@ -389,7 +407,7 @@ export default <IBuild>{
             goblet: ['cryoDB', 'physicalDB'],
             circlet: ['cr']
         },
-        minors: 'atkp,cd,cr,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.5,"cr":1,"cd":1}'
     },
     Kaeya: {
         set: {
@@ -403,7 +421,7 @@ export default <IBuild>{
             goblet: ['cryoDB', 'physicalDB', 'atkp'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.25,"cr":1,"cd":1}'
     },
     Eula: {
         set: {
@@ -417,7 +435,7 @@ export default <IBuild>{
             goblet: ['physicalDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0,"er":0.5,"cr":1,"cd":1}'
     },
     Diona: {
         set: {
@@ -431,7 +449,7 @@ export default <IBuild>{
             goblet: ['hpp'],
             circlet: ['hpp', 'hb']
         },
-        minors: 'er,hpp'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":1,"atkp":0,"defp":0,"em":0,"er":1,"cr":0.5,"cd":0.25}'
     },
     Aloy: {
         set: {
@@ -445,7 +463,7 @@ export default <IBuild>{
             goblet: ['cryoDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.25,"cr":1,"cd":1}'
     },
     Shenhe: {
         set: {
@@ -459,7 +477,7 @@ export default <IBuild>{
             goblet: ['atkp'],
             circlet: ['atkp']
         },
-        minors: 'atkp,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":1,"defp":0,"em":0.25,"er":0.5,"cr":0.5,"cd":0.25}'
     },
     Venti: {
         set: {
@@ -473,7 +491,7 @@ export default <IBuild>{
             goblet: ['anemoDB', 'em'],
             circlet: ['cr', 'cd', 'em']
         },
-        minors: 'atkp,cd,cr,em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}'
     },
     Jean: {
         set: {
@@ -487,7 +505,7 @@ export default <IBuild>{
             goblet: ['anemoDB', 'atkp'],
             circlet: ['cr', 'cd', 'atkp', 'hb']
         },
-        minors: 'atkp,cd,cr,em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.5,"cr":1,"cd":1}'
     },
     Sucrose: {
         set: {
@@ -501,7 +519,7 @@ export default <IBuild>{
             goblet: ['em', 'anemoDB'],
             circlet: ['cr', 'cd', 'em']
         },
-        minors: 'em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.25,"defp":0,"em":1,"er":0.5,"cr":0.5,"cd":0.25}'
     },
     KaedeharaKazuha: {
         set: {
@@ -515,7 +533,7 @@ export default <IBuild>{
             goblet: ['anemoDB', 'em', 'atkp'],
             circlet: ['cr', 'cd', 'em', 'atkp']
         },
-        minors: 'em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":1,"er":0.5,"cr":0.5,"cd":0.5}'
     },
     Xiao: {
         set: {
@@ -529,7 +547,7 @@ export default <IBuild>{
             goblet: ['anemoDB', 'atkp'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.25,"cr":1,"cd":1}'
     },
     Sayu: {
         set: {
@@ -543,7 +561,7 @@ export default <IBuild>{
             goblet: ['em', 'anemoDB'],
             circlet: ['em', 'hb', 'atkp']
         },
-        minors: 'atkp,em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":1,"defp":0,"em":0.5,"er":1,"cr":0.5,"cd":0.25}'
     },
     Keqing: {
         set: {
@@ -557,7 +575,7 @@ export default <IBuild>{
             goblet: ['electroDB', 'physicalDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.25,"cr":1,"cd":1}'
     },
     Razor: {
         set: {
@@ -571,7 +589,7 @@ export default <IBuild>{
             goblet: ['physicalDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.25,"cr":1,"cd":1}'
     },
     Beidou: {
         set: {
@@ -585,7 +603,7 @@ export default <IBuild>{
             goblet: ['electroDB', 'atkp'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.5,"cr":1,"cd":1}'
     },
     Lisa: {
         set: {
@@ -599,7 +617,7 @@ export default <IBuild>{
             goblet: ['electroDB', 'atkp', 'em'],
             circlet: ['cr', 'cd', 'em']
         },
-        minors: 'atkp,cd,cr,em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}'
     },
     Fischl: {
         set: {
@@ -613,7 +631,7 @@ export default <IBuild>{
             goblet: ['electroDB', 'physicalDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}'
     },
     RaidenShogun: {
         set: {
@@ -627,7 +645,7 @@ export default <IBuild>{
             goblet: ['electroDB', 'atkp'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.5,"cr":1,"cd":1}'
     },
     KujouSara: {
         set: {
@@ -641,7 +659,7 @@ export default <IBuild>{
             goblet: ['electroDB', 'atkp'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.25,"er":0.5,"cr":1,"cd":1}'
     },
     YaeMiko: {
         set: {
@@ -655,7 +673,7 @@ export default <IBuild>{
             goblet: ['electroDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr,em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}'
     },
     TravelerAnemo: {
         set: {
@@ -669,7 +687,7 @@ export default <IBuild>{
             goblet: ['anemoDB', 'em'],
             circlet: ['cr', 'cd', 'em']
         },
-        minors: 'em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.25,"defp":0,"em":1,"er":1,"cr":0.5,"cd":0.25}'
     },
     TravelerGeo: {
         set: {
@@ -683,7 +701,7 @@ export default <IBuild>{
             goblet: ['geoDB'],
             circlet: ['cr', 'cd']
         },
-        minors: 'atkp,cd,cr'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0,"er":0.25,"cr":1,"cd":1}'
     },
     TravelerElectro: {
         set: {
@@ -697,6 +715,6 @@ export default <IBuild>{
             goblet: ['atkp', 'em'],
             circlet: ['cr', 'cd', 'em']
         },
-        minors: 'atkp,cd,cr,em,er'
+        minors: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}'
     }
 }

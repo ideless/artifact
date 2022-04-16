@@ -75,6 +75,10 @@ const apply = () => {
 
 <template>
     <el-dialog title="词条权重预设" v-model="show">
+        <p class="info">
+            数据来自
+            <a href="http://spongem.com/ajglz/ys/ys.html">圣遗物副词条数便捷计算器</a>
+        </p>
         <el-row justify="space-between">
             <el-col :span="8">元素类型</el-col>
             <el-col :span="8">

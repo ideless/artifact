@@ -30,7 +30,7 @@ export default <IPreset>{
         { key: 'KaedeharaKazuha', element: 'anemo', presets: [4, 8, 17] },
         { key: 'Kaeya', element: 'cryo', presets: [4, 8] },
         { key: 'KamisatoAyaka', element: 'cryo', presets: [4, 8] },
-        { key: 'KamisatoAyato', element: 'hydro', presets: [4] },
+        { key: 'KamisatoAyato', element: 'hydro', presets: [4, 6] },
         { key: 'Keqing', element: 'electro', presets: [4] },
         { key: 'Klee', element: 'pyro', presets: [4, 8] },
         { key: 'KujouSara', element: 'electro', presets: [1, 4] },

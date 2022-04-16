@@ -24,7 +24,13 @@ const updYas = () => {
 }
 
 onMounted(() => {
-    // return
+    try {
+        if (process.env.NODE_ENV == 'development') {
+            console.log('DEV')
+            return
+        }
+    } catch (e) { }
+    console.log('Checking for yas-lock updates...')
     axios.get('https://api.github.com/repos/ideless/yas-lock/releases/latest').then(r => {
         if ('tag_name' in r.data) {
             yasVersion.value = r.data['tag_name']
