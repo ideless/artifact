@@ -219,6 +219,7 @@ export const store = createStore<IState>({
                 state.weightInUse = state.useWeightJson ? JSON.parse(state.weightJson) : { ...state.weight }
                 // update affix numbers
                 for (let a of ret) {
+                    a.clear()
                     if (state.sortBy == 'score')
                         a.updateScore()
                     a.updateAffnum(state.weightInUse)
@@ -226,6 +227,8 @@ export const store = createStore<IState>({
                 // sort
                 if (state.sortBy == 'score') { // sort in descending order of score
                     ret.sort((a, b) => b.data.score - a.data.score)
+                } else if (state.sortBy == 'defeat') {
+                    Artifact.sortByDefeat(ret)
                 } else if (state.sortBy) { // sort in descending order of affix number
                     ret.sort((a, b) => (b.data.affnum as any)[state.sortBy] - (a.data.affnum as any)[state.sortBy]);
                 } else { // sort in ascending order of index

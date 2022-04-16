@@ -40,6 +40,7 @@ interface IArtifact {
     minors: Affix[]
     data: {
         index: number
+        lock: boolean
         affnum: {
             cur: number
             avg: number
@@ -51,7 +52,8 @@ interface IArtifact {
             charKey: string
             score: number
         }>
-        lock: boolean
+        defeat: number
+        mvec: number[]
     }
 }
 
@@ -66,10 +68,12 @@ export class Artifact implements IArtifact {
     minors: Affix[] = []
     data = {
         index: 0,
+        lock: false,
         affnum: { cur: 0, avg: 0, min: 0, max: 0 },
         score: 0,
         charScores: [] as Array<{ charKey: string, score: number }>,
-        lock: false,
+        defeat: 0,
+        mvec: [] as number[]
     }
     constructor(obj?: any) {
         if (obj) {
@@ -85,6 +89,11 @@ export class Artifact implements IArtifact {
             }
             this.data.lock = this.lock
         }
+    }
+    clear() {
+        this.data.score = 0
+        this.data.charScores = []
+        this.data.defeat = 0
     }
     validate() {
         assert(this.rarity == 5, 'Only 5 star artifacts are supported')
@@ -213,5 +222,53 @@ export class Artifact implements IArtifact {
             this.data.score = Math.max(this.data.score, score)
         }
         this.data.charScores.sort((a, b) => b.score - a.score)
+    }
+    static sortByDefeat(artifacts: Artifact[]) {
+        let vecIndices: { [key: string]: number } = {
+            'cr': 0, 'cd': 1, 'em': 2, 'er': 3,
+            'atkp': 4, 'defp': 5, 'hpp': 6
+        }
+        let bins: { [key: string]: Artifact[] } = {}
+        // categorize artifacts into bins, and update defeat and mvec for each artifact
+        for (let a of artifacts) {
+            let categoryKey = a.slot + ',' + a.mainKey + ',' + Math.floor(a.level / 4)
+            if (categoryKey in bins) {
+                bins[categoryKey].push(a)
+            } else {
+                bins[categoryKey] = [a]
+            }
+            a.data.defeat = 0
+            a.data.mvec = [0, 0, 0, 0, 0, 0, 0]
+            for (let m of a.minors) {
+                // ignore atk, def and hp
+                if (m.key in vecIndices)
+                    a.data.mvec[vecIndices[m.key]] = m.value
+            }
+        }
+        // enumerate inside each category (O(n^2))
+        for (let categoryKey in bins) {
+            let len = bins[categoryKey].length
+            for (let i = 0; i < len - 1; ++i) {
+                for (let j = i + 1; j < len; ++j) {
+                    let a = bins[categoryKey][i], b = bins[categoryKey][j]
+                    // a Pareto comparisom
+                    let cnt_a_over_b = 0, cnt_b_over_a = 0
+                    for (let k = 0; k < 7; ++k) {
+                        if (a.data.mvec[k] >= b.data.mvec[k])
+                            cnt_a_over_b++
+                        if (b.data.mvec[k] >= a.data.mvec[k])
+                            cnt_b_over_a++
+                    }
+                    // only if these one cnt is 7 and the other <7, update defeat
+                    if (cnt_a_over_b == 7 && cnt_b_over_a < 7) {
+                        b.data.defeat++
+                    } else if (cnt_b_over_a == 7 && cnt_a_over_b < 7) {
+                        a.data.defeat++
+                    }
+                }
+            }
+        }
+        // sort by defeat (in increasing order), break ties arbitariliy
+        artifacts.sort((a, b) => a.data.defeat - b.data.defeat)
     }
 }
