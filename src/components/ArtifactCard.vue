@@ -9,7 +9,8 @@ const props = defineProps<{
     artifact: Artifact,
     selected?: boolean
     selectMode?: boolean
-    disabled?: boolean
+    disabled?: boolean // 如果被禁用，只能展示不能修改
+    showAffnum?: boolean // 展示词条数而不是数值
 }>()
 const emit = defineEmits<{
     (e: 'flipSelect', shiftKey: boolean): void,
@@ -60,8 +61,9 @@ const minors = computed(() => {
     for (let a of props.artifact.minors) {
         let name = affixName(a.key)
         ret.push({
-            text: `· ${name}+${a.valueString()}`,
-            style: `opacity: ${store.state.weightInUse[a.key] > 0 ? 1 : 0.5};`
+            text: `${name}+${a.valueString(props.showAffnum!)}`,
+            style: `opacity: ${store.state.weightInUse[a.key] > 0 ? 1 : 0.5};`,
+            count: Math.ceil(Math.round(a.value / data.minorStat[a.key].v * 10) / 10),
         });
     }
     return ret;
@@ -99,10 +101,15 @@ const flipLock = () => {
         emit('flipLock')
     }
 }
+const charScore = computed<string>(() => {
+    return props.artifact.data.charScores.map(cs => {
+        return `${chs.character[cs.charKey]}${(cs.score * 100).toFixed(1)}%`
+    }).join(' ')
+})
 </script>
 
 <template>
-    <div :class="artifactCardClass">
+    <div :class="artifactCardClass" :title="charScore">
         <div class="head">
             <div class="head-stat">
                 <div class="piece-name">{{ pieceName }}</div>
@@ -121,7 +128,10 @@ const flipLock = () => {
                 </div>
             </div>
             <div class="minor-affixes">
-                <div class="minor-affix" v-for="a in minors" :style="a.style">{{ a.text }}</div>
+                <div class="minor-affix" v-for="a in minors" :style="a.style">
+                    <span class="count">{{ a.count }}</span>
+                    <span>{{ a.text }}</span>
+                </div>
             </div>
             <div class="affix-numbers" v-if="artifact.level < 20">
                 <div class="min-an">最小{{ affnum.min }}</div>
@@ -140,6 +150,7 @@ const flipLock = () => {
             </el-icon>
             <span>编辑</span>
         </div>
+        <div class="defeat-num" v-show="artifact.data.defeat">{{ -artifact.data.defeat }}</div>
     </div>
 </template>
 
@@ -151,6 +162,7 @@ const flipLock = () => {
     background-color: black;
     color: white;
 }
+
 .artifact-card {
     user-select: none;
     box-shadow: 0 0 2px 0 #0007;
@@ -163,70 +175,95 @@ const flipLock = () => {
     border-radius: 3px;
     position: relative;
     word-break: keep-all;
+
     .head {
         height: 100px;
         display: flex;
         justify-content: space-between;
         background: rgb(102, 87, 88);
-        background: linear-gradient(
-            165deg,
-            rgba(102, 87, 88, 1) 0%,
-            rgba(214, 169, 90, 1) 100%
-        );
+        background: linear-gradient(165deg,
+                rgba(102, 87, 88, 1) 0%,
+                rgba(214, 169, 90, 1) 100%);
+
         .head-stat {
             display: flex;
             flex-direction: column;
             color: white;
             padding: 10px 15px;
             width: 100px;
+
             .piece-name {
                 flex: 1;
                 white-space: nowrap;
                 z-index: 1;
             }
+
             .main-affix-name {
                 color: #fff7;
                 font-size: 10px;
             }
+
             .main-affix-value {
                 font-size: 18px;
             }
         }
     }
+
     .body {
         display: flex;
         flex-direction: column;
+
         .body-head {
             display: flex;
             padding: 8px 12px;
             align-items: center;
+
             .level {
                 @extend %tag;
                 background-color: #333;
             }
+
             .cur-an {
                 @extend %tag;
                 background-color: #66c238;
                 margin-left: 5px;
             }
+
             .lock-img-container {
                 flex: 1;
                 text-align: right;
                 line-height: 0;
+
                 img {
                     width: 20px;
                     height: 20px;
                     cursor: pointer;
+
                     &.disabled {
                         cursor: default;
                     }
                 }
             }
         }
+
         .minor-affixes {
             color: #333;
             padding: 0 15px;
+
+            .count {
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                border-radius: 2px;
+                text-align: center;
+                background-color: gray;
+                color: white;
+                font-family: 'Courier New', Courier, monospace;
+                margin-right: 4px;
+                vertical-align: text-top;
+            }
         }
+
         .affix-numbers {
             position: absolute;
             left: 0;
@@ -237,19 +274,23 @@ const flipLock = () => {
             text-align: center;
             line-height: 20px;
             display: flex;
+
             .min-an {
                 background: #a6a6a6;
                 width: 33.3%;
             }
+
             .avg-an {
                 background: #2a82e4;
                 width: 33.3%;
             }
+
             .max-an {
                 background: #ff5733;
                 width: 33.3%;
             }
         }
+
         .full-an {
             position: absolute;
             left: 0;
@@ -262,6 +303,7 @@ const flipLock = () => {
             background: #66c238;
         }
     }
+
     .location {
         position: absolute;
         right: -8px;
@@ -274,10 +316,12 @@ const flipLock = () => {
         display: flex;
         align-items: flex-end;
         justify-content: center;
+
         img {
             height: 44px;
         }
     }
+
     .select-box {
         position: absolute;
         right: 10px;
@@ -292,13 +336,16 @@ const flipLock = () => {
         display: none;
         transition: background-color 100ms ease;
     }
-    &.selected > .select-box {
+
+    &.selected>.select-box {
         background-color: $primary-color;
     }
-    &:hover > .select-box,
-    &.select-mode > .select-box {
+
+    &:hover>.select-box,
+    &.select-mode>.select-box {
         display: block;
     }
+
     .edit-box {
         position: absolute;
         width: 100%;
@@ -312,15 +359,36 @@ const flipLock = () => {
         color: white;
         background-color: #2a82e4;
         display: none;
+
         &:hover {
             filter: brightness(1.1);
         }
+
         span {
             margin-left: 5px;
         }
     }
+
     &:hover .edit-box {
         display: flex;
+    }
+
+    .defeat-num {
+        position: absolute;
+        right: 20px;
+        bottom: 40px;
+        color: #ff5733;
+        font-weight: bolder;
+        font-family: fantasy;
+        font-size: 20px;
+        width: 36px;
+        height: 36px;
+        border: 4px solid #ff5733;
+        border-radius: 18px;
+        line-height: 28px;
+        text-align: center;
+        transform: rotate(15deg);
+        opacity: 0.5;
     }
 }
 </style>

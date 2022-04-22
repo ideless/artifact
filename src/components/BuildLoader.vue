@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { useStore } from '../store';
 import chs from '../ys/locale/chs'
-import Preset from '../ys/preset';
+import build from '../ys/build';
 
 const store = useStore()
 
@@ -29,47 +29,25 @@ const element = ref("")
 const character = ref("")
 const characters = computed<IOption[]>(() => {
     let ret = []
-    for (let c of Preset.characters) {
-        if (c.element == element.value) {
+    for (let c in build) {
+        if (build[c].element == element.value) {
             ret.push({
-                value: c.key,
-                label: chs.character[c.key]
+                value: c,
+                label: chs.character[c]
             })
-        }
-    }
-    return ret
-})
-const preset = ref("")
-const presets = computed<IOption[]>(() => {
-    let ret = []
-    for (let c of Preset.characters) {
-        if (c.key == character.value) {
-            for (let i of c.presets) {
-                ret.push({
-                    value: i,
-                    label: chs.preset[i]
-                })
-            }
-            break
         }
     }
     return ret
 })
 const changeElement = () => {
     character.value = ""
-    preset.value = ""
 }
-const changeCharacter = () => {
-    preset.value = ""
-}
-const applyDisabled = computed(() => {
-    return preset.value == ""
+const valid = computed(() => {
+    return character.value in build
 })
 const apply = () => {
-    if (typeof preset.value == 'number') {
-        store.commit('usePreset', { weight: Preset.presets[preset.value] })
-        emit('update:modelValue', false)
-    }
+    store.commit('useBuild', { charKey: character.value })
+    emit('update:modelValue', false)
 }
 </script>
 
@@ -77,7 +55,7 @@ const apply = () => {
     <el-dialog title="词条权重预设" v-model="show">
         <p class="info">
             数据来自
-            <a href="http://spongem.com/ajglz/ys/ys.html">圣遗物副词条数便捷计算器</a>
+            <a href="https://ngabbs.com/read.php?tid=27859119">全角色圣遗物及武器搭配简述 [NGA]</a>
         </p>
         <el-row justify="space-between">
             <el-col :span="8">元素类型</el-col>
@@ -90,21 +68,13 @@ const apply = () => {
         <el-row justify="space-between">
             <el-col :span="8">角色</el-col>
             <el-col :span="8">
-                <el-select v-model="character" @change="changeCharacter">
+                <el-select v-model="character">
                     <el-option v-for="o in characters" :label="o.label" :value="o.value" />
                 </el-select>
             </el-col>
         </el-row>
-        <el-row justify="space-between">
-            <el-col :span="8">预设</el-col>
-            <el-col :span="8">
-                <el-select v-model="preset">
-                    <el-option v-for="o in presets" :label="o.label" :value="o.value" />
-                </el-select>
-            </el-col>
-        </el-row>
         <el-row justify="center" style="margin-top: 30px;">
-            <el-button type="primary" @click="apply" :disabled="applyDisabled">应用</el-button>
+            <el-button type="primary" @click="apply" :disabled="!valid">应用</el-button>
         </el-row>
     </el-dialog>
 </template>

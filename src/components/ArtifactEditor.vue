@@ -139,8 +139,15 @@ const minor3value = computed<number>({
 const minor4key = computed<string>({
     get() { return newArt.value.minors.length >= 4 ? newArt.value.minors[3].key : '' },
     set(key) {
-        if (newArt.value.minors.length >= 4) newArt.value.minors[3].key = key
-        else newArt.value.minors.push(new Affix({ key, value: 0 }))
+        if (key == '') {
+            // 删除
+            if (newArt.value.minors.length == 4) {
+                newArt.value.minors.pop()
+            }
+        } else {
+            if (newArt.value.minors.length >= 4) newArt.value.minors[3].key = key
+            else newArt.value.minors.push(new Affix({ key, value: 0 }))
+        }
         updNewArtAffnum()
     }
 })
@@ -175,24 +182,22 @@ const save = () => {
 
 <template>
     <el-dialog v-model="show" title="属性编辑器" top="8vh">
-        <el-divider>属性</el-divider>
+        <el-divider>主要属性</el-divider>
         <el-row :gutter="20">
-            <el-col :span="12">
+            <el-col :span="3">
                 <span>角色</span>
             </el-col>
-            <el-col :span="12" style="text-align: right;">
+            <el-col :span="9">
                 <el-select v-model="location">
                     <el-option-group v-for="g in characters" :label="g.label">
                         <el-option v-for="o in g.options" :value="o.value" :label="o.label" />
                     </el-option-group>
                 </el-select>
             </el-col>
-        </el-row>
-        <el-row :gutter="20">
-            <el-col :span="12">
+            <el-col :span="3">
                 <span>等级</span>
             </el-col>
-            <el-col :span="12" style="text-align: right;">
+            <el-col :span="9">
                 <el-input-number v-model="level" :min="0" :max="20" />
             </el-col>
         </el-row>
@@ -203,7 +208,7 @@ const save = () => {
                     <el-option v-for="o in affixes" :label="o.label" :value="o.value" />
                 </el-select>
             </el-col>
-            <el-col :span="12" style="text-align: right;">
+            <el-col :span="12">
                 <el-input-number v-model="minor1value" :precision="1" />
             </el-col>
         </el-row>
@@ -213,7 +218,7 @@ const save = () => {
                     <el-option v-for="o in affixes" :label="o.label" :value="o.value" />
                 </el-select>
             </el-col>
-            <el-col :span="12" style="text-align: right;">
+            <el-col :span="12">
                 <el-input-number v-model="minor2value" :precision="1" />
             </el-col>
         </el-row>
@@ -223,17 +228,18 @@ const save = () => {
                     <el-option v-for="o in affixes" :label="o.label" :value="o.value" />
                 </el-select>
             </el-col>
-            <el-col :span="12" style="text-align: right;">
+            <el-col :span="12">
                 <el-input-number v-model="minor3value" :precision="1" />
             </el-col>
         </el-row>
         <el-row :gutter="20">
             <el-col :span="12">
                 <el-select v-model="minor4key">
+                    <el-option label="空" value=""></el-option>
                     <el-option v-for="o in affixes" :label="o.label" :value="o.value" />
                 </el-select>
             </el-col>
-            <el-col :span="12" style="text-align: right;">
+            <el-col :span="12">
                 <el-input-number v-model="minor4value" :precision="1" />
             </el-col>
         </el-row>
@@ -255,9 +261,11 @@ const save = () => {
     margin: 10px 0;
     align-items: center;
 }
+
 .art-preview-split {
     margin: 20px;
 }
+
 .equip-msg {
     text-align: center;
     font-weight: normal;

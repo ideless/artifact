@@ -5,7 +5,10 @@
 declare module 'vue' {
   export interface GlobalComponents {
     ArtifactCard: typeof import('./src/components/ArtifactCard.vue')['default']
+    ArtifactCreator: typeof import('./src/components/ArtifactCreator.vue')['default']
     ArtifactEditor: typeof import('./src/components/ArtifactEditor.vue')['default']
+    ArtifactGenerator: typeof import('./src/components/ArtifactGenerator.vue')['default']
+    BuildLoader: typeof import('./src/components/BuildLoader.vue')['default']
     DataExport: typeof import('./src/components/DataExport.vue')['default']
     DropSelect: typeof import('./src/components/DropSelect.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -18,6 +21,7 @@ declare module 'vue' {
     ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElOptionGroup: typeof import('element-plus/es')['ElOptionGroup']
+    ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
