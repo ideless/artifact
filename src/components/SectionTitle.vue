@@ -19,22 +19,26 @@ const props = defineProps<{
     display: flex;
     align-items: center;
     margin-top: 24px;
-    > span {
+
+    >span {
         flex: 1;
     }
+
     .section-opts {
-        > * {
+        >* {
             color: $primary-color;
             cursor: pointer;
             font-size: 12px;
             margin-left: 10px;
+
             &:hover {
                 text-decoration: underline;
             }
         }
     }
 }
-.section-content .section-title {
-    color: #444;
-}
+
+// .section-content .section-title {
+//     color: #444;
+// }
 </style>

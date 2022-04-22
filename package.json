@@ -12,6 +12,7 @@
         "sass": "^1.49.0",
         "vue": "^3.2.25",
         "vue-router": "4",
+        "vue-virtual-scroll-grid": "^1.4.2",
         "vuex": "4"
     },
     "devDependencies": {

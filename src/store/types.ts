@@ -1,4 +1,5 @@
 import { Artifact } from '../ys/artifact'
+import { IBuild } from '../ys/build'
 
 export interface IOption {
     key: string
@@ -32,8 +33,8 @@ export interface IState {
     weightInUse: {
         [key: string]: number
     },
-    weightJson: string
-    useWeightJson: boolean
+    build: IBuild
+    useBuild: boolean
     sortBy: string
     canExport: boolean
     nReload: number

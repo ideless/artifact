@@ -4,6 +4,7 @@ import { IState } from './types'
 import chs from '../ys/locale/chs'
 import data from '../ys/data'
 import { Artifact } from '../ys/artifact'
+import build from '../ys/build'
 
 function countArtifactAttr(artifacts: Artifact[], key: keyof Artifact) {
     let s: { [key: string]: number } = {}
@@ -13,6 +14,8 @@ function countArtifactAttr(artifacts: Artifact[], key: keyof Artifact) {
     }
     return s
 }
+
+const LOADING_DELAY = 250
 
 export const key: InjectionKey<Store<IState>> = Symbol()
 
@@ -31,7 +34,7 @@ export const store = createStore<IState>({
                 slot: '',
                 main: '', // mainKey should be better...
                 location: 'all', // 'all' is a temporary workaround, fix it later
-                lock: '', // '', 'true', 'false'
+                lock: '', // '', 'true', 'false' ('' stands for both 'true' and 'false')
                 lvRange: [0, 20],
             },
             filterPro: {
@@ -44,9 +47,19 @@ export const store = createStore<IState>({
             },
             useFilterPro: false,
             weight: { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0.5, defp: 0, em: 0.5, er: 0.5, cr: 1, cd: 1 },
-            weightInUse: { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0.5, defp: 0, em: 0.5, er: 0.5, cr: 1, cd: 1 },
-            weightJson: '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0.5,"defp":0,"em":0.5,"er":0.5,"cr":1,"cd":1}',
-            useWeightJson: false,
+            weightInUse: { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0.5, defp: 0, em: 0.5, er: 0.5, cr: 1, cd: 1 }, // weight的快照，仅在updFilteredArtifacts时修改
+            build: {
+                set: ["NoblesseOblige", "ShimenawasReminiscence", "GladiatorsFinale", "WanderersTroupe", "EmblemOfSeveredFate", "CrimsonWitchOfFlames"],
+                main: {
+                    flower: ["hp"],
+                    plume: ["atk"],
+                    sands: ["em", "er", "atkp"],
+                    goblet: ["pyroDB"],
+                    circlet: ["cr", "cd"]
+                },
+                weight: { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0.5, defp: 0, em: 0.5, er: 0.5, cr: 1, cd: 1 }
+            },
+            useBuild: false,
             sortBy: 'avg', // 'avg', 'min', 'max', 'cur', 'score'
             canExport: false,
             nReload: 0, // for UI refreshing
@@ -134,12 +147,6 @@ export const store = createStore<IState>({
         },
     },
     mutations: {
-        useWeightJson(state, payload) {
-            state.useWeightJson = payload.use
-        },
-        setWeightJson(state, payload) {
-            state.weightJson = payload.json
-        },
         setWeight(state, payload) {
             state.weight[payload.key] = payload.value
         },
@@ -171,14 +178,41 @@ export const store = createStore<IState>({
             }
         },
         usePreset(state, payload) {
-            if (state.useWeightJson) {
-                state.weightJson = JSON.stringify(payload.weight)
-            } else {
-                state.weight = payload.weight
+            state.weight = payload.weight
+        },
+        useBuild(state, payload) {
+            if (payload.charKey in build) {
+                let b = build[payload.charKey]
+                // 不要直接赋值
+                state.build.set = [...b.set]
+                state.build.main.sands = [...b.main.sands]
+                state.build.main.goblet = [...b.main.goblet]
+                state.build.main.circlet = [...b.main.circlet]
+                state.build.weight = { ...b.weight }
             }
-        }
+        },
+        setUseBuild(state, payload) {
+            state.useBuild = payload.use
+        },
+        setBuildWeight(state, payload) {
+            state.build.weight[payload.key] = payload.value
+        },
+        setBuildSet(state, payload) {
+            state.build.set = [...payload.set]
+        },
+        setBuildMain(state, payload) {
+            state.build.main[payload.slot] = [...payload.keys]
+        },
     },
     actions: {
+        reload({ state }) {
+            // 仅弹出加载界面
+            state.loading = true
+            setTimeout(() => {
+                state.loading = false
+                state.nReload++
+            }, LOADING_DELAY)
+        },
         setArtifacts({ state, dispatch }, payload) {
             state.canExport = payload.format === 'GOOD'
             state.artifacts = payload.artifacts
@@ -216,12 +250,14 @@ export const store = createStore<IState>({
                     ));
                 }
                 // weight
-                state.weightInUse = state.useWeightJson ? JSON.parse(state.weightJson) : { ...state.weight }
+                state.weightInUse = state.useBuild ? { ...state.build.weight } : { ...state.weight }
                 // update affix numbers
                 for (let a of ret) {
                     a.clear()
-                    if (state.sortBy == 'score')
-                        a.updateScore()
+                    if (state.sortBy == 'score') {
+                        if (state.useBuild) a.updateScoreSingle(state.build)
+                        else a.updateScore()
+                    }
                     a.updateAffnum(state.weightInUse)
                 }
                 // sort
@@ -238,7 +274,7 @@ export const store = createStore<IState>({
                 state.filteredArtifacts = ret;
                 state.nReload++
                 state.loading = false
-            }, 250)
+            }, LOADING_DELAY)
         },
         updArtifact({ state, dispatch }, payload) {
             for (let a of state.filteredArtifacts) {
@@ -257,7 +293,31 @@ export const store = createStore<IState>({
                     break
                 }
             }
-            dispatch('updFilteredArtifacts')
+            dispatch('updFilteredArtifacts') // 也许可以改为部分更新
+        },
+        delArtifacts({ state, dispatch }, payload) {
+            let indices = new Set(payload.indices)
+            // 在state.artifacts中删除
+            let artifacts: Artifact[] = []
+            for (let a of state.artifacts) {
+                if (!indices.has(a.data.index))
+                    artifacts.push(a)
+            }
+            state.artifacts = artifacts
+            // 在state.artifacts中删除
+            let filteredArtifacts: Artifact[] = []
+            for (let a of state.filteredArtifacts) {
+                if (!indices.has(a.data.index))
+                    filteredArtifacts.push(a)
+            }
+            state.filteredArtifacts = filteredArtifacts
+            dispatch('reload')
+        },
+        addArtifacts({ state, dispatch }, payload) {
+            // Array.concat貌似不好用，只能一个个push
+            for (let a of payload.artifacts)
+                state.artifacts.push(a)
+            dispatch('updFilteredArtifacts') // 也许可以改为部分更新
         }
     }
 })

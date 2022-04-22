@@ -54,11 +54,7 @@ onMounted(() => {
         <div class="update-content">
             <p>{{ message }}</p>
             <p>
-                <el-button
-                    :icon="Download"
-                    type="primary"
-                    @click="updYas"
-                >下载 yas-lock {{ yasVersion }}</el-button>
+                <el-button :icon="Download" type="primary" @click="updYas">下载 yas-lock {{ yasVersion }}</el-button>
                 <el-button @click="claim" style="margin-left: 10px;">我已有此版本</el-button>
             </p>
             <p>
@@ -84,14 +80,22 @@ onMounted(() => {
     display: flex;
     font-size: 16px;
     font-weight: bold;
+    user-select: none;
 }
+
+.el-select {
+    font-weight: normal;
+}
+
 .update-content {
     color: #444;
     font-weight: normal;
+
     p:not(:first-child) {
         margin-top: 10px;
     }
 }
+
 .modal {
     position: fixed;
     left: 0;

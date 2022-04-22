@@ -87,6 +87,7 @@ export default {
                     artifact.minors.push(this.getAffix(ma['name'], ma['value']))
                 }
                 artifact.data.index = ret.length
+                artifact.data.source = 'mona'
                 artifact.validate()
                 ret.push(artifact)
             }

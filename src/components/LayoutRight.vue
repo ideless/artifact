@@ -14,8 +14,8 @@ const start = () => { store.dispatch('updFilteredArtifacts') }
         <el-scrollbar>
             <import-section />
             <weight-section />
-            <filter-section />
             <sort-section />
+            <filter-section />
             <div class="start-container">
                 <text-button @click="start">开始计算</text-button>
             </div>
@@ -31,6 +31,7 @@ const start = () => { store.dispatch('updFilteredArtifacts') }
     color: #444;
     overflow-y: auto;
     user-select: none;
+
     .start-container {
         padding: 20px 0;
         text-align: center;

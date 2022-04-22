@@ -9,7 +9,8 @@ const props = defineProps<{
     artifact: Artifact,
     selected?: boolean
     selectMode?: boolean
-    disabled?: boolean
+    disabled?: boolean // 如果被禁用，只能展示不能修改
+    showAffnum?: boolean // 展示词条数而不是数值
 }>()
 const emit = defineEmits<{
     (e: 'flipSelect', shiftKey: boolean): void,
@@ -60,8 +61,9 @@ const minors = computed(() => {
     for (let a of props.artifact.minors) {
         let name = affixName(a.key)
         ret.push({
-            text: `· ${name}+${a.valueString()}`,
-            style: `opacity: ${store.state.weightInUse[a.key] > 0 ? 1 : 0.5};`
+            text: `${name}+${a.valueString(props.showAffnum!)}`,
+            style: `opacity: ${store.state.weightInUse[a.key] > 0 ? 1 : 0.5};`,
+            count: Math.ceil(Math.round(a.value / data.minorStat[a.key].v * 10) / 10),
         });
     }
     return ret;
@@ -126,7 +128,10 @@ const charScore = computed<string>(() => {
                 </div>
             </div>
             <div class="minor-affixes">
-                <div class="minor-affix" v-for="a in minors" :style="a.style">{{ a.text }}</div>
+                <div class="minor-affix" v-for="a in minors" :style="a.style">
+                    <span class="count">{{ a.count }}</span>
+                    <span>{{ a.text }}</span>
+                </div>
             </div>
             <div class="affix-numbers" v-if="artifact.level < 20">
                 <div class="min-an">最小{{ affnum.min }}</div>
@@ -244,6 +249,19 @@ const charScore = computed<string>(() => {
         .minor-affixes {
             color: #333;
             padding: 0 15px;
+
+            .count {
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                border-radius: 2px;
+                text-align: center;
+                background-color: gray;
+                color: white;
+                font-family: 'Courier New', Courier, monospace;
+                margin-right: 4px;
+                vertical-align: text-top;
+            }
         }
 
         .affix-numbers {

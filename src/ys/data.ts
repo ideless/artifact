@@ -13,6 +13,7 @@ interface IData {
         sands: string[]
         goblet: string[]
         circlet: string[]
+        [key: string]: string[] // 允许以string为键访问
     }
     mainStat: {
         [key: string]: number[]
@@ -24,16 +25,16 @@ interface IData {
 
 export default <IData>{
     minorStat: {
-        'hp': { p: 6, v: 298.75 },
-        'atk': { p: 6, v: 19.45 },
-        'def': { p: 6, v: 23.15 },
-        'hpp': { p: 4, v: 5.83 },
-        'atkp': { p: 4, v: 5.83 },
-        'defp': { p: 4, v: 7.29 },
-        'em': { p: 4, v: 23.31 },
-        'er': { p: 4, v: 6.48 },
-        'cr': { p: 3, v: 3.89 },
-        'cd': { p: 3, v: 7.77 },
+        'hp': { p: 6 / 44, v: 298.75 },
+        'atk': { p: 6 / 44, v: 19.45 },
+        'def': { p: 6 / 44, v: 23.15 },
+        'hpp': { p: 4 / 44, v: 5.83 },
+        'atkp': { p: 4 / 44, v: 5.83 },
+        'defp': { p: 4 / 44, v: 7.29 },
+        'em': { p: 4 / 44, v: 23.31 },
+        'er': { p: 4 / 44, v: 6.48 },
+        'cr': { p: 3 / 44, v: 3.89 },
+        'cd': { p: 3 / 44, v: 7.77 },
     },
     minorKeys: ['hp', 'atk', 'def', 'hpp', 'atkp', 'defp', 'em', 'er', 'cr', 'cd'],
     mainKeys: {
