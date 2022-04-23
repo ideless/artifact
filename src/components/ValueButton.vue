@@ -28,7 +28,6 @@ const btnClass = computed(() => {
     }
 })
 const mousemove = (e: MouseEvent) => {
-    console.log(e)
     dragging.value = true
     // 全局鼠标移动事件，用来拖动进度条
     let v = props.modelValue + e.movementX / 120 // 分母可以适当放大，越大调控越精细

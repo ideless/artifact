@@ -3,7 +3,7 @@ import ArtifactCard from './ArtifactCard.vue';
 import ArtifactEditor from './ArtifactEditor.vue';
 import ArtifactCreator from './ArtifactCreator.vue';
 import ArtifactGenerator from './ArtifactGenerator.vue';
-import DataExport from './DataExport.vue';
+import PartialExport from './PartialExport.vue';
 import Grid from 'vue-virtual-scroll-grid'
 import { useStore } from '../store';
 import { computed, ref, watch } from 'vue';
@@ -219,7 +219,7 @@ const showGenerator = ref(false)
     <artifact-editor v-model="showEditor" :index="editorIndex" />
     <artifact-creator v-model="showCreator" />
     <artifact-generator v-model="showGenerator" />
-    <data-export v-model="showExport" :artifacts="artifactsToExport" />
+    <partial-export v-model="showExport" :artifacts="artifactsToExport" />
 </template>
 
 <style lang="scss" scoped>

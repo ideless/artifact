@@ -83,7 +83,8 @@ onMounted(() => {
     user-select: none;
 }
 
-.el-select {
+.el-select,
+.el-dialog {
     font-weight: normal;
 }
 

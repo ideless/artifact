@@ -232,7 +232,7 @@ const save = () => {
         </el-row>
         <el-divider>预览</el-divider>
         <el-row justify="center">
-            <artifact-card :artifact="art" :disabled="true" />
+            <artifact-card :artifact="art" :readonly="true" />
         </el-row>
         <el-row justify="center" style="margin-top: 30px;">
             <el-button type="primary" :disabled="!valid" @click="save">添加</el-button>

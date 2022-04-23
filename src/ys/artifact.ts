@@ -2,7 +2,6 @@ import { argmax, argmin, assert, choice, SimpleCache } from "./utils"
 import data from "./data"
 import build, { IBuild } from "./build"
 import { affnumDistr } from "./gacha/artifact"
-import { stringify } from "querystring"
 
 interface IWeight {
     [key: string]: number

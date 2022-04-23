@@ -245,9 +245,9 @@ const save = () => {
         </el-row>
         <el-divider>预览</el-divider>
         <el-row justify="center">
-            <artifact-card :artifact="oldArt" :disabled="true" />
+            <artifact-card :artifact="oldArt" :readonly="true" />
             <div class="art-preview-split" v-show="modified">⇒</div>
-            <artifact-card :artifact="newArt" :disabled="true" v-show="modified" />
+            <artifact-card :artifact="newArt" :readonly="true" v-show="modified" />
         </el-row>
         <p class="equip-msg">{{ equipMsg }}</p>
         <el-row justify="center" style="margin-top: 30px;">

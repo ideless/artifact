@@ -9,7 +9,7 @@ const props = defineProps<{
     artifact: Artifact,
     selected?: boolean
     selectMode?: boolean
-    disabled?: boolean // 如果被禁用，只能展示不能修改
+    readonly?: boolean
     showAffnum?: boolean // 展示词条数而不是数值
 }>()
 const emit = defineEmits<{
@@ -97,7 +97,7 @@ const charSrc = computed<string>(() => {
     }
 })
 const flipLock = () => {
-    if (!props.disabled) {
+    if (!props.readonly) {
         emit('flipLock')
     }
 }
@@ -124,7 +124,7 @@ const charScore = computed<string>(() => {
                 <span class="level">{{ level }}</span>
                 <span class="cur-an">{{ affnum.cur }}</span>
                 <div class="lock-img-container">
-                    <img :src="lockImgSrc" @click="flipLock" :class="disabled ? 'disabled' : ''" />
+                    <img :src="lockImgSrc" @click="flipLock" :class="readonly ? 'readonly' : ''" />
                 </div>
             </div>
             <div class="minor-affixes">
@@ -143,8 +143,8 @@ const charScore = computed<string>(() => {
         <div class="location" v-show="charSrc">
             <img :src="charSrc" />
         </div>
-        <div class="select-box" @click="select" v-show="!disabled" />
-        <div class="edit-box" @click="emit('edit')" v-show="!disabled">
+        <div class="select-box" @click="select" v-show="!readonly" />
+        <div class="edit-box" @click="emit('edit')" v-show="!readonly">
             <el-icon :size="16">
                 <edit />
             </el-icon>
@@ -239,7 +239,7 @@ const charScore = computed<string>(() => {
                     height: 20px;
                     cursor: pointer;
 
-                    &.disabled {
+                    &.readonly {
                         cursor: default;
                     }
                 }
@@ -250,17 +250,22 @@ const charScore = computed<string>(() => {
             color: #333;
             padding: 0 15px;
 
-            .count {
-                display: inline-block;
-                width: 12px;
-                height: 12px;
-                border-radius: 2px;
-                text-align: center;
-                background-color: gray;
-                color: white;
-                font-family: 'Courier New', Courier, monospace;
-                margin-right: 4px;
-                vertical-align: text-top;
+            .minor-affix {
+                display: flex;
+                align-items: center;
+
+                .count {
+                    display: inline-block;
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 2px;
+                    text-align: center;
+                    background-color: gray;
+                    color: white;
+                    font-family: 'Courier New', Courier, monospace;
+                    margin-right: 4px;
+                    // vertical-align: text-top;
+                }
             }
         }
 
