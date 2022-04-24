@@ -89,6 +89,7 @@ export default defineComponent({
         },
         filterBatchStart() {
             this.store.dispatch('setLockByFilterBatch')
+            this.doSave()
         },
         updateArtifactFilter(filter: ArtifactFilter, index: number) {
             this.store.state.filterBatch[index].filter = filter;
@@ -104,7 +105,6 @@ export default defineComponent({
                 this.store.state.filterBatch[i].lock = s;
         },
         doOneFilter(index: number) {
-            this.store.state.filteredArtifacts
             this.store.commit('filterBatchIndex', index)
             this.$emit('update:show', false)
             ElNotification({

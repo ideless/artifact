@@ -50,6 +50,7 @@ export default {
                 }))
             })
             artifact.data.index = ret.length
+            artifact.data.source = 'good'
             artifact.validate()
             ret.push(artifact)
         }

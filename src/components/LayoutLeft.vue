@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import ArtifactCard from './ArtifactCard.vue';
 import ArtifactEditor from './ArtifactEditor.vue';
-import DataExport from './DataExport.vue';
+import PartialExport from './PartialExport.vue';
 import { useStore } from '../store';
 import { computed, ref, watch } from 'vue';
 import type { ElScrollbar } from 'element-plus'
@@ -95,8 +95,8 @@ const unlockSelection = () => {
     store.commit('setLock', { lock: false, indices: selection.value })
     selection.value = []
 }
-const deleteSelection = () => {
-    store.commit('delete', { indices: selection.value })
+const delSelection = () => {
+    store.commit('delArtifacts', { indices: selection.value })
     selection.value = []
 }
 const cancelSelect = () => {
@@ -137,6 +137,7 @@ watch(() => store.state.nReload, () => {
             <div class="artifacts">
                 <artifact-card
                     v-for="a in store.state.filteredArtifacts"
+                    :key="a.data.index"
                     :artifact="a"
                     :select-mode="selectMode"
                     :selected="selected(a.data.index)"
@@ -154,7 +155,7 @@ watch(() => store.state.nReload, () => {
                     <span class="btn" @click="lockSelection">加锁</span>
                     <span class="btn" @click="unlockSelection">解锁</span>
                     <span class="split">|</span>
-                    <span class="btn" @click="deleteSelection">删除</span>
+                    <span class="btn" @click="delSelection">删除</span>
                     <span class="btn" @click="exportSelection">部分导出</span>
                     <span class="split">|</span>
                     <span class="btn" @click="cancelSelect">取消</span>
@@ -164,7 +165,7 @@ watch(() => store.state.nReload, () => {
         </el-scrollbar>
     </div>
     <artifact-editor v-model="showEditor" :index="editorIndex" />
-    <data-export v-model="showExport" :artifacts="artifactsToExport" />
+    <partial-export v-model="showExport" :artifacts="artifactsToExport" />
 </template>
 
 <style lang="scss" scoped>

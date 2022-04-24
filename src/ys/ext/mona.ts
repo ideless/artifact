@@ -25,6 +25,8 @@ export default {
             EmblemOfSeveredFate: 'emblemOfSeveredFate',
             HuskOfOpulentDreams: 'huskOfOpulentDreams',
             OceanHuedClam: 'oceanHuedClam',
+            VermillionHereafter: 'VermillionHereafter',
+            EchoesOfAnOffering: 'EchoesOfAnOffering'
         },
         affix: <{ [key: string]: string }>{
             hp: 'lifeStatic',
@@ -85,6 +87,7 @@ export default {
                     artifact.minors.push(this.getAffix(ma['name'], ma['value']))
                 }
                 artifact.data.index = ret.length
+                artifact.data.source = 'mona'
                 artifact.validate()
                 ret.push(artifact)
             }
@@ -100,7 +103,7 @@ export default {
                 position: type,
                 mainTag: {
                     name: this.keymap.affix[a.main.key],
-                    value: data.mainStat[a.main.key][a.level]
+                    value: ['hp', 'atk', 'em'].includes(a.main.key) ? data.mainStat[a.main.key][a.level] : data.mainStat[a.main.key][a.level] / 100
                 },
                 normalTags: a.minors.map(m => ({
                     name: this.keymap.affix[m.key],

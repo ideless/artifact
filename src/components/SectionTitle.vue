@@ -23,7 +23,7 @@ const props = defineProps<{
         flex: 1;
     }
     .section-opts {
-        > * {
+        >* {
             color: $primary-color;
             cursor: pointer;
             font-size: 12px;
@@ -34,7 +34,7 @@ const props = defineProps<{
         }
     }
 }
-.section-content .section-title {
-    color: #444;
-}
+// .section-content .section-title {
+//     color: #444;
+// }
 </style>

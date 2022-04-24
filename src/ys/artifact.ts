@@ -1,5 +1,6 @@
 import { argmax, argmin, assert } from "./utils"
 import data from "./data"
+import setweight from "./distr"
 
 interface IAffix {
     key: string
@@ -32,11 +33,16 @@ export class Affix implements IAffix {
             this.value = obj.value
         }
     }
-    valueString() {
-        if (['hp', 'atk', 'def', 'em'].includes(this.key)) {
-            return this.value.toFixed(0)
+    valueString(showAffnum?: boolean) {
+        if (showAffnum) {
+            let v = this.value / data.minorStat[this.key].v / 0.85
+            return v.toFixed(1)
         } else {
-            return this.value.toFixed(1) + '%'
+            if (['hp', 'atk', 'def', 'em'].includes(this.key)) {
+                return this.value.toFixed(0)
+            } else {
+                return this.value.toFixed(1) + '%'
+            }
         }
     }
 }
@@ -51,8 +57,10 @@ interface IArtifact {
     main: Affix
     minors: Affix[]
     data: {
-        index: number
-        affnum: {
+        index: number // 圣遗物唯一标识，如果是导入的圣遗物就是导入数据中的序号，否则一般是Math.random()生成的随机数取相反数（因为想和导入的圣遗物在“不排序”时区分开）
+        source: string // 圣遗物数据来源，例如"good"，内部生成的source为''
+        lock: boolean // 导入数据中圣遗物的原本加解锁信息，用来识别在本工具中做过的修改
+        affnum: { // “词条数”
             cur: number
             avg: number
             min: number
@@ -65,7 +73,6 @@ interface IArtifact {
         score:{
             [key: string]: number
         }
-        lock: boolean
     }
 }
 
@@ -79,7 +86,8 @@ export class Artifact implements IArtifact {
     main = new Affix()
     minors: Affix[] = []
     data = {
-        index: 0,
+        index: -Math.random(),
+        source: '',
         affnum: { cur: 0, avg: 0, min: 0, max: 0, md: 0, ma:0, se:0, tot: 0 },
         score: { 'life':0, 'attack':0, 'defend':0, 'critical':0, 'elementalMastery':0, 'recharge':0 },
         lock: false,
@@ -116,39 +124,6 @@ export class Artifact implements IArtifact {
             Ac.delete(a.key)
             sum_w += w[a.key]
         }
-        /*
-        if (this.minors.length == 3) {
-            // avg
-            let dn = 0, nm = 0 //    
-            Ac.forEach(a_key => {
-                nm += w[a_key] * data.minorStat[a_key].p
-                dn += data.minorStat[a_key].p
-            })
-            this.data.affnum.avg = this.data.affnum.cur + (sum_w + 2 * nm / dn) * 0.85
-            // max
-            let a4_key = argmax(w, Ac) as string
-            A.add(a4_key)
-            let astar_key = argmax(w, A) as string
-            A.delete(a4_key)
-            this.data.affnum.max = this.data.affnum.cur + (w[a4_key] + 4 * w[astar_key]) 
-            // min
-            a4_key = argmin(w, Ac) as string
-            A.add(a4_key)
-            astar_key = argmin(w, A) as string
-            A.delete(a4_key)
-            this.data.affnum.min = this.data.affnum.cur + (w[a4_key] + 4 * w[astar_key]) * 0.7 
-        } else { // this.minors.length == 4
-            let n = Math.ceil((20 - this.level) / 4) // n.o. upgrades
-            // avg
-            this.data.affnum.avg = this.data.affnum.cur + n * sum_w / 4 * 0.85
-            // max
-            let astar_key = argmax(w, A) as string
-            this.data.affnum.max = this.data.affnum.cur + n * w[astar_key] 
-            // min
-            astar_key = argmin(w, A) as string
-            this.data.affnum.min = this.data.affnum.cur + n * w[astar_key] * 0.7 
-        }
-        */
         //mainAffix depend minorAffix score
         let n = Math.ceil((20 - this.level) / 4) // n.o. upgrades
         if (this.minors.length == 3) {
@@ -309,31 +284,34 @@ export class Artifact implements IArtifact {
         //total score
         this.data.affnum.ma = this.data.affnum.ma + w['main'] * data.mainWeight[this.slot][this.main.key].p / data.mainWeight[this.slot][this.main.key].v
         if(this.main.key!='atk' && this.main.key!='hp'){
-            if(data.setweight[this.set][this.main.key]<0){
-                this.data.affnum.se = 0.25 * w['set'] * data.setweight[this.set][this.main.key]
+            if(setweight[this.slot][this.main.key][this.set]<0){
+                this.data.affnum.se = 0.25 * w['set'] * setweight[this.slot][this.main.key][this.set]
             }else{
-                this.data.affnum.se = w['set'] * data.setweight[this.set][this.main.key]
+                this.data.affnum.se = w['set'] * setweight[this.slot][this.main.key][this.set]
+            }
+            if(this.main.key!='atkp' && this.main.key!='hpp'&& this.main.key!='defp'&& this.main.key!='cr'&& this.main.key!='cd'){
+                this.data.affnum.se = 2 * this.data.affnum.se
             }
         }else{switch(maintag){
             case 'attack':
-                if(data.setweight[this.set]['atkp']<0){
-                    this.data.affnum.se = 0.25 * w['set'] * data.setweight[this.set]['atkp']
+                if(setweight['minor']['atkp'][this.set]<0){
+                    this.data.affnum.se = 0.25 * w['set'] * setweight['minor']['atkp'][this.set]
                 }else{
-                    this.data.affnum.se = w['set'] * data.setweight[this.set]['atkp']
+                    this.data.affnum.se = w['set'] * setweight['minor']['atkp'][this.set]
                 }
                 break
             case 'defend':
-                if(data.setweight[this.set]['defp']<0){
-                    this.data.affnum.se = 0.25 * w['set'] * data.setweight[this.set]['defp']
+                if(setweight['minor']['defp'][this.set]<0){
+                    this.data.affnum.se = 0.25 * w['set'] * setweight['minor']['defp'][this.set]
                 }else{
-                    this.data.affnum.se = w['set'] * data.setweight[this.set]['defp']
+                    this.data.affnum.se = w['set'] * setweight['minor']['defp'][this.set]
                 }
                 break 
             case 'life':
-                if(data.setweight[this.set]['hpp']<0){
-                    this.data.affnum.se = 0.25 * w['set'] * data.setweight[this.set]['hpp']
+                if(setweight['minor']['hpp'][this.set]<0){
+                    this.data.affnum.se = 0.25 * w['set'] * setweight['minor']['hpp'][this.set]
                 }else{
-                    this.data.affnum.se = w['set'] * data.setweight[this.set]['hpp']
+                    this.data.affnum.se = w['set'] * setweight['minor']['hpp'][this.set]
                 }
                 break 
             }

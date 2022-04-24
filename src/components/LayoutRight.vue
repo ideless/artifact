@@ -14,8 +14,8 @@ const start = () => { store.dispatch('updFilteredArtifacts') }
         <el-scrollbar>
             <import-section />
             <weight-section />
-            <filter-section />
             <sort-section />
+            <filter-section />
             <div class="start-container">
                 <text-button @click="start">开始计算</text-button>
             </div>
@@ -26,15 +26,17 @@ const start = () => { store.dispatch('updFilteredArtifacts') }
 <style lang="scss" scoped>
 .layout-right {
     width: 500px;
-    background-color: #d9d9d9;
+    background-color: $right-bgcolor;
+    box-shadow: 0 0 2px 1px #ddd;
     color: #444;
     overflow-y: auto;
     user-select: none;
     .start-container {
         padding: 20px 0;
         text-align: center;
-        background-color: #d9d9d9bb;
-        backdrop-filter: blur(10px);
+        background-color: $right-bgcolor;
+        // backdrop-filter: blur(10px);
+        border-top: 1px solid #e7e7e7;
         position: sticky;
         bottom: 0;
         z-index: 1;

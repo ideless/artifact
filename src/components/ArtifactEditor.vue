@@ -139,8 +139,15 @@ const minor3value = computed<number>({
 const minor4key = computed<string>({
     get() { return newArt.value.minors.length >= 4 ? newArt.value.minors[3].key : '' },
     set(key) {
-        if (newArt.value.minors.length >= 4) newArt.value.minors[3].key = key
-        else newArt.value.minors.push(new Affix({ key, value: 0 }))
+       if (key == '') {
+            // 删除
+            if (newArt.value.minors.length == 4) {
+                newArt.value.minors.pop()
+            }
+        } else {
+            if (newArt.value.minors.length >= 4) newArt.value.minors[3].key = key
+            else newArt.value.minors.push(new Affix({ key, value: 0 }))
+        }
         updNewArtAffnum()
     }
 })
@@ -230,6 +237,7 @@ const save = () => {
         <el-row :gutter="20">
             <el-col :span="12">
                 <el-select v-model="minor4key">
+                    <el-option label="空" value=""></el-option>
                     <el-option v-for="o in affixes" :label="o.label" :value="o.value" />
                 </el-select>
             </el-col>
@@ -239,9 +247,9 @@ const save = () => {
         </el-row>
         <el-divider>预览</el-divider>
         <el-row justify="center">
-            <artifact-card :artifact="oldArt" :disabled="true" />
+            <artifact-card :artifact="oldArt" :readonly="true" />
             <div class="art-preview-split" v-show="modified">⇒</div>
-            <artifact-card :artifact="newArt" :disabled="true" v-show="modified" />
+            <artifact-card :artifact="newArt" :disablreadonlyed="true" v-show="modified" />
         </el-row>
         <p class="equip-msg">{{ equipMsg }}</p>
         <el-row justify="center" style="margin-top: 30px;">

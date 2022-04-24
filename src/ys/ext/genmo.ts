@@ -26,6 +26,8 @@ export default {
             EmblemOfSeveredFate: 'seal_of_insulation',
             HuskOfOpulentDreams: 'husk_of_opulent_dreams',
             OceanHuedClam: 'divine_chorus',
+            VermillionHereafter: 'vermillion_hereafter',
+            EchoesOfAnOffering: 'echoes_of_an_offering'
         },
         affix: <{ [key: string]: string }>{
             hp: 'flatHP',
@@ -109,6 +111,7 @@ export default {
                 }))
             }
             artifact.data.index = ret.length
+            artifact.data.source = 'genmo'
             artifact.validate()
             ret.push(artifact)
         }

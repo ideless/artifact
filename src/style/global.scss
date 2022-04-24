@@ -1,31 +1,71 @@
 $widget-height: 38px;
 $primary-color: #3694ff;
+$right-bgcolor: #eee;
 $green: #66c238;
 
 body {
     box-sizing: border-box;
 }
+
 .pop-enter-active,
 .pop-leave-active {
     transition: all 200ms ease;
 }
+
 .pop-enter-from,
 .pop-leave-to {
     opacity: 0;
     transform: scale(0.9);
 }
+
 .fade-enter-active,
 .fade-leave-active {
     transition: all 200ms ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
 }
+
+.switch-enter-active,
+.switch-leave-active {
+    transition: all 100ms ease;
+}
+
+.switch-enter-from {
+    opacity: 0;
+    transform: translateY(50%) scale(0.5);
+}
+
+.switch-leave-to {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.5);
+}
+
 .section {
     padding: 0 40px;
 }
+
 .section-content {
     margin-top: 24px;
     padding: 0 10px;
+}
+
+.info {
+    font-size: smaller;
+    font-weight: normal;
+    font-style: italic;
+    color: gray;
+    // text-align: center;
+
+    &::before {
+        content: "*";
+    }
+}
+
+.small-title {
+    padding-left: 8px;
+    border-left: 5px solid $primary-color;
+    border-radius: 3px;
 }

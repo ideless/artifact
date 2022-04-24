@@ -18,6 +18,7 @@ function countArtifactAttr(artifacts: Artifact[], key: keyof Artifact) {
     }
     return s
 }
+const LOADING_DELAY = 250
 export const key: InjectionKey<Store<IState>> = Symbol()
 export const store = createStore<IState>({
     state: () => {
@@ -130,7 +131,7 @@ export const store = createStore<IState>({
                 }
             }
         },
-        delete(state, payload) {          
+        delArtifacts(state, payload) {          
             let s: Set<number> = new Set(payload.indices)
             let i = 0
             for (let a of state.artifacts) {
@@ -173,6 +174,9 @@ export const store = createStore<IState>({
                 // let ruleResult = [];
                 if (state.filterBatch[i].lock == 'disabled')
                     continue
+                for (let a of state.artifacts) {
+                    a.updateAffnum(filter.scoreWeight)
+                }
                 const filterRes = filter.filter(state.artifacts)
                 for (const j of filterRes)
                     newLock[j] = state.filterBatch[i].lock == 'lock';
@@ -195,14 +199,15 @@ export const store = createStore<IState>({
             setTimeout(() => {
                 let ret = state.artifacts
                 // weight
-                if (state.useFilterPro && state.useFilterBatch == -1) {
-                    ElNotification({
-                        type: 'warning',
-                        title: '未选择过滤规则',
-                        message: '显示全部圣遗物。如果要进行过滤请选择过滤规则。'
-                    })
+                let weight = state.weight
+                if (state.useFilterPro && state.useFilterBatch != -1) {
+                    weight = state.filterBatch[state.useFilterBatch].filter.scoreWeight;
                 }
-                else if (state.useFilterPro) {
+                // update affix numbers
+                for (let a of ret) {
+                    a.updateAffnum(weight)
+                }
+                if (state.useFilterPro && state.useFilterBatch != -1) {
                     // use specified filterbatch
                     let filter = state.filterBatch[state.useFilterBatch].filter;
                     const filterRes = filter.filter(state.artifacts)
@@ -210,11 +215,10 @@ export const store = createStore<IState>({
                     for (const j of filterRes)
                         ret.push(state.artifacts[j])
                     ret = ret.filter(a => filter.filterOne(a));
-                    state.weight = state.filterBatch[state.useFilterBatch].filter.scoreWeight;
                 }
                 else { // basic filter
                     if (state.filter.set)
-                    ret = ret.filter(a => a.set == state.filter.set);
+                        ret = ret.filter(a => a.set == state.filter.set);
                     if (state.filter.slot)
                         ret = ret.filter(a => a.slot == state.filter.slot);
                     if (state.filter.main)
@@ -234,11 +238,6 @@ export const store = createStore<IState>({
                         ));
                     }
                 }
-                let weight = state.weight
-                // update affix numbers
-                for (let a of ret) {
-                    a.updateAffnum(weight)
-                }
                 // sort
                 if (state.sortBy) { // sort in descending order of affix number
                     if(state.sortord){
@@ -254,7 +253,7 @@ export const store = createStore<IState>({
                 state.filteredArtifacts = ret;
                 state.nReload++
                 state.loading = false
-            }, 250)
+            }, LOADING_DELAY)
         },
         updArtifact({ state, dispatch }, payload) {
             for (let a of state.filteredArtifacts) {

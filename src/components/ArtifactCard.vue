@@ -9,7 +9,7 @@ const props = defineProps<{
     artifact: Artifact,
     selected?: boolean
     selectMode?: boolean
-    disabled?: boolean
+    readonly?: boolean
 }>()
 const emit = defineEmits<{
     (e: 'flipSelect', shiftKey: boolean): void,
@@ -63,8 +63,9 @@ const minors = computed(() => {
         if (store.state.useFilterBatch != -1)
             weight = store.state.filterBatch[store.state.useFilterBatch].filter.scoreWeight
         ret.push({
-            text: `· ${name}+${a.valueString()}`,
-            style: `opacity: ${weight[a.key] > 0 ? 1 : 0.5};`
+            text: `${name}+${a.valueString()}`,
+            style: `opacity: ${weight[a.key] > 0 ? 1 : 0.5};`,
+            count: Math.ceil(Math.round(a.value / data.minorStat[a.key].v * 10) / 10),
         });
     }
     return ret;
@@ -103,7 +104,7 @@ const charSrc = computed<string>(() => {
     }
 })
 const flipLock = () => {
-    if (!props.disabled) {
+    if (!props.readonly) {
         emit('flipLock')
     }
 }
@@ -128,11 +129,14 @@ const flipLock = () => {
                 <span class="score">{{ affnum.atk}}攻 | {{ affnum.hp}}生 | {{ affnum.def}}防<br/>
                 {{ affnum.crit}}暴 | {{ affnum.er}}充 | {{ affnum.em}}精</span>
                 <div class="lock-img-container">
-                     <img :src="lockImgSrc" @click="flipLock" :class="disabled ? 'disabled' : ''" />
+                     <img :src="lockImgSrc" @click="flipLock" :class="readonly ? 'readonly' : ''" />
                 </div>
             </div>
             <div class="minor-affixes">
-                 <div class="minor-affix" v-for="(a, index) in minors" :key="index" :style="a.style">{{ a.text }}</div>
+                 <div class="minor-affix" v-for="a in minors" :style="a.style">
+                    <span class="count">{{ a.count }}</span>
+                    <span>{{ a.text }}</span>
+                </div>
             </div>
             <div class="affix-numbers" v-if="artifact.level < 20">
                 <div class="cur-an">当前{{ affnum.cur }}</div>
@@ -147,8 +151,8 @@ const flipLock = () => {
        <div class="location" v-show="charSrc">
             <img :src="charSrc" />
         </div>
-        <div class="select-box" @click="select" v-show="!disabled" />
-        <div class="edit-box" @click="emit('edit')" v-show="!disabled">
+        <div class="select-box" @click="select" v-show="!readonly" />
+        <div class="edit-box" @click="emit('edit')" v-show="!readonly">
             <el-icon :size="16">
                 <edit />
             </el-icon>
@@ -243,7 +247,7 @@ const flipLock = () => {
                     width: 20px;
                     height: 20px;
                     cursor: pointer;
-                    &.disabled {
+                    &.readonly {
                         cursor: default;
                     }
                 }
@@ -252,6 +256,22 @@ const flipLock = () => {
         .minor-affixes {
             color: #333;
             padding: 0 15px;
+            .minor-affix {
+                display: flex;
+                align-items: center;
+                .count {
+                    display: inline-block;
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 2px;
+                    text-align: center;
+                    background-color: gray;
+                    color: white;
+                    font-family: 'Courier New', Courier, monospace;
+                    margin-right: 4px;
+                    // vertical-align: text-top;
+                }
+            }
         }
         .affix-numbers {
             position: absolute;

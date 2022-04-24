@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import SectionTitle from './SectionTitle.vue';
 import TextButton from './TextButton.vue';
+import ExportPreview from './ExportPreview.vue'
 import { computed, ref } from "vue"
 import mona from '../ys/ext/mona';
 import good from '../ys/ext/good';
 import genmo from '../ys/ext/genmo';
 import { useStore } from '../store';
-import { download } from '../store/utils';
 const store = useStore()
 const msg = ref('')
 const ok = ref(false)
@@ -63,19 +63,11 @@ const importArts = () => {
     };
     finput.click();
 }
-const exportArts = () => {
-    let indices = []
-    for (let a of store.state.artifacts) {
-        if (a.lock != a.data.lock) {
-            indices.push(a.data.index)
-        }
-    }
-    indices.sort((a, b) => a - b)
-    download(JSON.stringify(indices), 'lock.json')
-}
 const openTutorial = () => {
     window.open('./tutorial', '_blank')
 }
+// 预览对话框
+const showPreview = ref(false)
 </script>
 
 <template>
@@ -85,17 +77,14 @@ const openTutorial = () => {
         </section-title>
         <div class="section-content">
             <text-button @click="importArts">导入</text-button>
-            <text-button
-                style="margin-left: 20px;"
-                @click="exportArts"
-                :disabled="!store.state.canExport"
-            >导出</text-button>
+            <text-button style="margin-left: 20px;" @click="showPreview = true" :disabled="!store.state.canExport">导出</text-button>
             <p :class="importMsgClass">{{ msg }}</p>
         </div>
     </div>
     <div class="hidden">
         <input type="file" id="file-input" />
     </div>
+    <export-preview v-model="showPreview" />
 </template>
 
 <style lang="scss">

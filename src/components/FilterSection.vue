@@ -45,11 +45,10 @@ const useFilterPro = (use: boolean) => {
         }
         catch (e) {
             console.log(e)
-            console.log('saved data in localStorage: ', localStorage.getItem('filterBatchJSON'))
             ElNotification({
                 type: 'error',
                 title: '从本地恢复过滤规则出错',
-                message: '控制台中包含详细信息。若需要上报错误和备份数据请前往控制台保存数据。'
+                message: '可能是浏览器版本过低导致的，详细信息请F12打开控制台查看。'
             })
         }
     }
@@ -69,62 +68,37 @@ const setFilter = (key: string, value: any) => {
         <div class="section-content" v-show="!store.state.useFilterPro">
             <div class="filter">
                 <span class="filter-name">套装：</span>
-                <drop-select
-                    class="filter-ctrl"
-                    :items="store.getters.filterSets"
-                    :model-value="store.state.filter.set"
-                    @update:model-value="setFilter('set', $event)"
-                />
+                <drop-select class="filter-ctrl" :items="store.getters.filterSets" :model-value="store.state.filter.set"
+                    @update:model-value="setFilter('set', $event)" />
             </div>
             <div class="filter">
                 <span class="filter-name">部位：</span>
-                <drop-select
-                    class="filter-ctrl"
-                    :items="store.getters.filterSlots"
-                    :model-value="store.state.filter.slot"
-                    @update:model-value="setFilter('slot', $event)"
-                />
+                <drop-select class="filter-ctrl" :items="store.getters.filterSlots"
+                    :model-value="store.state.filter.slot" @update:model-value="setFilter('slot', $event)" />
             </div>
             <div class="filter">
                 <span class="filter-name">主词条：</span>
-                <drop-select
-                    class="filter-ctrl"
-                    :items="store.getters.filterMains"
-                    :model-value="store.state.filter.main"
-                    @update:model-value="setFilter('main', $event)"
-                />
+                <drop-select class="filter-ctrl" :items="store.getters.filterMains"
+                    :model-value="store.state.filter.main" @update:model-value="setFilter('main', $event)" />
             </div>
             <div class="filter">
                 <span class="filter-name">角色：</span>
-                <drop-select
-                    class="filter-ctrl"
-                    :items="store.getters.filterLocations"
-                    :model-value="store.state.filter.location"
-                    @update:model-value="setFilter('location', $event)"
-                />
+                 <drop-select class="filter-ctrl" :items="store.getters.filterLocations"
+                    :model-value="store.state.filter.location" @update:model-value="setFilter('location', $event)" />
             </div>
             <div class="filter">
                 <span class="filter-name">锁：</span>
-                <drop-select
-                    class="filter-ctrl"
-                    :items="store.getters.filterLocks"
-                    :model-value="store.state.filter.lock"
-                    @update:model-value="setFilter('lock', $event)"
-                />
+                <drop-select class="filter-ctrl" :items="store.getters.filterLocks"
+                    :model-value="store.state.filter.lock" @update:model-value="setFilter('lock', $event)" />
             </div>
             <div class="filter">
                 <span class="filter-name">等级：</span>
-                <range-slider
-                    class="filter-ctrl"
-                    :model-value="store.state.filter.lvRange"
-                    @update:model-value="setFilter('lvRange', $event)"
-                />
+                <range-slider class="filter-ctrl" :model-value="store.state.filter.lvRange"
+                    @update:model-value="setFilter('lvRange', $event)" />
             </div>
             <div class="filter">
                 <span class="filter-name">评分：</span>
-                <range-slider
-                    class="filter-ctrl"
-                    :model-value="store.state.filter.score"
+                <range-slider class="filter-ctrl" :model-value="store.state.filter.score"
                     @update:model-value="setFilter('score', $event)"
                 />
             </div>
@@ -132,7 +106,7 @@ const setFilter = (key: string, value: any) => {
         <div class="section-content" v-show="store.state.useFilterPro">
             <div class="filter-detail">{{ store.state.useFilterBatch != -1 ? '启用过滤规则：' + (store.state.filterBatch[store.state.useFilterBatch].comment ? store.state.filterBatch[store.state.useFilterBatch].comment : '无名称注释') : '' }}</div>
             <div class="filter-button">
-                <text-button @click="showFilter = true;" style="width: 100px">显示过滤规则</text-button>
+                <text-button @click="showFilter = true;" style="width: 110px">显示过滤规则</text-button>
                 <text-button v-show="store.state.useFilterBatch != -1" @click="disableFilterBatch">取消选择</text-button>
             </div>
             <artifact-filter-batch-panel v-model:show="showFilter" />
@@ -149,7 +123,7 @@ const setFilter = (key: string, value: any) => {
     }
     .filter-name {
         flex: 1;
-        color: #444;
+        color: gray;
     }
     .filter-ctrl {
         width: 300px;
