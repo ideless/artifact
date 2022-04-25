@@ -47,7 +47,7 @@ const presets = computed<IOption[]>(() => {
             for (let i of c.presets) {
                 ret.push({
                     value: i,
-                    label: chs.preset[i]
+                    label: i,
                 })
             }
             break
@@ -66,15 +66,13 @@ const applyDisabled = computed(() => {
     return preset.value == ""
 })
 const apply = () => {
-    if (typeof preset.value == 'number') {
-        let w=Preset.presets[preset.value]
-        w['hpprop']=0
-        w['defprop']=0
-        w['main']=0.5
-        w['set']=0.3
-        store.commit('usePreset', { weight: w })
-        emit('update:modelValue', false)
-    }
+    let w=Preset.presets[preset.value]
+    w['hpprop']=0
+    w['defprop']=0
+    w['main']=0.5
+    w['set']=0.3
+    store.commit('usePreset', { weight: w })
+    emit('update:modelValue', false)
 }
 </script>
 

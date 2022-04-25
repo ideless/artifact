@@ -40,10 +40,7 @@ export default {
                 rarity: a.rarity,
                 location: a.location,
                 lock: a.lock,
-                main: {
-                    key: mainKey,
-                    value: data.mainStat[mainKey][a.level]
-                },
+                mainKey: whatis(a.mainStatKey, this.keymap.affix) as string,
                 minors: (a.substats as any[]).map(x => ({
                     key: whatis(x.key, this.keymap.affix),
                     value: x.value
@@ -66,7 +63,7 @@ export default {
                 rarity: a.rarity,
                 lock: a.lock,
                 location: a.location,
-                mainStatKey: this.keymap.affix[a.main.key],
+                mainStatKey: this.keymap.affix[a.mainKey],
                 substats: a.minors.map(m => ({
                     key: this.keymap.affix[m.key],
                     value: m.value

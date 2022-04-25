@@ -25,7 +25,6 @@ export interface IState {
     weight: ArtifactScoreWeight,
     useWeightJson: boolean
     sortBy: string
-    sortord: boolean
     canExport: boolean
     nReload: number
     loading: boolean

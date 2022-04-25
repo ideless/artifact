@@ -8,12 +8,7 @@ import data from '../ys/data'
 function countArtifactAttr(artifacts: Artifact[], key: keyof Artifact) {
     let s: { [key: string]: number } = {}
     for (let a of artifacts) {
-        let akey = ''
-        if (key=='main'){
-            akey = a[key].key
-        }else{
-            akey = a[key].toString()
-        }  
+        let akey = a[key].toString()
         s[akey] = (akey in s) ? s[akey] + 1 : 1
     }
     return s
@@ -45,7 +40,6 @@ export const store = createStore<IState>({
             weight: new ArtifactScoreWeight(),
             useWeightJson: false,
             sortBy: 'tot',
-            sortord:false,
             canExport: false,
             nReload: 0,// for UI refreshing
             loading: false
@@ -72,7 +66,7 @@ export const store = createStore<IState>({
         },
         filterMains(state) {
             let ret = [{ key: "", value: "全部", tip: state.artifacts.length.toString() }],
-                s = countArtifactAttr(state.artifacts, 'main')
+                s = countArtifactAttr(state.artifacts, 'mainKey')
             for (let key of data.mainKeys.all) {
                 if (key in s)
                     ret.push({ key, value: chs.affix[key], tip: s[key].toString() });
@@ -113,9 +107,6 @@ export const store = createStore<IState>({
         setSortBy(state, payload) {
             state.sortBy = payload.sort
         },
-        setSortOrder(state, payload) {
-            state.sortord = payload.use
-        },
         flipLock(state, payload) {
             for (let a of state.artifacts) {
                 if (a.data.index == payload.index) {
@@ -131,17 +122,6 @@ export const store = createStore<IState>({
                 }
             }
         },
-        delArtifacts(state, payload) {          
-            let s: Set<number> = new Set(payload.indices)
-            let i = 0
-            for (let a of state.artifacts) {
-                if (s.has(a.data.index)) {
-                    state.artifacts.splice(i,1)
-                }
-                i++
-            }
-            store.dispatch('updFilteredArtifacts')
-        },
         usePreset(state, payload) {
                 state.weight = payload.weight
         },
@@ -151,6 +131,14 @@ export const store = createStore<IState>({
         }
     },
     actions: {
+        reload({ state }) {
+            // 仅弹出加载界面
+            state.loading = true
+            setTimeout(() => {
+                state.loading = false
+                state.nReload++
+            }, LOADING_DELAY)
+        },
         setArtifacts({ state, dispatch }, payload) {
             state.canExport = payload.format === 'GOOD'
             state.artifacts = payload.artifacts
@@ -203,10 +191,6 @@ export const store = createStore<IState>({
                 if (state.useFilterPro && state.useFilterBatch != -1) {
                     weight = state.filterBatch[state.useFilterBatch].filter.scoreWeight;
                 }
-                // update affix numbers
-                for (let a of ret) {
-                    a.updateAffnum(weight)
-                }
                 if (state.useFilterPro && state.useFilterBatch != -1) {
                     // use specified filterbatch
                     let filter = state.filterBatch[state.useFilterBatch].filter;
@@ -222,7 +206,7 @@ export const store = createStore<IState>({
                     if (state.filter.slot)
                         ret = ret.filter(a => a.slot == state.filter.slot);
                     if (state.filter.main)
-                        ret = ret.filter(a => a.main.key == state.filter.main);
+                        ret = ret.filter(a => a.mainKey == state.filter.main);
                     if (state.filter.location != 'all')
                         ret = ret.filter(a => a.location == state.filter.location)
                     if (state.filter.lock)
@@ -238,14 +222,18 @@ export const store = createStore<IState>({
                         ));
                     }
                 }
+                // update affix numbers
+                for (let a of ret) {
+                    a.updateAffnum(weight)
+                    if (state.sortBy == 'prop') {
+                        a.updateScore()
+                    }
+                }
                 // sort
-                if (state.sortBy) { // sort in descending order of affix number
-                    if(state.sortord){
-                        ret.sort((a, b) => (a.data.affnum as any)[state.sortBy] - (b.data.affnum as any)[state.sortBy]);
-                    }
-                    else{
-                        ret.sort((a, b) => (b.data.affnum as any)[state.sortBy] - (a.data.affnum as any)[state.sortBy]);
-                    }
+                if (state.sortBy == 'prop') { // sort in descending order of charscore
+                    ret.sort((a, b) => b.data.charScores[0].score - a.data.charScores[0].score)
+                } else if (state.sortBy) { // sort in descending order of affix number
+                    ret.sort((a, b) => (b.data.affnum as any)[state.sortBy] - (a.data.affnum as any)[state.sortBy]);
                 } else { // sort in ascending order of index
                     ret.sort((a, b) => a.data.index - b.data.index)
                 }
@@ -273,7 +261,24 @@ export const store = createStore<IState>({
                 }
             }
             dispatch('updFilteredArtifacts')
-        }
+        },
+        delArtifacts({ state, dispatch }, payload) {          
+            let s: Set<number> = new Set(payload.indices)
+            let i = 0
+            for (let a of state.artifacts) {
+                if (s.has(a.data.index)) {
+                    state.artifacts.splice(i,1)
+                }
+                i++
+            }
+        dispatch('updFilteredArtifacts') // 也许可以改为部分更新
+        },
+        addArtifacts({ state, dispatch }, payload) {
+            // Array.concat貌似不好用，只能一个个push
+            for (let a of payload.artifacts)
+                state.artifacts.push(a)
+            dispatch('updFilteredArtifacts') // 也许可以改为部分更新
+        },
     }
 })
 

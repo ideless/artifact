@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import ArtifactCard from './ArtifactCard.vue';
 import ArtifactEditor from './ArtifactEditor.vue';
+import ArtifactCreator from './ArtifactCreator.vue';
 import PartialExport from './PartialExport.vue';
+import Grid from 'vue-virtual-scroll-grid'
 import { useStore } from '../store';
 import { computed, ref, watch } from 'vue';
 import type { ElScrollbar } from 'element-plus'
+import { View, Sort, CirclePlus, MagicStick } from '@element-plus/icons-vue'
 import { Artifact } from '../ys/artifact';
 const store = useStore()
 const stat = computed(() => {
@@ -96,7 +99,7 @@ const unlockSelection = () => {
     selection.value = []
 }
 const delSelection = () => {
-    store.commit('delArtifacts', { indices: selection.value })
+    store.dispatch('delArtifacts', { indices: selection.value })
     selection.value = []
 }
 const cancelSelect = () => {
@@ -123,48 +126,90 @@ const exportSelection = () => {
     showExport.value = true
 }
 // scrollbar
-const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
-watch(() => store.state.nReload, () => {
-    selection.value = []
-    scrollbarRef.value!.setScrollTop(0)
+// const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
+// watch(() => store.state.nReload, () => {
+//     selection.value = []
+//     scrollbarRef.value!.setScrollTop(0)
+// })
+// 倒序
+const reverseOrder = ref(false)
+watch(reverseOrder, () => {
+    store.dispatch('reload') // 强制刷新virtual-scroll-grid
 })
+// 圣遗物列表
+const artifacts = computed(() => {
+    if (reverseOrder.value) {
+        return store.state.filteredArtifacts.slice().reverse()
+    } else {
+        return store.state.filteredArtifacts
+    }
+})
+// 配置方法见https://vuejsexamples.com/virtual-scroll-grid-for-vue-3/
+const pageProvider = async (pageNumber: number, pageSize: number) => {
+    return artifacts.value.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize)
+}
+// 显示词条数
+const showAffnum = ref(false)
+// 手动添加
+const showCreator = ref(false)
 </script>
 
 <template>
     <div class="layout-left">
         <el-scrollbar ref="scrollbarRef">
-            <div class="artifact-stats">{{ stat }}</div>
-            <div class="artifacts">
-                <artifact-card
-                    v-for="a in store.state.filteredArtifacts"
-                    :key="a.data.index"
-                    :artifact="a"
-                    :select-mode="selectMode"
-                    :selected="selected(a.data.index)"
-                    @flip-select="flipSelect(a.data.index, $event)"
-                    @flip-lock="flipLock(a.data.index)"
-                    @edit="edit(a.data.index)"
-                />
+            <div class="artifact-opts">
+                <div class="stat">{{ stat }}</div>
+                <div class="btns">
+                    <div :class="{ btn: true, checked: reverseOrder }" @click="reverseOrder = !reverseOrder">
+                        <el-icon>
+                            <Sort />
+                        </el-icon>
+                        <span>倒序</span>
+                    </div>
+                    <div :class="{ btn: true, checked: showAffnum }" @click="showAffnum = !showAffnum">
+                        <el-icon>
+                            <View />
+                        </el-icon>
+                        <span>显示词条数</span>
+                    </div>
+                    <div class="btn" @click="showCreator = true">
+                        <el-icon>
+                            <circle-plus />
+                        </el-icon>
+                        <span>手动添加</span>
+                    </div>
+                </div>
             </div>
+            <Grid class="artifact-grid" :key="store.state.nReload" :length="artifacts.length" :page-size="50"
+                :page-provider="pageProvider">
+                <template v-slot:default="{ item, style, index }">
+                    <div class="artifact-cell" :style="style">
+                        <artifact-card :artifact="item" :select-mode="selectMode" :selected="selected(item.data.index)"
+                            :show-affnum="showAffnum" @flip-select="flipSelect(item.data.index, $event)"
+                            @flip-lock="flipLock(item.data.index)" @edit="edit(item.data.index)" />
+                    </div>
+                </template>
+            </Grid>
             <transition name="pop">
                 <div class="selection-bar" v-show="selectMode">
-                    <span class="btn" @click="selectAll">全选</span>
-                    <span class="btn" @click="deselectAll">全不选</span>
-                    <span class="btn" @click="invSelection">反选</span>
-                    <span class="split">|</span>
-                    <span class="btn" @click="lockSelection">加锁</span>
-                    <span class="btn" @click="unlockSelection">解锁</span>
-                    <span class="split">|</span>
-                    <span class="btn" @click="delSelection">删除</span>
-                    <span class="btn" @click="exportSelection">部分导出</span>
-                    <span class="split">|</span>
-                    <span class="btn" @click="cancelSelect">取消</span>
+                    <div class="btn" @click="selectAll">全选</div>
+                    <div class="btn" @click="deselectAll">全不选</div>
+                    <div class="btn" @click="invSelection">反选</div>
+                    <div class="split">|</div>
+                    <div class="btn" @click="lockSelection">加锁</div>
+                    <div class="btn" @click="unlockSelection">解锁</div>
+                    <div class="split">|</div>
+                    <div class="btn" @click="delSelection">删除</div>
+                    <div class="btn" @click="exportSelection">部分导出</div>
+                    <div class="split">|</div>
+                    <div class="btn" @click="cancelSelect">取消</div>
                     <div class="selection-stat">{{ selectionStat }}</div>
                 </div>
             </transition>
         </el-scrollbar>
     </div>
     <artifact-editor v-model="showEditor" :index="editorIndex" />
+    <artifact-creator v-model="showCreator" />
     <partial-export v-model="showExport" :artifacts="artifactsToExport" />
 </template>
 
@@ -172,18 +217,87 @@ watch(() => store.state.nReload, () => {
 .layout-left {
     flex: 1;
     position: relative;
-    .artifact-stats {
+    .artifact-opts {
         margin: 10px 20px;
         color: gray;
         height: 36px;
-        line-height: 36px;
-    }
-    .artifacts {
+        font-size: 14px;
+        font-weight: normal;
+        border-bottom: 1px dashed lightgray;
         display: flex;
-        flex-flow: wrap;
-        justify-content: space-evenly;
-        > * {
-            margin: 10px;
+        align-items: center;
+        .stat {
+            flex: 1;
+            line-height: 36px;
+        }
+        .btn {
+            display: inline-flex;
+            margin: 0 4px;
+            cursor: pointer;
+            align-items: center;
+            // border-radius: 50px;
+            // transition: all 100ms ease;
+            .el-icon {
+                margin-right: 2px;
+            }
+            &.checked {
+                color: #409eff;
+            }
+            &:hover {
+                color: #409eff;
+                // box-shadow: 0 0 0 4px #409eff20;
+                // background-color: #409eff20;
+            }
+        }
+    }
+    .artifact-grid {
+        display: grid;
+        margin: 0 20px 20px 20px;
+        grid-gap: 10px;
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: 240px; // 图省事用了固定高度，因为圣遗物卡牌高度是240px
+        // 动态列数
+        // 圣遗物卡片的宽度200px，控制面板宽度500px，左右边距各20px，列间距10px
+        // 公式：最小宽度 = 530 + 列数 * 210
+        @media (min-width: 950px) {
+            & {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1160px) {
+            & {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (min-width: 1370px) {
+            & {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        @media (min-width: 1580px) {
+            & {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+        @media (min-width: 1790px) {
+            & {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+        @media (min-width: 2000px) {
+            & {
+                grid-template-columns: repeat(7, 1fr);
+            }
+        }
+        @media (min-width: 2210px) {
+            & {
+                grid-template-columns: repeat(8, 1fr);
+            }
+        }
+        .artifact-cell {
+            // border: 1px solid lightgray;
+            display: flex;
+            justify-content: center;
         }
     }
     .selection-bar {
@@ -201,14 +315,18 @@ watch(() => store.state.nReload, () => {
         padding: 0 10px;
         line-height: 1;
         z-index: 2;
+         // overflow-x: auto;
+        user-select: none;
+        word-break: keep-all;
+        white-space: nowrap;
         .btn {
-            margin: 0 2px;
-            padding: 10px 5px;
+            margin: 0 8px;
             cursor: pointer;
-            transition: background-color 100ms ease;
+            transition: all 50ms ease;
             border-radius: 3px;
             &:hover {
                 background-color: #adff2f44;
+                box-shadow: 0 0 0 8px #adff2f44;
             }
         }
         .split {

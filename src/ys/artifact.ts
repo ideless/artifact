@@ -1,13 +1,15 @@
-import { argmax, argmin, assert } from "./utils"
+import { assert, SimpleCache } from "./utils"
 import data from "./data"
 import setweight from "./distr"
+import build from "./build"
+import { affnumDistr } from "./gacha/artifact"
+import preset from "./preset"
 
-interface IAffix {
-    key: string
-    value: number
+interface IWeight {
+    [key: string]: number
 }
-
-export class ArtifactScoreWeight {
+export class ArtifactScoreWeight implements IWeight {
+    [key: string]: number
     hp = 0.3
     atk = 0.5
     def = 0.3
@@ -23,7 +25,14 @@ export class ArtifactScoreWeight {
     main = 0.5
     set = 0.3
 }
+const AffnumDistrCache = new SimpleCache(({ main, weight }: { main: string, weight: IWeight }) => {
+    return affnumDistr(main, weight)
+})
 
+interface IAffix {
+    key: string
+    value: number
+}
 export class Affix implements IAffix {
     key = ''
     value = 0
@@ -35,7 +44,7 @@ export class Affix implements IAffix {
     }
     valueString(showAffnum?: boolean) {
         if (showAffnum) {
-            let v = this.value / data.minorStat[this.key].v / 0.85
+            let v = this.value / data.minorStat[this.key].v
             return v.toFixed(1)
         } else {
             if (['hp', 'atk', 'def', 'em'].includes(this.key)) {
@@ -54,7 +63,7 @@ interface IArtifact {
     level: number
     lock: boolean
     location: string
-    main: Affix
+    mainKey: string
     minors: Affix[]
     data: {
         index: number // 圣遗物唯一标识，如果是导入的圣遗物就是导入数据中的序号，否则一般是Math.random()生成的随机数取相反数（因为想和导入的圣遗物在“不排序”时区分开）
@@ -73,6 +82,10 @@ interface IArtifact {
         score:{
             [key: string]: number
         }
+        charScores: Array<{
+            charKey: string
+            score: number
+        }>
     }
 }
 
@@ -83,26 +96,29 @@ export class Artifact implements IArtifact {
     level = 0
     lock = false
     location = ''
-    main = new Affix()
+    mainKey = ''
     minors: Affix[] = []
     data = {
         index: -Math.random(),
         source: '',
+        lock: false,
         affnum: { cur: 0, avg: 0, min: 0, max: 0, md: 0, ma:0, se:0, tot: 0 },
         score: { 'life':0, 'attack':0, 'defend':0, 'critical':0, 'elementalMastery':0, 'recharge':0 },
-        lock: false,
+        charScores: [] as Array<{ charKey: string, score: number }>,
     }
     constructor(obj?: any) {
-        if (obj) {
-            this.set = obj.set
-            this.slot = obj.slot
-            this.rarity = obj.rarity
-            this.level = obj.level
-            this.lock = obj.lock
-            this.location = obj.location
-            this.main = new Affix(obj.main)
-            for (let o of obj.minors) {
-                this.minors.push(new Affix(o))
+        if (typeof obj === 'object') {
+            this.set = obj.set || this.set
+            this.slot = obj.slot || this.slot
+            this.rarity = obj.rarity || this.rarity
+            this.level = obj.level || this.level
+            this.lock = obj.lock || this.lock
+            this.location = obj.location || this.location
+            this.mainKey = obj.mainKey || this.mainKey
+            if (obj.minors instanceof Array) {
+                for (let o of obj.minors) {
+                    this.minors.push(new Affix(o))
+                }
             }
             this.data.lock = this.lock
         }
@@ -117,7 +133,7 @@ export class Artifact implements IArtifact {
         // Refer to ./README.md for symbols and equations
         this.data.affnum = { cur: 0, avg: 0, min: 0, max: 0, md: 0, ma:0, se:0, tot: 0}
         let A: Set<string> = new Set(), Ac = new Set(data.minorKeys), sum_w = 0
-        Ac.delete(this.main.key)
+        Ac.delete(this.mainKey)
         for (let a of this.minors) {
             this.data.affnum.cur += w[a.key] * a.value / data.minorStat[a.key].v 
             A.add(a.key)
@@ -127,7 +143,7 @@ export class Artifact implements IArtifact {
         //mainAffix depend minorAffix score
         let n = Math.ceil((20 - this.level) / 4) // n.o. upgrades
         if (this.minors.length == 3) {
-            let nm = 0, dn = 0
+            let nm = 0, dn = 0 // denominator and numerator
             Ac.forEach(akey => {
                 nm += w[akey] * data.minorStat[akey].p
                 dn += data.minorStat[akey].p
@@ -170,7 +186,7 @@ export class Artifact implements IArtifact {
                     break
             }
         }
-        let maintag = this.main.key
+        let maintag = this.mainKey
         switch(maintag){
             case 'atkp':
                 this.data.affnum.md=this.data.score['critical']+this.data.score['attack']+this.data.score['elementalMastery']+this.data.score['recharge']
@@ -243,7 +259,7 @@ export class Artifact implements IArtifact {
                     break
             }
         }
-        maintag = this.main.key
+        maintag = this.mainKey
         switch(maintag){
             case 'atkp':
                 this.data.affnum.cur=this.data.score['critical']+this.data.score['attack']+this.data.score['elementalMastery']+this.data.score['recharge']
@@ -282,14 +298,14 @@ export class Artifact implements IArtifact {
                 }
         }
         //total score
-        this.data.affnum.ma = this.data.affnum.ma + w['main'] * data.mainWeight[this.slot][this.main.key].p / data.mainWeight[this.slot][this.main.key].v
-        if(this.main.key!='atk' && this.main.key!='hp'){
-            if(setweight[this.slot][this.main.key][this.set]<0){
-                this.data.affnum.se = 0.25 * w['set'] * setweight[this.slot][this.main.key][this.set]
+        this.data.affnum.ma = this.data.affnum.ma + w['main'] * data.mainWeight[this.slot][this.mainKey].p / data.mainWeight[this.slot][this.mainKey].v
+        if(this.mainKey!='atk' && this.mainKey!='hp'){
+            if(setweight[this.slot][this.mainKey][this.set]<0){
+                this.data.affnum.se = 0.25 * w['set'] * setweight[this.slot][this.mainKey][this.set]
             }else{
-                this.data.affnum.se = w['set'] * setweight[this.slot][this.main.key][this.set]
+                this.data.affnum.se = w['set'] * setweight[this.slot][this.mainKey][this.set]
             }
-            if(this.main.key!='atkp' && this.main.key!='hpp'&& this.main.key!='defp'&& this.main.key!='cr'&& this.main.key!='cd'){
+            if(this.mainKey!='atkp' && this.mainKey!='hpp'&& this.mainKey!='defp'&& this.mainKey!='cr'&& this.mainKey!='cd'){
                 this.data.affnum.se = 2 * this.data.affnum.se
             }
         }else{switch(maintag){
@@ -317,5 +333,79 @@ export class Artifact implements IArtifact {
             }
         }
         this.data.affnum.tot = this.data.affnum.md + this.data.affnum.ma + this.data.affnum.se
+    }
+    getAvgAffnum(w: { [key: string]: number }) {
+        let A: Set<string> = new Set(), Ac = new Set(data.minorKeys), sum_w = 0, cur = 0
+        Ac.delete(this.mainKey)
+        for (let a of this.minors) {
+            cur += w[a.key] * a.value / data.minorStat[a.key].v
+            A.add(a.key)
+            Ac.delete(a.key)
+            sum_w += w[a.key]
+        }
+        if (this.minors.length == 3) {
+            let dn = 0, nm = 0 // denominator and numerator
+            Ac.forEach(a_key => {
+                nm += w[a_key] * data.minorStat[a_key].p
+                dn += data.minorStat[a_key].p
+            })
+            return cur + 0.85 * sum_w + 1.7 * nm / dn // 0.85*2=1.7
+        } else { // this.minors.length == 4
+            let n = Math.ceil((20 - this.level) / 4) // n.o. upgrades
+            return cur + n * sum_w / 4 * 0.85
+        }
+    }
+    updateScore() {
+        this.data.charScores = []
+        // AffnumCache记录不同权重下圣遗物的满级期望词条数
+        const AffnumCache = new SimpleCache((weight: IWeight) => {
+            return Math.round(this.getAvgAffnum(weight) * 10)
+        })
+        // ScoreCache记录不同权重下的得分
+        const ScoreCache = new SimpleCache((
+            weight: IWeight,
+            { slot, main, distr, affnum }: { slot: string, main: string, distr: number[], affnum: number }
+        ) => {
+            let p = data.mainDistr[slot][main] / 5
+            let x = affnum >= distr.length ? 1 : distr[affnum]
+            return (p * x + 1 - p) ** 100 // 有没有100其实无所谓，有100更好看一点
+        })
+        // 对每个角色分别计算
+        for (let charKey in build) {
+            let b = build[charKey]
+            // if the main stat is not recommanded, skip
+            if (!b.main[this.slot].includes(this.mainKey))
+                continue
+            // set factor
+            let n_set = 2
+            if (build[charKey].set[4].includes(this.set)) {
+                n_set = 1
+            } else if (build[charKey].set[2].includes(this.set)) {
+                n_set = 1
+            }
+            // get score
+            let charweight = []
+            for (let c of preset.characters) {
+                if (c.key == charKey) {
+                    for (let p of c.presets) {
+                        charweight.push(preset.presets[p])
+                    }
+                }
+            }
+            let scorearr = []
+            for (let w of charweight){
+                let affnum = AffnumCache.get(w)
+                let distr = AffnumDistrCache.get({ main: this.mainKey, weight: w })
+                scorearr.push(ScoreCache.get(w, { slot: this.slot, main: this.mainKey, distr, affnum }) ** n_set)
+            }
+            let score=Math.max.apply(null,scorearr)
+            // update
+            if (score < 0.001) continue
+            this.data.charScores.push({ charKey, score })
+        }
+        this.data.charScores.sort((a, b) => b.score - a.score)
+        if(this.data.charScores.length>10){
+            this.data.charScores=this.data.charScores.slice(0,10)
+        }
     }
 }

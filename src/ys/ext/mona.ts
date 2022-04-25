@@ -82,7 +82,7 @@ export default {
                 artifact.slot = whatis(mtype, this.keymap.slot) as string
                 artifact.level = martifact['level']
                 artifact.rarity = martifact['star']
-                artifact.main = this.getAffix(martifact['mainTag']['name'], martifact['mainTag']['value'])
+                artifact.mainKey = whatis(martifact['mainTag']['name'], this.keymap.affix) as string
                 for (let ma of martifact['normalTags']) {
                     artifact.minors.push(this.getAffix(ma['name'], ma['value']))
                 }
@@ -102,8 +102,8 @@ export default {
                 setName: this.keymap.set[a.set],
                 position: type,
                 mainTag: {
-                    name: this.keymap.affix[a.main.key],
-                    value: ['hp', 'atk', 'em'].includes(a.main.key) ? data.mainStat[a.main.key][a.level] : data.mainStat[a.main.key][a.level] / 100
+                    name: this.keymap.affix[a.mainKey],
+                    value: ['hp', 'atk', 'em'].includes(a.mainKey) ? data.mainStat[a.mainKey][a.level] : data.mainStat[a.mainKey][a.level] / 100
                 },
                 normalTags: a.minors.map(m => ({
                     name: this.keymap.affix[m.key],

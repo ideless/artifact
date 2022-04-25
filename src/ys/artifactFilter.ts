@@ -113,7 +113,7 @@ export class ArtifactFilter {
     }
     filterOne(artifact: Artifact): boolean {
         let inFilter = true
-        inFilter &&= this.filterOneRule(artifact.main.key, this.main)
+        inFilter &&= this.filterOneRule(artifact.mainKey, this.main)
         inFilter &&= this.filterOneRule(artifact.rarity, this.stars)
         let level = [] as Number[]
         for (let i = this.level[0] as number; i <= this.level[1]; i ++ )
@@ -142,7 +142,7 @@ export class ArtifactFilter {
     }
     genGroupName(artifact: Artifact) : string {
         let res = 'G'
-        if (this.rankGroup.main) res += '_' + artifact.main.key
+        if (this.rankGroup.main) res += '_' + artifact.mainKey
         if (this.rankGroup.position) res += '_' + artifact.slot
         if (this.rankGroup.set) res += '_' + artifact.set
         return res

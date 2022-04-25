@@ -334,6 +334,18 @@ export default <IBuild>{
         },
         minors: 'atkp,em,er,hpp'
     },
+    KamisatoAyato: {
+        set: {2:[],
+            4:["EchoesOfAnOffering", "GladiatorsFinale", "HeartOfDepth"]},
+        main: {
+            flower: ["hp"],
+            plume: ["atk"],
+            sands: ["hpp", "er"],
+            goblet: ["hydroDB", "hpp"],
+            circlet: ["hb"]
+        },
+        minors: 'atkp,cd,cr,em,er'
+    },
     Ganyu: {
         set: {
             2: ['NoblesseOblige', 'GladiatorsFinale', 'ShimenawasReminiscence'],

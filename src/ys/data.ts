@@ -18,6 +18,9 @@ interface IData {
     mainStat: {
         [key: string]: number[]
     }
+    mainDistr: {
+        [slotKey: string]: { [key: string]: number }
+    }
     mainWeight: {
         [key: string]: {
             [key: string]:{
@@ -68,6 +71,39 @@ export default <IData>{
         'cryoDB': [7.0, 9.0, 11.0, 12.9, 14.9, 16.9, 18.9, 20.9, 22.8, 24.8, 26.8, 28.8, 30.8, 32.8, 34.7, 36.7, 38.7, 40.7, 42.7, 44.6, 46.6],
         'geoDB': [7.0, 9.0, 11.0, 12.9, 14.9, 16.9, 18.9, 20.9, 22.8, 24.8, 26.8, 28.8, 30.8, 32.8, 34.7, 36.7, 38.7, 40.7, 42.7, 44.6, 46.6],
         'physicalDB': [8.7, 11.2, 13.7, 16.2, 18.6, 21.1, 23.6, 26.1, 28.6, 31.0, 33.5, 36.0, 38.5, 40.9, 43.4, 45.9, 48.4, 50.8, 53.3, 55.8, 58.3],
+    },
+    mainDistr: {
+        'flower': { 'hp': 1 },
+        'plume': { 'atk': 1 },
+        'sands': {
+            'hpp': 8 / 30,
+            'atkp': 8 / 30,
+            'defp': 8 / 30,
+            'em': 3 / 30,
+            'er': 3 / 30
+        },
+        'goblet': {
+            'hpp': 17 / 80,
+            'atkp': 17 / 80,
+            'defp': 16 / 80,
+            'pyroDB': 4 / 80,
+            'hydroDB': 4 / 80,
+            'electroDB': 4 / 80,
+            'anemoDB': 4 / 80,
+            'cryoDB': 4 / 80,
+            'geoDB': 4 / 80,
+            'physicalDB': 4 / 80,
+            'em': 2 / 80
+        },
+        'circlet': {
+            'hpp': 11 / 50,
+            'atkp': 11 / 50,
+            'defp': 11 / 50,
+            'cr': 5 / 50,
+            'cd': 5 / 50,
+            'hb': 5 / 50,
+            'em': 2 / 50
+        }
     },
     mainWeight: {
         'flower':{'hp': { p: 1, v: 1 }},

@@ -23,7 +23,6 @@ export interface ITranslation {
     character: {
         [key: string]: string
     }
-    preset: string[]
     element: {
         [key: string]: string
     }

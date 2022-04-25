@@ -87,11 +87,7 @@ export default {
             artifact.slot = whatis(a['slot'], this.keymap.slot) as string
             artifact.level = a['level']
             artifact.rarity = a['rarity']
-            let mainKey = whatis(a['mainStat'], this.keymap.affix) as string
-            artifact.main = new Affix({
-                key: mainKey,
-                value: data.mainStat[mainKey][artifact.level]
-            })
+            artifact.mainKey = whatis(a['mainStat'], this.keymap.affix) as string
             artifact.minors.push(new Affix({
                 key: whatis(a['subStat1Type'], this.keymap.affix),
                 value: a['subStat1Value']
@@ -125,7 +121,7 @@ export default {
                 rarity: a.rarity,
                 slot: this.keymap.slot[a.slot],
                 level: a.level,
-                mainStat: this.keymap.affix[a.main.key],
+                mainStat: this.keymap.affix[a.mainKey],
                 subStat1Type: this.getSubStatType(a, 0),
                 subStat1Value: this.getSubStatValue(a, 0),
                 subStat2Type: this.getSubStatType(a, 1),

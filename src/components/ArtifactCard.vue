@@ -10,6 +10,7 @@ const props = defineProps<{
     selected?: boolean
     selectMode?: boolean
     readonly?: boolean
+    showAffnum?: boolean // 展示词条数而不是数值
 }>()
 const emit = defineEmits<{
     (e: 'flipSelect', shiftKey: boolean): void,
@@ -41,9 +42,9 @@ const affixName = (key: string) => {
     return name
 }
 const main = computed(() => {
-    if (props.artifact.main.key in data.mainStat) {
-        let key = props.artifact.main.key,
-            value = data.mainStat[props.artifact.main.key][props.artifact.level]
+    if (props.artifact.mainKey in data.mainStat) {
+        let key = props.artifact.mainKey,
+            value = data.mainStat[props.artifact.mainKey][props.artifact.level]
         return {
             name: chs.affix[key],
             value: new Affix({ key, value }).valueString()
@@ -63,7 +64,7 @@ const minors = computed(() => {
         if (store.state.useFilterBatch != -1)
             weight = store.state.filterBatch[store.state.useFilterBatch].filter.scoreWeight
         ret.push({
-            text: `${name}+${a.valueString()}`,
+            text: `${name}+${a.valueString(props.showAffnum!)}`,
             style: `opacity: ${weight[a.key] > 0 ? 1 : 0.5};`,
             count: Math.ceil(Math.round(a.value / data.minorStat[a.key].v * 10) / 10),
         });
@@ -108,10 +109,15 @@ const flipLock = () => {
         emit('flipLock')
     }
 }
+const charScore = computed<string>(() => {
+    return props.artifact.data.charScores.map(cs => {
+        return `${chs.character[cs.charKey]}${(cs.score * 100).toFixed(1)}%`
+    }).join(' ')
+})
 </script>
 
 <template>
-    <div :class="artifactCardClass">
+    <div :class="artifactCardClass" :title="charScore">
         <div class="head">
             <div class="head-stat">
                 <div class="piece-name">{{ pieceName }}</div>
@@ -119,7 +125,7 @@ const flipLock = () => {
                 <div class="main-affix-value">{{ main.value }}</div>
                 <img :src="starImgSrc" />
             </div>
-            <div class="picture">
+            <div class="picture" v-show='pieceImgSrc'>
                 <img :src="pieceImgSrc" />
             </div> 
         </div>

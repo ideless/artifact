@@ -28,6 +28,8 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Replace registry
         run: (Get-content yarn.lock) | Foreach-Object {$_ -replace "registry.nlark.com", "r.cnpmjs.org"} | Set-Content yarn.lock
+      - name: ignore version error
+        run: yarn config set ignore-engines true
       - name: Install dependencies
         run: yarn
       - name: Install missing dependency
