@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import SectionTitle from './SectionTitle.vue';
 import ValueButton from './ValueButton.vue';
-import PresetLoader from './PresetLoader.vue';
+import BuildSection from './BuildSection.vue';
 import chs from "../ys/locale/chs"
 import { useStore } from '../store';
 import { ref, computed } from 'vue';
@@ -12,13 +12,11 @@ const setWeight = (key: string, value: number) => {
 const useWeightJson = (use: boolean) => {
     store.commit('useWeightJson', { use })
 }
-const showLoader = ref(false)
 </script>
 
 <template>
     <div class="section">
         <section-title title="词条权重">
-            <span @click="showLoader = true">预设</span>
             <span v-show="store.state.useWeightJson" @click="useWeightJson(false)">基本</span>
             <span v-show="!store.state.useWeightJson" @click="useWeightJson(true)">高级</span>
         </section-title>
@@ -57,8 +55,8 @@ const showLoader = ref(false)
                 </el-form-item>
             </el-form>
         </div>
+        <build-section />
     </div>
-    <preset-loader v-model="showLoader" />
 </template>
 
 <style lang="scss">

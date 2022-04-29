@@ -152,6 +152,15 @@ const pageProvider = async (pageNumber: number, pageSize: number) => {
 const showAffnum = ref(false)
 // 手动添加
 const showCreator = ref(false)
+// 预设模式
+const presetMode = ref(false)
+const setpPresetMode = () => {
+    if(!store.state.usePreset){
+        presetMode.value=true
+    }else{
+        store.state.usePreset=''
+    }
+}
 </script>
 
 <template>
@@ -177,6 +186,12 @@ const showCreator = ref(false)
                             <circle-plus />
                         </el-icon>
                         <span>手动添加</span>
+                    </div>
+                    <div :class="{ btn: true, checked: store.state.usePreset!='' }" @click="setpPresetMode">
+                        <el-icon>
+                            <magic-stick />
+                        </el-icon>
+                        <span>预设模式</span>
                     </div>
                 </div>
             </div>
@@ -211,6 +226,7 @@ const showCreator = ref(false)
     <artifact-editor v-model="showEditor" :index="editorIndex" />
     <artifact-creator v-model="showCreator" />
     <partial-export v-model="showExport" :artifacts="artifactsToExport" />
+    <preset-loader v-model="presetMode" />
 </template>
 
 <style lang="scss" scoped>

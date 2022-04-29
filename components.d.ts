@@ -9,6 +9,7 @@ declare module 'vue' {
     ArtifactEditor: typeof import('./src/components/ArtifactEditor.vue')['default']
     ArtifactFilterBatchPanel: typeof import('./src/components/ArtifactFilterBatchPanel.vue')['default']
     ArtifactFilterPanel: typeof import('./src/components/ArtifactFilterPanel.vue')['default']
+    BuildSection: typeof import('./src/components/BuildSection.vue')['default']
     DropSelect: typeof import('./src/components/DropSelect.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElButton: typeof import('element-plus/es')['ElButton']

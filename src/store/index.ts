@@ -4,6 +4,7 @@ import { ArtifactScoreWeight, Artifact } from '../ys/artifact'
 import { IState } from './types'
 import chs from '../ys/locale/chs'
 import data from '../ys/data'
+import build from '../ys/build'
 
 function countArtifactAttr(artifacts: Artifact[], key: keyof Artifact) {
     let s: { [key: string]: number } = {}
@@ -32,13 +33,27 @@ export const store = createStore<IState>({
                 location: 'all', // 'all' is a temporary workaround, fix it later
                 lock: '', // '', 'true', 'false'
                 lvRange: [0, 20],
-                score: [0,20]
+                score: [0, 20]
+            },
+            build: {
+                set: {
+                    2: [],
+                    4: []
+                },
+                main: {
+                    flower: ['hp'],
+                    plume: ['atk'],
+                    sands: [],
+                    goblet: [],
+                    circlet: []
+                },
             },
             filterBatch: [],
             useFilterPro: false,
             useFilterBatch: -1,  // -1 notwork, 0~length-1 select one
             weight: new ArtifactScoreWeight(),
             useWeightJson: false,
+            usePreset: '',
             sortBy: 'tot',
             canExport: false,
             nReload: 0,// for UI refreshing
@@ -123,7 +138,26 @@ export const store = createStore<IState>({
             }
         },
         usePreset(state, payload) {
-                state.weight = payload.weight
+            state.weight = payload.weight
+            state.usePreset = payload.charKey
+            if (payload.charKey in build) {
+                let b = build[payload.charKey]
+                // 不要直接赋值
+                state.build.set[2] = [...b.set[2]]
+                state.build.set[4] = [...b.set[4]]
+                state.build.main.sands = [...b.main.sands]
+                state.build.main.goblet = [...b.main.goblet]
+                state.build.main.circlet = [...b.main.circlet]
+            }
+        },
+        setBuildSet2(state, payload) {
+            state.build.set[2] = [...payload.set[2]]
+        },
+        setBuildSet4(state, payload) {
+            state.build.set[4] = [...payload.set[4]]
+        },
+        setBuildMain(state, payload) {
+            state.build.main[payload.slot] = [...payload.keys]
         },
         filterBatchIndex(state, payload) {
             state.useFilterBatch = payload
@@ -146,9 +180,8 @@ export const store = createStore<IState>({
         },
         setLockByFilterBatch({ state }) {
             // TODO two different lock, which is right?
-
             let newLock = [];
-            for (let i = 0; i < state.artifacts.length; i ++ )
+            for (let i = 0; i < state.artifacts.length; i++)
                 newLock.push(state.artifacts[i].lock);
             if (state.filterBatch.length === 0) {
                 ElNotification({
@@ -157,7 +190,7 @@ export const store = createStore<IState>({
                 })
                 return;
             }
-            for (let i = 0; i < state.filterBatch.length; i ++ ) {
+            for (let i = 0; i < state.filterBatch.length; i++) {
                 let filter = state.filterBatch[i].filter;
                 // let ruleResult = [];
                 if (state.filterBatch[i].lock == 'disabled')
@@ -175,7 +208,7 @@ export const store = createStore<IState>({
                 //     }
                 // console.log(state.filterBatch[i], ruleResult);
             }
-            for (let i = 0; i < state.artifacts.length; i ++ )
+            for (let i = 0; i < state.artifacts.length; i++)
                 state.artifacts[i].lock = newLock[i];
             ElNotification({
                 type: 'success',
@@ -190,6 +223,17 @@ export const store = createStore<IState>({
                 let weight = state.weight
                 if (state.useFilterPro && state.useFilterBatch != -1) {
                     weight = state.filterBatch[state.useFilterBatch].filter.scoreWeight;
+                }
+                // update affix numbers
+                for (let a of ret) {
+                    a.updateAffnum(weight)
+                    if(state.usePreset){
+                        a.updatePresetTot(state.build)
+                        a.updatePresetProp(state.build,state.usePreset,weight)
+                    }
+                    else if (state.sortBy == 'prop') {
+                        a.updateProp()
+                    }
                 }
                 if (state.useFilterPro && state.useFilterBatch != -1) {
                     // use specified filterbatch
@@ -216,17 +260,17 @@ export const store = createStore<IState>({
                         a.level <= state.filter.lvRange[1]
                     ));
                     if (state.sortBy) {
-                        ret = ret.filter((a) => (
-                            state.filter.score[0] <= a.data.affnum[state.sortBy] &&
-                            a.data.affnum[state.sortBy] <= state.filter.score[1]
-                        ));
-                    }
-                }
-                // update affix numbers
-                for (let a of ret) {
-                    a.updateAffnum(weight)
-                    if (state.sortBy == 'prop') {
-                        a.updateScore()
+                        if (state.sortBy == 'prop') {
+                            ret = ret.filter((a) => (
+                                state.filter.score[0] <= a.data.charScores[0].score &&
+                                a.data.charScores[0].score <= state.filter.score[1]
+                            ));
+                        } else {
+                            ret = ret.filter((a) => (
+                                state.filter.score[0] <= a.data.affnum[state.sortBy] &&
+                                a.data.affnum[state.sortBy] <= state.filter.score[1]
+                            ));
+                        }
                     }
                 }
                 // sort
@@ -262,16 +306,16 @@ export const store = createStore<IState>({
             }
             dispatch('updFilteredArtifacts')
         },
-        delArtifacts({ state, dispatch }, payload) {          
+        delArtifacts({ state, dispatch }, payload) {
             let s: Set<number> = new Set(payload.indices)
             let i = 0
             for (let a of state.artifacts) {
                 if (s.has(a.data.index)) {
-                    state.artifacts.splice(i,1)
+                    state.artifacts.splice(i, 1)
                 }
                 i++
             }
-        dispatch('updFilteredArtifacts') // 也许可以改为部分更新
+            dispatch('updFilteredArtifacts') // 也许可以改为部分更新
         },
         addArtifacts({ state, dispatch }, payload) {
             // Array.concat貌似不好用，只能一个个push

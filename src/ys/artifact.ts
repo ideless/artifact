@@ -1,7 +1,7 @@
 import { assert, SimpleCache } from "./utils"
 import data from "./data"
 import setweight from "./distr"
-import build from "./build"
+import build, { IBuild } from "./build"
 import { affnumDistr } from "./gacha/artifact"
 import preset from "./preset"
 
@@ -71,9 +71,6 @@ interface IArtifact {
         lock: boolean // 导入数据中圣遗物的原本加解锁信息，用来识别在本工具中做过的修改
         affnum: { // “词条数”
             cur: number
-            avg: number
-            min: number
-            max: number
             md: number
             ma: number
             se: number
@@ -102,7 +99,7 @@ export class Artifact implements IArtifact {
         index: -Math.random(),
         source: '',
         lock: false,
-        affnum: { cur: 0, avg: 0, min: 0, max: 0, md: 0, ma:0, se:0, tot: 0 },
+        affnum: { cur: 0, md: 0, ma:0, se:0, tot: 0 },
         score: { 'life':0, 'attack':0, 'defend':0, 'critical':0, 'elementalMastery':0, 'recharge':0 },
         charScores: [] as Array<{ charKey: string, score: number }>,
     }
@@ -131,7 +128,7 @@ export class Artifact implements IArtifact {
     }
     updateAffnum(w: ArtifactScoreWeight) {
         // Refer to ./README.md for symbols and equations
-        this.data.affnum = { cur: 0, avg: 0, min: 0, max: 0, md: 0, ma:0, se:0, tot: 0}
+        this.data.affnum = { cur: 0, md: 0, ma:0, se:0, tot: 0}
         let A: Set<string> = new Set(), Ac = new Set(data.minorKeys), sum_w = 0
         Ac.delete(this.mainKey)
         for (let a of this.minors) {
@@ -355,7 +352,7 @@ export class Artifact implements IArtifact {
             return cur + n * sum_w / 4 * 0.85
         }
     }
-    updateScore() {
+    updateProp() {
         this.data.charScores = []
         // AffnumCache记录不同权重下圣遗物的满级期望词条数
         const AffnumCache = new SimpleCache((weight: IWeight) => {
@@ -404,8 +401,43 @@ export class Artifact implements IArtifact {
             this.data.charScores.push({ charKey, score })
         }
         this.data.charScores.sort((a, b) => b.score - a.score)
-        if(this.data.charScores.length>10){
+        if(this.data.charScores.length==0){
+            this.data.charScores.push({charKey:'',score:0})
+        }
+        else if(this.data.charScores.length>10){
             this.data.charScores=this.data.charScores.slice(0,10)
         }
+    }
+    updatePresetProp(b: IBuild,charKey: string, w: IWeight) {
+        this.data.charScores = []
+        if (!b.main[this.slot].includes(this.mainKey)){
+            this.data.charScores.push({charKey:charKey,score:0})
+            return
+        }
+        let n_set = 2
+        if (b.set[4].includes(this.set)) {
+            n_set = 1
+        } else if (b.set[2].includes(this.set)) {
+            n_set = 1
+        }
+        let affnum = Math.round(this.getAvgAffnum(w) * 10)
+        let distr = AffnumDistrCache.get({ main: this.mainKey, weight: w })
+        let p = data.mainDistr[this.slot][this.mainKey] / 5
+        let x = affnum >= distr.length ? 1 : distr[affnum]
+        let prop=(p * x + 1 - p) ** n_set
+        this.data.charScores.push({charKey:charKey,score:prop})
+    }
+    updatePresetTot(b: IBuild) {
+        this.data.affnum.ma=0
+        this.data.affnum.se=0
+        this.data.affnum.tot=0
+        if (b.main[this.slot].includes(this.mainKey))
+            this.data.affnum.ma = 8
+        if (b.set[4].includes(this.set)) {
+            this.data.affnum.se = 4
+        } else if (b.set[2].includes(this.set)) {
+            this.data.affnum.se = 2
+        }
+        this.data.affnum.tot = this.data.affnum.md + this.data.affnum.ma + this.data.affnum.se
     }
 }
