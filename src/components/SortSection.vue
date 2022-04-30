@@ -33,6 +33,7 @@ const sortBy = computed({
                 </div>
             </el-popover>
         </section-title>
+        <p class="info" style="margin-top: 5px" v-show="store.state.usePreset != ''">预设模式下“按圣遗物总分”与“按角色适配概率”计算逻辑会改变</p>
         <div class="section-content">
             <el-radio class="sort" v-model="sortBy" label="tot">按圣遗物总分</el-radio>
             <el-radio class="sort" v-model="sortBy" label="prop">按角色适配率</el-radio>

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import SectionTitle from './SectionTitle.vue';
 import ValueButton from './ValueButton.vue';
-import BuildSection from './BuildSection.vue';
 import chs from "../ys/locale/chs"
 import { useStore } from '../store';
 import { ref, computed } from 'vue';
@@ -20,8 +19,8 @@ const useWeightJson = (use: boolean) => {
             <span v-show="store.state.useWeightJson" @click="useWeightJson(false)">基本</span>
             <span v-show="!store.state.useWeightJson" @click="useWeightJson(true)">高级</span>
         </section-title>
+        <p class="info">点按粗调，拖拽微调，悬停查看数值，大于1的权重需进入高级设置</p>
         <div style="margin-top: 14px;" v-show="store.state.useFilterBatch == -1 && !store.state.useWeightJson">
-            <p class="info">点按粗调，拖拽微调，悬停查看数值，大于1的权重需进入高级设置</p>
             <value-button
                 class="weight-button"
                 v-for="(_, key) in store.state.weight"
@@ -55,7 +54,6 @@ const useWeightJson = (use: boolean) => {
                 </el-form-item>
             </el-form>
         </div>
-        <build-section />
     </div>
 </template>
 

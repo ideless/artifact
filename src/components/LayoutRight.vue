@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import ImportSection from './ImportSection.vue';
 import WeightSection from './WeightSection.vue'
+import BuildSection from './BuildSection.vue';
 import FilterSection from './FilterSection.vue';
 import SortSection from './SortSection.vue';
 import TextButton from './TextButton.vue';
@@ -15,6 +16,7 @@ const start = () => { store.dispatch('updFilteredArtifacts') }
             <import-section />
             <weight-section />
             <sort-section />
+            <build-section />
             <filter-section />
             <div class="start-container">
                 <text-button @click="start">开始计算</text-button>

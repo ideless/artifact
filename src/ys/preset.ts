@@ -180,11 +180,7 @@ export default <IPreset>{
                 '托马 | 黑缨枪 | 2旗印2千岩 | 充生生',]
         },
         {
-            key: "Traveler", element: "", presets: ['空/荧（风） | 西风剑 | 翠绿4 | 精精精',
-                '空/荧（雷） | 西风剑 | 旗印4 | 充雷暴',
-                '空/荧（岩） | 雾切之回光 | 2磐岩2角斗 | 攻岩暴',
-                '空/荧（岩） | 磐岩结绿 | 2磐岩2角斗 | 攻岩暴',
-                '空/荧（岩） | 黑剑 | 2磐岩2角斗 | 攻岩暴',]
+            key: "Traveler", element: "", presets: []
         },
         {
             key: "TravelerAnemo", element: "anemo", presets: ['空/荧（风） | 西风剑 | 翠绿4 | 精精精',]
