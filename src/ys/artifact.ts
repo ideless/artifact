@@ -432,7 +432,11 @@ export class Artifact implements IArtifact {
         this.data.affnum.se=0
         this.data.affnum.tot=0
         if (b.main[this.slot].includes(this.mainKey))
+        if(this.mainKey=='atk' || this.mainKey=='hp'){
+            this.data.affnum.ma = 6
+        }else{
             this.data.affnum.ma = 8
+        }
         if (b.set[4].includes(this.set)) {
             this.data.affnum.se = 4
         } else if (b.set[2].includes(this.set)) {

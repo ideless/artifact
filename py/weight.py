@@ -289,7 +289,7 @@ weight
 # In[ ]:
 
 
-with open('D:\python\JupyterWork\genshin\weight.json', 'w') as f:
+with open('weight.json', 'w') as f:
     json.dump(weight, f)
 
 
