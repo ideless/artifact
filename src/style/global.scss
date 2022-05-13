@@ -1,10 +1,28 @@
 $widget-height: 38px;
-$primary-color: #3694ff;
-$right-bgcolor: #eee;
+$primary-color: #1058ac;
+$right-bgcolor: rgb(234, 251, 255);
 $green: #66c238;
+
+%button {
+    width: 85px;
+    height: $widget-height;
+    display: inline-block;
+    color: $primary-color;
+    font-weight: bold;
+    // border-radius: 3px;
+    // box-shadow: 0 0 2px 0 #0007;
+    // box-shadow: inset 0 0 0 2px white;
+    border: 2px solid $primary-color;
+    line-height: $widget-height - 4px;
+    text-align: center;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+}
 
 body {
     box-sizing: border-box;
+    --el-color-primary: #1058ac;
 }
 
 * {
@@ -13,6 +31,7 @@ body {
     margin: 0;
 }
 
+// 动画
 .pop-enter-active,
 .pop-leave-active {
     transition: all 200ms ease;
@@ -49,6 +68,17 @@ body {
     transform: translateY(-50%) scale(0.5);
 }
 
+.list-enter-from,
+.list-leave-to {
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+.list-leave-active {
+    position: absolute;
+}
+
+// 公用类
 .section {
     padding: 0 40px;
 }

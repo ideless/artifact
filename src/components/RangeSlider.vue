@@ -29,11 +29,14 @@ const range = computed({
     display: flex;
     align-items: center;
     height: 38px;
+
     .val {
         width: 38px;
         text-align: center;
         line-height: 0;
+        font-family: Arial, Helvetica, sans-serif;
     }
+
     .slider {
         flex: 1;
         margin: 0 10px;

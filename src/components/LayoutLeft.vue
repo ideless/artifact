@@ -21,7 +21,7 @@ const stat = computed(() => {
     return `共${nAll}个 满级${nFull}个 加锁${nLock}个 解锁${nAll - nLock}个`
 })
 const flipLock = (index: number) => {
-    store.commit('flipLock', { index })
+    store.dispatch('flipLock', { index })
 }
 const selectMode = ref(false)
 const selection = ref([] as number[])
@@ -92,11 +92,11 @@ const invSelection = () => {
     selection.value = Array.from(S)
 }
 const lockSelection = () => {
-    store.commit('setLock', { lock: true, indices: selection.value })
+    store.dispatch('setLock', { lock: true, indices: selection.value })
     selection.value = []
 }
 const unlockSelection = () => {
-    store.commit('setLock', { lock: false, indices: selection.value })
+    store.dispatch('setLock', { lock: false, indices: selection.value })
     selection.value = []
 }
 const delSelection = () => {

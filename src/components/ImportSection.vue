@@ -7,6 +7,7 @@ import mona from '../ys/ext/mona';
 import good from '../ys/ext/good';
 import genmo from '../ys/ext/genmo';
 import { useStore } from '../store';
+import { Artifact } from '../ys/artifact';
 const store = useStore()
 const msg = ref('')
 const ok = ref(false)
@@ -28,19 +29,19 @@ const importArts = () => {
                 ok.value = false
                 return
             }
-            let artifacts: any[] = [], format = ''
+            let artifacts: Artifact[] = [], canExport = false
             try {
                 artifacts = good.loads(reader.result)
-                format = 'GOOD'
+                canExport = artifacts.length > 0
+                    && artifacts[0].data.source == 'yas-lock/good'
             } catch (e) {
                 try {
                     artifacts = mona.loads(reader.result)
-                    format = 'mona-urani'
                 } catch (e) {
                     try {
                         artifacts = genmo.loads(reader.result)
-                        format = 'genmo'
                     } catch (e: any) {
+                        console.error(e)
                         if (typeof e == 'object' && e.message) {
                             msg.value = e.message
                         } else {
@@ -53,7 +54,7 @@ const importArts = () => {
             }
             msg.value = `成功导入${artifacts.length}个5星圣遗物`
             ok.value = true
-            store.dispatch('setArtifacts', { artifacts, format })
+            store.dispatch('setArtifacts', { artifacts, canExport })
         };
         reader.onerror = (evt) => {
             msg.value = '无法读取文件'
@@ -83,7 +84,7 @@ const showPreview = ref(false)
         </div>
     </div>
     <div class="hidden">
-        <input type="file" id="file-input" />
+        <input type="file" id="file-input" accept=".json, .pcap" />
     </div>
     <export-preview v-model="showPreview" />
 </template>

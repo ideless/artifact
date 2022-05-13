@@ -78,7 +78,7 @@ const affnum = computed(() => {
     }
 })
 const lockImgSrc = computed(() => {
-    return props.artifact.lock ? './assets/lock.png' : './assets/unlock.png'
+    return props.artifact.lock ? './assets/game_icons/lock.png' : './assets/game_icons/unlock.png'
 })
 const artifactCardClass = computed(() => ({
     'artifact-card': true,
@@ -156,7 +156,7 @@ const charScore = computed<string>(() => {
 
 <style lang="scss" scoped>
 %tag {
-    line-height: 1;
+    // line-height: 1;
     padding: 1px 4px;
     border-radius: 3px;
     background-color: black;

@@ -146,7 +146,15 @@ const valid = computed(() => {
     return art.value.set in chs.set && art.value.minors.length >= 3
 })
 const save = () => {
-    store.dispatch('addArtifacts', { artifacts: [art.value] })
+    // 必须新建一个对象
+    let artifact = new Artifact({
+        set: art.value.set,
+        slot: art.value.slot,
+        level: art.value.level,
+        mainKey: art.value.mainKey,
+        minors: art.value.minors.map(m => new Affix(m))
+    })
+    store.dispatch('addArtifacts', { artifacts: [artifact] })
     emit('update:modelValue', false)
 }
 </script>

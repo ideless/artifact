@@ -107,7 +107,7 @@ export default {
                 }))
             }
             artifact.data.index = ret.length
-            artifact.data.source = 'genmo'
+            artifact.data.source = '*/genmo'
             artifact.validate()
             ret.push(artifact)
         }

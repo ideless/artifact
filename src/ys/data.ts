@@ -21,6 +21,11 @@ interface IData {
     mainDistr: {
         [slotKey: string]: { [key: string]: number }
     }
+    characters: Array<{
+        key: string
+        element: string
+        rarity: number
+    }>
 }
 
 export default <IData>{
@@ -96,5 +101,71 @@ export default <IData>{
             'hb': 5 / 50,
             'em': 2 / 50
         }
-    }
+    },
+    characters: [
+        // 火5
+        { key: 'HuTao', element: 'pyro', rarity: 5 },
+        { key: 'Klee', element: 'pyro', rarity: 5 },
+        { key: 'Yoimiya', element: 'pyro', rarity: 5 },
+        { key: 'Diluc', element: 'pyro', rarity: 5 },
+        // 火4
+        { key: 'Xiangling', element: 'pyro', rarity: 4 },
+        { key: 'Bennett', element: 'pyro', rarity: 4 },
+        { key: 'Yanfei', element: 'pyro', rarity: 4 },
+        { key: 'Amber', element: 'pyro', rarity: 4 },
+        { key: 'Xinyan', element: 'pyro', rarity: 4 },
+        { key: 'Thoma', element: 'pyro', rarity: 4 },
+        // 水5
+        { key: 'Tartaglia', element: 'hydro', rarity: 5 },
+        { key: 'SangonomiyaKokomi', element: 'hydro', rarity: 5 },
+        { key: 'KamisatoAyato', element: 'hydro', rarity: 5 },
+        { key: 'Mona', element: 'hydro', rarity: 5 },
+        // 水4
+        { key: 'Xingqiu', element: 'hydro', rarity: 4 },
+        { key: 'Barbara', element: 'hydro', rarity: 4 },
+        // 冰5
+        { key: 'Ganyu', element: 'cryo', rarity: 5 },
+        { key: 'Qiqi', element: 'cryo', rarity: 5 },
+        { key: 'KamisatoAyaka', element: 'cryo', rarity: 5 },
+        { key: 'Eula', element: 'cryo', rarity: 5 },
+        { key: 'Shenhe', element: 'cryo', rarity: 5 },
+        // 冰4
+        { key: 'Chongyun', element: 'cryo', rarity: 4 },
+        { key: 'Rosaria', element: 'cryo', rarity: 4 },
+        { key: 'Kaeya', element: 'cryo', rarity: 4 },
+        { key: 'Diona', element: 'cryo', rarity: 4 },
+        { key: 'Aloy', element: 'cryo', rarity: 4 },
+        // 雷5
+        { key: 'Keqing', element: 'electro', rarity: 5 },
+        { key: 'RaidenShogun', element: 'electro', rarity: 5 },
+        { key: 'YaeMiko', element: 'electro', rarity: 5 },
+        // 雷4
+        { key: 'Razor', element: 'electro', rarity: 4 },
+        { key: 'Beidou', element: 'electro', rarity: 4 },
+        { key: 'Lisa', element: 'electro', rarity: 4 },
+        { key: 'Fischl', element: 'electro', rarity: 4 },
+        { key: 'KujouSara', element: 'electro', rarity: 4 },
+        // 风5
+        { key: 'Venti', element: 'anemo', rarity: 5 },
+        { key: 'Jean', element: 'anemo', rarity: 5 },
+        { key: 'KaedeharaKazuha', element: 'anemo', rarity: 5 },
+        { key: 'Xiao', element: 'anemo', rarity: 5 },
+        // 风4
+        { key: 'Sucrose', element: 'anemo', rarity: 4 },
+        { key: 'Sayu', element: 'anemo', rarity: 4 },
+        // 岩5
+        { key: 'Zhongli', element: 'geo', rarity: 5 },
+        { key: 'Albedo', element: 'geo', rarity: 5 },
+        { key: 'AratakiItto', element: 'geo', rarity: 5 },
+        // 岩4
+        { key: 'Noelle', element: 'geo', rarity: 4 },
+        { key: 'Ningguang', element: 'geo', rarity: 4 },
+        { key: 'Gorou', element: 'geo', rarity: 4 },
+        { key: 'YunJin', element: 'geo', rarity: 4 },
+        // 草
+        // { key: 'TravelerAnemo', element: '+', rarity: 5 },
+        // { key: 'TravelerGeo', element: '+', rarity: 5 },
+        // { key: 'TravelerElectro', element: '+', rarity: 5 },
+        { key: 'Traveler', element: '', rarity: 5 },
+    ]
 }

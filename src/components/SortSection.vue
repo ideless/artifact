@@ -1,62 +1,151 @@
 <script lang="ts" setup>
 import SectionTitle from './SectionTitle.vue';
-import { computed } from 'vue'
+import DropSelect from './DropSelect.vue';
+import BuildLoader from './BuildLoader.vue';
+import { computed, ref } from 'vue'
 import { useStore } from '../store';
+import build from '../ys/build';
+import data from '../ys/data';
+import chs from '../ys/locale/chs';
 const store = useStore()
-const sortBy = computed({
-    get() {
-        return store.state.sortBy
-    },
-    set(sort: string) {
-        store.commit('setSortBy', { sort })
-    }
+
+// 排序方式
+const sortByOptions = [
+    { key: 'cur', label: '按当前词条数' },
+    { key: 'min', label: '按满级最小词条数' },
+    { key: 'avg', label: '按满级期望词条数' },
+    { key: 'max', label: '按满级最大词条数' },
+    { key: 'pmulti', label: '按角色适配概率（多人）' },
+    { key: 'psingle', label: '按角色适配概率（单人）' },
+    { key: 'defeat', label: '按上位替代数' },
+    { key: 'index', label: '不排序' },
+]
+const sortBy = computed<string>({
+    get() { return store.state.sort.by },
+    set(v) { store.commit('setSort', { key: 'by', value: v }) }
 })
+
+// 按角色适配概率（多人）
+const charOptions = data.characters
+    .filter(c => c.key in build)
+    .map(c => ({
+        key: c.key,
+        label: chs.character[c.key] || c.key,
+        icon: `./assets/char_faces/${c.key}.png`,
+    }))
+const char = computed<string[]>({
+    get() { return store.state.sort.characters },
+    set(v) { store.commit('setSort', { key: 'characters', value: v }) }
+})
+// 按角色适配概率（单人）
+const setsOptions = Object.entries(chs.set).map(([key, val]) => ({
+    key,
+    label: val.name,
+    icon: `./assets/artifacts/${key}/flower.png`,
+}))
+const sets = computed<string[]>({
+    get() { return store.state.sort.sets },
+    set(v) { store.commit('setSort', { key: 'sets', value: v }) }
+})
+const sandsOptions = data.mainKeys.sands.map(m => ({
+    key: m,
+    label: chs.affix[m]
+}))
+const sands = computed<string[]>({
+    get() { return store.state.sort.sands },
+    set(v) { store.commit('setSort', { key: 'sands', value: v }) }
+})
+const gobletOptions = data.mainKeys.goblet.map(m => ({
+    key: m,
+    label: chs.affix[m]
+}))
+const goblet = computed<string[]>({
+    get() { return store.state.sort.goblet },
+    set(v) { store.commit('setSort', { key: 'goblet', value: v }) }
+})
+const circletOptions = data.mainKeys.circlet.map(m => ({
+    key: m,
+    label: chs.affix[m]
+}))
+const circlet = computed<string[]>({
+    get() { return store.state.sort.circlet },
+    set(v) { store.commit('setSort', { key: 'circlet', value: v }) }
+})
+// 按上位替代数
+// 不排序
+// *词条数
+
+// 配装加载窗口
+const showBuildLoader = ref(false)
+const openBuildLoader = () => showBuildLoader.value = true
 </script>
 
 <template>
     <div class="section">
-        <section-title title="排序">
-            <el-popover placement="left" :width="400" trigger="click">
-                <template #reference>
-                    <span>说明</span>
-                </template>
-                <div class="info-wrapper">
-                    <h5>按角色适配概率</h5>
-                    <p>圣遗物a对角色c的适配概率定义为，刷100个满级圣遗物，其中和a同部位同主词条的圣遗物得分均不超过a的满级期望得分的概率。如果a对c是散件则是200个。</p>
-                    <p>排序时以对所有角色的最高适配概率为关键字。</p>
-                    <i>基本模式下“按角色适配概率”不会受到词条权重的影响</i>
-                    <h5 style="margin-top: 5px">按上位替代数</h5>
-                    <p>圣遗物b是圣遗物a的上位替代，如果它们部位和主词条相同，且a的所有副词条（除小攻/小生/小防外）b都有而且数值更大。</p>
-                    <i>“按上位替代数”不会受到词条权重的影响</i>
-                </div>
-            </el-popover>
-        </section-title>
-        <div class="section-content">
-            <el-radio class="sort" v-model="sortBy" label="cur">按当前词条数</el-radio>
-            <el-radio class="sort" v-model="sortBy" label="min">按满级最小词条数</el-radio>
-            <el-radio class="sort" v-model="sortBy" label="avg">按满级期望词条数</el-radio>
-            <el-radio class="sort" v-model="sortBy" label="max">按满级最大词条数</el-radio>
-            <el-radio class="sort" v-model="sortBy" label="score">按角色适配概率</el-radio>
-            <el-radio class="sort" v-model="sortBy" label="defeat">按上位替代数</el-radio>
-            <el-radio class="sort" v-model="sortBy" label>不排序</el-radio>
+        <section-title title="排序" />
+        <div class="content">
+            <drop-select class="row" v-model="sortBy" :options="sortByOptions" title="排序方式" />
+            <div v-if="sortBy == 'pmulti'">
+                <p class="row small">圣遗物a对角色c的适配概率定义为，刷100个满级圣遗物，其中和a同部位同主词条的圣遗物得分均不超过a的满级期望得分的概率。如果a对c是散件则是200个。</p>
+                <p class="row small">根据<a href="https://ngabbs.com/read.php?tid=27859119"
+                        target="_blank">推荐配装</a>为每个角色计算适配概率（自定义的词条权重不会生效），总的适配概率为所有选中角色适配概率的最大值。
+                </p>
+                <p class="row small">鼠标悬停在圣遗物上可以查看详细的计算结果。</p>
+                <drop-select-plus class="row" title="角色" :options="charOptions" v-model="char" :use-icon="true" />
+            </div>
+            <div v-else-if="sortBy == 'psingle'">
+                <p class="row small">圣遗物a对角色c的适配概率定义为，刷100个满级圣遗物，其中和a同部位同主词条的圣遗物得分均不超过a的满级期望得分的概率。如果a对c是散件则是200个。</p>
+                <p class="row small">
+                    <span class="text-btn" @click="openBuildLoader">加载预设配装</span>
+                </p>
+                <drop-select-plus class="row" v-model="sets" :options="setsOptions" title="套装偏好" :use-icon="true" />
+                <drop-select-plus class="row" v-model="sands" :options="sandsOptions" title="时之沙主词条偏好" />
+                <drop-select-plus class="row" v-model="goblet" :options="gobletOptions" title="空之杯主词条偏好" />
+                <drop-select-plus class="row" v-model="circlet" :options="circletOptions" title="理之冠主词条偏好" />
+            </div>
+            <div v-else-if="sortBy == 'defeat'">
+                <p class="row small">圣遗物b是圣遗物a的上位替代，如果它们部位和主词条相同，且a的所有副词条（除小攻/小生/小防外）b都有而且数值更大。</p>
+            </div>
+            <div v-else-if="sortBy == 'index'">
+            </div>
+            <div v-else>
+                <p class="row small">圣遗物的“词条数”是各个副词条数值除以单次平均提升量，再根据词条权重计算的加权和。</p>
+            </div>
         </div>
     </div>
+    <build-loader v-model="showBuildLoader" />
 </template>
 
-<style lang="scss">
-.sort {
-    --el-radio-font-size: 16px;
-    --el-radio-font-weight: bold;
-    --el-radio-font-color: #444;
-    height: 35px;
-    width: 160px;
-}
-
+<style lang="scss" scoped>
 .info-wrapper {
     font-size: 12px;
 
     p {
         margin: 4px;
+    }
+}
+
+.content {
+    margin-top: 24px;
+
+    .row {
+        margin-top: 15px;
+    }
+
+    .small {
+        font-size: 12px;
+        color: gray;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .text-btn {
+        color: $primary-color;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 </style>

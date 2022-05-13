@@ -39,7 +39,7 @@ watch(() => props.modelValue, (value) => {
     artToLock.value = []
     artToUnlock.value = []
     for (let a of store.state.artifacts) {
-        if (a.data.source != 'good') continue
+        if (a.data.source != 'yas-lock/good') continue
         if (a.lock && !a.data.lock) artToLock.value.push(a)
         if (!a.lock && a.data.lock) artToUnlock.value.push(a)
     }
@@ -53,7 +53,7 @@ const exportArts = () => {
     show.value = false
     let indices = []
     for (let a of store.state.artifacts) {
-        if (a.data.source == 'good' && a.lock != a.data.lock) {
+        if (a.data.source == 'yas-lock/good' && a.lock != a.data.lock) {
             indices.push(a.data.index)
             // 记住更改
             if (remember.value) {

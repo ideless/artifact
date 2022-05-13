@@ -10,6 +10,7 @@ declare module 'vue' {
     ArtifactGenerator: typeof import('./src/components/ArtifactGenerator.vue')['default']
     BuildLoader: typeof import('./src/components/BuildLoader.vue')['default']
     DropSelect: typeof import('./src/components/DropSelect.vue')['default']
+    DropSelectPlus: typeof import('./src/components/DropSelectPlus.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']

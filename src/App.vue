@@ -79,7 +79,7 @@ onMounted(() => {
     top: 0;
     display: flex;
     font-size: 16px;
-    font-weight: bold;
+    // font-weight: bold;
     user-select: none;
 }
 
