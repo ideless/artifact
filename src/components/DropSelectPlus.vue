@@ -25,9 +25,8 @@ const drop = (e: MouseEvent) => {
         nextTick(() => {
             let height = Math.min(360, optionsEl.value.clientHeight),
                 rect = optionsEl.value.getBoundingClientRect()
-            // console.log(rect)
             optionsEl.value.style.height = height + 'px'
-            top.value = rect.bottom > window.innerHeight
+            top.value = rect.top + height > window.innerHeight
         })
     }
 }
@@ -37,6 +36,7 @@ const blur = (e: FocusEvent) => {
         show.value = false
     }
 }
+const optionsKey = computed(() => JSON.stringify(props.options))
 
 // 选项
 const isAll = computed<boolean>({
@@ -90,7 +90,7 @@ const selectedCount = computed(() => {
         <img class="select-arrow" src="/assets/arrow.png" />
         <span class="title">{{ title }}</span>
         <transition name="pop">
-            <div :class="optionsClass" ref="optionsEl" v-show="show" @click.stop>
+            <div :class="optionsClass" ref="optionsEl" v-show="show" @click.stop :key="optionsKey">
                 <el-scrollbar>
                     <div class="options-header">
                         <el-checkbox v-model="isAll" :indeterminate="isPartial" @change="onSelectAllChange">

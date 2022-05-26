@@ -39,5 +39,5 @@ export interface IState {
     canExport: boolean
     nReload: number
     loading: boolean
-    nUpdFilter: number
+    nResetFilter: number
 }

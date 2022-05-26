@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+import "MaterialDeleteInfo.proto";
+
+message Material {
+	uint32 count = 1;
+	MaterialDeleteInfo delete_info = 2;
+}

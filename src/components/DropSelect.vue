@@ -26,7 +26,7 @@ const drop = (e: MouseEvent) => {
                 rect = optionsEl.value.getBoundingClientRect()
             // console.log(rect)
             optionsEl.value.style.height = height + 'px'
-            top.value = rect.bottom > window.innerHeight
+            top.value = rect.top + height > window.innerHeight
         })
     }
 }
@@ -36,6 +36,7 @@ const blur = (e: FocusEvent) => {
         show.value = false
     }
 }
+const optionsKey = computed(() => JSON.stringify(props.options))
 
 // dom class
 const rootClass = computed(() => ({
@@ -67,7 +68,7 @@ const select = (key: string) => {
         <img class="select-arrow" src="/assets/arrow.png" />
         <span class="title">{{ title }}</span>
         <transition name="pop">
-            <div :class="optionsClass" ref="optionsEl" v-show="show">
+            <div :class="optionsClass" ref="optionsEl" v-show="show" :key="optionsKey">
                 <el-scrollbar>
                     <div :class="{ option: true, selected: o.key == modelValue }" v-for="o in options"
                         @click="select(o.key)">

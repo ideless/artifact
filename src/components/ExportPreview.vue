@@ -19,7 +19,7 @@ const show = computed<boolean>({
 const artToLock = ref<Artifact[]>([])
 const artToLockShowCount = ref(0)
 const loadArtToLock = () => {
-    console.log('load art to lock')
+    // console.log('load art to lock')
     if (artToLockShowCount.value < artToLock.value.length) {
         artToLockShowCount.value = Math.min(artToLock.value.length, artToLockShowCount.value + 10)
     }
@@ -28,7 +28,7 @@ const loadArtToLockDisabled = computed(() => artToLockShowCount.value >= artToLo
 const artToUnlock = ref<Artifact[]>([])
 const artToUnlockShowCount = ref(0)
 const loadArtToUnlock = () => {
-    console.log('load art to unlock')
+    // console.log('load art to unlock')
     if (artToUnlockShowCount.value < artToUnlock.value.length) {
         artToUnlockShowCount.value = Math.min(artToUnlock.value.length, artToUnlockShowCount.value + 10)
     }
@@ -39,13 +39,13 @@ watch(() => props.modelValue, (value) => {
     artToLock.value = []
     artToUnlock.value = []
     for (let a of store.state.artifacts) {
-        if (a.data.source != 'yas-lock/good') continue
+        if (a.data.source != 'yas-lock/good' && a.data.source != 'pcap/good') continue
         if (a.lock && !a.data.lock) artToLock.value.push(a)
         if (!a.lock && a.data.lock) artToUnlock.value.push(a)
     }
     artToLockShowCount.value = Math.min(artToLock.value.length, 10)
     artToUnlockShowCount.value = Math.min(artToUnlock.value.length, 10)
-    console.log(artToLockShowCount.value, artToUnlockShowCount.value)
+    // console.log(artToLockShowCount.value, artToUnlockShowCount.value)
 })
 // 导出
 const remember = ref(true)

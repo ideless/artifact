@@ -39,7 +39,7 @@ export const store = createStore<IState>({
             canExport: false,
             nReload: 0, // for UI refreshing
             loading: false,
-            nUpdFilter: 0, // 更新filter
+            nResetFilter: 0, // 更新filter
         }
     },
     getters: {
@@ -81,7 +81,7 @@ export const store = createStore<IState>({
         setArtifacts({ state, dispatch }, payload) {
             state.canExport = payload.canExport
             state.artifacts = payload.artifacts
-            state.nUpdFilter++
+            state.nResetFilter++
             dispatch('updFilteredArtifacts')
         },
         updFilteredArtifacts({ state }) {
@@ -188,7 +188,7 @@ export const store = createStore<IState>({
             // Array.concat貌似不好用，只能一个个push
             for (let a of payload.artifacts)
                 state.artifacts.push(a)
-            state.nUpdFilter++
+            state.nResetFilter++
             dispatch('updFilteredArtifacts') // 也许可以改为部分更新
         },
         flipLock({ state }, payload) {

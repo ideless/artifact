@@ -3,7 +3,7 @@ import SectionTitle from './SectionTitle.vue';
 import DropSelectPlus from './DropSelectPlus.vue';
 import RangeSlider from './RangeSlider.vue';
 import chs from '../ys/locale/chs';
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import { useStore } from '../store';
 import { Artifact } from '../ys/artifact';
 import data from '../ys/data';
@@ -120,7 +120,7 @@ const minorMustNotHave = computed<string[]>({
     set(v) { store.commit('setFilter', { key: 'minorMustNotHave', value: v }) }
 })
 // 更新，填充
-watch(() => store.state.nUpdFilter, () => {
+watch(() => store.state.nResetFilter, () => {
     store.commit('setFilter', { key: 'set', value: setOptions.value.map(o => o.key) })
     store.commit('setFilter', { key: 'slot', value: slotOptions.value.map(o => o.key) })
     store.commit('setFilter', { key: 'main', value: mainOptions.value.map(o => o.key) })

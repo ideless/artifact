@@ -16,6 +16,8 @@
         "sourceMap": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
+        "allowJs": true,
+        "forceConsistentCasingInFileNames": true,
         "lib": [
             "esnext",
             "dom"

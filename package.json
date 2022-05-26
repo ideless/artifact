@@ -4,11 +4,14 @@
     "scripts": {
         "dev": "vite",
         "build": "vue-tsc --noEmit && vite build",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "proto": "cd src/ys/p2p && pbjs -t static-module -w es6 --force-long -o proto.js proto/*.proto && pbts -o proto.d.ts proto.js"
     },
     "dependencies": {
         "axios": "^0.26.0",
         "element-plus": "^1.3.0-beta.9",
+        "long": "^5.2.0",
+        "protobufjs": "^6.11.2",
         "sass": "^1.49.0",
         "vue": "^3.2.25",
         "vue-router": "4",

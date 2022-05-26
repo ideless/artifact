@@ -127,6 +127,7 @@ const openBuildLoader = () => showBuildLoader.value = true
 
 .content {
     margin-top: 24px;
+    padding: 0 10px;
 
     .row {
         margin-top: 15px;
