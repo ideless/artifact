@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AlikeLocker: typeof import('./src/components/AlikeLocker.vue')['default']
     ArtifactCard: typeof import('./src/components/ArtifactCard.vue')['default']
     ArtifactCreator: typeof import('./src/components/ArtifactCreator.vue')['default']
     ArtifactEditor: typeof import('./src/components/ArtifactEditor.vue')['default']

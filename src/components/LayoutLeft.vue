@@ -4,11 +4,12 @@ import ArtifactEditor from './ArtifactEditor.vue';
 import ArtifactCreator from './ArtifactCreator.vue';
 import ArtifactGenerator from './ArtifactGenerator.vue';
 import PartialExport from './PartialExport.vue';
+import AlikeLocker from './AlikeLocker.vue';
 import Grid from 'vue-virtual-scroll-grid'
 import { useStore } from '../store';
 import { computed, ref, watch } from 'vue';
 import type { ElScrollbar } from 'element-plus'
-import { View, Sort, CirclePlus, MagicStick } from '@element-plus/icons-vue'
+import { View, Sort, CirclePlus, MagicStick, Stopwatch } from '@element-plus/icons-vue'
 import { Artifact } from '../ys/artifact';
 const store = useStore()
 const stat = computed(() => {
@@ -22,6 +23,10 @@ const stat = computed(() => {
 })
 const flipLock = (index: number) => {
     store.dispatch('flipLock', { index })
+    if (alikeEnabled.value) {
+        targetIndex.value = index
+        showAlike.value = true
+    }
 }
 const selectMode = ref(false)
 const selection = ref([] as number[])
@@ -155,6 +160,10 @@ const showAffnum = ref(false)
 const showCreator = ref(false)
 // 随机生成
 const showGenerator = ref(false)
+// 相似圣遗物
+const alikeEnabled = ref(true)
+const showAlike = ref(false)
+const targetIndex = ref(-1)
 </script>
 
 <template>
@@ -168,6 +177,12 @@ const showGenerator = ref(false)
                             <Sort />
                         </el-icon>
                         <span>倒序</span>
+                    </div>
+                    <div :class="{ btn: true, checked: alikeEnabled }" @click="alikeEnabled = !alikeEnabled">
+                        <el-icon>
+                            <Stopwatch />
+                        </el-icon>
+                        <span>联想</span>
                     </div>
                     <div :class="{ btn: true, checked: showAffnum }" @click="showAffnum = !showAffnum">
                         <el-icon>
@@ -220,6 +235,7 @@ const showGenerator = ref(false)
     <artifact-creator v-model="showCreator" />
     <artifact-generator v-model="showGenerator" />
     <partial-export v-model="showExport" :artifacts="artifactsToExport" />
+    <alike-locker v-model="showAlike" :index="targetIndex" />
 </template>
 
 <style lang="scss" scoped>
