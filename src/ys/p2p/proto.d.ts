@@ -490,6 +490,15 @@ export interface IGetPlayerTokenRsp {
 
     /** GetPlayerTokenRsp clientIpStr */
     clientIpStr?: (string|null);
+
+    /** GetPlayerTokenRsp birthday */
+    birthday?: (string|null);
+
+    /** GetPlayerTokenRsp NNCIBOLDIAI */
+    NNCIBOLDIAI?: (number|null);
+
+    /** GetPlayerTokenRsp FNECFLEAKKO */
+    FNECFLEAKKO?: (boolean|null);
 }
 
 /** Represents a GetPlayerTokenRsp. */
@@ -573,6 +582,15 @@ export class GetPlayerTokenRsp implements IGetPlayerTokenRsp {
     /** GetPlayerTokenRsp clientIpStr. */
     public clientIpStr: string;
 
+    /** GetPlayerTokenRsp birthday. */
+    public birthday: string;
+
+    /** GetPlayerTokenRsp NNCIBOLDIAI. */
+    public NNCIBOLDIAI: number;
+
+    /** GetPlayerTokenRsp FNECFLEAKKO. */
+    public FNECFLEAKKO: boolean;
+
     /**
      * Creates a new GetPlayerTokenRsp instance using the specified properties.
      * @param [properties] Properties to set
@@ -651,7 +669,7 @@ export namespace GetPlayerTokenRsp {
         NONE = 0,
         ENET_CHANNEL_ID = 0,
         ENET_IS_RELIABLE = 1,
-        CMD_ID = 118
+        CMD_ID = 131
     }
 }
 
@@ -1379,7 +1397,7 @@ export namespace PlayerStoreNotify {
         NONE = 0,
         ENET_CHANNEL_ID = 0,
         ENET_IS_RELIABLE = 1,
-        CMD_ID = 649
+        CMD_ID = 609
     }
 }
 

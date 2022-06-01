@@ -42,8 +42,8 @@ export default {
                 try {
                     cmp(r1.equip.reliquary.level, r2.equip.reliquary.level)
                     cmp(RelSet[Rel[r1.itemId].setId].ord, RelSet[Rel[r2.itemId].setId].ord)
-                    cmp(SlotPrior[Rel[r1.itemId].slot], SlotPrior[Rel[r1.itemId].slot])
-                    cmp(r1.equip.reliquary.appendPropIdList.length, r1.equip.reliquary.appendPropIdList.length)
+                    cmp(SlotPrior[Rel[r1.itemId].slot], SlotPrior[Rel[r2.itemId].slot])
+                    cmp(r1.equip.reliquary.appendPropIdList.length, r2.equip.reliquary.appendPropIdList.length)
                     cmp(r1.guid, r2.guid)
                     return 0
                 } catch (c) {

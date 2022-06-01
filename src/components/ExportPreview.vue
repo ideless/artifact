@@ -34,12 +34,15 @@ const loadArtToUnlock = () => {
     }
 }
 const loadArtToUnlockDisabled = computed(() => artToUnlockShowCount.value >= artToUnlock.value.length)
+function exportable(a: Artifact) {
+    return a.data.source == 'yas-lock/good' || a.data.source == 'pcap/good'
+}
 watch(() => props.modelValue, (value) => {
     if (!value) return
     artToLock.value = []
     artToUnlock.value = []
     for (let a of store.state.artifacts) {
-        if (a.data.source != 'yas-lock/good' && a.data.source != 'pcap/good') continue
+        if (!exportable(a)) continue
         if (a.lock && !a.data.lock) artToLock.value.push(a)
         if (!a.lock && a.data.lock) artToUnlock.value.push(a)
     }
@@ -53,7 +56,8 @@ const exportArts = () => {
     show.value = false
     let indices = []
     for (let a of store.state.artifacts) {
-        if (a.data.source == 'yas-lock/good' && a.lock != a.data.lock) {
+        if (!exportable(a)) continue
+        if (a.lock != a.data.lock) {
             indices.push(a.data.index)
             // 记住更改
             if (remember.value) {

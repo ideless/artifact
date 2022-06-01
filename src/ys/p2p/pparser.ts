@@ -57,17 +57,18 @@ Module().then((p2p: any) => {
 
         while (true) {
             let protobuf_size = p2p_decrypt_packet(p2p_ctx_ptr, protobuf_ptr, packetid_ptr)
-            if (protobuf_size < 0) {
+            if (protobuf_size == -1) break
+            if (protobuf_size < -1) {
                 console.debug(protobuf_size)
                 throw new Error("Fail to decrypt packet")
             }
             let packetid = (new Uint16Array(p2p.HEAPU8.buffer, packetid_ptr, 2))[0]
             // console.log(packetid)
-            if (packetid == 133) {
+            if (packetid == 131) {
                 let msg = GetPlayerTokenRsp.decode(new Uint8Array(p2p.HEAPU8.buffer, protobuf_ptr, protobuf_size))
                 // console.log(msg)
                 p2p_set_key_seed(p2p_ctx_ptr, msg.secretKeySeed.toString())
-            } else if (packetid == 660) {
+            } else if (packetid == 609) {
                 let msg = PlayerStoreNotify.decode(new Uint8Array(p2p.HEAPU8.buffer, protobuf_ptr, protobuf_size))
                 good = store.toGood(PlayerStoreNotify.toObject(msg, {
                     longs: String,

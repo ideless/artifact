@@ -1090,6 +1090,9 @@ export const GetPlayerTokenRsp = $root.GetPlayerTokenRsp = (() => {
      * @property {string|null} [clientVersionRandomKey] GetPlayerTokenRsp clientVersionRandomKey
      * @property {number|null} [regPlatform] GetPlayerTokenRsp regPlatform
      * @property {string|null} [clientIpStr] GetPlayerTokenRsp clientIpStr
+     * @property {string|null} [birthday] GetPlayerTokenRsp birthday
+     * @property {number|null} [NNCIBOLDIAI] GetPlayerTokenRsp NNCIBOLDIAI
+     * @property {boolean|null} [FNECFLEAKKO] GetPlayerTokenRsp FNECFLEAKKO
      */
 
     /**
@@ -1300,6 +1303,30 @@ export const GetPlayerTokenRsp = $root.GetPlayerTokenRsp = (() => {
     GetPlayerTokenRsp.prototype.clientIpStr = "";
 
     /**
+     * GetPlayerTokenRsp birthday.
+     * @member {string} birthday
+     * @memberof GetPlayerTokenRsp
+     * @instance
+     */
+    GetPlayerTokenRsp.prototype.birthday = "";
+
+    /**
+     * GetPlayerTokenRsp NNCIBOLDIAI.
+     * @member {number} NNCIBOLDIAI
+     * @memberof GetPlayerTokenRsp
+     * @instance
+     */
+    GetPlayerTokenRsp.prototype.NNCIBOLDIAI = 0;
+
+    /**
+     * GetPlayerTokenRsp FNECFLEAKKO.
+     * @member {boolean} FNECFLEAKKO
+     * @memberof GetPlayerTokenRsp
+     * @instance
+     */
+    GetPlayerTokenRsp.prototype.FNECFLEAKKO = false;
+
+    /**
      * Creates a new GetPlayerTokenRsp instance using the specified properties.
      * @function create
      * @memberof GetPlayerTokenRsp
@@ -1323,54 +1350,60 @@ export const GetPlayerTokenRsp = $root.GetPlayerTokenRsp = (() => {
     GetPlayerTokenRsp.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.retcode != null && Object.hasOwnProperty.call(message, "retcode"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retcode);
-        if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
-        if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
-            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.uid);
         if (message.token != null && Object.hasOwnProperty.call(message, "token"))
-            writer.uint32(/* id 4, wireType 2 =*/34).string(message.token);
-        if (message.blackUidEndTime != null && Object.hasOwnProperty.call(message, "blackUidEndTime"))
-            writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.blackUidEndTime);
-        if (message.accountType != null && Object.hasOwnProperty.call(message, "accountType"))
-            writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.accountType);
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.token);
+        if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
+            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.uid);
+        if (message.platformType != null && Object.hasOwnProperty.call(message, "platformType"))
+            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.platformType);
         if (message.accountUid != null && Object.hasOwnProperty.call(message, "accountUid"))
-            writer.uint32(/* id 7, wireType 2 =*/58).string(message.accountUid);
+            writer.uint32(/* id 4, wireType 2 =*/34).string(message.accountUid);
         if (message.isProficientPlayer != null && Object.hasOwnProperty.call(message, "isProficientPlayer"))
-            writer.uint32(/* id 8, wireType 0 =*/64).bool(message.isProficientPlayer);
-        if (message.secretKey != null && Object.hasOwnProperty.call(message, "secretKey"))
-            writer.uint32(/* id 9, wireType 2 =*/74).string(message.secretKey);
-        if (message.gmUid != null && Object.hasOwnProperty.call(message, "gmUid"))
-            writer.uint32(/* id 10, wireType 0 =*/80).uint32(message.gmUid);
+            writer.uint32(/* id 5, wireType 0 =*/40).bool(message.isProficientPlayer);
+        if (message.securityCmdBuffer != null && Object.hasOwnProperty.call(message, "securityCmdBuffer"))
+            writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.securityCmdBuffer);
+        if (message.retcode != null && Object.hasOwnProperty.call(message, "retcode"))
+            writer.uint32(/* id 7, wireType 0 =*/56).int32(message.retcode);
+        if (message.extraBinData != null && Object.hasOwnProperty.call(message, "extraBinData"))
+            writer.uint32(/* id 8, wireType 2 =*/66).bytes(message.extraBinData);
+        if (message.isGuest != null && Object.hasOwnProperty.call(message, "isGuest"))
+            writer.uint32(/* id 9, wireType 0 =*/72).bool(message.isGuest);
+        if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+            writer.uint32(/* id 10, wireType 2 =*/82).string(message.msg);
         if (message.secretKeySeed != null && Object.hasOwnProperty.call(message, "secretKeySeed"))
             writer.uint32(/* id 11, wireType 0 =*/88).uint64(message.secretKeySeed);
-        if (message.securityCmdBuffer != null && Object.hasOwnProperty.call(message, "securityCmdBuffer"))
-            writer.uint32(/* id 12, wireType 2 =*/98).bytes(message.securityCmdBuffer);
-        if (message.platformType != null && Object.hasOwnProperty.call(message, "platformType"))
-            writer.uint32(/* id 13, wireType 0 =*/104).uint32(message.platformType);
-        if (message.extraBinData != null && Object.hasOwnProperty.call(message, "extraBinData"))
-            writer.uint32(/* id 14, wireType 2 =*/114).bytes(message.extraBinData);
-        if (message.isGuest != null && Object.hasOwnProperty.call(message, "isGuest"))
-            writer.uint32(/* id 15, wireType 0 =*/120).bool(message.isGuest);
-        if (message.channelId != null && Object.hasOwnProperty.call(message, "channelId"))
-            writer.uint32(/* id 16, wireType 0 =*/128).uint32(message.channelId);
-        if (message.subChannelId != null && Object.hasOwnProperty.call(message, "subChannelId"))
-            writer.uint32(/* id 17, wireType 0 =*/136).uint32(message.subChannelId);
-        if (message.tag != null && Object.hasOwnProperty.call(message, "tag"))
-            writer.uint32(/* id 18, wireType 0 =*/144).uint32(message.tag);
-        if (message.countryCode != null && Object.hasOwnProperty.call(message, "countryCode"))
-            writer.uint32(/* id 19, wireType 2 =*/154).string(message.countryCode);
-        if (message.isLoginWhiteList != null && Object.hasOwnProperty.call(message, "isLoginWhiteList"))
-            writer.uint32(/* id 20, wireType 0 =*/160).bool(message.isLoginWhiteList);
+        if (message.accountType != null && Object.hasOwnProperty.call(message, "accountType"))
+            writer.uint32(/* id 12, wireType 0 =*/96).uint32(message.accountType);
+        if (message.secretKey != null && Object.hasOwnProperty.call(message, "secretKey"))
+            writer.uint32(/* id 13, wireType 2 =*/106).string(message.secretKey);
+        if (message.gmUid != null && Object.hasOwnProperty.call(message, "gmUid"))
+            writer.uint32(/* id 14, wireType 0 =*/112).uint32(message.gmUid);
+        if (message.blackUidEndTime != null && Object.hasOwnProperty.call(message, "blackUidEndTime"))
+            writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.blackUidEndTime);
         if (message.psnId != null && Object.hasOwnProperty.call(message, "psnId"))
-            writer.uint32(/* id 21, wireType 2 =*/170).string(message.psnId);
-        if (message.clientVersionRandomKey != null && Object.hasOwnProperty.call(message, "clientVersionRandomKey"))
-            writer.uint32(/* id 22, wireType 2 =*/178).string(message.clientVersionRandomKey);
+            writer.uint32(/* id 245, wireType 2 =*/1962).string(message.psnId);
         if (message.regPlatform != null && Object.hasOwnProperty.call(message, "regPlatform"))
-            writer.uint32(/* id 23, wireType 0 =*/184).uint32(message.regPlatform);
+            writer.uint32(/* id 633, wireType 0 =*/5064).uint32(message.regPlatform);
+        if (message.countryCode != null && Object.hasOwnProperty.call(message, "countryCode"))
+            writer.uint32(/* id 739, wireType 2 =*/5914).string(message.countryCode);
+        if (message.isLoginWhiteList != null && Object.hasOwnProperty.call(message, "isLoginWhiteList"))
+            writer.uint32(/* id 977, wireType 0 =*/7816).bool(message.isLoginWhiteList);
+        if (message.birthday != null && Object.hasOwnProperty.call(message, "birthday"))
+            writer.uint32(/* id 1109, wireType 2 =*/8874).string(message.birthday);
         if (message.clientIpStr != null && Object.hasOwnProperty.call(message, "clientIpStr"))
-            writer.uint32(/* id 24, wireType 2 =*/194).string(message.clientIpStr);
+            writer.uint32(/* id 1238, wireType 2 =*/9906).string(message.clientIpStr);
+        if (message.clientVersionRandomKey != null && Object.hasOwnProperty.call(message, "clientVersionRandomKey"))
+            writer.uint32(/* id 1387, wireType 2 =*/11098).string(message.clientVersionRandomKey);
+        if (message.channelId != null && Object.hasOwnProperty.call(message, "channelId"))
+            writer.uint32(/* id 1614, wireType 0 =*/12912).uint32(message.channelId);
+        if (message.FNECFLEAKKO != null && Object.hasOwnProperty.call(message, "FNECFLEAKKO"))
+            writer.uint32(/* id 1679, wireType 0 =*/13432).bool(message.FNECFLEAKKO);
+        if (message.NNCIBOLDIAI != null && Object.hasOwnProperty.call(message, "NNCIBOLDIAI"))
+            writer.uint32(/* id 1728, wireType 0 =*/13824).uint32(message.NNCIBOLDIAI);
+        if (message.tag != null && Object.hasOwnProperty.call(message, "tag"))
+            writer.uint32(/* id 1855, wireType 0 =*/14840).uint32(message.tag);
+        if (message.subChannelId != null && Object.hasOwnProperty.call(message, "subChannelId"))
+            writer.uint32(/* id 1911, wireType 0 =*/15288).uint32(message.subChannelId);
         return writer;
     };
 
@@ -1405,77 +1438,86 @@ export const GetPlayerTokenRsp = $root.GetPlayerTokenRsp = (() => {
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
+                case 7:
                     message.retcode = reader.int32();
                     break;
-                case 2:
+                case 10:
                     message.msg = reader.string();
                     break;
-                case 3:
+                case 2:
                     message.uid = reader.uint32();
                     break;
-                case 4:
+                case 1:
                     message.token = reader.string();
                     break;
-                case 5:
+                case 15:
                     message.blackUidEndTime = reader.uint32();
                     break;
-                case 6:
+                case 12:
                     message.accountType = reader.uint32();
                     break;
-                case 7:
+                case 4:
                     message.accountUid = reader.string();
                     break;
-                case 8:
+                case 5:
                     message.isProficientPlayer = reader.bool();
                     break;
-                case 9:
+                case 13:
                     message.secretKey = reader.string();
                     break;
-                case 10:
+                case 14:
                     message.gmUid = reader.uint32();
                     break;
                 case 11:
                     message.secretKeySeed = reader.uint64();
                     break;
-                case 12:
+                case 6:
                     message.securityCmdBuffer = reader.bytes();
                     break;
-                case 13:
+                case 3:
                     message.platformType = reader.uint32();
                     break;
-                case 14:
+                case 8:
                     message.extraBinData = reader.bytes();
                     break;
-                case 15:
+                case 9:
                     message.isGuest = reader.bool();
                     break;
-                case 16:
+                case 1614:
                     message.channelId = reader.uint32();
                     break;
-                case 17:
+                case 1911:
                     message.subChannelId = reader.uint32();
                     break;
-                case 18:
+                case 1855:
                     message.tag = reader.uint32();
                     break;
-                case 19:
+                case 739:
                     message.countryCode = reader.string();
                     break;
-                case 20:
+                case 977:
                     message.isLoginWhiteList = reader.bool();
                     break;
-                case 21:
+                case 245:
                     message.psnId = reader.string();
                     break;
-                case 22:
+                case 1387:
                     message.clientVersionRandomKey = reader.string();
                     break;
-                case 23:
+                case 633:
                     message.regPlatform = reader.uint32();
                     break;
-                case 24:
+                case 1238:
                     message.clientIpStr = reader.string();
+                    break;
+                case 1109:
+                    message.birthday = reader.string();
+                    break;
+                case 1728:
+                    message.NNCIBOLDIAI = reader.uint32();
+                    break;
+                case 1679:
+                    message.FNECFLEAKKO = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1584,6 +1626,15 @@ export const GetPlayerTokenRsp = $root.GetPlayerTokenRsp = (() => {
         if (message.clientIpStr != null && message.hasOwnProperty("clientIpStr"))
             if (!$util.isString(message.clientIpStr))
                 return "clientIpStr: string expected";
+        if (message.birthday != null && message.hasOwnProperty("birthday"))
+            if (!$util.isString(message.birthday))
+                return "birthday: string expected";
+        if (message.NNCIBOLDIAI != null && message.hasOwnProperty("NNCIBOLDIAI"))
+            if (!$util.isInteger(message.NNCIBOLDIAI))
+                return "NNCIBOLDIAI: integer expected";
+        if (message.FNECFLEAKKO != null && message.hasOwnProperty("FNECFLEAKKO"))
+            if (typeof message.FNECFLEAKKO !== "boolean")
+                return "FNECFLEAKKO: boolean expected";
         return null;
     };
 
@@ -1660,6 +1711,12 @@ export const GetPlayerTokenRsp = $root.GetPlayerTokenRsp = (() => {
             message.regPlatform = object.regPlatform >>> 0;
         if (object.clientIpStr != null)
             message.clientIpStr = String(object.clientIpStr);
+        if (object.birthday != null)
+            message.birthday = String(object.birthday);
+        if (object.NNCIBOLDIAI != null)
+            message.NNCIBOLDIAI = object.NNCIBOLDIAI >>> 0;
+        if (object.FNECFLEAKKO != null)
+            message.FNECFLEAKKO = Boolean(object.FNECFLEAKKO);
         return message;
     };
 
@@ -1677,21 +1734,11 @@ export const GetPlayerTokenRsp = $root.GetPlayerTokenRsp = (() => {
             options = {};
         let object = {};
         if (options.defaults) {
-            object.retcode = 0;
-            object.msg = "";
-            object.uid = 0;
             object.token = "";
-            object.blackUidEndTime = 0;
-            object.accountType = 0;
+            object.uid = 0;
+            object.platformType = 0;
             object.accountUid = "";
             object.isProficientPlayer = false;
-            object.secretKey = "";
-            object.gmUid = 0;
-            if ($util.Long) {
-                let long = new $util.Long(0, 0, true);
-                object.secretKeySeed = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-            } else
-                object.secretKeySeed = options.longs === String ? "0" : 0;
             if (options.bytes === String)
                 object.securityCmdBuffer = "";
             else {
@@ -1699,7 +1746,7 @@ export const GetPlayerTokenRsp = $root.GetPlayerTokenRsp = (() => {
                 if (options.bytes !== Array)
                     object.securityCmdBuffer = $util.newBuffer(object.securityCmdBuffer);
             }
-            object.platformType = 0;
+            object.retcode = 0;
             if (options.bytes === String)
                 object.extraBinData = "";
             else {
@@ -1708,67 +1755,86 @@ export const GetPlayerTokenRsp = $root.GetPlayerTokenRsp = (() => {
                     object.extraBinData = $util.newBuffer(object.extraBinData);
             }
             object.isGuest = false;
-            object.channelId = 0;
-            object.subChannelId = 0;
-            object.tag = 0;
+            object.msg = "";
+            if ($util.Long) {
+                let long = new $util.Long(0, 0, true);
+                object.secretKeySeed = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.secretKeySeed = options.longs === String ? "0" : 0;
+            object.accountType = 0;
+            object.secretKey = "";
+            object.gmUid = 0;
+            object.blackUidEndTime = 0;
+            object.psnId = "";
+            object.regPlatform = 0;
             object.countryCode = "";
             object.isLoginWhiteList = false;
-            object.psnId = "";
-            object.clientVersionRandomKey = "";
-            object.regPlatform = 0;
+            object.birthday = "";
             object.clientIpStr = "";
+            object.clientVersionRandomKey = "";
+            object.channelId = 0;
+            object.FNECFLEAKKO = false;
+            object.NNCIBOLDIAI = 0;
+            object.tag = 0;
+            object.subChannelId = 0;
         }
-        if (message.retcode != null && message.hasOwnProperty("retcode"))
-            object.retcode = message.retcode;
-        if (message.msg != null && message.hasOwnProperty("msg"))
-            object.msg = message.msg;
-        if (message.uid != null && message.hasOwnProperty("uid"))
-            object.uid = message.uid;
         if (message.token != null && message.hasOwnProperty("token"))
             object.token = message.token;
-        if (message.blackUidEndTime != null && message.hasOwnProperty("blackUidEndTime"))
-            object.blackUidEndTime = message.blackUidEndTime;
-        if (message.accountType != null && message.hasOwnProperty("accountType"))
-            object.accountType = message.accountType;
+        if (message.uid != null && message.hasOwnProperty("uid"))
+            object.uid = message.uid;
+        if (message.platformType != null && message.hasOwnProperty("platformType"))
+            object.platformType = message.platformType;
         if (message.accountUid != null && message.hasOwnProperty("accountUid"))
             object.accountUid = message.accountUid;
         if (message.isProficientPlayer != null && message.hasOwnProperty("isProficientPlayer"))
             object.isProficientPlayer = message.isProficientPlayer;
-        if (message.secretKey != null && message.hasOwnProperty("secretKey"))
-            object.secretKey = message.secretKey;
-        if (message.gmUid != null && message.hasOwnProperty("gmUid"))
-            object.gmUid = message.gmUid;
+        if (message.securityCmdBuffer != null && message.hasOwnProperty("securityCmdBuffer"))
+            object.securityCmdBuffer = options.bytes === String ? $util.base64.encode(message.securityCmdBuffer, 0, message.securityCmdBuffer.length) : options.bytes === Array ? Array.prototype.slice.call(message.securityCmdBuffer) : message.securityCmdBuffer;
+        if (message.retcode != null && message.hasOwnProperty("retcode"))
+            object.retcode = message.retcode;
+        if (message.extraBinData != null && message.hasOwnProperty("extraBinData"))
+            object.extraBinData = options.bytes === String ? $util.base64.encode(message.extraBinData, 0, message.extraBinData.length) : options.bytes === Array ? Array.prototype.slice.call(message.extraBinData) : message.extraBinData;
+        if (message.isGuest != null && message.hasOwnProperty("isGuest"))
+            object.isGuest = message.isGuest;
+        if (message.msg != null && message.hasOwnProperty("msg"))
+            object.msg = message.msg;
         if (message.secretKeySeed != null && message.hasOwnProperty("secretKeySeed"))
             if (typeof message.secretKeySeed === "number")
                 object.secretKeySeed = options.longs === String ? String(message.secretKeySeed) : message.secretKeySeed;
             else
                 object.secretKeySeed = options.longs === String ? $util.Long.prototype.toString.call(message.secretKeySeed) : options.longs === Number ? new $util.LongBits(message.secretKeySeed.low >>> 0, message.secretKeySeed.high >>> 0).toNumber(true) : message.secretKeySeed;
-        if (message.securityCmdBuffer != null && message.hasOwnProperty("securityCmdBuffer"))
-            object.securityCmdBuffer = options.bytes === String ? $util.base64.encode(message.securityCmdBuffer, 0, message.securityCmdBuffer.length) : options.bytes === Array ? Array.prototype.slice.call(message.securityCmdBuffer) : message.securityCmdBuffer;
-        if (message.platformType != null && message.hasOwnProperty("platformType"))
-            object.platformType = message.platformType;
-        if (message.extraBinData != null && message.hasOwnProperty("extraBinData"))
-            object.extraBinData = options.bytes === String ? $util.base64.encode(message.extraBinData, 0, message.extraBinData.length) : options.bytes === Array ? Array.prototype.slice.call(message.extraBinData) : message.extraBinData;
-        if (message.isGuest != null && message.hasOwnProperty("isGuest"))
-            object.isGuest = message.isGuest;
-        if (message.channelId != null && message.hasOwnProperty("channelId"))
-            object.channelId = message.channelId;
-        if (message.subChannelId != null && message.hasOwnProperty("subChannelId"))
-            object.subChannelId = message.subChannelId;
-        if (message.tag != null && message.hasOwnProperty("tag"))
-            object.tag = message.tag;
+        if (message.accountType != null && message.hasOwnProperty("accountType"))
+            object.accountType = message.accountType;
+        if (message.secretKey != null && message.hasOwnProperty("secretKey"))
+            object.secretKey = message.secretKey;
+        if (message.gmUid != null && message.hasOwnProperty("gmUid"))
+            object.gmUid = message.gmUid;
+        if (message.blackUidEndTime != null && message.hasOwnProperty("blackUidEndTime"))
+            object.blackUidEndTime = message.blackUidEndTime;
+        if (message.psnId != null && message.hasOwnProperty("psnId"))
+            object.psnId = message.psnId;
+        if (message.regPlatform != null && message.hasOwnProperty("regPlatform"))
+            object.regPlatform = message.regPlatform;
         if (message.countryCode != null && message.hasOwnProperty("countryCode"))
             object.countryCode = message.countryCode;
         if (message.isLoginWhiteList != null && message.hasOwnProperty("isLoginWhiteList"))
             object.isLoginWhiteList = message.isLoginWhiteList;
-        if (message.psnId != null && message.hasOwnProperty("psnId"))
-            object.psnId = message.psnId;
-        if (message.clientVersionRandomKey != null && message.hasOwnProperty("clientVersionRandomKey"))
-            object.clientVersionRandomKey = message.clientVersionRandomKey;
-        if (message.regPlatform != null && message.hasOwnProperty("regPlatform"))
-            object.regPlatform = message.regPlatform;
+        if (message.birthday != null && message.hasOwnProperty("birthday"))
+            object.birthday = message.birthday;
         if (message.clientIpStr != null && message.hasOwnProperty("clientIpStr"))
             object.clientIpStr = message.clientIpStr;
+        if (message.clientVersionRandomKey != null && message.hasOwnProperty("clientVersionRandomKey"))
+            object.clientVersionRandomKey = message.clientVersionRandomKey;
+        if (message.channelId != null && message.hasOwnProperty("channelId"))
+            object.channelId = message.channelId;
+        if (message.FNECFLEAKKO != null && message.hasOwnProperty("FNECFLEAKKO"))
+            object.FNECFLEAKKO = message.FNECFLEAKKO;
+        if (message.NNCIBOLDIAI != null && message.hasOwnProperty("NNCIBOLDIAI"))
+            object.NNCIBOLDIAI = message.NNCIBOLDIAI;
+        if (message.tag != null && message.hasOwnProperty("tag"))
+            object.tag = message.tag;
+        if (message.subChannelId != null && message.hasOwnProperty("subChannelId"))
+            object.subChannelId = message.subChannelId;
         return object;
     };
 
@@ -1790,14 +1856,14 @@ export const GetPlayerTokenRsp = $root.GetPlayerTokenRsp = (() => {
      * @property {number} NONE=0 NONE value
      * @property {number} ENET_CHANNEL_ID=0 ENET_CHANNEL_ID value
      * @property {number} ENET_IS_RELIABLE=1 ENET_IS_RELIABLE value
-     * @property {number} CMD_ID=118 CMD_ID value
+     * @property {number} CMD_ID=131 CMD_ID value
      */
     GetPlayerTokenRsp.CmdId = (function () {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "NONE"] = 0;
         values["ENET_CHANNEL_ID"] = 0;
         values[valuesById[1] = "ENET_IS_RELIABLE"] = 1;
-        values[valuesById[118] = "CMD_ID"] = 118;
+        values[valuesById[131] = "CMD_ID"] = 131;
         return values;
     })();
 
@@ -3441,13 +3507,13 @@ export const PlayerStoreNotify = $root.PlayerStoreNotify = (() => {
     PlayerStoreNotify.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.storeType != null && Object.hasOwnProperty.call(message, "storeType"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.storeType);
         if (message.itemList != null && message.itemList.length)
             for (let i = 0; i < message.itemList.length; ++i)
-                $root.Item.encode(message.itemList[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                $root.Item.encode(message.itemList[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.storeType != null && Object.hasOwnProperty.call(message, "storeType"))
+            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.storeType);
         if (message.weightLimit != null && Object.hasOwnProperty.call(message, "weightLimit"))
-            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.weightLimit);
+            writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.weightLimit);
         return writer;
     };
 
@@ -3482,15 +3548,15 @@ export const PlayerStoreNotify = $root.PlayerStoreNotify = (() => {
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
+                case 4:
                     message.storeType = reader.int32();
                     break;
-                case 2:
+                case 3:
                     if (!(message.itemList && message.itemList.length))
                         message.itemList = [];
                     message.itemList.push($root.Item.decode(reader, reader.uint32()));
                     break;
-                case 3:
+                case 15:
                     message.weightLimit = reader.uint32();
                     break;
                 default:
@@ -3612,13 +3678,13 @@ export const PlayerStoreNotify = $root.PlayerStoreNotify = (() => {
             object.storeType = options.enums === String ? "STORE_NONE" : 0;
             object.weightLimit = 0;
         }
-        if (message.storeType != null && message.hasOwnProperty("storeType"))
-            object.storeType = options.enums === String ? $root.StoreType[message.storeType] : message.storeType;
         if (message.itemList && message.itemList.length) {
             object.itemList = [];
             for (let j = 0; j < message.itemList.length; ++j)
                 object.itemList[j] = $root.Item.toObject(message.itemList[j], options);
         }
+        if (message.storeType != null && message.hasOwnProperty("storeType"))
+            object.storeType = options.enums === String ? $root.StoreType[message.storeType] : message.storeType;
         if (message.weightLimit != null && message.hasOwnProperty("weightLimit"))
             object.weightLimit = message.weightLimit;
         return object;
@@ -3642,14 +3708,14 @@ export const PlayerStoreNotify = $root.PlayerStoreNotify = (() => {
      * @property {number} NONE=0 NONE value
      * @property {number} ENET_CHANNEL_ID=0 ENET_CHANNEL_ID value
      * @property {number} ENET_IS_RELIABLE=1 ENET_IS_RELIABLE value
-     * @property {number} CMD_ID=649 CMD_ID value
+     * @property {number} CMD_ID=609 CMD_ID value
      */
     PlayerStoreNotify.CmdId = (function () {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "NONE"] = 0;
         values["ENET_CHANNEL_ID"] = 0;
         values[valuesById[1] = "ENET_IS_RELIABLE"] = 1;
-        values[valuesById[649] = "CMD_ID"] = 649;
+        values[valuesById[609] = "CMD_ID"] = 609;
         return values;
     })();
 

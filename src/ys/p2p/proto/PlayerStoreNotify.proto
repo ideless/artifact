@@ -9,10 +9,10 @@ message PlayerStoreNotify {
 		NONE = 0;
 		ENET_CHANNEL_ID = 0;
 		ENET_IS_RELIABLE = 1;
-		CMD_ID = 649;
+		CMD_ID = 609;
 	}
 
-	StoreType store_type = 1;
-	repeated Item item_list = 2;
-	uint32 weight_limit = 3;
+	StoreType store_type = 4;
+	repeated Item item_list = 3;
+	uint32 weight_limit = 15;
 }
