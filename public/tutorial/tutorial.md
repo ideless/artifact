@@ -35,16 +35,17 @@
 
 注意事项：
 
-- 用来抓包的电脑不要开代理
 - 先打开抓包工具，再打开原神（如果原神正在运行，先关闭它）
 - 按正常流程登录游戏，在进入大门并读条到一格以上后中止抓包
 - 以pcap格式导出抓包数据，再导入到圣遗物强化助手即可
-- 抓包时间不要太长，否则pcap文件太大可能无法导入圣遗物强化助手
+- pcap文件太大（推荐10MB以下）可能无法导入圣遗物强化助手，要么过滤端口，要么抓包时间不要太长
 - pcap文件**不要传给别人**，圣遗物强化助手不会收集pcap数据，你可以打开开发者工具检查网络请求
 
 成功导入pcap到圣遗物强化助手后，可以再从圣遗物强化助手导出数据为莫娜占卜铺/原魔计算器/Genshin Optimizer等格式。注意不是圣遗物强化助手控制面板的导出，而是进入多选模式后弹出的**部分导出**。
 
 ![](img/1038.png)
+
+以下介绍tcpdump和wireshark的操作流程。
 
 ### 1.1.1 Tcpdump
 
@@ -59,13 +60,25 @@ MacOS和Linux自带无需下载，Windows需要下载而且比较麻烦。
 sudo tcpdump -i [这里替换成接口名，例如en0] udp port 22101 or udp port 22102 -w [这里替换成导出文件的地址，例如~/Desktops/test.pcap]
 ```
 
+例子：
+
+```sh
+sudo tcpdump -i wlo1 udp port 22101 or udp port 22102 -w test.pcap
+```
+
 ### 1.1.2 Wireshark
 
 全平台可用，需下载安装，傻瓜式操作。以下以Windows系统为例。
 
-从[官网](https://www.wireshark.org/#download)或[百度网盘]()下载安装包。
+从[官网](https://www.wireshark.org/#download)或[百度网盘（暂时没有）]()下载安装包。
 
 安装，一路默认即可。
+
+**视频教程：**
+
+<iframe src="//player.bilibili.com/player.html?aid=384971148&bvid=BV1hZ4y1q78V&cid=743695978&page=1&high_quality=1&danmaku=0" width="100%" height="500" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+**图文教程：**
 
 打开Wireshark，双击你要监听的接口开始抓包（我这里是WLAN，正常上网的接口后面会有波形图）。
 
@@ -75,11 +88,27 @@ sudo tcpdump -i [这里替换成接口名，例如en0] udp port 22101 or udp por
 
 ![](img/4141.png)
 
-抓包完成后另存为test.pcap文件。
+（可选）应用筛选规则`udp.port == 22101 || udp.port == 22102`
 
-![](img/2779.png)
+![](img/4525.png)
 
-![](img/1849.png)
+（可选）收藏该规则
+
+![](img/5446.png)
+
+打开游戏，开门，进度条到一格以上就可以终止抓包了
+
+![](img/5292.png)
+
+导出特定分组
+
+![](img/6977.png)
+
+保存为pcap格式
+
+![](img/8908.png)
+
+最后把pcap文件导入到圣遗物强化助手即可。
 
 ## 1.2 OCR
 
@@ -115,7 +144,7 @@ yas-lock是由我对wormtql的 [yas](https://github.com/wormtql/yas) 的代码�
 
 ![](img/3136.png)
 
-打开背包的圣遗物界面，并翻到最上面：
+打开背包的圣遗物界面，并翻到最上面（截图已过时，现在是一行8个，但我懒得更新截图了）：
 
 ![](img/3604.png)
 

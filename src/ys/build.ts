@@ -282,6 +282,7 @@ export default <{ [charKey: string]: IBuildExt }>{
         },
         weight: { hp: 0, atk: 0, def: 0, hpp: 1, atkp: 0.5, defp: 0, em: 0.5, er: 0.5, cr: 0, cd: 0 }
     },
+    /*
     KamisatoAyato: {
         element: 'hydro',
         set: ["EchoesOfAnOffering", "GladiatorsFinale", "HeartOfDepth"],
@@ -294,6 +295,7 @@ export default <{ [charKey: string]: IBuildExt }>{
         },
         weight: { hp: 0, atk: 0, def: 0, hpp: 0.25, atkp: 0.5, defp: 0, em: 0.25, er: 0.25, cr: 1, cd: 1 }
     },
+    */
     Ganyu: {
         element: 'cryo',
         set: ["NoblesseOblige", "GladiatorsFinale", "ShimenawasReminiscence", "EmblemOfSeveredFate", "BlizzardStrayer", "WanderersTroupe"],
@@ -582,6 +584,7 @@ export default <{ [charKey: string]: IBuildExt }>{
         },
         weight: { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0.5, defp: 0, em: 0.5, er: 0.5, cr: 1, cd: 1 }
     },
+    /*
     TravelerAnemo: {
         element: 'anemo',
         set: ["", "ViridescentVenerer"],
@@ -618,4 +621,5 @@ export default <{ [charKey: string]: IBuildExt }>{
         },
         weight: { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0.5, defp: 0, em: 0.5, er: 0.5, cr: 1, cd: 1 }
     }
+    */
 }
