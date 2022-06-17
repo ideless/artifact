@@ -71,7 +71,7 @@ Module["Parser"] = function() {
   while (packet = this.decryptPacket()) {
    callback(packet, this);
   }
-  this.close(data);
+  this.close();
  };
 };
 
