@@ -282,20 +282,30 @@ export default <{ [charKey: string]: IBuildExt }>{
         },
         weight: { hp: 0, atk: 0, def: 0, hpp: 1, atkp: 0.5, defp: 0, em: 0.5, er: 0.5, cr: 0, cd: 0 }
     },
-    /*
     KamisatoAyato: {
         element: 'hydro',
         set: ["EchoesOfAnOffering", "GladiatorsFinale", "HeartOfDepth"],
         main: {
             flower: ["hp"],
             plume: ["atk"],
-            sands: ["hpp", "er"],
-            goblet: ["hydroDB", "hpp"],
-            circlet: ["hb"]
+            sands: ["atkp"],
+            goblet: ["hydroDB"],
+            circlet: ["cr", "cd"]
         },
-        weight: { hp: 0, atk: 0, def: 0, hpp: 0.25, atkp: 0.5, defp: 0, em: 0.25, er: 0.25, cr: 1, cd: 1 }
+        weight: { hp: 0, atk: 0, def: 0, hpp: 0.25, atkp: 0.5, defp: 0, em: 0, er: 0, cr: 1, cd: 1 }
     },
-    */
+    Yelan: {
+        element: 'hydro',
+        set: ["EmblemOfSeveredFate", "HeartOfDepth", "NoblesseOblige", "TenacityOfTheMillelith"],
+        main: {
+            flower: ["hp"],
+            plume: ["atk"],
+            sands: ["hpp", "er"],
+            goblet: ["hydroDB"],
+            circlet: ["cr", "cd"]
+        },
+        weight: { hp: 0, atk: 0, def: 0, hpp: 1, atkp: 0, defp: 0, em: 0, er: 1, cr: 1, cd: 1 }
+    },
     Ganyu: {
         element: 'cryo',
         set: ["NoblesseOblige", "GladiatorsFinale", "ShimenawasReminiscence", "EmblemOfSeveredFate", "BlizzardStrayer", "WanderersTroupe"],

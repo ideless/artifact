@@ -56,6 +56,7 @@ export default <IPreset>{
         { key: 'Xinyan', element: 'pyro', presets: [4, 9] },
         { key: 'YaeMiko', element: 'electro', presets: [8, 2] },
         { key: 'Yanfei', element: 'pyro', presets: [4, 8] },
+        { key: 'Yelan', element: 'hydro', presets: [20, 21] },
         { key: 'Yoimiya', element: 'pyro', presets: [4, 8] },
         { key: 'YunJin', element: 'geo', presets: [18] },
         { key: 'Zhongli', element: 'geo', presets: [4, 5, 6] }
@@ -81,5 +82,7 @@ export default <IPreset>{
         { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0, defp: 0, em: 1, er: 1, cr: 0, cd: 0 }, // 17: 精充
         { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0, defp: 1, em: 0, er: 1, cr: 0, cd: 0 }, // 18: 防充
         { hp: 0, atk: 0, def: 0, hpp: 0, atkp: 0, defp: 1, em: 0, er: 0, cr: 1, cd: 1 }, // 19: 防双暴
+        { hp: 0, atk: 0, def: 0, hpp: 1, atkp: 0, defp: 0, em: 0, er: 0, cr: 1, cd: 1 }, // 20: 生双暴
+        { hp: 0, atk: 0, def: 0, hpp: 1, atkp: 0, defp: 0, em: 0, er: 1, cr: 1, cd: 1 }, // 21: 生充双暴
     ]
 }

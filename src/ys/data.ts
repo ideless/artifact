@@ -120,6 +120,7 @@ export default <IData>{
         { key: 'SangonomiyaKokomi', element: 'hydro', rarity: 5 },
         { key: 'KamisatoAyato', element: 'hydro', rarity: 5 },
         { key: 'Mona', element: 'hydro', rarity: 5 },
+        { key: 'Yelan', element: 'hydro', rarity: 5 },
         // 水4
         { key: 'Xingqiu', element: 'hydro', rarity: 4 },
         { key: 'Barbara', element: 'hydro', rarity: 4 },
