@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+option java_package = "emu.grasscutter.net.proto";
 
 message Reliquary {
 	uint32 level = 1;

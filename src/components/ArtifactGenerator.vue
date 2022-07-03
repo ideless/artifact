@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue'
-import data from '../ys/data';
-import chs from '../ys/locale/chs'
-import { useStore } from '../store';
-import { Affix, Artifact } from '../ys/artifact';
-import { main } from '@popperjs/core';
+import ArtifactData from "@/ys/data/artifact"
+import chs from '@/ys/locale/chs'
+import { useStore } from '@/store';
+import { Artifact } from '@/ys/artifact';
 const props = defineProps<{
     modelValue: boolean,
 }>()
@@ -16,7 +15,7 @@ const show = computed({
     get() { return props.modelValue },
     set(value: boolean) { emit('update:modelValue', value) }
 })
-const affixes = data.minorKeys.map(key => ({
+const affixes = ArtifactData.minorKeys.map(key => ({
     value: key,
     label: chs.affix[key]
 }))
@@ -33,8 +32,8 @@ const slots = Object.entries(chs.slot).map(([key, val]) => ({
 }))
 const slot = ref('') // ''表示任意部位
 watch(slot, () => {
-    if (slot.value in data.mainKeys) {
-        if (!data.mainKeys[slot.value].includes(mainKey.value))
+    if (slot.value in ArtifactData.mainKeys) {
+        if (!ArtifactData.mainKeys[slot.value].includes(mainKey.value))
             mainKey.value = ''
     } else {
         mainKey.value = ''
@@ -42,8 +41,8 @@ watch(slot, () => {
 })
 // 主词条（可选项依赖部位）
 const mains = computed(() => {
-    if (slot.value in data.mainKeys) {
-        return data.mainKeys[slot.value].map((key: string) => ({
+    if (slot.value in ArtifactData.mainKeys) {
+        return ArtifactData.mainKeys[slot.value].map((key: string) => ({
             value: key,
             label: chs.affix[key]
         }))

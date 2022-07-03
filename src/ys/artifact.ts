@@ -1,6 +1,6 @@
 import { argmax, argmin, assert, choice, SimpleCache } from "./utils"
-import data from "./data"
-import build, { IBuild } from "./build"
+import ArtifactData from "./data/artifact"
+import CharacterData, { IBuild } from "./data/character"
 import { affnumDistr } from "./gacha/artifact"
 
 interface IWeight {
@@ -27,7 +27,7 @@ export class Affix implements IAffix {
     }
     valueString(showAffnum?: boolean) {
         if (showAffnum) {
-            let v = this.value / data.minorStat[this.key].v / 0.85
+            let v = this.value / ArtifactData.minorStat[this.key].v / 0.85
             return v.toFixed(1)
         } else {
             if (['hp', 'atk', 'def', 'em'].includes(this.key)) {
@@ -118,10 +118,10 @@ export class Artifact implements IArtifact {
     updateAffnum(w: { [key: string]: number }) {
         // Refer to ./README.md for symbols and equations
         this.data.affnum = { cur: 0, avg: 0, min: 0, max: 0 }
-        let A: Set<string> = new Set(), Ac = new Set(data.minorKeys), sum_w = 0
+        let A: Set<string> = new Set(), Ac = new Set(ArtifactData.minorKeys), sum_w = 0
         Ac.delete(this.mainKey)
         for (let a of this.minors) {
-            this.data.affnum.cur += w[a.key] * a.value / data.minorStat[a.key].v / 0.85
+            this.data.affnum.cur += w[a.key] * a.value / ArtifactData.minorStat[a.key].v / 0.85
             A.add(a.key)
             Ac.delete(a.key)
             sum_w += w[a.key]
@@ -130,8 +130,8 @@ export class Artifact implements IArtifact {
             // avg
             let dn = 0, nm = 0 // denominator and numerator
             Ac.forEach(a_key => {
-                nm += w[a_key] * data.minorStat[a_key].p
-                dn += data.minorStat[a_key].p
+                nm += w[a_key] * ArtifactData.minorStat[a_key].p
+                dn += ArtifactData.minorStat[a_key].p
             })
             this.data.affnum.avg = this.data.affnum.cur + sum_w + 2 * nm / dn
             // max
@@ -159,10 +159,10 @@ export class Artifact implements IArtifact {
         }
     }
     getAvgAffnum(w: { [key: string]: number }) {
-        let A: Set<string> = new Set(), Ac = new Set(data.minorKeys), sum_w = 0, cur = 0
+        let A: Set<string> = new Set(), Ac = new Set(ArtifactData.minorKeys), sum_w = 0, cur = 0
         Ac.delete(this.mainKey)
         for (let a of this.minors) {
-            cur += w[a.key] * a.value / data.minorStat[a.key].v
+            cur += w[a.key] * a.value / ArtifactData.minorStat[a.key].v
             A.add(a.key)
             Ac.delete(a.key)
             sum_w += w[a.key]
@@ -170,8 +170,8 @@ export class Artifact implements IArtifact {
         if (this.minors.length == 3) {
             let dn = 0, nm = 0 // denominator and numerator
             Ac.forEach(a_key => {
-                nm += w[a_key] * data.minorStat[a_key].p
-                dn += data.minorStat[a_key].p
+                nm += w[a_key] * ArtifactData.minorStat[a_key].p
+                dn += ArtifactData.minorStat[a_key].p
             })
             return cur + 0.85 * sum_w + 1.7 * nm / dn // 0.85*2=1.7
         } else { // this.minors.length == 4
@@ -191,13 +191,13 @@ export class Artifact implements IArtifact {
             weight: IWeight,
             { slot, main, distr, affnum }: { slot: string, main: string, distr: number[], affnum: number }
         ) => {
-            let p = data.mainDistr[slot][main] / 5
+            let p = ArtifactData.mainDistr[slot][main] / 5
             let x = affnum >= distr.length ? 1 : distr[affnum]
             return (p * x + 1 - p) ** 100 // 有没有100其实无所谓，有100更好看一点
         })
         // 对每个角色分别计算
         for (let charKey of charKeys) {
-            let b = build[charKey]
+            let b = CharacterData[charKey].build
             // if the main stat is not recommanded, skip
             if (!b.main[this.slot].includes(this.mainKey))
                 continue
@@ -222,7 +222,7 @@ export class Artifact implements IArtifact {
         let n_set = b.set.includes(this.set) ? 1 : 2
         let affnum = Math.round(this.getAvgAffnum(b.weight) * 10)
         let distr = AffnumDistrCache.get({ main: this.mainKey, weight: b.weight })
-        let p = data.mainDistr[this.slot][this.mainKey] / 5
+        let p = ArtifactData.mainDistr[this.slot][this.mainKey] / 5
         let x = affnum >= distr.length ? 1 : distr[affnum]
         this.data.score = (p * x + 1 - p) ** n_set
     }
@@ -301,13 +301,13 @@ export class Artifact implements IArtifact {
             artifact.slot = choice(['flower', 'plume', 'sands', 'goblet', 'circlet'])
         }
         // 主词条
-        if (mainKey && data.mainKeys[artifact.slot].includes(mainKey)) {
+        if (mainKey && ArtifactData.mainKeys[artifact.slot].includes(mainKey)) {
             artifact.mainKey = mainKey
         } else {
             let mains: string[] = [], main_prs: number[] = []
-            for (let key in data.mainDistr[artifact.slot]) {
+            for (let key in ArtifactData.mainDistr[artifact.slot]) {
                 mains.push(key)
-                main_prs.push(data.mainDistr[artifact.slot][key])
+                main_prs.push(ArtifactData.mainDistr[artifact.slot][key])
             }
             artifact.mainKey = choice(mains, main_prs)
         }
@@ -318,11 +318,11 @@ export class Artifact implements IArtifact {
         // 等级
         artifact.level = level
         // 副词条列表
-        let p_all = (artifact.mainKey in data.minorStat) ? 1 - data.minorStat[artifact.mainKey].p : 1
+        let p_all = (artifact.mainKey in ArtifactData.minorStat) ? 1 - ArtifactData.minorStat[artifact.mainKey].p : 1
         let all_minors: string[] = [], minor_prs: number[] = []
-        for (let m in data.minorStat) if (m != artifact.mainKey) {
+        for (let m in ArtifactData.minorStat) if (m != artifact.mainKey) {
             all_minors.push(m)
-            minor_prs.push(data.minorStat[m].p / p_all)
+            minor_prs.push(ArtifactData.minorStat[m].p / p_all)
         }
         let minor_keys = choice(all_minors, minor_prs, 4)
         let minor_values = [0, 0, 0, 0]
@@ -340,7 +340,7 @@ export class Artifact implements IArtifact {
         for (let i = 0; i < len; ++i) {
             artifact.minors.push(new Affix({
                 key: minor_keys[i],
-                value: minor_values[i] / 10 * data.minorStat[minor_keys[i]].v
+                value: minor_values[i] / 10 * ArtifactData.minorStat[minor_keys[i]].v
             }))
         }
         return artifact

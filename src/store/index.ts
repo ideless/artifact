@@ -2,7 +2,8 @@ import { InjectionKey } from 'vue'
 import { createStore, useStore as baseUseStore, Store } from 'vuex'
 import { IState } from './types'
 import { Artifact } from '../ys/artifact'
-import build from '../ys/build'
+// import build from '../ys/old/build'
+import CharacterData from "@/ys/data/character"
 
 const LOADING_DELAY = 250
 
@@ -29,7 +30,7 @@ export const store = createStore<IState>({
             sort: {
                 by: 'avg', // 'avg', 'min', 'max', 'cur', 'pmulti', 'psingle', 'defeat', 'index',
                 // pmulti
-                characters: Object.keys(build),
+                characters: Object.keys(CharacterData),
                 // psingle
                 sets: ["NoblesseOblige", "ShimenawasReminiscence", "GladiatorsFinale", "WanderersTroupe", "EmblemOfSeveredFate", "CrimsonWitchOfFlames"],
                 sands: ["em", "er", "atkp"],
@@ -58,8 +59,8 @@ export const store = createStore<IState>({
             (state.sort as any)[payload.key] = payload.value
         },
         useBuild(state, payload) {
-            if (payload.charKey in build) {
-                let b = build[payload.charKey]
+            if (payload.charKey in CharacterData) {
+                let b = CharacterData[payload.charKey].build
                 // 不要直接赋值
                 state.sort.sets = [...b.set]
                 state.sort.sands = [...b.main.sands]

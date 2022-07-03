@@ -1,5 +1,5 @@
 import Module from "./p2p"
-import { GetPlayerTokenRsp, PlayerStoreNotify } from "./proto"
+import { GetPlayerTokenRsp, PlayerStoreNotify, AvatarDataNotify } from "./proto"
 import store from "./store"
 
 const o = {
@@ -13,7 +13,7 @@ Module().then(p2p => {
     let parser = new p2p.Parser();
 
     (o.parseArtifacts as any) = async (data: Uint8Array) => {
-        let good;
+        let s, a;
         parser.parse(data, (pkt, ctx) => {
             // console.log(pkt.id)
             if (pkt.id == 131) {
@@ -23,14 +23,21 @@ Module().then(p2p => {
                 ctx.setKeySeed(msg.secretKeySeed.toString())
             } else if (pkt.id == 609) {
                 let msg = PlayerStoreNotify.decode(pkt.protobuf)
-                good = store.toGood(PlayerStoreNotify.toObject(msg, {
+                s = PlayerStoreNotify.toObject(msg, {
                     longs: String,
                     enums: String,
                     bytes: String,
-                }))
+                })
+            } else if (pkt.id == 1695) {
+                let msg = AvatarDataNotify.decode(pkt.protobuf)
+                a = AvatarDataNotify.toObject(msg, {
+                    longs: String,
+                    enums: String,
+                    bytes: String,
+                })
                 return 1 // stop parsing
             }
         })
-        return good
+        return store.toGood(s, a)
     }
 })

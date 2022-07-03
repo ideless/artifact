@@ -6,11 +6,11 @@ import ArtifactGenerator from './ArtifactGenerator.vue';
 import PartialExport from './PartialExport.vue';
 import AlikeLocker from './AlikeLocker.vue';
 import Grid from 'vue-virtual-scroll-grid'
-import { useStore } from '../store';
+import { useStore } from '@/store';
 import { computed, ref, watch } from 'vue';
 import type { ElScrollbar } from 'element-plus'
 import { View, Sort, CirclePlus, MagicStick, Stopwatch } from '@element-plus/icons-vue'
-import { Artifact } from '../ys/artifact';
+import { Artifact } from '@/ys/artifact';
 const store = useStore()
 const stat = computed(() => {
     let nAll = store.state.filteredArtifacts.length

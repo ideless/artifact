@@ -2,6 +2,7 @@ import Rel from './excel/Rel'
 import RelSet from './excel/RelSet'
 import RelMP from './excel/RelMP'
 import RelAffix from './excel/RelAffix'
+import Avatar from './excel/Avatar'
 
 interface IR {
     itemId: number
@@ -30,7 +31,15 @@ function cmp(v1: any, v2: any) {
 }
 
 export default {
-    toGood(store: any) {
+    toGood(store: any, avatar: any) {
+        // get map: rel guid => owner
+        let owner: any = {}
+        avatar.avatarList.forEach((a: any) => {
+            a.equipGuidList.forEach((g: string) => {
+                owner[g] = Avatar[a.avatarId]
+            })
+        })
+        // GOOD artifacts
         const GOOD: any = {
             format: "GOOD",
             version: 1,
@@ -65,6 +74,7 @@ export default {
                     substats[RelAffix[id].key] += RelAffix[id].val
                 })
                 a.substats = Object.entries(substats).map(([key, value]) => ({ key, value }))
+                a.location = owner[r.guid] ?? ''
                 return a
             })
 

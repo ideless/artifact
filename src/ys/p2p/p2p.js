@@ -23,7 +23,7 @@ Module["Parser"] = function() {
  function xmalloc(size) {
   let ptr = _malloc(size);
   if (ptr == 0) {
-   throw new Error(`Failed allocation of ${size} bytes`);
+   throw new Error(`failed allocation of ${size} bytes`);
   }
   return ptr;
  }
@@ -63,13 +63,15 @@ Module["Parser"] = function() {
     id: new Uint16Array(HEAPU8.buffer, pid_ptr, 1)[0],
     protobuf: new Uint8Array(HEAPU8.buffer, pb_ptr, pb_size)
    };
+  } else if (pb_size < -1) {
+   throw new Error("fail to parse pcap file");
   }
  };
  this.parse = function(data, callback, verbose = -1) {
   this.open(data, verbose);
   let packet;
   while (packet = this.decryptPacket()) {
-   callback(packet, this);
+   if (callback(packet, this)) break;
   }
   this.close();
  };
@@ -120,31 +122,31 @@ if (ENVIRONMENT_IS_NODE) {
  } else {
   scriptDirectory = __dirname + "/";
  }
- requireNodeFS = (() => {
+ requireNodeFS = () => {
   if (!nodePath) {
    fs = require("fs");
    nodePath = require("path");
   }
- });
+ };
  read_ = function shell_read(filename, binary) {
   requireNodeFS();
   filename = nodePath["normalize"](filename);
   return fs.readFileSync(filename, binary ? undefined : "utf8");
  };
- readBinary = (filename => {
+ readBinary = filename => {
   var ret = read_(filename, true);
   if (!ret.buffer) {
    ret = new Uint8Array(ret);
   }
   return ret;
- });
- readAsync = ((filename, onload, onerror) => {
+ };
+ readAsync = (filename, onload, onerror) => {
   requireNodeFS();
   filename = nodePath["normalize"](filename);
   fs.readFile(filename, function(err, data) {
    if (err) onerror(err); else onload(data.buffer);
   });
- });
+ };
  if (process["argv"].length > 1) {
   thisProgram = process["argv"][1].replace(/\\/g, "/");
  }
@@ -157,14 +159,14 @@ if (ENVIRONMENT_IS_NODE) {
  process["on"]("unhandledRejection", function(reason) {
   throw reason;
  });
- quit_ = ((status, toThrow) => {
+ quit_ = (status, toThrow) => {
   if (keepRuntimeAlive()) {
    process["exitCode"] = status;
    throw toThrow;
   }
   logExceptionOnExit(toThrow);
   process["exit"](status);
- });
+ };
  Module["inspect"] = function() {
   return "[Emscripten Module object]";
  };
@@ -183,37 +185,37 @@ if (ENVIRONMENT_IS_NODE) {
   scriptDirectory = "";
  }
  {
-  read_ = (url => {
+  read_ = url => {
    var xhr = new XMLHttpRequest();
    xhr.open("GET", url, false);
    xhr.send(null);
    return xhr.responseText;
-  });
+  };
   if (ENVIRONMENT_IS_WORKER) {
-   readBinary = (url => {
+   readBinary = url => {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, false);
     xhr.responseType = "arraybuffer";
     xhr.send(null);
     return new Uint8Array(xhr.response);
-   });
+   };
   }
-  readAsync = ((url, onload, onerror) => {
+  readAsync = (url, onload, onerror) => {
    var xhr = new XMLHttpRequest();
    xhr.open("GET", url, true);
    xhr.responseType = "arraybuffer";
-   xhr.onload = (() => {
+   xhr.onload = () => {
     if (xhr.status == 200 || xhr.status == 0 && xhr.response) {
      onload(xhr.response);
      return;
     }
     onerror();
-   });
+   };
    xhr.onerror = onerror;
    xhr.send(null);
-  });
+  };
  }
- setWindowTitle = (title => document.title = title);
+ setWindowTitle = title => document.title = title;
 } else {}
 
 var out = Module["print"] || console.log.bind(console);
@@ -545,7 +547,7 @@ function createWasm() {
   });
  }
  function instantiateAsync() {
-  if (!wasmBinary && typeof WebAssembly.instantiateStreaming == "function" && !isDataURI(wasmBinaryFile) && !isFileURI(wasmBinaryFile) && typeof fetch == "function") {
+  if (!wasmBinary && typeof WebAssembly.instantiateStreaming == "function" && !isDataURI(wasmBinaryFile) && !isFileURI(wasmBinaryFile) && !ENVIRONMENT_IS_NODE && typeof fetch == "function") {
    return fetch(wasmBinaryFile, {
     credentials: "same-origin"
    }).then(function(response) {
@@ -575,33 +577,8 @@ function createWasm() {
 
 function callRuntimeCallbacks(callbacks) {
  while (callbacks.length > 0) {
-  var callback = callbacks.shift();
-  if (typeof callback == "function") {
-   callback(Module);
-   continue;
-  }
-  var func = callback.func;
-  if (typeof func == "number") {
-   if (callback.arg === undefined) {
-    getWasmTableEntry(func)();
-   } else {
-    getWasmTableEntry(func)(callback.arg);
-   }
-  } else {
-   func(callback.arg === undefined ? null : callback.arg);
-  }
+  callbacks.shift()(Module);
  }
-}
-
-var wasmTableMirror = [];
-
-function getWasmTableEntry(funcPtr) {
- var func = wasmTableMirror[funcPtr];
- if (!func) {
-  if (funcPtr >= wasmTableMirror.length) wasmTableMirror.length = funcPtr + 1;
-  wasmTableMirror[funcPtr] = func = wasmTable.get(funcPtr);
- }
- return func;
 }
 
 function ___assert_fail(condition, filename, line, func) {
@@ -616,7 +593,7 @@ function _emscripten_memcpy_big(dest, src, num) {
  HEAPU8.copyWithin(dest, src, src + num);
 }
 
-function _emscripten_get_heap_max() {
+function getHeapMax() {
  return 2147483648;
 }
 
@@ -631,7 +608,7 @@ function emscripten_realloc_buffer(size) {
 function _emscripten_resize_heap(requestedSize) {
  var oldSize = HEAPU8.length;
  requestedSize = requestedSize >>> 0;
- var maxHeapSize = _emscripten_get_heap_max();
+ var maxHeapSize = getHeapMax();
  if (requestedSize > maxHeapSize) {
   return false;
  }
@@ -692,7 +669,7 @@ function _fd_write(fd, iov, iovcnt, pnum) {
   }
   num += len;
  }
- HEAP32[pnum >> 2] = num;
+ HEAPU32[pnum >> 2] = num;
  return 0;
 }
 

@@ -3,12 +3,12 @@ import SectionTitle from './SectionTitle.vue';
 import TextButton from './TextButton.vue';
 import ExportPreview from './ExportPreview.vue'
 import { computed, ref } from "vue"
-import mona from '../ys/ext/mona';
-import good from '../ys/ext/good';
-import genmo from '../ys/ext/genmo';
-import { useStore } from '../store';
-import { Artifact } from '../ys/artifact';
-import pparser from '../ys/p2p/pparser';
+import mona from '@/ys/ext/mona';
+import good from '@/ys/ext/good';
+import genmo from '@/ys/ext/genmo';
+import { useStore } from '@/store';
+import { Artifact } from '@/ys/artifact';
+import pparser from '@/ys/p2p/pparser';
 const store = useStore()
 const msg = ref('')
 const ok = ref(false)

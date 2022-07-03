@@ -3,10 +3,10 @@ import SectionTitle from './SectionTitle.vue';
 import DropSelect from './DropSelect.vue';
 import BuildLoader from './BuildLoader.vue';
 import { computed, ref } from 'vue'
-import { useStore } from '../store';
-import build from '../ys/build';
-import data from '../ys/data';
-import chs from '../ys/locale/chs';
+import { useStore } from '@/store';
+import chs from '@/ys/locale/chs';
+import ArtfactData from "@/ys/data/artifact"
+import CharacterData from '@/ys/data/character';
 const store = useStore()
 
 // 排序方式
@@ -26,12 +26,11 @@ const sortBy = computed<string>({
 })
 
 // 按角色适配概率（多人）
-const charOptions = data.characters
-    .filter(c => c.key in build)
-    .map(c => ({
-        key: c.key,
-        label: chs.character[c.key] || c.key,
-        icon: `./assets/char_faces/${c.key}.png`,
+const charOptions = Object.keys(CharacterData)
+    .map(key => ({
+        key,
+        label: chs.character[key] || key,
+        icon: `./assets/char_faces/${key}.png`,
     }))
 const char = computed<string[]>({
     get() { return store.state.sort.characters },
@@ -47,7 +46,7 @@ const sets = computed<string[]>({
     get() { return store.state.sort.sets },
     set(v) { store.commit('setSort', { key: 'sets', value: v }) }
 })
-const sandsOptions = data.mainKeys.sands.map(m => ({
+const sandsOptions = ArtfactData.mainKeys.sands.map(m => ({
     key: m,
     label: chs.affix[m]
 }))
@@ -55,7 +54,7 @@ const sands = computed<string[]>({
     get() { return store.state.sort.sands },
     set(v) { store.commit('setSort', { key: 'sands', value: v }) }
 })
-const gobletOptions = data.mainKeys.goblet.map(m => ({
+const gobletOptions = ArtfactData.mainKeys.goblet.map(m => ({
     key: m,
     label: chs.affix[m]
 }))
@@ -63,7 +62,7 @@ const goblet = computed<string[]>({
     get() { return store.state.sort.goblet },
     set(v) { store.commit('setSort', { key: 'goblet', value: v }) }
 })
-const circletOptions = data.mainKeys.circlet.map(m => ({
+const circletOptions = ArtfactData.mainKeys.circlet.map(m => ({
     key: m,
     label: chs.affix[m]
 }))

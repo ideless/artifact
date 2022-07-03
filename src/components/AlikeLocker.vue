@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-import { Artifact } from '../ys/artifact';
-import { useStore } from '../store';
+import { Artifact } from '@/ys/artifact';
+import { useStore } from '@/store';
 import ArtifactCard from './ArtifactCard.vue';
 const store = useStore()
 const props = defineProps<{

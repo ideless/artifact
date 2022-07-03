@@ -9,9 +9,6 @@ export interface ITranslation {
                 goblet: string
                 circlet: string
             }
-            bonus: {
-                [n: number]: string
-            }
         }
     }
     affix: {
@@ -23,7 +20,9 @@ export interface ITranslation {
     character: {
         [key: string]: string
     }
-    preset: string[]
+    preset: {
+        [key: string]: string
+    }
     element: {
         [key: string]: string
     }

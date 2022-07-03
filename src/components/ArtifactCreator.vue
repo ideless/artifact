@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue'
-import data from '../ys/data';
-import chs from '../ys/locale/chs'
-import { useStore } from '../store';
-import { Affix, Artifact } from '../ys/artifact';
+import ArtifactData from "@/ys/data/artifact"
+import chs from '@/ys/locale/chs'
+import { useStore } from '@/store';
+import { Affix, Artifact } from '@/ys/artifact';
 import ArtifactCard from './ArtifactCard.vue';
 const props = defineProps<{
     modelValue: boolean,
@@ -16,7 +16,7 @@ const show = computed({
     get() { return props.modelValue },
     set(value: boolean) { emit('update:modelValue', value) }
 })
-const affixes = data.minorKeys.map(key => ({
+const affixes = ArtifactData.minorKeys.map(key => ({
     value: key,
     label: chs.affix[key]
 }))
@@ -43,15 +43,15 @@ const slot = computed({
     set(newSlot: string) {
         art.value.slot = newSlot
         // 自动纠正主词条
-        if (!data.mainKeys[newSlot].includes(art.value.mainKey)) {
-            art.value.mainKey = data.mainKeys[newSlot][0]
+        if (!ArtifactData.mainKeys[newSlot].includes(art.value.mainKey)) {
+            art.value.mainKey = ArtifactData.mainKeys[newSlot][0]
         }
     }
 })
 // 主词条（可选项依赖部位）
 const mains = computed(() => {
-    if (art.value.slot in data.mainKeys) {
-        return data.mainKeys[art.value.slot].map((key: string) => ({
+    if (art.value.slot in ArtifactData.mainKeys) {
+        return ArtifactData.mainKeys[art.value.slot].map((key: string) => ({
             value: key,
             label: chs.affix[key]
         }))

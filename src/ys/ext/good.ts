@@ -1,5 +1,4 @@
 import { Artifact } from "../artifact"
-import data from "../data"
 import { assert, whatis } from "../utils"
 
 export default {

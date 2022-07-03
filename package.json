@@ -6,7 +6,7 @@
         "build": "vue-tsc --noEmit && vite build",
         "preview": "vite preview",
         "proto": "cd src/ys/p2p && pbjs -t static-module -w es6 --force-long -o proto.js proto/*.proto && pbts -o proto.d.ts proto.js",
-		"deploy": "cd ../ideless.github.io && rm -rf artifact && mv ../artifact/dist artifact && git add * && git commit -m 'fix' && git push origin"
+        "deploy": "cd ../ideless.github.io && rm -rf artifact && mv ../artifact/dist artifact && git add * && git commit -m 'fix' && git push origin"
     },
     "dependencies": {
         "@types/emscripten": "^1.39.6",
@@ -16,6 +16,7 @@
         "protobufjs": "^6.11.2",
         "sass": "^1.49.0",
         "vue": "^3.2.25",
+        "vue-i18n": "^9.1.10",
         "vue-router": "4",
         "vue-virtual-scroll-grid": "^1.4.2",
         "vuex": "4"

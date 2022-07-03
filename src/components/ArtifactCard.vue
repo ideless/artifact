@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { Edit } from '@element-plus/icons-vue'
-import { Affix, Artifact } from '../ys/artifact';
-import chs from '../ys/locale/chs'
-import data from '../ys/data';
-import { useStore } from '../store';
+import { Affix, Artifact } from '@/ys/artifact';
+import chs from '@/ys/locale/chs'
+import ArtifactData from "@/ys/data/artifact"
+import { useStore } from '@/store';
 const props = defineProps<{
     artifact: Artifact,
     selected?: boolean
@@ -42,9 +42,9 @@ const affixName = (key: string) => {
     return name
 }
 const main = computed(() => {
-    if (props.artifact.mainKey in data.mainStat) {
+    if (props.artifact.mainKey in ArtifactData.mainStat) {
         let key = props.artifact.mainKey,
-            value = data.mainStat[props.artifact.mainKey][props.artifact.level]
+            value = ArtifactData.mainStat[props.artifact.mainKey][props.artifact.level]
         return {
             name: chs.affix[key],
             value: new Affix({ key, value }).valueString()
@@ -63,7 +63,7 @@ const minors = computed(() => {
         ret.push({
             text: `${name}+${a.valueString(props.showAffnum!)}`,
             style: `opacity: ${store.state.weightInUse[a.key] > 0 ? 1 : 0.5};`,
-            count: Math.ceil(Math.round(a.value / data.minorStat[a.key].v * 10) / 10),
+            count: Math.ceil(Math.round(a.value / ArtifactData.minorStat[a.key].v * 10) / 10),
         });
     }
     return ret;

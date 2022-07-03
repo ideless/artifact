@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import { useStore } from '../store';
-import chs from '../ys/locale/chs'
-import build from '../ys/build';
+import { useStore } from '@/store';
+import chs from '@/ys/locale/chs'
+import CharacterData from '@/ys/data/character';
 
 const store = useStore()
 
@@ -29,8 +29,8 @@ const element = ref("")
 const character = ref("")
 const characters = computed<IOption[]>(() => {
     let ret = []
-    for (let c in build) {
-        if (build[c].element == element.value) {
+    for (let c in CharacterData) {
+        if (CharacterData[c].element == element.value) {
             ret.push({
                 value: c,
                 label: chs.character[c]
@@ -43,7 +43,7 @@ const changeElement = () => {
     character.value = ""
 }
 const valid = computed(() => {
-    return character.value in build
+    return character.value in CharacterData
 })
 const apply = () => {
     store.commit('useBuild', { charKey: character.value })

@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import { useStore } from '../store';
-import chs from '../ys/locale/chs'
-import Preset from '../ys/preset';
+import { useStore } from '@/store';
+import chs from '@/ys/locale/chs'
+import PresetData from "@/ys/data/preset"
+import CharacterData from '@/ys/data/character';
 
 const store = useStore()
 
@@ -29,11 +30,11 @@ const element = ref("")
 const character = ref("")
 const characters = computed<IOption[]>(() => {
     let ret = []
-    for (let c of Preset.characters) {
-        if (c.element == element.value) {
+    for (let c in CharacterData) {
+        if (CharacterData[c].element == element.value) {
             ret.push({
-                value: c.key,
-                label: chs.character[c.key]
+                value: c,
+                label: chs.character[c]
             })
         }
     }
@@ -42,9 +43,9 @@ const characters = computed<IOption[]>(() => {
 const preset = ref("")
 const presets = computed<IOption[]>(() => {
     let ret = []
-    for (let c of Preset.characters) {
-        if (c.key == character.value) {
-            for (let i of c.presets) {
+    for (let c in CharacterData) {
+        if (c == character.value) {
+            for (let i of CharacterData[c].presets) {
                 ret.push({
                     value: i,
                     label: chs.preset[i]
@@ -66,10 +67,8 @@ const applyDisabled = computed(() => {
     return preset.value == ""
 })
 const apply = () => {
-    if (typeof preset.value == 'number') {
-        store.commit('usePreset', { weight: Preset.presets[preset.value] })
-        emit('update:modelValue', false)
-    }
+    store.commit('usePreset', { weight: PresetData[preset.value] })
+    emit('update:modelValue', false)
 }
 </script>
 

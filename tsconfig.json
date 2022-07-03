@@ -18,6 +18,12 @@
         "esModuleInterop": true,
         "allowJs": true,
         "forceConsistentCasingInFileNames": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        },
         "lib": [
             "esnext",
             "dom"

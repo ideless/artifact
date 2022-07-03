@@ -1,5 +1,5 @@
 import { Affix, Artifact } from "../artifact"
-import data from "../data"
+import ArtifactData from "../data/artifact"
 import { whatis, assert } from "../utils"
 
 export default {
@@ -103,7 +103,7 @@ export default {
                 position: type,
                 mainTag: {
                     name: this.keymap.affix[a.mainKey],
-                    value: ['hp', 'atk', 'em'].includes(a.mainKey) ? data.mainStat[a.mainKey][a.level] : data.mainStat[a.mainKey][a.level] / 100
+                    value: ['hp', 'atk', 'em'].includes(a.mainKey) ? ArtifactData.mainStat[a.mainKey][a.level] : ArtifactData.mainStat[a.mainKey][a.level] / 100
                 },
                 normalTags: a.minors.map(m => ({
                     name: this.keymap.affix[m.key],

@@ -4,9 +4,16 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+// alias @
+import { resolve } from 'path'
 
 export default defineConfig({
     base: '',
+    resolve: {
+        alias: {
+            "@": resolve(__dirname, "src"),
+        }
+    },
     plugins: [
         vue(),
         AutoImport({

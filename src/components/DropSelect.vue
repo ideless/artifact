@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref } from 'vue';
-import { IOption } from '../store/types';
+import { IOption } from '@/store/types';
 
 const props = defineProps<{
     options: IOption[]
