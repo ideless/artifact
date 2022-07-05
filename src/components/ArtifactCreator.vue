@@ -29,9 +29,9 @@ const updartAffnum = () => {
     art.value.updateAffnum(store.state.weightInUse)
 }
 // 套装
-const sets = Object.entries(chs.set).map(([key, val]) => ({
+const sets = Object.entries(chs.set).map(([key, label]) => ({
     value: key,
-    label: val.name
+    label,
 }))
 // 部位
 const slots = Object.entries(chs.slot).map(([key, val]) => ({

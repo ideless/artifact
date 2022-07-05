@@ -240,6 +240,7 @@ const selectedCount = computed(() => {
                 width: 32px;
                 height: 32px;
                 object-fit: contain;
+                margin-right: 5px;
             }
 
             .label {

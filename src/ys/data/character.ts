@@ -1378,24 +1378,24 @@ export default <ICharacterData>{
         "rarity": 4,
         "presets": ["生", "生精"],
         "build": {
-            "set": [],
+            "set": ["TenacityOfTheMillelith", "OceanHuedClam", "MaidenBeloved"],
             "main": {
-                "flower": [],
-                "plume": [],
-                "sands": [],
-                "goblet": [],
-                "circlet": []
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": ["em", "hpp"],
+                "goblet": ["em", "hpp"],
+                "circlet": ["hb", "em"]
             },
             "weight": {
                 "hp": 0,
                 "atk": 0,
                 "def": 0,
-                "hpp": 0,
+                "hpp": 1,
                 "atkp": 0,
                 "defp": 0,
-                "em": 0,
+                "em": 1,
                 "er": 0,
-                "cr": 0,
+                "cr": 0.5,
                 "cd": 0
             }
         }

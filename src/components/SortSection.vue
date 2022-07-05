@@ -37,9 +37,9 @@ const char = computed<string[]>({
     set(v) { store.commit('setSort', { key: 'characters', value: v }) }
 })
 // 按角色适配概率（单人）
-const setsOptions = Object.entries(chs.set).map(([key, val]) => ({
+const setsOptions = Object.entries(chs.set).map(([key, label]) => ({
     key,
-    label: val.name,
+    label,
     icon: `./assets/artifacts/${key}/flower.png`,
 }))
 const sets = computed<string[]>({

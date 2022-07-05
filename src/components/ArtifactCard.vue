@@ -20,7 +20,7 @@ const emit = defineEmits<{
 const store = useStore()
 const pieceName = computed(() => {
     if (props.artifact.set in chs.set && props.artifact.slot in chs.slot) {
-        let name = chs.set[props.artifact.set].name
+        let name = chs.set[props.artifact.set]
         let slot = chs.slot[props.artifact.slot][2] // "花","羽"...
         return `${name} · ${slot}`
     } else {

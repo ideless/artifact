@@ -31,7 +31,7 @@ const setOptions = computed(() => {
         .filter(key => key in c)
         .map(key => ({
             key,
-            label: chs.set[key].name,
+            label: chs.set[key],
             icon: `./assets/artifacts/${key}/flower.png`,
             tip: c[key].toString(),
         }))
