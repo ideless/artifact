@@ -27,7 +27,7 @@ const start = () => { store.dispatch('updFilteredArtifacts') }
 .layout-right {
     width: 500px;
     background-color: $right-bgcolor;
-    // box-shadow: 0 0 2px 1px #ddd;
+    box-shadow: 0 0 4px 0 #ccc;
     color: #444;
     overflow-y: auto;
     user-select: none;
@@ -36,9 +36,9 @@ const start = () => { store.dispatch('updFilteredArtifacts') }
         padding: 20px 0;
         margin-top: 20px;
         text-align: center;
-        background-color: $right-bgcolor;
-        // backdrop-filter: blur(10px);
-        border-top: 1px dashed #e7e7e7;
+        background-color: #f3fdff77;
+        backdrop-filter: blur(22px);
+        border-top: 1px solid #e7e7e7;
         position: sticky;
         bottom: 0;
         z-index: 1;

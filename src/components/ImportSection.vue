@@ -24,22 +24,18 @@ const importArts = () => {
         let file = finput.files[0];
         var reader = new FileReader();
         if (file.name.endsWith('.pcap')) {
-            reader.onload = (evt) => {
-                let result = reader.result as ArrayBuffer
-                pparser.parseArtifacts(new Uint8Array(result, 0, result.byteLength)).then(g => {
-                    let artifacts: Artifact[] = [], canExport = false
-                    try {
-                        artifacts = good.loads(JSON.stringify(g))
-                        canExport = true;
-                    } catch (e) {
-                        msg.value = '解析失败'
-                        ok.value = false
-                        return
-                    }
+            reader.onload = async () => {
+                try {
+                    let result = reader.result as ArrayBuffer
+                    let GOOD = await pparser.parseArtifacts(new Uint8Array(result, 0, result.byteLength))
+                    let artifacts = good.loads(JSON.stringify(GOOD))
                     msg.value = `成功导入${artifacts.length}个5星圣遗物`
                     ok.value = true
-                    store.dispatch('setArtifacts', { artifacts, canExport })
-                })
+                    store.dispatch('setArtifacts', { artifacts, canExport: true })
+                } catch (e) {
+                    msg.value = String(e)
+                    ok.value = false
+                }
             };
             reader.readAsArrayBuffer(file);
         } else {
@@ -62,11 +58,7 @@ const importArts = () => {
                             artifacts = genmo.loads(reader.result)
                         } catch (e: any) {
                             console.error(e)
-                            if (typeof e == 'object' && e.message) {
-                                msg.value = e.message
-                            } else {
-                                msg.value = '解析失败'
-                            }
+                            msg.value = String(e)
                             ok.value = false
                             return
                         }

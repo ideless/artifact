@@ -3,16 +3,19 @@ import { GetPlayerTokenRsp, PlayerStoreNotify, AvatarDataNotify } from "./proto"
 import store from "./store"
 
 const o = {
-    async parseArtifacts(data: Uint8Array) {
+    async parseArtifacts(data: Uint8Array): Promise<any> {
         throw new Error('pparser Uninitialized')
     }
 }
 export default o
 
 Module().then(p2p => {
-    let parser = new p2p.Parser();
+    let parser = new p2p.Parser()
 
-    (o.parseArtifacts as any) = async (data: Uint8Array) => {
+    parser.setInitSeeds([])
+    parser.setLogLevel(-1)
+
+    o.parseArtifacts = async (data: Uint8Array) => {
         let s, a;
         parser.parse(data, (pkt, ctx) => {
             // console.log(pkt.id)

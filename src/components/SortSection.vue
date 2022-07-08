@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import SectionTitle from './SectionTitle.vue';
 import DropSelect from './DropSelect.vue';
+import DropSelectPlus from './DropSelectPlus.vue';
+import CharSelect from './CharSelect.vue';
 import BuildLoader from './BuildLoader.vue';
 import { computed, ref } from 'vue'
 import { useStore } from '@/store';
@@ -27,11 +29,7 @@ const sortBy = computed<string>({
 
 // 按角色适配概率（多人）
 const charOptions = Object.keys(CharacterData)
-    .map(key => ({
-        key,
-        label: chs.character[key] || key,
-        icon: `./assets/char_faces/${key}.png`,
-    }))
+    .map(key => ({ key, tip: '' }))
 const char = computed<string[]>({
     get() { return store.state.sort.characters },
     set(v) { store.commit('setSort', { key: 'characters', value: v }) }
@@ -90,7 +88,7 @@ const openBuildLoader = () => showBuildLoader.value = true
                         target="_blank">推荐配装</a>为每个角色计算适配概率（自定义的词条权重不会生效），总的适配概率为所有选中角色适配概率的最大值。
                 </p>
                 <p class="row small">鼠标悬停在圣遗物上可以查看详细的计算结果。</p>
-                <drop-select-plus class="row" title="角色" :options="charOptions" v-model="char" :use-icon="true" />
+                <char-select class="row" title="角色" :options="charOptions" v-model="char" />
             </div>
             <div v-else-if="sortBy == 'psingle'">
                 <p class="row small">圣遗物a对角色c的适配概率定义为，刷100个满级圣遗物，其中和a同部位同主词条的圣遗物得分均不超过a的满级期望得分的概率。如果a对c是散件则是200个。</p>

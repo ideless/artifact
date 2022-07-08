@@ -15,11 +15,19 @@ Module["ready"] = new Promise(function(resolve, reject) {
  readyPromiseReject = reject;
 });
 
+Module["printErr"] = function(err) {
+ console.error(err);
+ printCharBuffers[2].length = 0;
+ throw new Error(err);
+};
+
 Module["Parser"] = function() {
  let data_ptr = 0;
  let pb_ptr = 0;
  let pid_ptr = 0;
  let ctx_ptr = 0;
+ let seeds = [];
+ let verbose = -1;
  function xmalloc(size) {
   let ptr = _malloc(size);
   if (ptr == 0) {
@@ -27,7 +35,7 @@ Module["Parser"] = function() {
   }
   return ptr;
  }
- this.open = function(data, verbose = -1) {
+ this.open = function(data) {
   this.close();
   data_ptr = xmalloc(data.length);
   pb_ptr = xmalloc(data.length);
@@ -37,7 +45,14 @@ Module["Parser"] = function() {
   if (ctx_ptr == 0) {
    throw new Error("fail to open pcap file");
   }
-  _p2p_set_logger(ctx_ptr, _stdout, verbose);
+  _p2p_set_logger(ctx_ptr, 0, verbose);
+  let count = seeds.length, arr_ptr = xmalloc(count * 4), seed_ptrs = seeds.map(seed => allocateUTF8(seed));
+  seed_ptrs.forEach((seed_ptr, i) => {
+   setValue(arr_ptr + i * 4, seed_ptr, "i32");
+  });
+  _p2p_set_init_seeds(ctx_ptr, arr_ptr, count);
+  seed_ptrs.forEach(seed_ptr => _free(seed_ptr));
+  _free(arr_ptr);
  };
  this.close = function() {
   _free(data_ptr);
@@ -56,6 +71,9 @@ Module["Parser"] = function() {
   _p2p_set_key_seed(ctx_ptr, seed_ptr);
   _free(seed_ptr);
  };
+ this.setInitSeeds = function(_seeds) {
+  seeds = _seeds;
+ };
  this.decryptPacket = function() {
   let pb_size = _p2p_decrypt_packet(ctx_ptr, pb_ptr, pid_ptr);
   if (pb_size >= 0) {
@@ -67,8 +85,11 @@ Module["Parser"] = function() {
    throw new Error("fail to parse pcap file");
   }
  };
- this.parse = function(data, callback, verbose = -1) {
-  this.open(data, verbose);
+ this.setLogLevel = function(_verbose) {
+  verbose = _verbose;
+ };
+ this.parse = function(data, callback) {
+  this.open(data);
   let packet;
   while (packet = this.decryptPacket()) {
    if (callback(packet, this)) break;
@@ -575,9 +596,54 @@ function createWasm() {
  return {};
 }
 
+var tempDouble;
+
+var tempI64;
+
 function callRuntimeCallbacks(callbacks) {
  while (callbacks.length > 0) {
   callbacks.shift()(Module);
+ }
+}
+
+function setValue(ptr, value, type = "i8") {
+ if (type.endsWith("*")) type = "*";
+ switch (type) {
+ case "i1":
+  HEAP8[ptr >> 0] = value;
+  break;
+
+ case "i8":
+  HEAP8[ptr >> 0] = value;
+  break;
+
+ case "i16":
+  HEAP16[ptr >> 1] = value;
+  break;
+
+ case "i32":
+  HEAP32[ptr >> 2] = value;
+  break;
+
+ case "i64":
+  tempI64 = [ value >>> 0, (tempDouble = value, +Math.abs(tempDouble) >= 1 ? tempDouble > 0 ? (Math.min(+Math.floor(tempDouble / 4294967296), 4294967295) | 0) >>> 0 : ~~+Math.ceil((tempDouble - +(~~tempDouble >>> 0)) / 4294967296) >>> 0 : 0) ], 
+  HEAP32[ptr >> 2] = tempI64[0], HEAP32[ptr + 4 >> 2] = tempI64[1];
+  break;
+
+ case "float":
+  HEAPF32[ptr >> 2] = value;
+  break;
+
+ case "double":
+  HEAPF64[ptr >> 3] = value;
+  break;
+
+ case "*":
+  HEAPU32[ptr >> 2] = value;
+  break;
+
+ default:
+  abort("invalid type for setValue: " + type);
  }
 }
 
@@ -709,15 +775,17 @@ var _p2p_set_key_seed = Module["_p2p_set_key_seed"] = function() {
  return (_p2p_set_key_seed = Module["_p2p_set_key_seed"] = Module["asm"]["o"]).apply(null, arguments);
 };
 
+var _p2p_set_init_seeds = Module["_p2p_set_init_seeds"] = function() {
+ return (_p2p_set_init_seeds = Module["_p2p_set_init_seeds"] = Module["asm"]["p"]).apply(null, arguments);
+};
+
 var _p2p_decrypt_packet = Module["_p2p_decrypt_packet"] = function() {
- return (_p2p_decrypt_packet = Module["_p2p_decrypt_packet"] = Module["asm"]["p"]).apply(null, arguments);
+ return (_p2p_decrypt_packet = Module["_p2p_decrypt_packet"] = Module["asm"]["q"]).apply(null, arguments);
 };
 
 var _p2p_set_logger = Module["_p2p_set_logger"] = function() {
- return (_p2p_set_logger = Module["_p2p_set_logger"] = Module["asm"]["q"]).apply(null, arguments);
+ return (_p2p_set_logger = Module["_p2p_set_logger"] = Module["asm"]["r"]).apply(null, arguments);
 };
-
-var _stdout = Module["_stdout"] = 2508;
 
 var calledRun;
 
