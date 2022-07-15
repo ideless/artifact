@@ -1,11 +1,13 @@
 [TOC]
 
+> 自2.8起，米哈游加强了数据包加密，暂不支持抓包及pcap文件的解析
+
 # 0. 关于
 
 圣遗物强化助手专注于辅助玩家强化圣遗物。通过本助手及相关工具，你可以：
 
  👁️‍🗨️ 快速导出游戏内的圣遗物数据：
- - 通过抓包（使用自带tcpdump或安装wireshark，推荐）
+ - ~~通过抓包（使用自带tcpdump或安装wireshark，推荐）~~
  - 通过OCR（需安装yas/天目/yas-lock等）
 
 🔀 更便捷地对圣遗物进行筛选、排序、修改（在浏览器中完成）
@@ -17,6 +19,7 @@
 
 # 1. 圣遗物导出
 
+<!--
 有抓包和OCR两种方法。
 
 ## 1.1 抓包
@@ -111,6 +114,7 @@ sudo tcpdump -i wlo1 udp port 22101 or udp port 22102 -w test.pcap
 最后把pcap文件导入到圣遗物强化助手即可。
 
 ## 1.2 OCR
+-->
 
 通过图像识别导出数据，再导入到圣遗物强化助手。
 
@@ -128,7 +132,7 @@ sudo tcpdump -i wlo1 udp port 22101 or udp port 22102 -w test.pcap
 - [原魔计算器](https://genshin.mingyulab.com/)格式，文件名通常是`mingyulab.json`，`genmo.json`
 - [Genshin Optimizor](https://frzyc.github.io/genshin-optimizer/)格式，文件名通常是`good.json`
 
-### 1.2.1 yas-lock
+### 1.1 yas-lock
 
 yas-lock是一个圣遗物扫描、加解锁的Windows端程序。
 

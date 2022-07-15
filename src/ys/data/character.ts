@@ -1265,6 +1265,33 @@ export default <ICharacterData>{
             }
         }
     },
+    "ShikanoinHeizou": {
+        "element": "anemo",
+        "rarity": 4,
+        "presets": ["攻双暴"],
+        "build": {
+            "set": ["ViridescentVenerer", "GladiatorsFinale", "ShimenawasReminiscence", "EchoesOfAnOffering"],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": ["atkp"],
+                "goblet": ["anemoDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
     "Yelan": {
         "element": "hydro",
         "rarity": 5,

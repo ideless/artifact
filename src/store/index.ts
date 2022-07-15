@@ -1,8 +1,7 @@
 import { InjectionKey } from 'vue'
 import { createStore, useStore as baseUseStore, Store } from 'vuex'
 import { IState } from './types'
-import { Artifact } from '../ys/artifact'
-// import build from '../ys/old/build'
+import { Artifact } from '@/ys/artifact'
 import CharacterData from "@/ys/data/character"
 
 const LOADING_DELAY = 250

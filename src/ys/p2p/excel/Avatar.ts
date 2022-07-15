@@ -48,10 +48,12 @@ export default <IAvatar>{
     "10000056": "KujouSara",
     "10000057": "AratakiItto",
     "10000058": "YaeMiko",
+    "10000059": "ShikanoinHeizou",
     "10000060": "Yelan",
     "10000062": "Aloy",
     "10000063": "Shenhe",
     "10000064": "YunJin",
     "10000065": "KukiShinobu",
-    "10000066": "KamisatoAyato"
+    "10000066": "KamisatoAyato",
 }
+

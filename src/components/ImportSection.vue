@@ -22,8 +22,11 @@ const importArts = () => {
     finput.onchange = () => {
         if (!finput.files || finput.files.length == 0) return
         let file = finput.files[0];
-        var reader = new FileReader();
+        let reader = new FileReader();
         if (file.name.endsWith('.pcap')) {
+            msg.value = '米哈游加强了数据包加密，暂不支持pcap文件解析'
+            ok.value = false
+            return
             reader.onload = async () => {
                 try {
                     let result = reader.result as ArrayBuffer

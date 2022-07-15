@@ -2,7 +2,7 @@
 /** Above will import declarations from @types/emscripten, including Module etc. */
 
 export interface IParser {
-    new(seeds?: string[]): IParser
+    new(): IParser
     /**
      * create a packet stream (don't forget to close it)
      * @param verbose default: -1 (do not log at all)

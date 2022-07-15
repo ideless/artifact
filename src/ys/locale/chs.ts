@@ -100,6 +100,7 @@ export default <ITranslation>{
         "KujouSara": "九条裟罗",
         "AratakiItto": "荒泷一斗",
         "YaeMiko": "八重神子",
+        "ShikanoinHeizou": "鹿野院平藏（施工中）",
         "Yelan": "夜兰",
         "Aloy": "埃洛伊",
         "Shenhe": "申鹤",
