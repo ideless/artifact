@@ -8,7 +8,7 @@ import good from "@/ys/ext/good";
 import genmo from "@/ys/ext/genmo";
 import { useStore } from "@/store";
 import { Artifact } from "@/ys/artifact";
-import pparser from "@/ys/p2p/pparser";
+// import pparser from "@/ys/p2p/pparser";
 import { testArts } from "@/store/test";
 
 const store = useStore();
@@ -28,26 +28,26 @@ const importArts = () => {
         if (file.name.endsWith(".pcap")) {
             msg.value = "米哈游加强了数据包加密，暂不支持pcap文件解析";
             ok.value = false;
-            return;
-            reader.onload = async () => {
-                try {
-                    let result = reader.result as ArrayBuffer;
-                    let GOOD = await pparser.parseArtifacts(
-                        new Uint8Array(result, 0, result.byteLength)
-                    );
-                    let artifacts = good.loads(JSON.stringify(GOOD));
-                    msg.value = `成功导入${artifacts.length}个5星圣遗物`;
-                    ok.value = true;
-                    store.dispatch("setArtifacts", {
-                        artifacts,
-                        canExport: true,
-                    });
-                } catch (e) {
-                    msg.value = String(e);
-                    ok.value = false;
-                }
-            };
-            reader.readAsArrayBuffer(file);
+            // return;
+            // reader.onload = async () => {
+            //     try {
+            //         let result = reader.result as ArrayBuffer;
+            //         let GOOD = await pparser.parseArtifacts(
+            //             new Uint8Array(result, 0, result.byteLength)
+            //         );
+            //         let artifacts = good.loads(JSON.stringify(GOOD));
+            //         msg.value = `成功导入${artifacts.length}个5星圣遗物`;
+            //         ok.value = true;
+            //         store.dispatch("setArtifacts", {
+            //             artifacts,
+            //             canExport: true,
+            //         });
+            //     } catch (e) {
+            //         msg.value = String(e);
+            //         ok.value = false;
+            //     }
+            // };
+            // reader.readAsArrayBuffer(file);
         } else {
             reader.onload = (evt) => {
                 if (typeof reader.result !== "string") {
