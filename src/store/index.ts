@@ -36,6 +36,10 @@ export const store = createStore<IState>({
                 goblet: ["pyroDB"],
                 circlet: ["cr", "cd"],
             },
+            artMode: {
+                showAffnum: false,
+                useMaxAsUnit: false,
+            },
             canExport: false,
             nReload: 0, // for UI refreshing
             loading: false,
@@ -68,6 +72,13 @@ export const store = createStore<IState>({
                 state.weight = { ...b.weight }
             }
         },
+        setArtMode(state, payload) {
+            for (let key in payload) {
+                if (key in state.artMode) {
+                    state.artMode[key] = payload[key]
+                }
+            }
+        }
     },
     actions: {
         reload({ state }) {
@@ -213,3 +224,4 @@ export const store = createStore<IState>({
 export function useStore() {
     return baseUseStore(key)
 }
+
