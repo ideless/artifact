@@ -1,6 +1,5 @@
-import { assert } from "@vue/compiler-core"
 import { Affix, Artifact } from "../artifact"
-import { whatis } from "../utils"
+import { whatis, assert } from "../utils"
 
 
 export default {
@@ -108,7 +107,7 @@ export default {
             }
             artifact.data.index = ret.length
             artifact.data.source = '*/genmo'
-            artifact.validate()
+            // artifact.validate()
             ret.push(artifact)
         }
         return ret

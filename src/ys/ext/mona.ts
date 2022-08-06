@@ -67,9 +67,11 @@ export default {
     loads(json: string) {
         let mona = JSON.parse(json)
         // assert(mona.version == '1', 'Unsupported version')
+        assert(mona instanceof Object)
         let ret = []
         const mtypes = ['flower', 'feather', 'sand', 'cup', 'head']
         for (let mtype of mtypes) {
+            assert(mtype in mona && mona[mtype] instanceof Array)
             for (let martifact of mona[mtype]) {
                 if (martifact['star'] !== 5) continue
                 let set = whatis(martifact['setName'], this.keymap.set)
@@ -88,7 +90,7 @@ export default {
                 }
                 artifact.data.index = ret.length
                 artifact.data.source = '*/mona'
-                artifact.validate()
+                // artifact.validate()
                 ret.push(artifact)
             }
         }

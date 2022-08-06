@@ -47,7 +47,7 @@ export default {
             })
             artifact.data.index = ret.length
             artifact.data.source = source
-            artifact.validate()
+            // artifact.validate()
             ret.push(artifact)
         }
         return ret
