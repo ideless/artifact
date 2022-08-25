@@ -1,3 +1,5 @@
+[deprecated]
+
 p2p (p2p.wasm, p2p.js, p2p.d.ts) 来自 https://github.com/ideless/p2p
 
 更新 proto 后运行 `yarn proto` 以生成对应的 proto.js 和 proto.d.ts

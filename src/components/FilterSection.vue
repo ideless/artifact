@@ -33,7 +33,7 @@ const setOptions = computed(() => {
         .map(key => ({
             key,
             label: chs.set[key],
-            icon: `./assets/artifacts/${key}/flower.png`,
+            icon: `./assets/artifacts/${key}/flower.webp`,
             tip: c[key].toString(),
         }))
 })
@@ -49,7 +49,7 @@ const slotOptions = computed(() => {
         .map(key => ({
             key,
             label: chs.slot[key],
-            icon: `./assets/game_icons/${key}.png`,
+            icon: `./assets/game_icons/${key}.webp`,
             tip: c[key].toString(),
         }))
 })

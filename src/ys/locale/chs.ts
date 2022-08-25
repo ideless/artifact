@@ -24,6 +24,8 @@ export default <ITranslation>{
         "OceanHuedClam": "海染砗磲",
         "VermillionHereafter": "辰砂往生录",
         "EchoesOfAnOffering": "来歆余响",
+        "DeepwoodMemories": "深林的记忆",
+        "GildedDreams": "饰金之梦",
     },
     affix: {
         hp: "生命值",
@@ -43,7 +45,8 @@ export default <ITranslation>{
         anemoDB: "风元素伤害加成",
         cryoDB: "冰元素伤害加成",
         geoDB: "岩元素伤害加成",
-        physicalDB: "物理伤害加成"
+        physicalDB: "物理伤害加成",
+        dendroDB: "草元素伤害加成"
     },
     slot: {
         flower: "生之花",
@@ -100,13 +103,19 @@ export default <ITranslation>{
         "KujouSara": "九条裟罗",
         "AratakiItto": "荒泷一斗",
         "YaeMiko": "八重神子",
-        "ShikanoinHeizou": "鹿野院平藏（施工中）",
+        "ShikanoinHeizou": "鹿野院平藏",
         "Yelan": "夜兰",
         "Aloy": "埃洛伊",
         "Shenhe": "申鹤",
         "YunJin": "云堇",
         "KukiShinobu": "久岐忍",
-        "KamisatoAyato": "神里绫人"
+        "KamisatoAyato": "神里绫人",
+        "Collei": "柯莱（施工中）",
+        "Dori": "多莉（施工中）",
+        "Tighnari": "提纳里（施工中）",
+        "Nilou": "妮露（施工中）",
+        "Cyno": "赛诺（施工中）",
+        "Candace": "坎蒂丝（施工中）",
     },
     preset: {
         "攻充": "攻充",

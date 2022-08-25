@@ -65,7 +65,7 @@ const select = (key: string) => {
 <template>
     <div :class="rootClass" ref="rootEl" tabindex="-1" @click="drop" @focusout="blur">
         <div class="selected-option-wrapper">{{ selectedLabel }}</div>
-        <img class="select-arrow" src="/assets/arrow.png" />
+        <img class="select-arrow" src="/assets/arrow.webp" />
         <span class="title">{{ title }}</span>
         <transition name="pop">
             <div :class="optionsClass" ref="optionsEl" v-show="show" :key="optionsKey">

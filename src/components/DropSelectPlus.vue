@@ -87,7 +87,7 @@ const selectedCount = computed(() => {
         <transition-group class="selected-options-wrapper" name="list" tag="div" v-else>
             <span class="tag" v-for="o in selectedOptions" :key="o.key">{{ o.label }}</span>
         </transition-group>
-        <img class="select-arrow" src="/assets/arrow.png" />
+        <img class="select-arrow" src="/assets/arrow.webp" />
         <span class="title">{{ title }}</span>
         <transition name="pop">
             <div :class="optionsClass" ref="optionsEl" v-show="show" @click.stop :key="optionsKey">

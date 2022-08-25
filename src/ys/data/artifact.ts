@@ -38,11 +38,11 @@ export default <IAritfactData>{
     },
     minorKeys: ['hp', 'atk', 'def', 'hpp', 'atkp', 'defp', 'em', 'er', 'cr', 'cd'],
     mainKeys: {
-        all: ['hp', 'atk', 'hpp', 'atkp', 'defp', 'em', 'er', 'hb', 'cr', 'cd', 'pyroDB', 'hydroDB', 'electroDB', 'anemoDB', 'cryoDB', 'geoDB', 'physicalDB'],
+        all: ['hp', 'atk', 'hpp', 'atkp', 'defp', 'em', 'er', 'hb', 'cr', 'cd', 'pyroDB', 'hydroDB', 'electroDB', 'anemoDB', 'cryoDB', 'geoDB', 'physicalDB', 'dendroDB'],
         flower: ['hp'],
         plume: ['atk'],
         sands: ['hpp', 'atkp', 'defp', 'em', 'er'],
-        goblet: ['hpp', 'atkp', 'defp', 'em', 'pyroDB', 'hydroDB', 'electroDB', 'anemoDB', 'cryoDB', 'geoDB', 'physicalDB'],
+        goblet: ['hpp', 'atkp', 'defp', 'em', 'pyroDB', 'hydroDB', 'electroDB', 'anemoDB', 'cryoDB', 'geoDB', 'physicalDB', 'dendroDB'],
         circlet: ['hpp', 'atkp', 'defp', 'em', 'hb', 'cr', 'cd']
     },
     mainStat: {
@@ -63,6 +63,7 @@ export default <IAritfactData>{
         'cryoDB': [7.0, 9.0, 11.0, 12.9, 14.9, 16.9, 18.9, 20.9, 22.8, 24.8, 26.8, 28.8, 30.8, 32.8, 34.7, 36.7, 38.7, 40.7, 42.7, 44.6, 46.6],
         'geoDB': [7.0, 9.0, 11.0, 12.9, 14.9, 16.9, 18.9, 20.9, 22.8, 24.8, 26.8, 28.8, 30.8, 32.8, 34.7, 36.7, 38.7, 40.7, 42.7, 44.6, 46.6],
         'physicalDB': [8.7, 11.2, 13.7, 16.2, 18.6, 21.1, 23.6, 26.1, 28.6, 31.0, 33.5, 36.0, 38.5, 40.9, 43.4, 45.9, 48.4, 50.8, 53.3, 55.8, 58.3],
+        'dendroDB': [7.0, 9.0, 11.0, 12.9, 14.9, 16.9, 18.9, 20.9, 22.8, 24.8, 26.8, 28.8, 30.8, 32.8, 34.7, 36.7, 38.7, 40.7, 42.7, 44.6, 46.6],
     },
     mainDistr: {
         'flower': { 'hp': 1 },
@@ -75,9 +76,9 @@ export default <IAritfactData>{
             'er': 3 / 30
         },
         'goblet': {
-            'hpp': 17 / 80,
-            'atkp': 17 / 80,
-            'defp': 16 / 80,
+            'hpp': 16 / 80, // ?
+            'atkp': 16 / 80, // ?
+            'defp': 14 / 80, // ?
             'pyroDB': 4 / 80,
             'hydroDB': 4 / 80,
             'electroDB': 4 / 80,
@@ -85,6 +86,7 @@ export default <IAritfactData>{
             'cryoDB': 4 / 80,
             'geoDB': 4 / 80,
             'physicalDB': 4 / 80,
+            'dendroDB': 4 / 80,
             'em': 2 / 80
         },
         'circlet': {

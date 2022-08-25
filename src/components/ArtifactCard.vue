@@ -30,7 +30,7 @@ const pieceName = computed(() => {
 });
 const pieceImgSrc = computed(() => {
     if (props.artifact.set in chs.set) {
-        return `./assets/artifacts/${props.artifact.set}/${props.artifact.slot}.png`;
+        return `./assets/artifacts/${props.artifact.set}/${props.artifact.slot}.webp`;
     } else {
         return "";
     }
@@ -47,7 +47,7 @@ const main = computed(() => {
         let key = props.artifact.mainKey,
             value =
                 ArtifactData.mainStat[props.artifact.mainKey][
-                    props.artifact.level
+                props.artifact.level
                 ];
         return {
             name: chs.affix[key],
@@ -82,7 +82,7 @@ const minors = computed(() => {
             style: `opacity: ${store.state.weightInUse[a.key] > 0 ? 1 : 0.5};`,
             count: Math.ceil(
                 Math.round((a.value / ArtifactData.minorStat[a.key].v) * 10) /
-                    10
+                10
             ),
         });
     }
@@ -108,8 +108,8 @@ const affnum = computed(() => {
 });
 const lockImgSrc = computed(() => {
     return props.artifact.lock
-        ? "./assets/game_icons/lock.png"
-        : "./assets/game_icons/unlock.png";
+        ? "./assets/game_icons/lock.webp"
+        : "./assets/game_icons/unlock.webp";
 });
 const artifactCardClass = computed(() => ({
     "artifact-card": true,
@@ -119,10 +119,10 @@ const artifactCardClass = computed(() => ({
 const select = (evt: MouseEvent) => {
     emit("flipSelect", evt.shiftKey);
 };
-const starImgSrc = "./assets/stars.png";
+const starImgSrc = "./assets/stars.webp";
 const charSrc = computed<string>(() => {
     if (props.artifact.location in chs.character) {
-        return `./assets/char_sides/${props.artifact.location}.png`;
+        return `./assets/char_sides/${props.artifact.location}.webp`;
     } else {
         return "";
     }
@@ -152,18 +152,16 @@ const charScore = computed<string>(() => {
                 <div class="main-affix-value">{{ main.value }}</div>
                 <img :src="starImgSrc" />
             </div>
-            <img :src="pieceImgSrc" />
+            <div class="piece-img-wrapper">
+                <img :src="pieceImgSrc" />
+            </div>
         </div>
         <div class="body">
             <div class="body-head">
                 <span class="level">{{ level }}</span>
                 <span class="cur-an">{{ affnum.cur }}</span>
                 <div class="lock-img-container">
-                    <img
-                        :src="lockImgSrc"
-                        @click="flipLock"
-                        :class="readonly ? 'readonly' : ''"
-                    />
+                    <img :src="lockImgSrc" @click="flipLock" :class="readonly ? 'readonly' : ''" />
                 </div>
             </div>
             <div class="minor-affixes">
@@ -222,11 +220,9 @@ const charScore = computed<string>(() => {
         display: flex;
         justify-content: space-between;
         background: rgb(102, 87, 88);
-        background: linear-gradient(
-            165deg,
-            rgba(102, 87, 88, 1) 0%,
-            rgba(214, 169, 90, 1) 100%
-        );
+        background: linear-gradient(165deg,
+                rgba(102, 87, 88, 1) 0%,
+                rgba(214, 169, 90, 1) 100%);
 
         .head-stat {
             display: flex;
@@ -248,6 +244,19 @@ const charScore = computed<string>(() => {
 
             .main-affix-value {
                 font-size: 18px;
+            }
+        }
+
+        .piece-img-wrapper {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
             }
         }
     }
@@ -385,12 +394,12 @@ const charScore = computed<string>(() => {
         transition: background-color 100ms ease;
     }
 
-    &.selected > .select-box {
+    &.selected>.select-box {
         background-color: $primary-color;
     }
 
-    &:hover > .select-box,
-    &.select-mode > .select-box {
+    &:hover>.select-box,
+    &.select-mode>.select-box {
         display: block;
     }
 

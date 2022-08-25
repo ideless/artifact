@@ -1453,5 +1453,167 @@ export default <ICharacterData>{
                 "cd": 1
             }
         }
-    }
+    },
+    "Collei": {
+        "element": "dendro",
+        "rarity": 4,
+        "presets": [],
+        "build": {
+            "set": [],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": [],
+                "goblet": [],
+                "circlet": []
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 0,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    "Dori": {
+        "element": "electro",
+        "rarity": 4,
+        "presets": [],
+        "build": {
+            "set": [],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": [],
+                "goblet": [],
+                "circlet": []
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 0,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    "Tighnari": {
+        "element": "dendro",
+        "rarity": 5,
+        "presets": [],
+        "build": {
+            "set": [],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": [],
+                "goblet": [],
+                "circlet": []
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 0,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    "Nilou": {
+        "element": "dendro",
+        "rarity": 5,
+        "presets": [],
+        "build": {
+            "set": [],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": [],
+                "goblet": [],
+                "circlet": []
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 0,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    "Cyno": {
+        "element": "dendro",
+        "rarity": 5,
+        "presets": [],
+        "build": {
+            "set": [],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": [],
+                "goblet": [],
+                "circlet": []
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 0,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    "Candace": {
+        "element": "dendro",
+        "rarity": 5,
+        "presets": [],
+        "build": {
+            "set": [],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": [],
+                "goblet": [],
+                "circlet": []
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 0,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
 }

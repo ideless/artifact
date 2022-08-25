@@ -27,6 +27,8 @@ export default {
             OceanHuedClam: 'divine_chorus',
             VermillionHereafter: "vermillion_hereafter",
             EchoesOfAnOffering: "echoes_of_an_offering",
+            DeepwoodMemories: "deepwood_memories",
+            GildedDreams: "gilded_dreams",
         },
         affix: <{ [key: string]: string }>{
             hp: 'flatHP',
@@ -47,6 +49,7 @@ export default {
             cryoDB: 'cryoDamage',
             geoDB: 'geoDamage',
             physicalDB: 'physicalDamage',
+            dendroDB: 'dendroDamage'
         },
         slot: <{ [key: string]: string }>{
             flower: 'flower',

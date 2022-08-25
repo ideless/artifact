@@ -74,7 +74,7 @@ const text = (o: ICharOption) => {
     return o.key ? chs.character[o.key] || o.key : '未佩戴'
 }
 const icon = (o: ICharOption) => {
-    return o.key ? `./assets/char_faces/${o.key}.png` : './assets/forbidden.png'
+    return o.key ? `./assets/char_faces/${o.key}.webp` : './assets/forbidden.webp'
 }
 const color = (o: ICharOption) => {
     if (o.key) {
@@ -107,7 +107,7 @@ const optionGroups = computed(() => {
     return ['pyro', 'hydro', 'cryo', 'electro', 'anemo', 'geo', 'dendro']
         .filter(e => e in g)
         .map(e => ({
-            icon: `./assets/game_icons/${e}.png`,
+            icon: `./assets/game_icons/${e}.webp`,
             text: chs.element[e],
             options: g[e],
         }))
@@ -129,7 +129,7 @@ const selectedCount = computed(() => {
         <transition-group class="selected-options-wrapper" name="list" tag="div">
             <img class="tag" v-for="o in selectedOptions" :src="icon(o)" alt="" :key="o.key">
         </transition-group>
-        <img class="select-arrow" src="/assets/arrow.png" />
+        <img class="select-arrow" src="/assets/arrow.webp" />
         <span class="title">{{ title }}</span>
         <transition name="pop">
             <div :class="optionsClass" ref="optionsEl" v-show="show" @click.stop :key="optionsKey">

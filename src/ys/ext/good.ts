@@ -22,6 +22,7 @@ export default {
             cryoDB: 'cryo_dmg_',
             geoDB: 'geo_dmg_',
             physicalDB: 'physical_dmg_',
+            dendroDB: 'dendro_dmg_'
         }
     },
     loads(json: string) {

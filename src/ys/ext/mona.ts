@@ -27,6 +27,8 @@ export default {
             OceanHuedClam: 'oceanHuedClam',
             VermillionHereafter: "VermillionHereafter",
             EchoesOfAnOffering: "EchoesOfAnOffering",
+            DeepwoodMemories: "DeepwoodMemories",
+            GildedDreams: "GildedDreams",
         },
         affix: <{ [key: string]: string }>{
             hp: 'lifeStatic',
@@ -47,6 +49,7 @@ export default {
             cryoDB: 'iceBonus',
             geoDB: 'rockBonus',
             physicalDB: 'physicalBonus',
+            dendroDB: 'dendroBonus'
         },
         slot: <{ [key: string]: string }>{
             flower: 'flower',
