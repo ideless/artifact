@@ -2,7 +2,7 @@
  * 圣遗物过滤器
  *
  */
-import { Artifact, Affix, ArtifactScoreWeight } from './Artifact'
+import { Artifact, Affix, ArtifactScoreWeight } from './artifact'
 export enum SubFilterEquation {
     '<',
     '≤',

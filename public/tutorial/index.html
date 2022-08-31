@@ -1,126 +1,598 @@
-﻿<!DOCTYPE html>
+<!doctype html>
 <html>
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>圣遗物强化助手 - 教程</title>
-  <link rel="icon" href="../favicon.ico" />
-  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+
+<link href='https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; --title-bar-height:20px; }
+.mac-os-11 { --title-bar-height:28px; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; inset: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; tab-size: 4; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+.typora-export .task-list-item input { pointer-events: none; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; image-orientation: from-image; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-fences-adv-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  .typora-export #write { break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  .is-mac table { break-inside: avoid; }
+  .typora-export-show-outline .typora-export-sidebar { display: none; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.6; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+.md-expand mark .md-meta { opacity: 0.3 !important; }
+mark .md-meta { color: rgb(0, 0, 0); }
+@media print {
+  .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
+}
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-fences.md-fences-math { font-size: 1em; }
+.md-fences-advanced:not(.md-focus) { padding: 0px; white-space: nowrap; border: 0px; }
+.md-fences-advanced:not(.md-focus) { background: inherit; }
+.typora-export-show-outline .typora-export-content { max-width: 1440px; margin: auto; display: flex; flex-direction: row; }
+.typora-export-sidebar { width: 300px; font-size: 0.8rem; margin-top: 80px; margin-right: 18px; }
+.typora-export-show-outline #write { --webkit-flex:2; flex: 2 1 0%; }
+.typora-export-sidebar .outline-content { position: fixed; top: 0px; max-height: 100%; overflow: hidden auto; padding-bottom: 30px; padding-top: 60px; width: 300px; }
+@media screen and (max-width: 1024px) {
+  .typora-export-sidebar, .typora-export-sidebar .outline-content { width: 240px; }
+}
+@media screen and (max-width: 800px) {
+  .typora-export-sidebar { display: none; }
+}
+.outline-content li, .outline-content ul { margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; list-style: none; }
+.outline-content ul { margin-top: 0px; margin-bottom: 0px; }
+.outline-content strong { font-weight: 400; }
+.outline-expander { width: 1rem; height: 1.42857rem; position: relative; display: table-cell; vertical-align: middle; cursor: pointer; padding-left: 4px; }
+.outline-expander::before { content: ""; position: relative; font-family: Ionicons; display: inline-block; font-size: 8px; vertical-align: middle; }
+.outline-item { padding-top: 3px; padding-bottom: 3px; cursor: pointer; }
+.outline-expander:hover::before { content: ""; }
+.outline-h1 > .outline-item { padding-left: 0px; }
+.outline-h2 > .outline-item { padding-left: 1em; }
+.outline-h3 > .outline-item { padding-left: 2em; }
+.outline-h4 > .outline-item { padding-left: 3em; }
+.outline-h5 > .outline-item { padding-left: 4em; }
+.outline-h6 > .outline-item { padding-left: 5em; }
+.outline-label { cursor: pointer; display: table-cell; vertical-align: middle; text-decoration: none; color: inherit; }
+.outline-label:hover { text-decoration: underline; }
+.outline-item:hover { border-color: rgb(245, 245, 245); background-color: var(--item-hover-bg-color); }
+.outline-item:hover { margin-left: -28px; margin-right: -28px; border-left: 28px solid transparent; border-right: 28px solid transparent; }
+.outline-item-single .outline-expander::before, .outline-item-single .outline-expander:hover::before { display: none; }
+.outline-item-open > .outline-item > .outline-expander::before { content: ""; }
+.outline-children { display: none; }
+.info-panel-tab-wrapper { display: none; }
+.outline-item-open > .outline-children { display: block; }
+.typora-export .outline-item { padding-top: 1px; padding-bottom: 1px; }
+.typora-export .outline-item:hover { margin-right: -8px; border-right: 8px solid transparent; }
+.typora-export .outline-expander::before { content: "+"; font-family: inherit; top: -1px; }
+.typora-export .outline-expander:hover::before, .typora-export .outline-item-open > .outline-item > .outline-expander::before { content: "−"; }
+.typora-export-collapse-outline .outline-children { display: none; }
+.typora-export-collapse-outline .outline-item-open > .outline-children, .typora-export-no-collapse-outline .outline-children { display: block; }
+.typora-export-no-collapse-outline .outline-expander::before { content: "" !important; }
+.typora-export-show-outline .outline-item-active > .outline-item .outline-label { font-weight: 700; }
+.md-inline-math-container mjx-container { zoom: 0.95; }
+
+
+:root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+}
+
+@include-when-export url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+/* open-sans-regular - latin-ext_latin */
+  /* open-sans-italic - latin-ext_latin */
+    /* open-sans-700 - latin-ext_latin */
+    /* open-sans-700italic - latin-ext_latin */
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: "Open Sans","Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+}
+
+#write {
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
+}
+
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1024px;
+	}
+}
+
+@media only screen and (min-width: 1800px) {
+	#write {
+		max-width: 1200px;
+	}
+}
+
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
+}
+
+a {
+    color: #4183C4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+
+/*@media print {
+    .typora-export h1,
+    .typora-export h2 {
+        border-bottom: none;
+        padding-bottom: initial;
+    }
+
+    .typora-export h1::after,
+    .typora-export h2::after {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-top: -96px;
+        border-top: 1px solid #eee;
+    }
+}*/
+
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n),
+thead {
+    background-color: #f8f8f8;
+}
+table th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    margin: 0;
+    padding: 6px 13px;
+}
+table td {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 6px 13px;
+}
+table th:first-child,
+table td:first-child {
+    margin-top: 0;
+}
+table th:last-child,
+table td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-lines {
+    padding-left: 4px;
+}
+
+.code-tooltip {
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
+}
+
+.md-fences {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+
+.md-task-list-item > input {
+  margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
+    pre {
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+/*.html-for-mac {
+    --item-hover-bg-color: #E6F0FE;
+}*/
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+    opacity: 0.4;
+}
+
+.ty-preferences .window-content {
+    background-color: #fafafa;
+}
+
+.ty-preferences .nav-group-item.active {
+    color: white;
+    background: #999;
+}
+
+.menu-item-container a.menu-style-btn {
+    background-color: #f5f8fa;
+    background-image: linear-gradient( 180deg , hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0)); 
+}
+
+
+
+</style><title>教程</title>
 </head>
-
-<body class="stackedit">
-  <div class="stackedit__html"><h1 id="教程前的碎碎念">0. 教程前的碎碎念</h1>
-<p>原神在开服近一年半后圣遗物系统依旧很简陋，刚需的圣遗物弃置、词条筛选、套装等功能迟迟不实装，对于经常刷圣遗物到爆仓的玩家很不友好。以我来说，背包超过1500是家常便饭，金圣遗物更是将近1400个，找胚子喂胚子是个噩梦。</p>
-<p>正是迫于这一痛点，我制作了这个简单的网页小工具“圣遗物强化助手”。正如其名，这个工具致力于解决我认为十分必要的需求：</p>
-<ol>
-<li>基于词条权重、胚子潜力的<strong>排序和筛选</strong>，帮助用户快速定位“极品”胚子；</li>
-<li><strong>批量解锁</strong>垃圾圣遗物并应用到游戏背包中，帮助用户快速、安心地清空背包。</li>
-</ol>
-<p>圣遗物强化助手本身只是一个网页，获取圣遗物数据、加解锁需要PC端程序完成。需要注意的是，<strong>使用扫描程序接管游戏操作可能有封号风险</strong>，请谨慎决定是否使用，并为自己的行为负责。当然，目前没有还玩家因此封号的案例，我个人使用相当长时间也没有问题。</p>
-<p><strong>声明：</strong>本工具是基于ideless大佬所作工具的二次开发，教程及界面均沿用原工具，原工具也非常好用，可至<a href="https://bbs.nga.cn/read.php?tid=29551863">原贴地址</a> | <a href="https://github.com/tideless/artifact">原项目地址</a> 查看。
-本项目基于个人使用优化，具体优内容化可以至<a href="https://github.com/tseflcz/artifact-master">项目地址</a>查看，有任何问题也可以提交issue反馈。</p>
-<h1 id="下载yas-lock">1. 下载yas-lock</h1>
-<p>yas-lock是一个圣遗物扫描、加解锁的Windows端程序。yas-lock是由我对wormtql的 <a href="https://github.com/wormtql/yas">yas</a> 的代码做少量改动（增加加解锁功能、修复bug等），并在个人电脑上编译的，主要版权归于wormtql，仅供学习交流之用。</p>
-<p><a href="https://github.com/ideless/yas-lock/releases/latest/download/yas-lock.exe">下载地址（约23MB）</a> | <a href="https://github.com/ideless/yas-lock">项目地址</a></p>
-<p>下载后最好放在一个单独的文件夹内，后续产生的数据文件都位于此文件夹内。</p>
-<p><img src="./img/1945.png" alt=""></p>
-<h1 id="导出圣遗物">2. 导出圣遗物</h1>
-<p>打开游戏，在“设置 / 图像”内将显示模式调整为“1600x900 窗口”：</p>
-<p><img src="./img/3136.png" alt=""></p>
-<p>打开背包的圣遗物界面，并翻到最上面：</p>
-<p><img src="./img/3604.png" alt=""></p>
-<p>右键以管理员身份运行yas-lock：</p>
-<p><img src="./img/3749.png" alt=""></p>
-<p>此时yas-lock应当自动开始扫描背包了，不要操作键鼠，耐心等待一会即可（1500个圣遗物约3分钟）。按鼠标右键可以提前终止扫描。扫描完成后会生成3个文件：mona.json, genmo.json, good.json。它们分别是<a href="https://www.mona-uranai.com">莫娜占卜铺</a>、<a href="https://genshin.mingyulab.com/">原魔计算器</a>和<a href="https://frzyc.github.io/genshin-optimizer/">Genshin Optimizor</a>三个工具的圣遗物数据格式。</p>
-<p><img src="./img/5201.png" alt=""></p>
-<h1 id="筛查胚子">筛查胚子</h1>
-<p>打开<a href="https://ideless.github.io/artifact/">圣遗物强化助手</a>，将yas-lock导出的good.json导入到网站中（圣遗物强化助手可以识别各种格式的圣遗物数据，但只有Genshin optimizor格式的good.json信息最全，其他格式导入后只能筛选胚子，不能加解锁）：</p>
-<p><img src="img/4623.png" alt=""></p>
-<p>界面右侧灰色部分是<strong>控制面板</strong>，由5个部分组成：</p>
-<ol>
-<li><strong>导入</strong>：此处导入数据和导出lock文件（后文会解释）</li>
-<li><strong>词条权重</strong>：此处自定义词条权重，分为基本模式和高级模式，基本模式下每个词条的权重分0/0.5/1三档，分别对应按键白底/半白半蓝/蓝底三种状态；高级模式允许以json格式自定义词条权重（如不了解请跳过），词条权重json对象是一组“词条-权重”的键值对，词条和键的对应关系见下表</li>
-<li><strong>筛选</strong>：此处自定义筛选条件，分基本和高级模式两种</li>
-<li><strong>排序</strong>：此处自定义排序模式，这里“词条数”是指副词条数的总加权和，而副词条以平均值为单位，例如暴击率3.3%算一词条，暴击伤害6.6%算一词条</li>
-<li><strong>开始计算</strong>：此处开始计算，因性能原因调整权重、筛选、排序后不会立即生效，需手动点击“开始计算”按键更新界面</li>
-</ol>
-<p>界面左侧是<strong>圣遗物面板</strong>，显示筛选、排序后的圣遗物详情：</p>
-<ol>
-<li>如果满级，底部显示总词条数</li>
-<li>如果未满级，底部灰、蓝、红三块分别显示满级最小、期望、最大词条数</li>
-<li>当前等级右侧的绿色方块显示当前词条数</li>
-<li>鼠标悬停显示编辑按键，可编辑圣遗物属性</li>
-</ol>
-<p>筛查出好胚子就可以到游戏中开赌啦！</p>
-<p>附：词条和键的对应关系</p>
-
-<table>
-<thead>
-<tr>
-<th>词条</th>
-<th>键</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>生命值</td>
-<td>hp</td>
-</tr>
-<tr>
-<td>攻击力</td>
-<td>atk</td>
-</tr>
-<tr>
-<td>防御力</td>
-<td>def</td>
-</tr>
-<tr>
-<td>生命值%</td>
-<td>hpp</td>
-</tr>
-<tr>
-<td>攻击力%</td>
-<td>atkp</td>
-</tr>
-<tr>
-<td>防御力%</td>
-<td>defp</td>
-</tr>
-<tr>
-<td>元素精通</td>
-<td>em</td>
-</tr>
-<tr>
-<td>元素充能</td>
-<td>er</td>
-</tr>
-<tr>
-<td>暴击率</td>
-<td>cr</td>
-</tr>
-<tr>
-<td>暴击伤害</td>
-<td>cd</td>
-</tr>
-</tbody>
-</table><h1 id="圣遗物加解锁-beta">圣遗物加解锁 (Beta)</h1>
-<p>如前文所述，必须用yas-lock导出的good.json文件才可以使用加解锁功能。此外，用yas-lock导出后暂时<strong>不要添加、修改、删除圣遗物</strong>，等从圣遗物强化助手导出lock文件，并应用到背包之后再说，这是因为lock文件记录的是需要修改锁的状态的圣遗物的序号，提前改动背包可能出错。</p>
-<p>在圣遗物强化助手的圣遗物界面修改加解锁状态。有两种方式：</p>
-<ol>
-<li>
-<p><strong>逐个加解锁</strong>，操作方式同游戏</p>
-</li>
-<li>
-<p><strong>批量加解锁</strong>。鼠标悬停在某个圣遗物上时会出现多选框，点击多选框进入多选模式。鼠标左键选中（或取消选中）某圣遗物后，<strong>Shift+鼠标左键</strong>点击另一个圣遗物的多选框以进行区间选中（或取消选中）。</p>
-</li>
-</ol>
-<p>修改完后点击导出，浏览器会开始下载lock文件，文件名为"lock.json"。下载完后，将它放在yas-lock同级文件夹下：</p>
-<p><img src="./img/3308.png" alt=""></p>
-<p>再次打开游戏圣遗物背包界面，并以管理员身份运行yas-lock，此时yas-lock不会自动开始扫描圣遗物，而是询问是否进行加解锁操作，输入y并回车：</p>
-<p><img src="./img/3603.png" alt=""></p>
-<p>很快加解锁就完成啦！</p>
-</div>
+<body class='typora-export'><div class='typora-export-content'>
+<div id='write'  class=''><div class='md-toc' mdtype='toc'><p class="md-toc-content" role="list"><span role="listitem" class="md-toc-item md-toc-h1" data-ref="n5"><a class="md-toc-inner" href="#0-关于">0. 关于</a></span><span role="listitem" class="md-toc-item md-toc-h1" data-ref="n16"><a class="md-toc-inner" href="#1-圣遗物导出">1. 圣遗物导出</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n98"><a class="md-toc-inner" href="#11-yas-lock">1.1 yas-lock</a></span><span role="listitem" class="md-toc-item md-toc-h1" data-ref="n112"><a class="md-toc-inner" href="#2-圣遗物加解锁">2. 圣遗物加解锁</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n130"><a class="md-toc-inner" href="#21-yas-lock">2.1 yas-lock</a></span></p></div><blockquote><p><span>自2.8起，米哈游加强了数据包加密，暂不支持抓包及pcap文件的解析</span></p></blockquote><h1 id='0-关于'><span>0. 关于</span></h1><p><span>圣遗物强化助手专注于辅助玩家强化圣遗物。通过本助手及相关工具，你可以：</span></p><p><span> 👁️‍🗨️ 快速导出游戏内的圣遗物数据：</span></p><ul><li><del><span>通过抓包（使用自带tcpdump或安装wireshark，推荐）</span></del></li><li><span>通过OCR（需安装yas/天目/yas-lock等）</span></li></ul><p><span>🔀 更便捷地对圣遗物进行筛选、排序、修改（在浏览器中完成）</span></p><p><span>🔒 快速修改游戏内圣遗物的加解锁状态（需安装yas-lock）</span></p><p><span>反馈：</span><a href='https://bbs.nga.cn/read.php?tid=29551863'><span>NGA分享贴</span></a><span> | </span><a href='https://github.com/ideless/artifact/issues'><span>Issue</span></a><span> （都是小号，不经常看）</span></p><h1 id='1-圣遗物导出'><span>1. 圣遗物导出</span></h1><p><span>通过图像识别导出数据，再导入到圣遗物强化助手。</span></p><p><span>导出工具有（仅列出部分）：</span></p><ul><li><a href='https://github.com/wormtql/yas'><span>yas</span></a><span>（速度快）</span></li><li><a href=''><span>天目</span></a></li><li><a href='https://github.com/ideless/yas-lock'><span>yas-lock</span></a></li></ul><p><span>这里推荐yas-lock，因为它包含了yas的扫描功能，同时支持加解锁。</span></p><p><span>圣遗物强化助手支持的数据格式有：</span></p><ul><li><a href='https://www.mona-uranai.com'><span>莫娜占卜铺</span></a><span>格式，文件名通常是</span><code>mona.json</code></li><li><a href='https://genshin.mingyulab.com/'><span>原魔计算器</span></a><span>格式，文件名通常是</span><code>mingyulab.json</code><span>，</span><code>genmo.json</code></li><li><a href='https://frzyc.github.io/genshin-optimizer/'><span>Genshin Optimizor</span></a><span>格式，文件名通常是</span><code>good.json</code></li></ul><h2 id='11-yas-lock'><span>1.1 yas-lock</span></h2><p><span>yas-lock是一个圣遗物扫描、加解锁的Windows端程序。</span></p><p><span>yas-lock是由我对wormtql的 </span><a href='https://github.com/wormtql/yas'><span>yas</span></a><span> 的代码做少量改动（增加加解锁功能、修复bug等），并在个人电脑上编译的，主要版权归于wormtql，仅供学习交流之用。</span></p><p><a href='https://ghproxy.com/https://github.com/ideless/yas-lock/releases/public/download/yas-lock.exe'><span>下载地址（约23MB）</span></a><span> | </span><a href='https://github.com/ideless/yas-lock'><span>项目地址</span></a></p><p><span>下载后最好放在一个单独的文件夹内，后续产生的数据文件都位于此文件夹内。</span></p><p><img src="img/1945.png" referrerpolicy="no-referrer"></p><p><span>打开游戏，在“设置 / 图像”内将显示模式调整为“1600x900 窗口”：</span></p><p><img src="img/3136.png" referrerpolicy="no-referrer"></p><p><span>打开背包的圣遗物界面，并翻到最上面（截图已过时，现在是一行8个，但我懒得更新截图了）：</span></p><p><img src="img/3604.png" referrerpolicy="no-referrer"></p><p><span>右键以管理员身份运行yas-lock：</span></p><p><img src="img/3749.png" referrerpolicy="no-referrer"></p><p><span>此时yas-lock应当自动开始扫描背包了，不要操作键鼠，耐心等待一会即可（1500个圣遗物约3-4分钟）。</span><strong><span>按鼠标右键可以提前终止扫描</span></strong><span>。扫描完成后会生成3个文件：mona.json, genmo.json, good.json。它们分别是</span><a href='https://www.mona-uranai.com'><span>莫娜占卜铺</span></a><span>、</span><a href='https://genshin.mingyulab.com/'><span>原魔计算器</span></a><span>和</span><a href='https://frzyc.github.io/genshin-optimizer/'><span>Genshin Optimizor</span></a><span>三个工具的圣遗物数据格式。</span></p><p><img src="img/5201.png" referrerpolicy="no-referrer"></p><h1 id='2-圣遗物加解锁'><span>2. 圣遗物加解锁</span></h1><p><span>在圣遗物强化助手中修改加解锁状态，导出更新文件(lock.json)，由yas-lock应用到游戏中。</span></p><p><span>只有特定的导入数据支持加解锁，其他数据导入后，圣遗物强化助手的“导出”按钮会变成灰色无法选中：</span></p><ul><li><span>yas-lock导出的good.json</span></li><li><span>pcap文件</span></li></ul><p><span>在圣遗物强化助手中修改加解锁状态，有两种方式：</span></p><ul><li><span>逐个加解锁，操作方式同游戏</span></li><li><span>批量加解锁。鼠标左键选中（或取消选中）某圣遗物后，</span><strong><span>Shift+鼠标左键</span></strong><span>点击另一个圣遗物的多选框以进行区间选中（或取消选中）。</span></li></ul><p><span>注意事项：</span></p><ul><li><span>确保导出圣遗物到修改加解锁状态之间，各个圣遗物的位置不要变动，换句话说不要对背包进行任何操作</span></li></ul><h2 id='21-yas-lock'><span>2.1 yas-lock</span></h2><p><span>修改完后点击导出，浏览器会开始下载lock文件，文件名为&quot;lock.json&quot;。下载完后，将它放在yas-lock同级文件夹下：</span></p><p><img src="img/3308.png" referrerpolicy="no-referrer"></p><p><span>再次打开游戏圣遗物背包界面，并翻到最</span><strong><span>顶部</span></strong><span>。</span></p><p><span>以管理员身份运行yas-lock，此时yas-lock不会自动开始扫描圣遗物，而是询问是否进行加解锁操作，输入y并回车：</span></p><p><img src="img/3603.png" referrerpolicy="no-referrer"></p></div></div>
 </body>
-
 </html>

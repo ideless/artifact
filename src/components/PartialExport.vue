@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import { Artifact } from '../ys/artifact';
+import { Artifact } from '@/ys/artifact';
 import { ElInput, ElMessage } from 'element-plus'
 import { Download, CopyDocument } from '@element-plus/icons-vue'
-import mona from '../ys/ext/mona';
-import genmo from '../ys/ext/genmo';
-import good from '../ys/ext/good';
-import { download } from '../store/utils';
+import mona from '@/ys/ext/mona';
+import genmo from '@/ys/ext/genmo';
+import good from '@/ys/ext/good';
+import { download } from '@/store/utils';
 const props = defineProps<{
     modelValue: boolean,
     artifacts: Artifact[]

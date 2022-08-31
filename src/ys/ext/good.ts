@@ -1,5 +1,4 @@
 import { Artifact } from "../artifact"
-import data from "../data"
 import { assert, whatis } from "../utils"
 
 export default {
@@ -23,12 +22,14 @@ export default {
             cryoDB: 'cryo_dmg_',
             geoDB: 'geo_dmg_',
             physicalDB: 'physical_dmg_',
+            dendroDB: 'dendro_dmg_'
         }
     },
     loads(json: string) {
         let good = JSON.parse(json)
         assert(typeof good == 'object' && 'artifacts' in good)
         assert(good.artifacts instanceof Array)
+        let source = (good.source || '*') + '/good'
         let ret = []
         for (let a of good.artifacts) {
             if (a.rarity !== 5) continue
@@ -47,7 +48,7 @@ export default {
                 }))
             })
             artifact.data.index = ret.length
-            artifact.data.source = 'good'
+            artifact.data.source = source
             artifact.validate()
             ret.push(artifact)
         }

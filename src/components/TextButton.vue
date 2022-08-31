@@ -27,23 +27,15 @@ const click = () => {
 
 <style lang="scss" scoped>
 .text-button {
-    width: 85px;
-    height: $widget-height;
-    display: inline-block;
-    color: white;
-    background: $primary-color;
-    border-radius: 3px;
-    box-shadow: 0 0 2px 0 #0007;
-    line-height: $widget-height;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-    &:hover {
+    @extend %button;
+    &:not(.disabled):hover {
         filter: brightness(110%);
+        background-color: $primary-color;
+        color: white;
     }
     &.disabled {
         filter: none;
-        opacity: 0.7;
+        opacity: 0.3;
         cursor: not-allowed;
     }
 }

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_package = "emu.grasscutter.net.proto";
+
+import "Item.proto";
+import "StoreType.proto";
+
+// CmdId: 609
+// EnetChannelId: 0
+// EnetIsReliable: true
+message PlayerStoreNotify {
+	StoreType store_type = 4;
+	repeated Item item_list = 3;
+	uint32 weight_limit = 15;
+}

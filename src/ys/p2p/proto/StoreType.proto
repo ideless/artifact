@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "emu.grasscutter.net.proto";
+
+enum StoreType {
+	STORE_TYPE_NONE = 0;
+	STORE_TYPE_PACK = 1;
+	STORE_TYPE_DEPOT = 2;
+}

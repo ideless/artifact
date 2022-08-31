@@ -1,9 +1,9 @@
 import { assert, SimpleCache } from "./utils"
-import data from "./data"
-import setweight from "./distr"
-import build, { IBuild } from "./build"
+import ArtifactData from "./data/artifact"
+import CharacterData, { IBuild } from "./data/character"
+import setweight from "./data/artifact_w"
 import { affnumDistr } from "./gacha/artifact"
-import preset from "./preset"
+import preset from "./data/character_w"
 
 interface IWeight {
     [key: string]: number
@@ -44,7 +44,7 @@ export class Affix implements IAffix {
     }
     valueString(showAffnum?: boolean) {
         if (showAffnum) {
-            let v = this.value / data.minorStat[this.key].v
+            let v = this.value / ArtifactData.minorStat[this.key].v
             return v.toFixed(1)
         } else {
             if (['hp', 'atk', 'def', 'em'].includes(this.key)) {
@@ -129,10 +129,10 @@ export class Artifact implements IArtifact {
     updateAffnum(w: ArtifactScoreWeight) {
         // Refer to ./README.md for symbols and equations
         this.data.affnum = { cur: 0, md: 0, ma:0, se:0, tot: 0}
-        let A: Set<string> = new Set(), Ac = new Set(data.minorKeys), sum_w = 0
+        let A: Set<string> = new Set(), Ac = new Set(ArtifactData.minorKeys), sum_w = 0
         Ac.delete(this.mainKey)
         for (let a of this.minors) {
-            this.data.affnum.cur += w[a.key] * a.value / data.minorStat[a.key].v 
+            this.data.affnum.cur += w[a.key] * a.value / ArtifactData.minorStat[a.key].v 
             A.add(a.key)
             Ac.delete(a.key)
             sum_w += w[a.key]
@@ -142,8 +142,8 @@ export class Artifact implements IArtifact {
         if (this.minors.length == 3) {
             let nm = 0, dn = 0 // denominator and numerator
             Ac.forEach(akey => {
-                nm += w[akey] * data.minorStat[akey].p
-                dn += data.minorStat[akey].p
+                nm += w[akey] * ArtifactData.minorStat[akey].p
+                dn += ArtifactData.minorStat[akey].p
             })
             this.data.affnum.md += nm / dn * 1.7
             n--
@@ -152,34 +152,34 @@ export class Artifact implements IArtifact {
         for (let a of this.minors) {
             switch (a.key) {
                 case "atkp":
-                    this.data.score['attack'] += w[a.key] * (a.value / data.minorStat[a.key].v + n * 0.85 / 4)
+                    this.data.score['attack'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v + n * 0.85 / 4)
                     break
                 case "atk":
-                    this.data.score['attack'] += w[a.key] * (a.value / data.minorStat[a.key].v + n * 0.85 / 4)
+                    this.data.score['attack'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v + n * 0.85 / 4)
                     break
                 case "hpp":
-                    this.data.score['life'] += w[a.key] * (a.value / data.minorStat[a.key].v + n * 0.85 / 4)
+                    this.data.score['life'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v + n * 0.85 / 4)
                     break
                 case "hp":
-                    this.data.score['life'] += w[a.key] * (a.value / data.minorStat[a.key].v + n * 0.85 / 4)
+                    this.data.score['life'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v + n * 0.85 / 4)
                     break
                 case "defp":
-                    this.data.score['defend'] += w[a.key] * (a.value / data.minorStat[a.key].v + n * 0.85 / 4)
+                    this.data.score['defend'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v + n * 0.85 / 4)
                     break
                 case "def":
-                    this.data.score['defend'] += w[a.key] * (a.value / data.minorStat[a.key].v + n * 0.85 / 4)
+                    this.data.score['defend'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v + n * 0.85 / 4)
                     break
                 case "em":
-                    this.data.score['elementalMastery'] += w[a.key] * (a.value / data.minorStat[a.key].v + n * 0.85 / 4)
+                    this.data.score['elementalMastery'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v + n * 0.85 / 4)
                     break
                 case "er":
-                    this.data.score['recharge'] += w[a.key] * (a.value / data.minorStat[a.key].v + n * 0.85 / 4)
+                    this.data.score['recharge'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v + n * 0.85 / 4)
                     break
                 case "cr":
-                    this.data.score['critical'] += w[a.key] * (a.value / data.minorStat[a.key].v + n * 0.85 / 4)
+                    this.data.score['critical'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v + n * 0.85 / 4)
                     break
                 case "cd":
-                    this.data.score['critical'] += w[a.key] * (a.value / data.minorStat[a.key].v + n * 0.85 / 4)
+                    this.data.score['critical'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v + n * 0.85 / 4)
                     break
             }
         }
@@ -225,34 +225,34 @@ export class Artifact implements IArtifact {
             for (let a of this.minors) {
             switch (a.key) {
                 case "atkp":
-                    this.data.score['attack'] += w[a.key] * (a.value / data.minorStat[a.key].v)
+                    this.data.score['attack'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v)
                     break
                 case "atk":
-                    this.data.score['attack'] += w[a.key] * (a.value / data.minorStat[a.key].v)
+                    this.data.score['attack'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v)
                     break
                 case "hpp":
-                    this.data.score['life'] += w[a.key] * (a.value / data.minorStat[a.key].v)
+                    this.data.score['life'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v)
                     break
                 case "hp":
-                    this.data.score['life'] += w[a.key] * (a.value / data.minorStat[a.key].v)
+                    this.data.score['life'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v)
                     break
                 case "defp":
-                    this.data.score['defend'] += w[a.key] * (a.value / data.minorStat[a.key].v)
+                    this.data.score['defend'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v)
                     break
                 case "def":
-                    this.data.score['defend'] += w[a.key] * (a.value / data.minorStat[a.key].v)
+                    this.data.score['defend'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v)
                     break
                 case "em":
-                    this.data.score['elementalMastery'] += w[a.key] * (a.value / data.minorStat[a.key].v)
+                    this.data.score['elementalMastery'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v)
                     break
                 case "er":
-                    this.data.score['recharge'] += w[a.key] * (a.value / data.minorStat[a.key].v)
+                    this.data.score['recharge'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v)
                     break
                 case "cr":
-                    this.data.score['critical'] += w[a.key] * (a.value / data.minorStat[a.key].v)
+                    this.data.score['critical'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v)
                     break
                 case "cd":
-                    this.data.score['critical'] += w[a.key] * (a.value / data.minorStat[a.key].v)
+                    this.data.score['critical'] += w[a.key] * (a.value / ArtifactData.minorStat[a.key].v)
                     break
             }
         }
@@ -295,7 +295,7 @@ export class Artifact implements IArtifact {
                 }
         }
         //total score
-        this.data.affnum.ma = this.data.affnum.ma + w['main'] * data.mainWeight[this.slot][this.mainKey].p / data.mainWeight[this.slot][this.mainKey].v
+        this.data.affnum.ma = this.data.affnum.ma + w['main'] * ArtifactData.mainWeight[this.slot][this.mainKey].p / ArtifactData.mainWeight[this.slot][this.mainKey].v
         if(this.mainKey!='atk' && this.mainKey!='hp'){
             if(setweight[this.slot][this.mainKey][this.set]<0){
                 this.data.affnum.se = 0.25 * w['set'] * setweight[this.slot][this.mainKey][this.set]
@@ -332,10 +332,10 @@ export class Artifact implements IArtifact {
         this.data.affnum.tot = this.data.affnum.md + this.data.affnum.ma + this.data.affnum.se
     }
     getAvgAffnum(w: { [key: string]: number }) {
-        let A: Set<string> = new Set(), Ac = new Set(data.minorKeys), sum_w = 0, cur = 0
+        let A: Set<string> = new Set(), Ac = new Set(ArtifactData.minorKeys), sum_w = 0, cur = 0
         Ac.delete(this.mainKey)
         for (let a of this.minors) {
-            cur += w[a.key] * a.value / data.minorStat[a.key].v
+            cur += w[a.key] * a.value / ArtifactData.minorStat[a.key].v
             A.add(a.key)
             Ac.delete(a.key)
             sum_w += w[a.key]
@@ -343,8 +343,8 @@ export class Artifact implements IArtifact {
         if (this.minors.length == 3) {
             let dn = 0, nm = 0 // denominator and numerator
             Ac.forEach(a_key => {
-                nm += w[a_key] * data.minorStat[a_key].p
-                dn += data.minorStat[a_key].p
+                nm += w[a_key] * ArtifactData.minorStat[a_key].p
+                dn += ArtifactData.minorStat[a_key].p
             })
             return cur + 0.85 * sum_w + 1.7 * nm / dn // 0.85*2=1.7
         } else { // this.minors.length == 4
@@ -352,7 +352,7 @@ export class Artifact implements IArtifact {
             return cur + n * sum_w / 4 * 0.85
         }
     }
-    updateProp() {
+    updateProp(charKeys: string[]) {
         this.data.charScores = []
         // AffnumCache记录不同权重下圣遗物的满级期望词条数
         const AffnumCache = new SimpleCache((weight: IWeight) => {
@@ -363,31 +363,27 @@ export class Artifact implements IArtifact {
             weight: IWeight,
             { slot, main, distr, affnum }: { slot: string, main: string, distr: number[], affnum: number }
         ) => {
-            let p = data.mainDistr[slot][main] / 5
+            let p = ArtifactData.mainDistr[slot][main] / 5
             let x = affnum >= distr.length ? 1 : distr[affnum]
             return (p * x + 1 - p) ** 100 // 有没有100其实无所谓，有100更好看一点
         })
         // 对每个角色分别计算
-        for (let charKey in build) {
-            let b = build[charKey]
+        for (let charKey of charKeys) {
+            let b = CharacterData[charKey].build
             // if the main stat is not recommanded, skip
             if (!b.main[this.slot].includes(this.mainKey))
                 continue
             // set factor
             let n_set = 2
-            if (build[charKey].set[4].includes(this.set)) {
+            if (CharacterData[charKey].build.set[4].includes(this.set)) {
                 n_set = 1
-            } else if (build[charKey].set[2].includes(this.set)) {
+            } else if (CharacterData[charKey].build.set[2].includes(this.set)) {
                 n_set = 1
             }
             // get score
             let charweight = []
-            for (let c of preset.characters) {
-                if (c.key == charKey) {
-                    for (let p of c.presets) {
-                        charweight.push(preset.presets[p])
-                    }
-                }
+            for (let p of CharacterData[charKey].presets) {
+                    charweight.push(preset.presets[p])
             }
             let scorearr = []
             for (let w of charweight){
@@ -397,8 +393,9 @@ export class Artifact implements IArtifact {
             }
             let score=Math.max.apply(null,scorearr)
             // update
-            if (score < 0.001) continue
-            this.data.charScores.push({ charKey, score })
+            if (score > 0.001){
+                this.data.charScores.push({ charKey, score })
+            }
         }
         this.data.charScores.sort((a, b) => b.score - a.score)
         if(this.data.charScores.length==0){
@@ -422,7 +419,7 @@ export class Artifact implements IArtifact {
         }
         let affnum = Math.round(this.getAvgAffnum(w) * 10)
         let distr = AffnumDistrCache.get({ main: this.mainKey, weight: w })
-        let p = data.mainDistr[this.slot][this.mainKey] / 5
+        let p = ArtifactData.mainDistr[this.slot][this.mainKey] / 5
         let x = affnum >= distr.length ? 1 : distr[affnum]
         let prop=(p * x + 1 - p) ** n_set
         this.data.charScores.push({charKey:charKey,score:prop})
@@ -432,10 +429,10 @@ export class Artifact implements IArtifact {
         this.data.affnum.se=0
         this.data.affnum.tot=0
         if (b.main[this.slot].includes(this.mainKey))
-        if(this.mainKey=='atk' || this.mainKey=='hp'){
-            this.data.affnum.ma = 6
-        }else{
-            this.data.affnum.ma = 8
+            if(this.mainKey=='atk' || this.mainKey=='hp'){
+                this.data.affnum.ma = 6
+            }else{
+                this.data.affnum.ma = 8
         }
         if (b.set[4].includes(this.set)) {
             this.data.affnum.se = 4

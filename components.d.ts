@@ -4,16 +4,19 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AlikeLocker: typeof import('./src/components/AlikeLocker.vue')['default']
     ArtifactCard: typeof import('./src/components/ArtifactCard.vue')['default']
     ArtifactCreator: typeof import('./src/components/ArtifactCreator.vue')['default']
     ArtifactEditor: typeof import('./src/components/ArtifactEditor.vue')['default']
     ArtifactFilterBatchPanel: typeof import('./src/components/ArtifactFilterBatchPanel.vue')['default']
     ArtifactFilterPanel: typeof import('./src/components/ArtifactFilterPanel.vue')['default']
-    BuildSection: typeof import('./src/components/BuildSection.vue')['default']
+    CharSelect: typeof import('./src/components/CharSelect.vue')['default']
     DropSelect: typeof import('./src/components/DropSelect.vue')['default']
+    DropSelectPlus: typeof import('./src/components/DropSelectPlus.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
+    ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDivider: typeof import('element-plus/es')['ElDivider']

@@ -104,20 +104,12 @@ const valueString = computed(() => {
 
 <style lang="scss" scoped>
 .value-button {
-    width: 85px;
-    height: $widget-height;
-    display: inline-block;
-    border-radius: 3px;
-    box-shadow: 0 0 2px 0 #0007;
-    line-height: $widget-height;
-    text-align: center;
-    cursor: pointer;
-    position: relative;
+    @extend %button;
     overflow: hidden;
-    user-select: none;
+    position: relative;
     transition: all 100ms ease;
     .blank {
-        background: white;
+        // background: white;
         color: $primary-color;
         position: absolute;
         left: 0;
@@ -126,7 +118,7 @@ const valueString = computed(() => {
         top: 0;
     }
     .full {
-        background: red;
+        background: #C80000;
         color: white;
         position: absolute;
         left: 0;

@@ -36,6 +36,7 @@ export default defineComponent({
         doSave() {
             this.$emit('update:show', false)
             localStorage.setItem('filterBatchJSON', JSON.stringify(this.store.state.filterBatch))
+            this.store.dispatch('updFilteredArtifacts')
         },
         doAddFilterBatch() {
             this.store.state.filterBatch.push(new FilterBatchOne());

@@ -6,24 +6,33 @@ const props = defineProps<{
 
 <template>
     <div class="section-title">
-        <span>{{ title }}</span>
+        <span class="marker" />
+        <span class="title">{{ title }}</span>
         <div class="section-opts">
             <slot />
         </div>
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .section-title {
-    color: #808080;
+    color: gray;
     display: flex;
     align-items: center;
     margin-top: 24px;
-    > span {
+    .marker {
+        display: inline-block;
+        width: 5px;
+        height: 12px;
+        border-radius: 6px;
+        background-color: $primary-color;
+    }
+    .title {
         flex: 1;
+        margin-left: 10px;
     }
     .section-opts {
-        >* {
+        >:deep(*) {
             color: $primary-color;
             cursor: pointer;
             font-size: 12px;

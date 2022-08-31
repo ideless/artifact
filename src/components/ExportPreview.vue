@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-import { Artifact } from '../ys/artifact';
-import { download } from '../store/utils';
-import { useStore } from '../store';
+import { Artifact } from '@/ys/artifact';
+import { download } from '@/store/utils';
+import { useStore } from '@/store';
 import { Download } from '@element-plus/icons-vue'
 import ArtifactCard from './ArtifactCard.vue';
+import PartialExport from './PartialExport.vue';
 import axios from 'axios'
 
 const store = useStore()
@@ -12,6 +13,7 @@ const showUpdateDialog = ref(false)
 const message = ref('Hello')
 const yasVersion = ref('v0.0.0')
 const yasUpdLog = ref('Fix bugs')
+const showExport = ref(false)
 try {
     axios.get('https://api.github.com/repos/ideless/yas-lock/releases/latest').then(r => {
         if ('tag_name' in r.data) {
@@ -65,12 +67,15 @@ const loadArtToUnlock = () => {
     }
 }
 const loadArtToUnlockDisabled = computed(() => artToUnlockShowCount.value >= artToUnlock.value.length)
+function exportable(a: Artifact) {
+    return a.data.source == 'yas-lock/good' || a.data.source == 'pcap/good'
+}
 watch(() => props.modelValue, (value) => {
     if (!value) return
     artToLock.value = []
     artToUnlock.value = []
     for (let a of store.state.artifacts) {
-        if (a.data.source != 'good') continue
+        if (!exportable(a)) continue
         if (a.lock && !a.data.lock) artToLock.value.push(a)
         if (!a.lock && a.data.lock) artToUnlock.value.push(a)
     }
@@ -83,7 +88,8 @@ const exportArts = () => {
     show.value = false
     let indices = []
     for (let a of store.state.artifacts) {
-        if (a.data.source == 'good' && a.lock != a.data.lock) {
+        if (!exportable(a)) continue
+        if (a.lock != a.data.lock) {
             indices.push(a.data.index)
             // 记住更改
             if (remember.value) {
@@ -131,8 +137,10 @@ const exportArts = () => {
             <el-checkbox v-model="remember">记住本次更改，重新导入新的圣遗物前将不再导出以上圣遗物</el-checkbox>
         </div>
         <div style="margin-top: 10px; text-align: center;">
-            <el-button type="primary" @click="exportArts">导出</el-button>
+            <el-button type="primary" @click="showExport=true" >全量导出</el-button>
+            <el-button type="primary" @click="exportArts" :disabled="!store.state.canExport">导出加解锁信息</el-button>
         </div>
+        <partial-export v-model="showExport" :artifacts="store.state.artifacts" />
     </el-dialog>
 </template>
 

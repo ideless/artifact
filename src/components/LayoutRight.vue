@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import ImportSection from './ImportSection.vue';
 import WeightSection from './WeightSection.vue'
-import BuildSection from './BuildSection.vue';
 import FilterSection from './FilterSection.vue';
 import SortSection from './SortSection.vue';
 import TextButton from './TextButton.vue';
-import { useStore } from '../store';
+import { useStore } from '@/store';
 const store = useStore()
 const start = () => { store.dispatch('updFilteredArtifacts') }
 </script>
@@ -14,10 +13,9 @@ const start = () => { store.dispatch('updFilteredArtifacts') }
     <div class="layout-right">
         <el-scrollbar>
             <import-section />
+            <filter-section />
             <weight-section />
             <sort-section />
-            <build-section />
-            <filter-section />
             <div class="start-container">
                 <text-button @click="start">开始计算</text-button>
             </div>
@@ -29,19 +27,25 @@ const start = () => { store.dispatch('updFilteredArtifacts') }
 .layout-right {
     width: 500px;
     background-color: $right-bgcolor;
-    box-shadow: 0 0 2px 1px #ddd;
+    box-shadow: 0 0 4px 1px #ccc;
     color: #444;
     overflow-y: auto;
     user-select: none;
     .start-container {
         padding: 20px 0;
+        margin-top: 20px;
         text-align: center;
-        background-color: $right-bgcolor;
-        // backdrop-filter: blur(10px);
+        background-color: #f3fdff77;
+        backdrop-filter: blur(22px);
         border-top: 1px solid #e7e7e7;
         position: sticky;
         bottom: 0;
         z-index: 1;
+    }
+}
+@-moz-document url-prefix() {
+    .layout-right .start-container {
+        background-color: $right-bgcolor;
     }
 }
 </style>

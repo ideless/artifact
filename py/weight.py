@@ -289,7 +289,7 @@ weight
 # In[ ]:
 
 
-with open('weight.json', 'w') as f:
+with open('preset.json', 'w') as f:
     json.dump(weight, f)
 
 

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import SectionTitle from './SectionTitle.vue';
 import ValueButton from './ValueButton.vue';
-import chs from "../ys/locale/chs"
-import { useStore } from '../store';
+import chs from "@/ys/locale/chs"
+import { useStore } from '@/store';
 import { ref, computed } from 'vue';
 const store = useStore()
 const setWeight = (key: string, value: number) => {
@@ -16,17 +16,14 @@ const useWeightJson = (use: boolean) => {
 <template>
     <div class="section">
         <section-title title="词条权重">
-            <span v-show="store.state.useWeightJson" @click="useWeightJson(false)">基本</span>
-            <span v-show="!store.state.useWeightJson" @click="useWeightJson(true)">高级</span>
+            <span v-show="store.state.useWeightJson && store.state.useFilterBatch == -1" @click="useWeightJson(false)">基本</span>
+            <span v-show="!store.state.useWeightJson && store.state.useFilterBatch == -1" @click="useWeightJson(true)">高级</span>
         </section-title>
-        <p class="info">点按粗调，拖拽微调，悬停查看数值，大于1的权重需进入高级设置</p>
-        <div style="margin-top: 14px;" v-show="store.state.useFilterBatch == -1 && !store.state.useWeightJson">
-            <value-button
-                class="weight-button"
-                v-for="(_, key) in store.state.weight"
-                :key="key"
-                :model-value="store.state.weight[key]"
-                @update:model-value="setWeight(key as string, $event)"
+        <p class="info" v-if="store.state.useFilterBatch == -1">点按粗调，拖拽微调，悬停查看数值，大于1的权重需进入高级设置</p>
+        <div class="filter-hint-div" v-if="store.state.useFilterBatch != -1">已选择过滤规则，当前使用过滤规则内的词条权重</div>
+        <div v-show="store.state.useFilterBatch == -1 && !store.state.useWeightJson">
+            <value-button class="weight-button" v-for="(_, key) in store.state.weight"
+                :model-value="store.state.weight[key]" @update:model-value="setWeight(key as string, $event)"
             >{{ (chs.affix as any)[key] }}</value-button>
         </div>
         <div class="section-content" v-show="store.state.useFilterBatch == -1 && store.state.useWeightJson">
@@ -42,7 +39,6 @@ const useWeightJson = (use: boolean) => {
             </el-form>
         </div>
         <div class="section-content" v-if="store.state.useFilterBatch != -1">
-            <div class="filter-hint-div">已选择过滤规则，当前使用过滤规则内的词条权重</div>
             <el-form :inline="true">
                 <el-form-item 
                     v-for="(_, key) in store.state.filterBatch[store.state.useFilterBatch].filter.scoreWeight"
@@ -57,21 +53,12 @@ const useWeightJson = (use: boolean) => {
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .weight-button {
     margin: 10px 10px 0 10px;
 }
-.json-input {
-    resize: none;
-    border: lightgray;
-    padding: 10px;
-    width: 100%;
-    height: 60px;
-    color: gray;
-    border-radius: 3px;
-    box-shadow: 0 0 2px 0 #0007;
-    background: white;
-    line-height: 1.5;
+.filter {
+    margin-top: 15px;
 }
 .weight-input {
     width: 80px;
@@ -82,5 +69,6 @@ const useWeightJson = (use: boolean) => {
 .filter-hint-div {
     text-align: center;
     margin: 20px;
+    color: #A00008;
 }
 </style>

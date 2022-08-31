@@ -1,4 +1,4 @@
-import { ITranslation } from "./locale_type"
+import { ITranslation } from "./type"
 
 export default <ITranslation>{
     set: {
@@ -310,6 +310,34 @@ export default <ITranslation>{
                 4: '普通攻击命中敌人时，有36%概率触发「幽谷祝祀」：普通攻击造成的伤害提高，伤害提高值为攻击力的70%，该效果将在普通攻击造成伤害后的0.05秒后清除。普通攻击未触发「幽谷祝祀」时，会使下次触发概率提升20%；0.2秒内至多判定1次触发与否。'
             }
         },
+        DeepwoodMemories: {
+            name: "深林的记忆",
+            pieces:{
+                flower: "迷宫的游人",
+                plume: "翠蔓的智者",
+                sands: "贤者的定期",
+                goblet: "迷雾者之灯",
+                circlet: "月桂的宝冠"
+            },
+            bonus: {
+                2: '获得15%草元素伤害加成。',
+                4: '元素战技或元素爆发命中敌人后，使命中目标的草元素抗性降低30%，持续8秒。装备着处于队伍后台时，依然能触发该效果。'
+            }
+        },
+        GildedDreams: {
+            name: "饰金之梦",
+            pieces:{
+                flower: "梦中的铁花",
+                plume: "裁断的翎羽",
+                sands: "沉金的岁月",
+                goblet: "如蜜的终宴",
+                circlet: "沙王的投影"
+            },
+            bonus: {
+                2: '元素精通提高80点。',
+                4: '触发元素反应后的8秒内，会根据队伍内其他角色的元素类型，使装备者获得强化：队伍中每存在1个和装备者同类元素的角色，攻击力提升14%；每存在一个和装备者不同元素类型的角色，元素精通提升50点。上述每类效果至多计算3个角色。该效果每8秒至多触发一次。装备者处于队伍后台时，依然能触发该效果。'
+            }
+        },
     },
     affix: {
         hp: "生命值",
@@ -330,6 +358,7 @@ export default <ITranslation>{
         cryoDB: "冰元素伤害加成",
         geoDB: "岩元素伤害加成",
         physicalDB: "物理伤害加成",
+        dendroDB: "草元素伤害加成",
         main: '主属性系数',
         set: '套装系数',
         hpprop: '生攻转化率',
@@ -350,9 +379,13 @@ export default <ITranslation>{
         Barbara: "芭芭拉",
         Beidou: "北斗",
         Bennett: "班尼特",
+        Candace: "坎蒂丝",
         Chongyun: "重云",
+        Collei: "柯莱",
+        Cyno: "赛诺",
         Diluc: "迪卢克",
         Diona: "迪奥娜",
+        Dori: "多莉",
         Eula: "优菈",
         Fischl: "菲谢尔",
         Ganyu: "甘雨",
@@ -369,6 +402,7 @@ export default <ITranslation>{
         KukiShinobu: "久岐忍",
         Lisa: "丽莎",
         Mona: "莫娜",
+        Nilou: "妮露",
         Ningguang: "凝光",
         Noelle: "诺艾尔",
         Qiqi: "七七",
@@ -378,13 +412,16 @@ export default <ITranslation>{
         SangonomiyaKokomi: "珊瑚宫心海",
         Sayu: "早柚",
         Shenhe: "申鹤",
+        ShikanoinHeizou: "鹿野院平藏",
         Sucrose: "砂糖",
         Tartaglia: "达达利亚",
         Thoma: "托马",
+        Tighnari: "提纳里",
         Traveler: "旅行者",
         TravelerAnemo: "风主",
         TravelerGeo: "岩主",
         TravelerElectro: "雷主",
+        TravelerDendro: "草主",
         Venti: "温迪",
         Xiangling: "香菱",
         Xiao: "魈",
@@ -403,6 +440,7 @@ export default <ITranslation>{
         electro: "雷元素",
         anemo: "风元素",
         cryo: "冰元素",
-        geo: "岩元素"
+        geo: "岩元素",
+        dendro: "草元素"
     }
 }

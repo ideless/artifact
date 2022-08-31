@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue'
-import data from '../ys/data';
-import chs from '../ys/locale/chs'
-import { useStore } from '../store';
-import { Affix, Artifact } from '../ys/artifact';
+import chs from '@/ys/locale/chs'
+import { useStore } from '@/store';
+import { Affix, Artifact } from '@/ys/artifact';
 import ArtifactCard from './ArtifactCard.vue';
-import preset from '../ys/preset';
+import ArtifactData from "@/ys/data/artifact"
+import CharacterData from "@/ys/data/character"
 const props = defineProps<{
     modelValue: boolean,
     index: number
@@ -20,11 +20,11 @@ const show = computed({
 })
 const characters = computed(() => {
     let tmp: { [key: string]: string[] } = {}
-    for (let c of preset.characters) {
-        if (c.element in tmp) {
-            tmp[c.element].push(c.key)
+    for (let c in CharacterData) {
+        if (CharacterData[c].element in tmp) {
+            tmp[CharacterData[c].element].push(c)
         } else {
-            tmp[c.element] = [c.key]
+            tmp[CharacterData[c].element] = [c]
         }
     }
     let ret = [{
@@ -42,7 +42,7 @@ const characters = computed(() => {
     }
     return ret
 })
-const affixes = data.minorKeys.map(key => ({
+const affixes = ArtifactData.minorKeys.map(key => ({
     value: key,
     label: chs.affix[key]
 }))
@@ -55,9 +55,9 @@ const updNewArtAffnum = () => {
 }
 const oldArt = computed<Artifact>(() => {
     // reset equiped
-    for (let c of preset.characters) {
-        equiped[c.key] = { flower: false, plume: false, sands: false, goblet: false, circlet: false }
-    }
+   for (let c in CharacterData) {
+        equiped[c] = { flower: false, plume: false, sands: false, goblet: false, circlet: false }
+        }
     let ret = new Artifact()
     for (let a of store.state.artifacts) {
         if (a.data.index === props.index) {

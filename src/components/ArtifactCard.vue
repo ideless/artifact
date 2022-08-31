@@ -1,119 +1,149 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { Edit } from '@element-plus/icons-vue'
-import { Affix, Artifact } from '../ys/artifact';
-import chs from '../ys/locale/chs'
-import data from '../ys/data';
-import { useStore } from '../store';
+import { computed } from 'vue';
+import { Edit } from '@element-plus/icons-vue';
+import { Affix, Artifact } from '@/ys/artifact';
+import chs from '@/ys/locale/chs';
+import ArtifactData from "@/ys/data/artifact";
+import { useStore } from '@/store';
 const props = defineProps<{
-    artifact: Artifact,
-    selected?: boolean
-    selectMode?: boolean
-    readonly?: boolean
-    showAffnum?: boolean // 展示词条数而不是数值
+    artifact: Artifact;
+    selected?: boolean;
+    selectMode?: boolean;
+    readonly?: boolean;
 }>()
 const emit = defineEmits<{
-    (e: 'flipSelect', shiftKey: boolean): void,
-    (e: 'flipLock'): void,
-    (e: 'edit'): void
+    (e: 'flipSelect', shiftKey: boolean): void;
+    (e: 'flipLock'): void;
+    (e: 'edit'): void;
 }>()
-const store = useStore()
+const store = useStore();
 const pieceName = computed(() => {
     if (props.artifact.set in chs.set && props.artifact.slot in chs.slot) {
-        let name = chs.set[props.artifact.set].name
-        let slot = chs.slot[props.artifact.slot][2] // "花","羽"...
-        return `${name} · ${slot}`
+        let name = chs.set[props.artifact.set].name;
+        let slot = chs.slot[props.artifact.slot][2]; // "花","羽"...
+        return `${name} · ${slot}`;
     } else {
-        return '未知'
+        return '未知';
     }
 })
 const pieceImgSrc = computed(() => {
      if (props.artifact.set in chs.set) {
-        return `./assets/artifacts/${props.artifact.set}/${props.artifact.slot}.png`
+        return `./assets/artifacts/${props.artifact.set}/${props.artifact.slot}.webp`;
     } else {
-        return ''
+        return '';
     }
 })
 const affixName = (key: string) => {
-    let name: string = chs.affix[key]
+    let name: string = chs.affix[key];
     if (name.endsWith('%')) {
-        name = name.substring(0, name.length - 1)
+        name = name.substring(0, name.length - 1);
     }
-    return name
+    return name;
 }
 const main = computed(() => {
-    if (props.artifact.mainKey in data.mainStat) {
+    if (props.artifact.mainKey in ArtifactData.mainStat) {
         let key = props.artifact.mainKey,
-            value = data.mainStat[props.artifact.mainKey][props.artifact.level]
+            value = ArtifactData.mainStat[props.artifact.mainKey][props.artifact.level];
         return {
             name: chs.affix[key],
-            value: new Affix({ key, value }).valueString()
-        }
+            value: new Affix({ key, value }).valueString(),
+        };
     } else {
-        return { name: '未知', value: 0 }
+        return { name: '未知', value: 0 };
     }
-})
+});
 const level = computed(() => {
-    return `+${props.artifact.level}`
-})
+    return `+${props.artifact.level}`;
+});
 const minors = computed(() => {
-    let ret = []
+    let ret = [];
     for (let a of props.artifact.minors) {
-        let name = affixName(a.key)
         let weight = store.state.weight
         if (store.state.useFilterBatch != -1)
             weight = store.state.filterBatch[store.state.useFilterBatch].filter.scoreWeight
+        let name = affixName(a.key),
+            value;
+        if (store.state.artMode.showAffnum) {
+            if (["atkp", "defp", "hpp"].includes(a.key)) {
+                name += "%";
+            }
+            value = a.value / ArtifactData.minorStat[a.key].v / 0.85;
+            if (store.state.artMode.useMaxAsUnit) {
+                value *= 0.85;
+            }
+            value = value.toFixed(1);
+        } else {
+            value = a.valueString();
+        }
         ret.push({
-            text: `${name}+${a.valueString(props.showAffnum!)}`,
+            text: `${name}+${value}`,
             style: `opacity: ${weight[a.key] > 0 ? 1 : 0.5};`,
-            count: Math.ceil(Math.round(a.value / data.minorStat[a.key].v * 10) / 10),
+            count: Math.ceil(
+                Math.round((a.value / ArtifactData.minorStat[a.key].v) * 10) / 10
+            ),
         });
     }
     return ret;
-})
+});
 const affnum = computed(() => {
-    let a = props.artifact.data
-    return {
-        cur: a.affnum.cur.toFixed(2),
-        md:  a.affnum.md.toFixed(2),
-        tot: a.affnum.tot.toFixed(2),
-        atk: a.score.attack.toFixed(1),
-        hp: a.score.life.toFixed(1),
-        def: a.score.defend.toFixed(1),
-        er: a.score.recharge.toFixed(1),
-        em: a.score.elementalMastery.toFixed(1),
-        crit: a.score.critical.toFixed(1),
+    let a = props.artifact.data;
+    if (store.state.artMode.useMaxAsUnit) {
+        return {
+            cur: a.affnum.cur.toFixed(2),
+            md:  a.affnum.md.toFixed(2),
+            tot: a.affnum.tot.toFixed(2),
+            atk: a.score.attack.toFixed(1),
+            hp: a.score.life.toFixed(1),
+            def: a.score.defend.toFixed(1),
+            er: a.score.recharge.toFixed(1),
+            em: a.score.elementalMastery.toFixed(1),
+            crit: a.score.critical.toFixed(1),
+        }
+    } else {
+        return {
+            cur: (a.affnum.cur/0.85).toFixed(2),
+            md:  (a.affnum.md/0.85).toFixed(2),
+            tot: (a.affnum.tot/0.85).toFixed(2),
+            atk: (a.score.attack/0.85).toFixed(1),
+            hp: (a.score.life/0.85).toFixed(1),
+            def: (a.score.defend/0.85).toFixed(1),
+            er: (a.score.recharge/0.85).toFixed(1),
+            em: (a.score.elementalMastery/0.85).toFixed(1),
+            crit: (a.score.critical/0.85).toFixed(1),
+        };
     }
-})
+});
 const lockImgSrc = computed(() => {
-    return props.artifact.lock ? './assets/lock.png' : './assets/unlock.png'
-})
+    return props.artifact.lock
+        ? "./assets/game_icons/lock.webp"
+        : "./assets/game_icons/unlock.webp";
+});
 const artifactCardClass = computed(() => ({
     'artifact-card': true,
     'select-mode': props.selectMode,
-    'selected': props.selected
-}))
+    selected: props.selected,
+}));
 const select = (evt: MouseEvent) => {
-    emit('flipSelect', evt.shiftKey)
-}
-const starImgSrc = './assets/stars.png'
+    emit('flipSelect', evt.shiftKey);
+};
+const starImgSrc = './assets/stars.webp';
 const charSrc = computed<string>(() => {
     if (props.artifact.location in chs.character) {
-        return `./assets/char_sides/${props.artifact.location}.png`
+        return `./assets/char_sides/${props.artifact.location}.webp`;
     } else {
-        return ''
+        return '';
     }
 })
 const flipLock = () => {
     if (!props.readonly) {
-        emit('flipLock')
+        emit('flipLock');
     }
 }
 const charScore = computed<string>(() => {
     return props.artifact.data.charScores.map(cs => {
         return `${chs.character[cs.charKey]}${(cs.score * 100).toFixed(1)}%`
-    }).join(' ')
-})
+    }).join(' ');
+});
 </script>
 
 <template>
@@ -126,7 +156,9 @@ const charScore = computed<string>(() => {
                 <img :src="starImgSrc" />
             </div>
             <div class="picture" v-show='pieceImgSrc'>
-                <img :src="pieceImgSrc" />
+                <div class="piece-img-wrapper">
+                    <img :src="pieceImgSrc" />
+                </div>
             </div> 
         </div>
         <div class="body">
@@ -169,7 +201,7 @@ const charScore = computed<string>(() => {
 
 <style lang="scss" scoped>
 %tag {
-    line-height: 1;
+    // line-height: 1;
     padding: 1px 4px;
     border-radius: 3px;
     background-color: black;
@@ -229,6 +261,18 @@ const charScore = computed<string>(() => {
             width:100px; 
             height:100px;
         } 
+        .piece-img-wrapper {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
     }
     .body {
         display: flex;
@@ -273,7 +317,7 @@ const charScore = computed<string>(() => {
                     text-align: center;
                     background-color: gray;
                     color: white;
-                    font-family: 'Courier New', Courier, monospace;
+                    font-family: "Courier New", Courier, monospace;
                     margin-right: 4px;
                     // vertical-align: text-top;
                 }
@@ -352,11 +396,11 @@ const charScore = computed<string>(() => {
         display: none;
         transition: background-color 100ms ease;
     }
-    &.selected > .select-box {
+    &.selected>.select-box {
         background-color: $primary-color;
     }
-    &:hover > .select-box,
-    &.select-mode > .select-box {
+    &:hover>.select-box,
+    &.select-mode>.select-box {
         display: block;
     }
     .edit-box {

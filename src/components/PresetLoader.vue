@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import { useStore } from '../store';
-import chs from '../ys/locale/chs'
-import Preset from '../ys/preset';
+import { useStore } from '@/store';
+import chs from '@/ys/locale/chs'
+import PresetData from "@/ys/data/character_w"
+import CharacterData from '@/ys/data/character';
 
 const store = useStore()
 
@@ -29,11 +30,11 @@ const element = ref("")
 const character = ref("")
 const characters = computed<IOption[]>(() => {
     let ret = []
-    for (let c of Preset.characters) {
-        if (c.element == element.value) {
+    for (let c in CharacterData) {
+        if (CharacterData[c].element == element.value) {
             ret.push({
-                value: c.key,
-                label: chs.character[c.key]
+                value: c,
+                label: chs.character[c]
             })
         }
     }
@@ -42,9 +43,9 @@ const characters = computed<IOption[]>(() => {
 const preset = ref("")
 const presets = computed<IOption[]>(() => {
     let ret = []
-    for (let c of Preset.characters) {
-        if (c.key == character.value) {
-            for (let i of c.presets) {
+    for (let c in CharacterData) {
+        if (c == character.value) {
+            for (let i of CharacterData[c].presets) {
                 ret.push({
                     value: i,
                     label: i,
@@ -66,7 +67,7 @@ const applyDisabled = computed(() => {
     return preset.value == ""
 })
 const apply = () => {
-    let w=Preset.presets[preset.value]
+    let w=PresetData.presets[preset.value]
     w['hpprop']=0
     w['defprop']=0
     w['main']=1
@@ -80,9 +81,9 @@ const apply = () => {
     <el-dialog title="词条权重预设" v-model="show">
     <p class="info">
             配装数据来自
-            <a href="https://ngabbs.com/read.php?tid=27859119">全角色圣遗物及武器搭配简述 [NGA]</a>
+            <a href="https://nga.178.com/read.php?tid=27859119">全角色圣遗物及武器搭配简述 [NGA]</a>
             ，权重由
-            <a href="https://bbs.nga.cn/read.php?tid=25843014">全角色收益曲线 [NGA]</a>计算
+            <a href="https://nga.178.com/read.php?tid=25843014">全角色收益曲线 [NGA]</a>计算
         </p>
         <el-row justify="space-between">
             <el-col :span="8">元素类型</el-col>
