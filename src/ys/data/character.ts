@@ -26,7 +26,7 @@ export default <ICharacterData>{
     "TravelerAnemo": {
         "element": "anemo",
         "rarity": 5,
-        "presets": ["攻充精双爆"],
+        "presets": ["攻充精双暴"],
         "build": {
             "set": ["ViridescentVenerer"],
             "main": {
@@ -88,6 +88,33 @@ export default <ICharacterData>{
                 "plume": ["atk"],
                 "sands": ["er"],
                 "goblet": ["atkp", "em"],
+                "circlet": ["cr", "cd", "em"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "TravelerDendro": {
+        "element": "dendro",
+        "rarity": 5,
+        "presets": ["精双暴", "精充双暴", "攻精双暴", "攻精充双暴"],
+        "build": {
+            "set": ["EmblemOfSeveredFate", "DeepwoodMemories", "GildedDreams", "NoblesseOblige"],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": ["er", "em"],
+                "goblet": ["dendroDB", "em"],
                 "circlet": ["cr", "cd", "em"]
             },
             "weight": {
@@ -1457,34 +1484,35 @@ export default <ICharacterData>{
     "Collei": {
         "element": "dendro",
         "rarity": 4,
-        "presets": [],
+        "presets": ["精双暴", "精充双暴", "攻精双暴", "攻精充双暴"],
         "build": {
-            "set": [],
+            "set": ["DeepwoodMemories", "GildedDreams", "EmblemOfSeveredFate", "NoblesseOblige"],
             "main": {
                 "flower": ["hp"],
                 "plume": ["atk"],
-                "sands": [],
-                "goblet": [],
-                "circlet": []
+                "sands": ["atkp", "er"],
+                "goblet": ["dendroDB"],
+                "circlet": ["cr", "cd"]
             },
             "weight": {
                 "hp": 0,
                 "atk": 0,
                 "def": 0,
                 "hpp": 0,
-                "atkp": 0,
+                "atkp": 0.5,
                 "defp": 0,
-                "em": 0,
-                "er": 0,
-                "cr": 0,
-                "cd": 0
+                "em": 0.5,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
             }
         }
     },
+    /*
     "Dori": {
         "element": "electro",
         "rarity": 4,
-        "presets": [],
+        "presets": ["生充"],
         "build": {
             "set": [],
             "main": {
@@ -1508,33 +1536,35 @@ export default <ICharacterData>{
             }
         }
     },
+    */
     "Tighnari": {
         "element": "dendro",
         "rarity": 5,
-        "presets": [],
+        "presets": ["精双暴", "攻精双暴"],
         "build": {
-            "set": [],
+            "set": ["DeepwoodMemories", "GildedDreams", "WanderersTroupe"],
             "main": {
                 "flower": ["hp"],
                 "plume": ["atk"],
-                "sands": [],
-                "goblet": [],
-                "circlet": []
+                "sands": ["em"],
+                "goblet": ["dendroDB"],
+                "circlet": ["cr", "cd"]
             },
             "weight": {
                 "hp": 0,
                 "atk": 0,
                 "def": 0,
                 "hpp": 0,
-                "atkp": 0,
+                "atkp": 0.5,
                 "defp": 0,
-                "em": 0,
+                "em": 0.5,
                 "er": 0,
-                "cr": 0,
-                "cd": 0
+                "cr": 1,
+                "cd": 1
             }
         }
     },
+    /*
     "Nilou": {
         "element": "dendro",
         "rarity": 5,
@@ -1616,4 +1646,5 @@ export default <ICharacterData>{
             }
         }
     },
+    */
 }
