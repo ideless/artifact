@@ -295,7 +295,7 @@ export class Artifact implements IArtifact {
                 }
         }
         //total score
-        this.data.affnum.ma = this.data.affnum.ma + w['main'] * ArtifactData.mainWeight[this.slot][this.mainKey].p / ArtifactData.mainWeight[this.slot][this.mainKey].v
+        this.data.affnum.ma = this.data.affnum.ma + w['main'] * ArtifactData.mainUseProp[this.slot][this.mainKey] / ArtifactData.mainDistr[this.slot][this.mainKey]
         if(this.mainKey!='atk' && this.mainKey!='hp'){
             if(setweight[this.slot][this.mainKey][this.set]<0){
                 this.data.affnum.se = 0.25 * w['set'] * setweight[this.slot][this.mainKey][this.set]

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[4]:
+# In[1]:
 
 
 # %load GenshinWeight.py
@@ -10,16 +10,27 @@ import formulas
 import os
 import re
 import json
+import pandas as pd
 
 # https://bbs.nga.cn/read.php?tid=25843014
-filename = '参考面板2.6.xlsx'
+filename = 'Genshin2.8.xlsx'
 
 # elemental recharge weight. As it usually not effect final number, need a special
 # weight to evaluate its value. details for function `calc_er_weight`
 er_weight = 0.5
 
 
-# In[76]:
+# In[2]:
+
+
+# characters use Q, but Q is not shown in action
+# Q_characters = ['诺艾尔', '魈', '雷泽', '神里绫华', '七七', '枫原万叶','砂糖','空/荧（风）']
+df_pz=pd.read_excel('配装.xlsx')
+Q_characters = df_pz.loc[df_pz['有效词条'].str.contains('充能'),'角色'].to_list()
+Q_characters.append('空/荧（风）')
+
+
+# In[3]:
 
 
 # consts
@@ -37,9 +48,6 @@ sub_attr_names = [
     ['暴伤', '暴击伤害']
 ]
 
-# characters use Q, but Q is not shown in action
-Q_characters = ['诺艾尔', '魈', '雷泽', '神里绫华', '七七', '枫原万叶','砂糖','空/荧（风）']
-
 # characters that value is any, which attr is important
 any_characters = [
     ['空/荧（雷）','atk'],
@@ -54,7 +62,7 @@ sub_attr_base = [7680, 500, 595, 1.5, 1.5, 1.875, 600, 1.66666667, 1, 2]
 sub_attr_base = [x * sub_attr_base_one for x in sub_attr_base]
 
 
-# In[81]:
+# In[4]:
 
 
 # functions
@@ -92,9 +100,10 @@ def get_exact_number(label_indices, data_line, solution_line):
             while data[0] < '0' or data[0] > '9':
                 data = data[1:]
             cbase[attr] = int(data.split('*')[0].split('+')[0].split('(')[0])
-    #print(data_line[:4], cbase)
+    # print(data_line[:4], cbase)
     values = []
     for base, name in zip(sub_attr_base, sub_attrs):
+        # print(base, name)
         if name in ['atkp', 'defp', 'hpp']:
             values.append(base * cbase[name[:-1]])
         else:
@@ -133,6 +142,7 @@ def get_improve_percent(excel, label_indices, name, data, solution, up_values):
     base_dict = dict(zip(name, data))
     improve = []
     for sub, index, value in zip(sub_attrs, label_indices, up_values):
+        #print(sub, index, value)
         if index == -1:
             improve.append(0)
             continue
@@ -156,9 +166,13 @@ def get_improve_percent(excel, label_indices, name, data, solution, up_values):
         else:
             res = enhance_cr(res)
         imp = (res - current_baseline) / current_baseline
+        #print(res,current_baseline,imp)
         improve.append(imp)
     er_index = sub_attrs.index('er')
     improve[er_index] = max(improve[er_index], calc_er_weight(label_indices, up_values, solution, improve))
+    cd_index = sub_attrs.index('cd')
+    if solution[0]=='珊瑚宫心海':
+         improve[cd_index] = 0
     norm = max(improve)
     if norm != 0:
         improve = [x / norm for x in improve]
@@ -171,21 +185,41 @@ def get_improve_percent(excel, label_indices, name, data, solution, up_values):
 # else use biggest weight in [hpp, atkp, defp]. Finally, multiply predifined weight.
 def calc_er_weight(label_indices, up_values, solution, improvements):
     imp = 0
+    best = 0
     er_index = label_indices[sub_attrs.index('er')]
     if er_index != -1:
-        imp = up_values[er_index] / solution[er_index]
-    else:
-        best = 0
-        if 'Q' in ''.join([str(x) for x in solution]) or solution[0] in Q_characters:  # if use Q or in whitelist
-            #print('character use Q')
-            for attr in ['atkp', 'defp', 'hpp','em']:
-                i = improvements[sub_attrs.index(attr)]
-                best = max(best, i)
+        imp = up_values[7] / solution[er_index]
+        #print('character calculate er')
+        #print(up_values,up_values[7], solution[er_index], imp * er_weight)
+    elif solution[0] in Q_characters:  # if er is useful
+        for attr in ['atkp', 'defp', 'hpp','em']:
+            i = improvements[sub_attrs.index(attr)]
+            best = max(best, i)
         imp = best
+        #print('character need er')
+    elif 'Q' in ''.join([str(x) for x in solution]):
+        for attr in ['atkp', 'defp', 'hpp','em']:
+            i = improvements[sub_attrs.index(attr)]
+            best = max(best, i)
+        imp = best/2
+        #print('character use Q')
     return imp * er_weight
 
 
-# In[78]:
+# In[5]:
+
+
+def s_align(s, length):
+    res = s
+    minus = 0
+    for i in s:
+        if ord(i) > 128:
+            minus += 1
+    res += ' ' * (length - len(s) - minus)
+    return res
+
+
+# In[6]:
 
 
 # read xls
@@ -211,20 +245,7 @@ for key in d:
             solutions[linenum][columnnum] = calc_res[key].value[0][0]
 
 
-# In[79]:
-
-
-def s_align(s, length):
-    res = s
-    minus = 0
-    for i in s:
-        if ord(i) > 128:
-            minus += 1
-    res += ' ' * (length - len(s) - minus)
-    return res
-
-
-# In[82]:
+# In[7]:
 
 
 results = []
@@ -250,7 +271,7 @@ df=df.round(4)
 df
 
 
-# In[83]:
+# In[8]:
 
 
 name = []
@@ -277,7 +298,7 @@ data =df.to_dict(orient='records')
 df.name.to_list()
 
 
-# In[84]:
+# In[9]:
 
 
 weight={}
@@ -286,10 +307,9 @@ for i in data:
 weight
 
 
-# In[ ]:
+# In[10]:
 
 
-with open('preset.json', 'w') as f:
+with open('weight.json', 'w') as f:
     json.dump(weight, f)
-
 

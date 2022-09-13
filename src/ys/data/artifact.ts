@@ -21,12 +21,9 @@ interface IAritfactData {
     mainDistr: {
         [slotKey: string]: { [key: string]: number }
     }
-    mainWeight: {
+    mainUseProp: {
         [key: string]: {
-            [key: string]:{
-                p: number
-                v: number
-            }
+            [key: string]: number
         }
     }
 }
@@ -76,12 +73,13 @@ export default <IAritfactData>{
     mainDistr: {
         'flower': { 'hp': 1 },
         'plume': { 'atk': 1 },
+        /* https://bbs.nga.cn/read.php?tid=33220261 统计数据，实际数据经过均一化处理
         'sands': {
-            'hpp': 8 / 30,
-            'atkp': 8 / 30,
-            'defp': 8 / 30,
-            'em': 3 / 30,
-            'er': 3 / 30
+            'hpp': 1334 / 5000,
+            'atkp': 1333 / 5000,
+            'defp': 1333 / 5000,
+            'em': 500 / 5000,
+            'er': 500 / 5000
         },
         'goblet': {
             'hpp': 767 / 4000,
@@ -95,7 +93,29 @@ export default <IAritfactData>{
             'geoDB': 200 / 4000,
             'physicalDB': 200 / 4000,
             'dendroDB': 200 / 4000,
-            'em': 100 / 4000,
+            'em': 100 / 4000
+        },
+        */
+        'sands': {
+            'hpp': 8 / 30,
+            'atkp': 8 / 30,
+            'defp': 8 / 30,
+            'em': 3 / 30,
+            'er': 3 / 30
+        },
+        'goblet': {
+            'hpp': 23 / 120,
+            'atkp': 23 / 120,
+            'defp': 23 / 120,
+            'pyroDB': 6 / 120,
+            'hydroDB': 6 / 120,
+            'electroDB': 6 / 120,
+            'anemoDB': 6 / 120,
+            'cryoDB': 6 / 120,
+            'geoDB': 6 / 120,
+            'physicalDB': 6 / 120,
+            'dendroDB': 6 / 120,
+            'em': 3 / 120
         },
         'circlet': {
             'hpp': 11 / 50,
@@ -107,32 +127,38 @@ export default <IAritfactData>{
             'em': 2 / 50
         }
     },
-    mainWeight: {
-        'flower':{'hp': { p: 1, v: 1 }},
-        'plume':{'atk': { p: 1, v: 1 }},
-        'sands':{'atkp': { p: 0.6964, v: 0.2666 },
-                'hpp': { p: 0.1607, v: 0.2666 },
-                'defp': { p: 0.0893, v: 0.2666 },
-                'er': { p: 0.5179, v: 0.1 },
-                'em': { p: 0.3750, v: 0.1 }},
-        'goblet':{'atkp': { p: 0.25, v: 0.19175 },
-                'hpp': { p: 0.1250, v: 0.19175 },
-                'defp': { p: 0.0714, v: 0.1915 },
-                'pyroDB': { p: 0.098, v: 0.05 },
-                'hydroDB': { p: 0.098, v: 0.05 },
-                'electroDB': { p: 0.098, v: 0.05 },
-                'anemoDB': { p: 0.098, v: 0.05 },
-                'cryoDB': { p: 0.098, v: 0.05 },
-                'geoDB': { p: 0.098, v: 0.05 },
-                'physicalDB': { p: 0.098, v: 0.05 },
-                'dendroDB':{ p: 0.098, v: 0.05 },
-                'em': { p: 0.1786, v: 0.025 }},
-        'circlet':{'atkp': { p: 0.1250, v: 0.22 },
-                'hpp': { p: 0.1071, v: 0.22 },
-                'defp': { p: 0.0714, v: 0.22 },
-                'cr': { p: 0.8036, v: 0.1 },
-                'cd': { p: 0.7857, v: 0.1 },
-                'hb': { p: 0.1786, v: 0.1 },
-                'em': { p: 0.1607, v: 0.04 }},
+    mainUseProp: {
+        'flower': { 'hp': 1 },
+        'plume': { 'atk': 1 },
+        'sands': {
+            'atkp': 0.6964,
+            'hpp': 0.1607,
+            'defp': 0.0893,
+            'er': 0.5179,
+            'em': 0.3750
+        },
+        'goblet': {
+            'atkp': 0.25,
+            'hpp': 0.1250,
+            'defp': 0.0714,
+            'pyroDB': 0.098,
+            'hydroDB': 0.098,
+            'electroDB': 0.098,
+            'anemoDB': 0.098,
+            'cryoDB': 0.098,
+            'geoDB': 0.098,
+            'physicalDB': 0.098,
+            'dendroDB': 0.098,
+            'em': 0.1786
+        },
+        'circlet': {
+            'atkp': 0.1250,
+            'hpp': 0.1071,
+            'defp': 0.0714,
+            'cr': 0.8036,
+            'cd': 0.7857,
+            'hb': 0.1786,
+            'em': 0.1607
+        },
     },
 }

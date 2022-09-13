@@ -42,7 +42,7 @@ const char = computed<string[]>({
 const setsOptions = Object.entries(chs.set).map(([key, val]) => ({
     key,
     label: val.name,
-    icon: `./assets/artifacts/${key}/flower.png`,
+    icon: `./assets/artifacts/${key}/flower.webp`,
 }))
 const sets4 = computed<string[]>({
     get() { return store.state.sort.build.set[4] },

@@ -78,6 +78,7 @@ Rarity 5 artifacts have one **main affix** and 3-4 **minor affixes**.
 | Anemo DMG%        | `anemoDB`    | main          |
 | Cryo DMG%         | `cryoDB`     | main          |
 | Geo DMG%          | `geoDB`      | main          |
+| Dendro DMG%       | `dendroDB`   | main          |
 | Physical DMG%     | `physicalDB` | main          |
 | Healing Bonus     | `hb`         | main          |
 
@@ -94,17 +95,18 @@ Distribution of main affixes depends on the type of artifacts:
 | Sands of Eon       | DEF%              | 8           | 58.3      |
 | Sands of Eon       | Elemental Mastery | 3           | 186.5     |
 | Sands of Eon       | Energy Recharge%  | 3           | 51.8      |
-| Goblet of Eonothem | HP%               | 17          | 46.6      |
-| Goblet of Eonothem | ATK%              | 17          | 46.6      |
-| Goblet of Eonothem | DEF%              | 16          | 58.3      |
-| Goblet of Eonothem | Pyro DMG%         | 4           | 46.6      |
-| Goblet of Eonothem | Hydro DMG%        | 4           | 46.6      |
-| Goblet of Eonothem | Electro DMG%      | 4           | 46.6      |
-| Goblet of Eonothem | Anemo DMG%        | 4           | 46.6      |
-| Goblet of Eonothem | Cryo DMG%         | 4           | 46.6      |
-| Goblet of Eonothem | Geo DMG%          | 4           | 46.6      |
-| Goblet of Eonothem | Physical DMG%     | 4           | 58.3      |
-| Goblet of Eonothem | Elemental Mastery | 2           | 186.5     |
+| Goblet of Eonothem | HP%               | 23          | 46.6      |
+| Goblet of Eonothem | ATK%              | 23          | 46.6      |
+| Goblet of Eonothem | DEF%              | 23          | 58.3      |
+| Goblet of Eonothem | Pyro DMG%         | 6           | 46.6      |
+| Goblet of Eonothem | Hydro DMG%        | 6           | 46.6      |
+| Goblet of Eonothem | Electro DMG%      | 6           | 46.6      |
+| Goblet of Eonothem | Anemo DMG%        | 6           | 46.6      |
+| Goblet of Eonothem | Cryo DMG%         | 6           | 46.6      |
+| Goblet of Eonothem | Geo DMG%          | 6           | 46.6      |
+| Goblet of Eonothem | Dendro DMG%       | 6           | 46.6      |
+| Goblet of Eonothem | Physical DMG%     | 6           | 58.3      |
+| Goblet of Eonothem | Elemental Mastery | 3           | 186.5     |
 | Circlet of Logos   | HP%               | 11          | 46.6      |
 | Circlet of Logos   | ATK%              | 11          | 46.6      |
 | Circlet of Logos   | DEF%              | 11          | 58.3      |
@@ -139,7 +141,7 @@ Distribution of minor affixes is:
 | Crit Rate%        | 3           | 3.89      |
 | Crit DMG%         | 3           | 7.77      |
 
-See more on the [distribution of affixes](https://bbs.nga.cn/read.php?tid=25954661&fav=aebe13b2).
+See more on the [distribution of affixes](https://bbs.nga.cn/read.php?tid=33220261).
 
 ## Artifact potential
 
@@ -168,13 +170,16 @@ $\overline{S} ,S_{min} ,S_{max}$, respectively.
 
 Let $a_{1} ,a_{2} ,a_{3}$ be the 3 minor affixes. Affix enhancement number
 $n=5$. Average affix number is
+
 $$
 \begin{aligned}
 \overline{S} = & \sum _{i=1,2,3} w( a_{i})\left(\frac{v( a_{i})}{0.85\cdot v^{*}( a_{i})} +4\times \frac{1}{4}\right)\\
  & +\frac{\sum _{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} w( a) p( a)}{\sum _{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} p( a)} \times \left( 1+4\times \frac{1}{4}\right)
 \end{aligned}
 $$
+
 Maximum affix number is
+
 $$
 \begin{aligned}
 a_{4} = & \operatorname{arg\ max}_{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} w( a) ,\\
@@ -182,7 +187,9 @@ a^{*} = & \operatorname{arg\ max}_{a\in \{a_{1} ,a_{2} ,a_{3} ,a_{4}\}} w( a) ,\
 S_{\min} = & \sum _{i=1,2,3} w( a_{i})\frac{v( a_{i})}{0.85\cdot v^{*}( a_{i})} +(w( a_{4}) +4w\left( a^{*}\right))\times \frac{1}{0.85}
 \end{aligned}
 $$
+
 Minimum affix number is
+
 $$
 \begin{aligned}
 a_{4} = & \operatorname{arg\ min}_{a\in A\backslash \{a_{1} ,a_{2} ,a_{3} ,\alpha \}} w( a) ,\\
@@ -195,17 +202,22 @@ $$
 
 Let $a_{1} ,a_{2} ,a_{3} ,a_{4}$ be the 4 minor affixes. Affix enhancement number is $n$.
 Average affix number is
+
 $$
 \overline{S} =\sum _{i=1,2,3,4} w( a_{i})\left(\frac{v( a_{i})}{0.85\cdot v^{*}( a_{i})} +n\times \frac{1}{4}\right)
 $$
+
 Maximum affix number is
+
 $$
 \begin{aligned}
 a^{*} = & \operatorname{arg\ max}_{a\in \{a_{1} ,a_{2} ,a_{3} ,a_{4}\}} w( a) ,\\
 S_{\max} = & \sum _{i=1,2,3,4} w( a_{i})\frac{v( a_{i})}{0.85\cdot v^{*}( a_{i})} +n\cdot w\left( a^{*}\right)\times \frac{1}{0.85}
 \end{aligned}
 $$
+
 Minimum affix number is
+
 $$
 \begin{aligned}
 a^{*} = & \operatorname{arg\ min}_{a\in \{a_{1} ,a_{2} ,a_{3} ,a_{4}\}} w( a) ,\\
