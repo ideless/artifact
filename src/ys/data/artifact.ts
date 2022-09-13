@@ -76,18 +76,18 @@ export default <IAritfactData>{
             'er': 3 / 30
         },
         'goblet': {
-            'hpp': 16 / 80, // ?
-            'atkp': 16 / 80, // ?
-            'defp': 14 / 80, // ?
-            'pyroDB': 4 / 80,
-            'hydroDB': 4 / 80,
-            'electroDB': 4 / 80,
-            'anemoDB': 4 / 80,
-            'cryoDB': 4 / 80,
-            'geoDB': 4 / 80,
-            'physicalDB': 4 / 80,
-            'dendroDB': 4 / 80,
-            'em': 2 / 80
+            'hpp': 767 / 4000,
+            'atkp': 767 / 4000,
+            'defp': 766 / 4000,
+            'pyroDB': 200 / 4000,
+            'hydroDB': 200 / 4000,
+            'electroDB': 200 / 4000,
+            'anemoDB': 200 / 4000,
+            'cryoDB': 200 / 4000,
+            'geoDB': 200 / 4000,
+            'physicalDB': 200 / 4000,
+            'dendroDB': 200 / 4000,
+            'em': 100 / 4000,
         },
         'circlet': {
             'hpp': 11 / 50,
