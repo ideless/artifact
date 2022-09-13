@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Install missing dependency
-        run: npm install @types/node --save-dev
+        run: npm install @types/node @types/emscripten --save-dev
       - name: Unsafe-Build
         run: yarn build
       - name: Upload
