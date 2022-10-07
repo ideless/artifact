@@ -29,7 +29,7 @@ export const store = createStore<IState>({
             sort: {
                 by: 'avg', // 'avg', 'min', 'max', 'cur', 'pmulti', 'psingle', 'defeat', 'index',
                 // pmulti
-                characters: Object.keys(CharacterData),
+                characters: Object.keys(CharacterData).filter(c => CharacterData[c].pop),
                 // psingle
                 sets: ["NoblesseOblige", "ShimenawasReminiscence", "GladiatorsFinale", "WanderersTroupe", "EmblemOfSeveredFate", "CrimsonWitchOfFlames"],
                 sands: ["em", "er", "atkp"],

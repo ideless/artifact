@@ -1,7 +1,7 @@
 import { argmax, argmin, assert, choice, SimpleCache } from "./utils";
 import ArtifactData from "./data/artifact";
 import CharacterData, { IBuild } from "./data/character";
-import { affnumDistr } from "./gacha/artifact";
+import { getAffnumCDF } from "./gacha/artifact";
 
 interface IWeight {
     [key: string]: number;
@@ -9,7 +9,7 @@ interface IWeight {
 
 const AffnumDistrCache = new SimpleCache(
     ({ main, weight }: { main: string; weight: IWeight }) => {
-        return affnumDistr(main, weight);
+        return getAffnumCDF(main, weight);
     }
 );
 
@@ -322,6 +322,9 @@ export class Artifact implements IArtifact {
         // sort by defeat (in increasing order), break ties arbitariliy
         artifacts.sort((a, b) => a.data.defeat - b.data.defeat);
     }
+    /**
+     * 注意：要指定主词条(mainKey)，必须同时指定一个正确的位置(slot)
+     */
     static rand({
         sets,
         slot,

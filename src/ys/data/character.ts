@@ -19,6 +19,7 @@ interface ICharacterData {
         rarity: number
         presets: string[]
         build: IBuild
+        pop?: boolean
     }
 }
 
@@ -132,6 +133,7 @@ export default <ICharacterData>{
         }
     },
     "KamisatoAyaka": {
+        "pop": true,
         "element": "cryo",
         "rarity": 5,
         "presets": ["攻双暴", "攻精双暴"],
@@ -348,6 +350,7 @@ export default <ICharacterData>{
         }
     },
     "Venti": {
+        "pop": true,
         "element": "anemo",
         "rarity": 5,
         "presets": ["攻充精双暴", "攻双暴"],
@@ -375,6 +378,7 @@ export default <ICharacterData>{
         }
     },
     "Xiangling": {
+        "pop": true,
         "element": "pyro",
         "rarity": 4,
         "presets": ["攻双暴", "攻精双暴", "攻充精双暴"],
@@ -429,6 +433,7 @@ export default <ICharacterData>{
         }
     },
     "Xingqiu": {
+        "pop": true,
         "element": "hydro",
         "rarity": 4,
         "presets": ["攻双暴", "攻精双暴", "攻充精双暴"],
@@ -456,6 +461,7 @@ export default <ICharacterData>{
         }
     },
     "Xiao": {
+        "pop": true,
         "element": "anemo",
         "rarity": 5,
         "presets": ["攻双暴"],
@@ -510,6 +516,7 @@ export default <ICharacterData>{
         }
     },
     "Klee": {
+        "pop": true,
         "element": "pyro",
         "rarity": 5,
         "presets": ["攻双暴", "攻精双暴"],
@@ -537,6 +544,7 @@ export default <ICharacterData>{
         }
     },
     "Zhongli": {
+        "pop": true,
         "element": "geo",
         "rarity": 5,
         "presets": ["攻双暴", "攻生充双暴", "攻生双暴"],
@@ -564,6 +572,7 @@ export default <ICharacterData>{
         }
     },
     "Fischl": {
+        "pop": true,
         "element": "electro",
         "rarity": 4,
         "presets": ["攻充双暴", "攻充精双暴", "攻双暴"],
@@ -591,6 +600,7 @@ export default <ICharacterData>{
         }
     },
     "Bennett": {
+        "pop": true,
         "element": "pyro",
         "rarity": 4,
         "presets": ["攻双暴", "攻精双暴", "攻充精双暴"],
@@ -618,6 +628,7 @@ export default <ICharacterData>{
         }
     },
     "Tartaglia": {
+        "pop": true,
         "element": "hydro",
         "rarity": 5,
         "presets": ["攻双暴", "攻精双暴"],
@@ -726,6 +737,7 @@ export default <ICharacterData>{
         }
     },
     "Ganyu": {
+        "pop": true,
         "element": "cryo",
         "rarity": 5,
         "presets": ["攻双暴", "攻精双暴"],
@@ -834,6 +846,7 @@ export default <ICharacterData>{
         }
     },
     "Keqing": {
+        "pop": true,
         "element": "electro",
         "rarity": 5,
         "presets": ["攻双暴"],
@@ -861,6 +874,7 @@ export default <ICharacterData>{
         }
     },
     "Sucrose": {
+        "pop": true,
         "element": "anemo",
         "rarity": 4,
         "presets": ["精"],
@@ -942,6 +956,7 @@ export default <ICharacterData>{
         }
     },
     "HuTao": {
+        "pop": true,
         "element": "pyro",
         "rarity": 5,
         "presets": ["攻双暴", "攻生精双暴", "生精双暴", "生精爆伤"],
@@ -969,6 +984,7 @@ export default <ICharacterData>{
         }
     },
     "KaedeharaKazuha": {
+        "pop": true,
         "element": "anemo",
         "rarity": 5,
         "presets": ["攻双暴", "攻精双暴", "精充"],
@@ -1023,6 +1039,7 @@ export default <ICharacterData>{
         }
     },
     "Yoimiya": {
+        "pop": true,
         "element": "pyro",
         "rarity": 5,
         "presets": ["攻双暴", "攻精双暴"],
@@ -1077,6 +1094,7 @@ export default <ICharacterData>{
         }
     },
     "Eula": {
+        "pop": true,
         "element": "cryo",
         "rarity": 5,
         "presets": ["攻充双暴", "攻击爆伤", "攻双暴"],
@@ -1104,6 +1122,7 @@ export default <ICharacterData>{
         }
     },
     "RaidenShogun": {
+        "pop": true,
         "element": "electro",
         "rarity": 5,
         "presets": ["攻充双暴", "攻双暴"],
@@ -1158,6 +1177,7 @@ export default <ICharacterData>{
         }
     },
     "SangonomiyaKokomi": {
+        "pop": true,
         "element": "hydro",
         "rarity": 5,
         "presets": ["生充", "生攻充", "生攻精充"],
@@ -1239,6 +1259,7 @@ export default <ICharacterData>{
         }
     },
     "AratakiItto": {
+        "pop": true,
         "element": "geo",
         "rarity": 5,
         "presets": ["攻双暴", "攻防双暴", "攻防充双暴", "防双暴"],
@@ -1266,6 +1287,7 @@ export default <ICharacterData>{
         }
     },
     "YaeMiko": {
+        "pop": true,
         "element": "electro",
         "rarity": 5,
         "presets": ["攻精双暴", "攻充精双暴"],
@@ -1320,6 +1342,7 @@ export default <ICharacterData>{
         }
     },
     "Yelan": {
+        "pop": true,
         "element": "hydro",
         "rarity": 5,
         "presets": ["生双暴", "生充双暴"],
@@ -1374,6 +1397,7 @@ export default <ICharacterData>{
         }
     },
     "Shenhe": {
+        "pop": true,
         "element": "cryo",
         "rarity": 5,
         "presets": ["攻充", "攻双暴"],
@@ -1455,6 +1479,7 @@ export default <ICharacterData>{
         }
     },
     "KamisatoAyato": {
+        "pop": true,
         "element": "hydro",
         "rarity": 5,
         "presets": ["攻双暴", "攻生双暴"],
@@ -1508,36 +1533,35 @@ export default <ICharacterData>{
             }
         }
     },
-    /*
     "Dori": {
         "element": "electro",
         "rarity": 4,
         "presets": ["生充"],
         "build": {
-            "set": [],
+            "set": ["MaidenBeloved", "OceanHuedClam", "NoblesseOblige", "EmblemOfSeveredFate"],
             "main": {
                 "flower": ["hp"],
                 "plume": ["atk"],
-                "sands": [],
-                "goblet": [],
-                "circlet": []
+                "sands": ["hpp", "er"],
+                "goblet": ["hpp"],
+                "circlet": ["hb"]
             },
             "weight": {
                 "hp": 0,
                 "atk": 0,
                 "def": 0,
-                "hpp": 0,
+                "hpp": 1,
                 "atkp": 0,
                 "defp": 0,
                 "em": 0,
-                "er": 0,
+                "er": 1,
                 "cr": 0,
                 "cd": 0
             }
         }
     },
-    */
     "Tighnari": {
+        "pop": true,
         "element": "dendro",
         "rarity": 5,
         "presets": ["精双暴", "攻精双暴"],
@@ -1568,61 +1592,7 @@ export default <ICharacterData>{
     "Nilou": {
         "element": "dendro",
         "rarity": 5,
-        "presets": [],
-        "build": {
-            "set": [],
-            "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
-                "sands": [],
-                "goblet": [],
-                "circlet": []
-            },
-            "weight": {
-                "hp": 0,
-                "atk": 0,
-                "def": 0,
-                "hpp": 0,
-                "atkp": 0,
-                "defp": 0,
-                "em": 0,
-                "er": 0,
-                "cr": 0,
-                "cd": 0
-            }
-        }
-    },
-    "Cyno": {
-        "element": "dendro",
-        "rarity": 5,
-        "presets": [],
-        "build": {
-            "set": [],
-            "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
-                "sands": [],
-                "goblet": [],
-                "circlet": []
-            },
-            "weight": {
-                "hp": 0,
-                "atk": 0,
-                "def": 0,
-                "hpp": 0,
-                "atkp": 0,
-                "defp": 0,
-                "em": 0,
-                "er": 0,
-                "cr": 0,
-                "cd": 0
-            }
-        }
-    },
-    "Candace": {
-        "element": "dendro",
-        "rarity": 5,
-        "presets": [],
+        "presets": ["生精双暴", "生精充双暴"],
         "build": {
             "set": [],
             "main": {
@@ -1647,4 +1617,59 @@ export default <ICharacterData>{
         }
     },
     */
+    "Cyno": {
+        "pop": true,
+        "element": "electro",
+        "rarity": 5,
+        "presets": ["攻精双暴", "攻精充双暴"],
+        "build": {
+            "set": ["GildedDreams", "GladiatorsFinale", "ThunderingFury"],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": ["em", "atkp"],
+                "goblet": ["electroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.25,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Candace": {
+        "element": "hydro",
+        "rarity": 5,
+        "presets": ["生充"],
+        "build": {
+            "set": ["EmblemOfSeveredFate", "NoblesseOblige", "TenacityOfTheMillelith"],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": ["er", "hpp"],
+                "goblet": ["hpp", "hydroDB"],
+                "circlet": ["hpp", "cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
 }

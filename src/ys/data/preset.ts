@@ -23,6 +23,7 @@ export default <IPresetData>{
     "生精": { hp: 0, atk: 0, def: 0, hpp: 1, atkp: 0, defp: 0, em: 1, er: 0, cr: 0, cd: 0 },
     "生攻精充": { hp: 0, atk: 0, def: 0, hpp: 1, atkp: 1, defp: 0, em: 1, er: 1, cr: 0, cd: 0 },
     "生精双暴": { hp: 0, atk: 0, def: 0, hpp: 1, atkp: 0, defp: 0, em: 1, er: 0, cr: 1, cd: 1 },
+    "生精充双暴": { hp: 0, atk: 0, def: 0, hpp: 1, atkp: 0, defp: 0, em: 1, er: 1, cr: 1, cd: 1 },
     "生精爆伤": { hp: 0, atk: 0, def: 0, hpp: 1, atkp: 0, defp: 0, em: 1, er: 0, cr: 0, cd: 1 },
     "生双暴": { hp: 0, atk: 0, def: 0, hpp: 1, atkp: 0, defp: 0, em: 0, er: 0, cr: 1, cd: 1 },
     "生充双暴": { hp: 0, atk: 0, def: 0, hpp: 1, atkp: 0, defp: 0, em: 0, er: 1, cr: 1, cd: 1 },

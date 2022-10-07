@@ -95,7 +95,7 @@ export function convolve(...args: Array<number[]>) {
     return d
 }
 
-export function fromCumulative(d: number[]) {
+export function toPDF(d: number[]) {
     let pLast = 0, ret = []
     for (let p of d) {
         ret.push(p - pLast)
@@ -104,7 +104,7 @@ export function fromCumulative(d: number[]) {
     return ret
 }
 
-export function toCumulative(d: number[]) {
+export function toCDF(d: number[]) {
     let S = 0, ret = []
     for (let p of d) {
         S += p
