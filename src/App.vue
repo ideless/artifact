@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import LayoutLeft from './components/LayoutLeft.vue';
-import LayoutRight from './components/LayoutRight.vue';
-import { useStore } from './store';
+import LayoutLeft from '@/components/LayoutLeft.vue';
+import LayoutRight from '@/components/LayoutRight.vue';
+import { useStore } from '@/store';
 import { onMounted, ref } from 'vue';
 import { Download } from '@element-plus/icons-vue'
 import axios from 'axios'
-import cookie from './store/cookie';
+import cookie from '@/store/cookie';
 
 const store = useStore()
 const loadingSrc = './assets/loading.gif'

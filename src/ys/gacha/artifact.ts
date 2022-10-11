@@ -213,6 +213,7 @@ export function getAffnumCDF(main: string, weight: IWeight, lv: number = 5) {
  * @param weight 副词条权重，0-1
  * @param minors 当前副词条列表，长度3或4
  * @param n_lv_up 提升次数，0-5
+ * @param cur 当前词条数（整数）
  * @returns 词条数提升量的PDF
  */
 export function getIncrePDF(main: string, weight: IWeight, minors: string[], n_lv_up: number) {
@@ -263,7 +264,7 @@ export function getIncrePDF(main: string, weight: IWeight, minors: string[], n_l
         } else if (n_lv_up == 4) {
             d2 = get_d2(ws)
             d = convolve(d, d2, d2)
-        } else {
+        } else if (n_lv_up == 5) {
             d1 = get_d1(ws)
             d2 = get_d2(ws)
             d = convolve(d, d2, d2, d1)

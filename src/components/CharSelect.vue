@@ -213,7 +213,7 @@ const selectedCount = computed(() => {
             @extend %tag;
             line-height: 32px;
             font-weight: initial;
-            background-color: #1058ac11;
+            background-color: $primary-color-light;
             border-radius: 5px;
             padding: 0 10px;
         }

@@ -36,7 +36,7 @@ const start = () => { store.dispatch('updFilteredArtifacts') }
         padding: 20px 0;
         margin-top: 20px;
         text-align: center;
-        background-color: #f3fdff77;
+        background-color: $right-bgcolor-trsp;
         backdrop-filter: blur(22px);
         border-top: 1px solid #e7e7e7;
         position: sticky;

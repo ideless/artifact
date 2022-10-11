@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import ArtifactCard from "./ArtifactCard.vue";
 import ArtifactEditor from "./ArtifactEditor.vue";
+import ArtifactStats from "./ArtifactStats.vue"
 import ArtifactCreator from "./ArtifactCreator.vue";
 import ArtifactGenerator from "./ArtifactGenerator.vue";
 import PartialExport from "./PartialExport.vue";
@@ -8,7 +9,7 @@ import AlikeLocker from "./AlikeLocker.vue";
 import Grid from "vue-virtual-scroll-grid";
 import { useStore } from "@/store";
 import { computed, ref, watch } from "vue";
-import type { ElScrollbar } from "element-plus";
+// import type { ElScrollbar } from "element-plus";
 import {
     View,
     Sort,
@@ -135,6 +136,13 @@ const edit = (index: number) => {
     editorIndex.value = index;
     showEditor.value = true;
 };
+// stats
+const showStats = ref(false)
+const statsArt = ref<Artifact>()
+const stats = (art: Artifact) => {
+    statsArt.value = art
+    showStats.value = true
+}
 // export
 const showExport = ref(false);
 const artifactsToExport = ref<Artifact[]>([]);
@@ -204,80 +212,50 @@ const targetIndex = ref(-1);
             <div class="artifact-opts">
                 <div class="stat">{{ stat }}</div>
                 <div class="btns">
-                    <div
-                        :class="{ btn: true, checked: reverseOrder }"
-                        @click="reverseOrder = !reverseOrder"
-                    >
+                    <div :class="{ btn: true, checked: reverseOrder }" @click="reverseOrder = !reverseOrder">
                         <el-icon>
                             <Sort />
                         </el-icon>
                         <span>倒序</span>
                     </div>
-                    <div
-                        :class="{ btn: true, checked: alikeEnabled }"
-                        @click="alikeEnabled = !alikeEnabled"
-                        title="加解锁时联想相似圣遗物"
-                    >
+                    <div :class="{ btn: true, checked: alikeEnabled }" @click="alikeEnabled = !alikeEnabled"
+                        title="加解锁时联想相似圣遗物">
                         <el-icon>
                             <Stopwatch />
                         </el-icon>
                         <span>联想</span>
                     </div>
-                    <div
-                        :class="{ btn: true, checked: useMaxAsUnit }"
-                        @click="useMaxAsUnit = !useMaxAsUnit"
-                    >
+                    <div :class="{ btn: true, checked: useMaxAsUnit }" @click="useMaxAsUnit = !useMaxAsUnit">
                         <el-icon>
                             <View />
                         </el-icon>
                         <span>×0.85</span>
                     </div>
-                    <div
-                        :class="{ btn: true, checked: showAffnum }"
-                        @click="showAffnum = !showAffnum"
-                    >
+                    <div :class="{ btn: true, checked: showAffnum }" @click="showAffnum = !showAffnum">
                         <el-icon>
                             <View />
                         </el-icon>
                         <span>显示词条数</span>
                     </div>
-                    <div
-                        class="btn"
-                        @click="showCreator = true"
-                        title="手动添加"
-                    >
+                    <div class="btn" @click="showCreator = true" title="手动添加">
                         <el-icon>
                             <circle-plus />
                         </el-icon>
                     </div>
-                    <div
-                        class="btn"
-                        @click="showGenerator = true"
-                        title="随机生成"
-                    >
+                    <div class="btn" @click="showGenerator = true" title="随机生成">
                         <el-icon>
                             <magic-stick />
                         </el-icon>
                     </div>
                 </div>
             </div>
-            <Grid
-                class="artifact-grid"
-                :key="store.state.nReload"
-                :length="artifacts.length"
-                :page-size="50"
-                :page-provider="pageProvider"
-            >
+            <Grid class="artifact-grid" :key="store.state.nReload" :length="artifacts.length" :page-size="50"
+                :page-provider="pageProvider">
                 <template v-slot:default="{ item, style, index }">
                     <div class="artifact-cell" :style="style">
-                        <artifact-card
-                            :artifact="item"
-                            :select-mode="selectMode"
-                            :selected="selected(item.data.index)"
-                            @flip-select="flipSelect(item.data.index, $event)"
-                            @flip-lock="flipLock(item.data.index)"
-                            @edit="edit(item.data.index)"
-                        />
+                        <artifact-card :artifact="item" :select-mode="selectMode" :selected="selected(item.data.index)"
+                            @flip-select="flipSelect(item.data.index, $event)" @flip-lock="flipLock(item.data.index)"
+                            @edit="edit(item.data.index)" @stats="stats(item)" />
                     </div>
                 </template>
             </Grid>
@@ -299,6 +277,7 @@ const targetIndex = ref(-1);
         </el-scrollbar>
     </div>
     <artifact-editor v-model="showEditor" :index="editorIndex" />
+    <artifact-stats v-model="showStats" :art="statsArt" />
     <artifact-creator v-model="showCreator" />
     <artifact-generator v-model="showGenerator" />
     <partial-export v-model="showExport" :artifacts="artifactsToExport" />
