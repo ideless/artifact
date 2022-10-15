@@ -138,7 +138,7 @@ yas-lock是一个圣遗物扫描、加解锁的Windows端程序。
 
 yas-lock是由我对wormtql的 [yas](https://github.com/wormtql/yas) 的代码做少量改动（增加加解锁功能、修复bug等），并在个人电脑上编译的，主要版权归于wormtql，仅供学习交流之用。
 
-[下载地址（约23MB）](https://ghproxy.com/https://github.com/ideless/yas-lock/releases/public/download/yas-lock.exe) | [项目地址](https://github.com/ideless/yas-lock)
+[下载地址（约23MB）](https://ghproxy.com/https://github.com/ideless/yas-lock/releases/latest/download/yas-lock.exe) | [项目地址](https://github.com/ideless/yas-lock)
 
 下载后最好放在一个单独的文件夹内，后续产生的数据文件都位于此文件夹内。
 
