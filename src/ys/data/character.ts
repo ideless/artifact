@@ -1588,35 +1588,33 @@ export default <ICharacterData>{
             }
         }
     },
-    /*
     "Nilou": {
         "element": "dendro",
         "rarity": 5,
         "presets": ["生精双暴", "生精充双暴"],
         "build": {
-            "set": [],
+            "set": ["GildedDreams", "WanderersTroupe", "TenacityOfTheMillelith"],
             "main": {
                 "flower": ["hp"],
                 "plume": ["atk"],
-                "sands": [],
-                "goblet": [],
-                "circlet": []
+                "sands": ["hpp"],
+                "goblet": ["hpp"],
+                "circlet": ["hpp"]
             },
             "weight": {
                 "hp": 0,
                 "atk": 0,
                 "def": 0,
-                "hpp": 0,
+                "hpp": 1,
                 "atkp": 0,
                 "defp": 0,
-                "em": 0,
+                "em": 1,
                 "er": 0,
                 "cr": 0,
                 "cd": 0
             }
         }
     },
-    */
     "Cyno": {
         "pop": true,
         "element": "electro",
@@ -1647,6 +1645,35 @@ export default <ICharacterData>{
     },
     "Candace": {
         "element": "hydro",
+        "rarity": 4,
+        "presets": ["生充"],
+        "build": {
+            "set": ["EmblemOfSeveredFate", "NoblesseOblige", "TenacityOfTheMillelith"],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": ["er", "hpp"],
+                "goblet": ["hpp", "hydroDB"],
+                "circlet": ["hpp", "cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    /*
+    "Nahida": {
+        "pop": true,
+        "element": "dendro",
         "rarity": 5,
         "presets": ["生充"],
         "build": {
@@ -1672,4 +1699,32 @@ export default <ICharacterData>{
             }
         }
     },
+    "Layla": {
+        "element": "cryo",
+        "rarity": 4,
+        "presets": ["生充"],
+        "build": {
+            "set": ["EmblemOfSeveredFate", "NoblesseOblige", "TenacityOfTheMillelith"],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": ["er", "hpp"],
+                "goblet": ["hpp", "hydroDB"],
+                "circlet": ["hpp", "cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    */
 }

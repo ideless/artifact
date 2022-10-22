@@ -114,9 +114,11 @@ export default <ITranslation>{
         "Collei": "柯莱",
         "Dori": "多莉",
         "Tighnari": "提纳里",
-        "Nilou": "妮露（施工中）",
+        "Nilou": "妮露",
         "Cyno": "赛诺",
         "Candace": "坎蒂丝",
+        "Nahida": "纳西妲",
+        "Layla": "莱依拉",
     },
     preset: {
         "攻充": "攻充",
