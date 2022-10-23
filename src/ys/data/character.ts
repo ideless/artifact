@@ -1589,7 +1589,8 @@ export default <ICharacterData>{
         }
     },
     "Nilou": {
-        "element": "dendro",
+        "pop": true,
+        "element": "hydro",
         "rarity": 5,
         "presets": ["生精双暴", "生精充双暴"],
         "build": {
