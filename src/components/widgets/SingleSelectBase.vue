@@ -1,14 +1,10 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref } from 'vue';
-import { IOption } from '@/store/types';
 
 const props = defineProps<{
-    options: IOption[]
-    modelValue: string
+    options: any[]
     title?: string
-}>()
-const emit = defineEmits<{
-    (e: 'update:modelValue', v: string): void
+    persistant?: boolean
 }>()
 
 // 下拉菜单：位置、弹出收起
@@ -37,6 +33,11 @@ const blur = (e: FocusEvent) => {
     }
 }
 const optionsKey = computed(() => JSON.stringify(props.options))
+const click = (e: MouseEvent) => {
+    if (props.persistant) {
+        e.stopPropagation()
+    }
+}
 
 // dom class
 const rootClass = computed(() => ({
@@ -47,34 +48,19 @@ const optionsClass = computed(() => ({
     options: true,
     top: top.value
 }))
-
-// 显示被选中选项
-const selectedLabel = computed(() => {
-    for (let o of props.options)
-        if (o.key == props.modelValue)
-            return o.label
-    return '错误：未知的选项'
-})
-
-// 选择
-const select = (key: string) => {
-    emit('update:modelValue', key)
-}
 </script>
 
 <template>
     <div :class="rootClass" ref="rootEl" tabindex="-1" @click="drop" @focusout="blur">
-        <div class="selected-option-wrapper">{{ selectedLabel }}</div>
+        <div class="selected-wrapper">
+            <slot name="selected" />
+        </div>
         <img class="select-arrow" src="/assets/arrow.webp" />
         <span class="title">{{ title }}</span>
         <transition name="pop">
-            <div :class="optionsClass" ref="optionsEl" v-show="show" :key="optionsKey">
+            <div :class="optionsClass" ref="optionsEl" v-show="show" :key="optionsKey" @click="click">
                 <el-scrollbar>
-                    <div :class="{ option: true, selected: o.key == modelValue }" v-for="o in options"
-                        @click="select(o.key)">
-                        <span class="label">{{ o.label }}</span>
-                        <span class="tip">{{ o.tip }}</span>
-                    </div>
+                    <slot name="options" />
                 </el-scrollbar>
             </div>
         </transition>
@@ -105,10 +91,8 @@ const select = (key: string) => {
     user-select: none;
     cursor: pointer;
 
-    .selected-option-wrapper {
+    .selected-wrapper {
         flex: 1;
-        line-height: 32px;
-        padding-left: 10px;
     }
 
     .select-arrow {
@@ -161,29 +145,6 @@ const select = (key: string) => {
             bottom: calc(100% + 6px);
         }
 
-        .option {
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-
-            &:hover {
-                background: #f0f0f0;
-            }
-
-            &.selected {
-                font-weight: bold;
-            }
-
-            .label {
-                flex: 1;
-            }
-
-            .tip {
-                color: gray;
-                font-family: Arial, Helvetica, sans-serif;
-            }
-        }
     }
 }
 </style>

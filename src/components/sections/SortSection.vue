@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import SectionTitle from './SectionTitle.vue';
-import DropSelect from './DropSelect.vue';
-import DropSelectPlus from './DropSelectPlus.vue';
-import CharSelect from './CharSelect.vue';
-import BuildLoader from './BuildLoader.vue';
+import SectionTitle from '@/components/sections/SectionTitle.vue';
+import SingleSelect from '@/components/widgets/SingleSelect.vue';
+import MultiSelect from '@/components/widgets/MultiSelect.vue';
+import CharSelect from '@/components/widgets/CharSelect.vue';
+import BuildLoader from '@/components/dialogs/BuildLoader.vue';
 import { computed, ref } from 'vue'
 import { useStore } from '@/store';
 import chs from '@/ys/locale/chs';
@@ -81,7 +81,7 @@ const openBuildLoader = () => showBuildLoader.value = true
     <div class="section">
         <section-title title="排序" />
         <div class="content">
-            <drop-select class="row" v-model="sortBy" :options="sortByOptions" title="排序方式" />
+            <single-select class="row" v-model="sortBy" :options="sortByOptions" title="排序方式" />
             <div v-if="sortBy == 'pmulti'">
                 <p class="row small">圣遗物a对角色c的适配概率定义为，刷100个满级圣遗物，其中和a同部位同主词条的圣遗物得分均不超过a的满级期望得分的概率。如果a对c是散件则是200个。</p>
                 <p class="row small">根据<a href="https://ngabbs.com/read.php?tid=27859119"
@@ -95,10 +95,10 @@ const openBuildLoader = () => showBuildLoader.value = true
                 <p class="row small">
                     <span class="text-btn" @click="openBuildLoader">加载预设配装</span>
                 </p>
-                <drop-select-plus class="row" v-model="sets" :options="setsOptions" title="套装偏好" :use-icon="true" />
-                <drop-select-plus class="row" v-model="sands" :options="sandsOptions" title="时之沙主词条偏好" />
-                <drop-select-plus class="row" v-model="goblet" :options="gobletOptions" title="空之杯主词条偏好" />
-                <drop-select-plus class="row" v-model="circlet" :options="circletOptions" title="理之冠主词条偏好" />
+                <multi-select class="row" v-model="sets" :options="setsOptions" title="套装偏好" :use-icon="true" />
+                <multi-select class="row" v-model="sands" :options="sandsOptions" title="时之沙主词条偏好" />
+                <multi-select class="row" v-model="goblet" :options="gobletOptions" title="空之杯主词条偏好" />
+                <multi-select class="row" v-model="circlet" :options="circletOptions" title="理之冠主词条偏好" />
             </div>
             <div v-else-if="sortBy == 'defeat'">
                 <p class="row small">圣遗物b是圣遗物a的上位替代，如果它们部位和主词条相同，且a的所有副词条（除小攻/小生/小防外）b都有而且数值更大。</p>

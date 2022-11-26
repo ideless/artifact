@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
-import App from './App.vue'
-import { store, key } from "./store"
-// import 'element-plus/dist/index.css'
+import App from '@/App.vue'
+import { store, key } from "@/store"
+// import router from "@/store/router"
+import 'element-plus/dist/index.css'
 
 import ECharts from 'vue-echarts'
 import { use } from "echarts/core"
@@ -25,5 +26,6 @@ use([
 
 createApp(App)
     .use(store, key)
+    // .use(router)
     .component('v-chart', ECharts)
     .mount('#app')

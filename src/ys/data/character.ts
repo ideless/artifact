@@ -1671,20 +1671,46 @@ export default <ICharacterData>{
             }
         }
     },
-    /*
     "Nahida": {
         "pop": true,
         "element": "dendro",
         "rarity": 5,
-        "presets": ["生充"],
+        "presets": ["精", "精双暴"],
         "build": {
-            "set": ["EmblemOfSeveredFate", "NoblesseOblige", "TenacityOfTheMillelith"],
+            "set": ["WanderersTroupe", "DeepwoodMemories", "GildedDreams"],
             "main": {
                 "flower": ["hp"],
                 "plume": ["atk"],
-                "sands": ["er", "hpp"],
-                "goblet": ["hpp", "hydroDB"],
-                "circlet": ["hpp", "cr", "cd"]
+                "sands": ["em"],
+                "goblet": ["em", "dendroDB"],
+                "circlet": ["em", "cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.25,
+                "defp": 0,
+                "em": 1,
+                "er": 0,
+                "cr": 0.5,
+                "cd": 0.5
+            }
+        }
+    },
+    "Layla": {
+        "element": "cryo",
+        "rarity": 4,
+        "presets": ["生充"],
+        "build": {
+            "set": ["NoblesseOblige", "TenacityOfTheMillelith"],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": ["hpp"],
+                "goblet": ["hpp"],
+                "circlet": ["hpp"]
             },
             "weight": {
                 "hp": 0,
@@ -1700,18 +1726,19 @@ export default <ICharacterData>{
             }
         }
     },
-    "Layla": {
-        "element": "cryo",
-        "rarity": 4,
-        "presets": ["生充"],
+    "Wanderer": {
+        "pop": true,
+        "element": "anemo",
+        "rarity": 5,
+        "presets": [],
         "build": {
-            "set": ["EmblemOfSeveredFate", "NoblesseOblige", "TenacityOfTheMillelith"],
+            "set": [],
             "main": {
                 "flower": ["hp"],
                 "plume": ["atk"],
-                "sands": ["er", "hpp"],
-                "goblet": ["hpp", "hydroDB"],
-                "circlet": ["hpp", "cr", "cd"]
+                "sands": ["hpp"],
+                "goblet": ["hpp"],
+                "circlet": ["hpp"]
             },
             "weight": {
                 "hp": 0,
@@ -1722,6 +1749,61 @@ export default <ICharacterData>{
                 "defp": 0,
                 "em": 0,
                 "er": 1,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    "Faruzan": {
+        "element": "anemo",
+        "rarity": 4,
+        "presets": [],
+        "build": {
+            "set": [],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": [],
+                "goblet": [],
+                "circlet": []
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 0,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    /* TEMPLATE
+    "": {
+        "element": "",
+        "rarity": 0,
+        "presets": [],
+        "build": {
+            "set": [],
+            "main": {
+                "flower": ["hp"],
+                "plume": ["atk"],
+                "sands": [],
+                "goblet": [],
+                "circlet": []
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 0,
                 "cr": 0,
                 "cd": 0
             }

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import ArtifactCard from "./ArtifactCard.vue";
-import ArtifactEditor from "./ArtifactEditor.vue";
-import ArtifactStats from "./ArtifactStats.vue"
-import ArtifactCreator from "./ArtifactCreator.vue";
-import ArtifactGenerator from "./ArtifactGenerator.vue";
-import PartialExport from "./PartialExport.vue";
-import AlikeLocker from "./AlikeLocker.vue";
+import ArtifactCard from "@/components/widgets/ArtifactCard.vue";
+import ArtifactEditor from "@/components/dialogs/ArtifactEditor.vue";
+import ArtifactStats from "@/components/dialogs/ArtifactStats.vue"
+import ArtifactCreator from "@/components/dialogs/ArtifactCreator.vue";
+import ArtifactGenerator from "@/components/dialogs/ArtifactGenerator.vue";
+import PartialExport from "@/components/dialogs/PartialExport.vue";
+import AlikeLocker from "@/components/dialogs/AlikeLocker.vue";
 import Grid from "vue-virtual-scroll-grid";
 import { useStore } from "@/store";
 import { computed, ref, watch } from "vue";

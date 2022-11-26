@@ -26,6 +26,8 @@ export default <ITranslation>{
         "EchoesOfAnOffering": "来歆余响",
         "DeepwoodMemories": "深林的记忆",
         "GildedDreams": "饰金之梦",
+        "DesertPavilionChronicle": "沙上楼阁史话",
+        "FlowerOfParadiseLost": "乐园遗落之花",
     },
     affix: {
         hp: "生命值",
@@ -119,6 +121,8 @@ export default <ITranslation>{
         "Candace": "坎蒂丝",
         "Nahida": "纳西妲",
         "Layla": "莱依拉",
+        "Wanderer": "流浪者",
+        "Faruzan": "珐露珊",
     },
     preset: {
         "攻充": "攻充",

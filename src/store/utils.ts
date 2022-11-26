@@ -7,3 +7,13 @@ export function download(text: string, filename: string) {
     element.click();
     document.body.removeChild(element);
 }
+
+export function assign(a: { [k: string]: any }, b: any) {
+    if (!b || typeof b != 'object') return false
+    Object.keys(b).forEach(key => {
+        if (a.hasOwnProperty(key)) {
+            (a as any)[key] = b[key]
+        }
+    })
+    return true
+}

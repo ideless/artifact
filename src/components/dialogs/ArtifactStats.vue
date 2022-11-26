@@ -14,6 +14,7 @@ const props = defineProps<{
 const emit = defineEmits<{
     (e: 'update:modelValue', value: boolean): void
 }>()
+
 const show = computed({
     get() { return props.modelValue },
     set(value: boolean) { emit('update:modelValue', value) }
@@ -144,7 +145,7 @@ const option2 = ref({
     },
     title: {
         left: 'center',
-        text: '同类最佳满级圣遗物词条数分布'
+        text: '同类最佳满级圣遗物词条数概率分布'
     },
     toolbox: {
         feature: {
@@ -250,16 +251,16 @@ watch(() => props.modelValue, (show) => {
     <el-dialog title="统计" v-model="show" top="2vh" width="90%">
         <div class="num-wrapper">
             <div class="num">
-                <div class="desc">当前圣遗物{{level}}级期望词条数</div>
-                <div class="value">{{mean}}</div>
+                <div class="desc">当前圣遗物{{ level }}级期望词条数</div>
+                <div class="value">{{ mean }}</div>
             </div>
             <div class="num">
-                <div class="desc">{{count}}个圣遗物中最佳满级同类圣遗物期望词条数</div>
-                <div class="value">{{mean2}}</div>
+                <div class="desc">{{ count }}个圣遗物中最佳满级同类圣遗物期望词条数</div>
+                <div class="value">{{ mean2 }}</div>
             </div>
             <div class="num">
-                <div class="desc">{{count}}个圣遗物中当前圣遗物最佳的概率</div>
-                <div class="value">{{prob}}</div>
+                <div class="desc">{{ count }}个圣遗物中当前圣遗物满级时最佳的概率</div>
+                <div class="value">{{ prob }}</div>
             </div>
         </div>
         <el-divider />

@@ -1,20 +1,23 @@
 <script lang="ts" setup>
-import SectionTitle from './SectionTitle.vue';
-import DropSelectPlus from './DropSelectPlus.vue';
-import CharSelect from './CharSelect.vue';
-import RangeSlider from './RangeSlider.vue';
+import SectionTitle from '@/components/sections/SectionTitle.vue';
+import MultiSelect from '@/components/widgets/MultiSelect.vue';
+import SingleSelect from '@/components/widgets/SingleSelect.vue';
+import CharSelect from '@/components/widgets/CharSelect.vue';
+import RangeSlider from '@/components/widgets/RangeSlider.vue';
 import chs from '@/ys/locale/chs';
 import { computed, watch } from 'vue';
 import { useStore } from '@/store';
 import { Artifact } from '@/ys/artifact';
 import ArtfactData from "@/ys/data/artifact"
 import CharacterData from '@/ys/data/character';
+import filterRules from '@/store/filterRules';
+import { IOption } from '@/store/types';
 
 const store = useStore()
 
 const pro = computed<boolean>({
     get() { return store.state.filter.pro },
-    set(v) { store.commit('setFilter', { key: 'pro', value: v }) }
+    set(v) { store.commit('setFilter', { pro: v }) }
 })
 
 function countArtifactAttr(key: keyof Artifact) {
@@ -39,7 +42,7 @@ const setOptions = computed(() => {
 })
 const set = computed<string[]>({
     get() { return store.state.filter.set },
-    set(v) { store.commit('setFilter', { key: 'set', value: v }) }
+    set(v) { store.commit('setFilter', { set: v }) }
 })
 // 部位
 const slotOptions = computed(() => {
@@ -55,7 +58,7 @@ const slotOptions = computed(() => {
 })
 const slot = computed<string[]>({
     get() { return store.state.filter.slot },
-    set(v) { store.commit('setFilter', { key: 'slot', value: v }) }
+    set(v) { store.commit('setFilter', { slot: v }) }
 })
 // 主词条
 const mainOptions = computed(() => {
@@ -70,7 +73,7 @@ const mainOptions = computed(() => {
 })
 const main = computed<string[]>({
     get() { return store.state.filter.main },
-    set(v) { store.commit('setFilter', { key: 'main', value: v }) }
+    set(v) { store.commit('setFilter', { main: v }) }
 })
 // 锁
 const lockOptions = computed(() => {
@@ -85,12 +88,12 @@ const lockOptions = computed(() => {
 })
 const lock = computed<string[]>({
     get() { return store.state.filter.lock },
-    set(v) { store.commit('setFilter', { key: 'lock', value: v }) }
+    set(v) { store.commit('setFilter', { lock: v }) }
 })
 // 等级
 const lvRange = computed<number[]>({
     get() { return store.state.filter.lvRange },
-    set(v) { store.commit('setFilter', { key: 'lvRange', value: v }) }
+    set(v) { store.commit('setFilter', { lvRange: v }) }
 })
 // 佩戴角色
 const charOptions = computed(() => {
@@ -104,29 +107,24 @@ const charOptions = computed(() => {
 })
 const char = computed<string[]>({
     get() { return store.state.filter.location },
-    set(v) { store.commit('setFilter', { key: 'location', value: v }) }
+    set(v) { store.commit('setFilter', { location: v }) }
 })
-// 必须包含和不得包含的副词条
-const minorOptions = ArtfactData.minorKeys.map(key => ({
-    key,
-    label: chs.affix[key]
-}))
-const minorMustHave = computed<string[]>({
-    get() { return store.state.filter.minorMustHave },
-    set(v) { store.commit('setFilter', { key: 'minorMustHave', value: v }) }
-})
-const minorMustNotHave = computed<string[]>({
-    get() { return store.state.filter.minorMustNotHave },
-    set(v) { store.commit('setFilter', { key: 'minorMustNotHave', value: v }) }
+// 特殊筛选规则
+const ruleOptions: IOption[] = filterRules.map((v, i) => ({ key: i, label: v.label }))
+const ruleId = computed<number>({
+    get() { return store.state.filter.ruleId },
+    set(v) { store.commit('setFilter', { ruleId: v }) }
 })
 // 更新，填充
 watch(() => store.state.nResetFilter, () => {
-    store.commit('setFilter', { key: 'set', value: setOptions.value.map(o => o.key) })
-    store.commit('setFilter', { key: 'slot', value: slotOptions.value.map(o => o.key) })
-    store.commit('setFilter', { key: 'main', value: mainOptions.value.map(o => o.key) })
-    store.commit('setFilter', { key: 'lock', value: lockOptions.value.map(o => o.key) })
-    store.commit('setFilter', { key: 'lvRange', value: [0, 20] })
-    store.commit('setFilter', { key: 'location', value: charOptions.value.map(o => o.key) })
+    store.commit('setFilter', {
+        set: setOptions.value.map(o => o.key),
+        slot: slotOptions.value.map(o => o.key),
+        main: mainOptions.value.map(o => o.key),
+        lock: lockOptions.value.map(o => o.key),
+        lvRange: [0, 20],
+        location: charOptions.value.map(o => o.key)
+    })
 })
 </script>
 
@@ -137,15 +135,14 @@ watch(() => store.state.nResetFilter, () => {
             <span v-show="!pro" @click="pro = true">高级</span>
         </section-title>
         <div class="section-content">
-            <drop-select-plus class="filter" title="套装" :options="setOptions" v-model="set" :use-icon="true" />
-            <drop-select-plus class="filter" title="部位" :options="slotOptions" v-model="slot" :use-icon="true" />
-            <drop-select-plus class="filter" title="主词条" :options="mainOptions" v-model="main" />
-            <drop-select-plus class="filter" title="锁" :options="lockOptions" v-model="lock" />
+            <multi-select class="filter" title="套装" :options="setOptions" v-model="set" :use-icon="true" />
+            <multi-select class="filter" title="部位" :options="slotOptions" v-model="slot" :use-icon="true" />
+            <multi-select class="filter" title="主词条" :options="mainOptions" v-model="main" />
+            <multi-select class="filter" title="锁" :options="lockOptions" v-model="lock" />
             <range-slider class="filter" v-model="lvRange" />
             <div v-show="pro">
                 <char-select class="filter" title="角色" :options="charOptions" v-model="char" />
-                <drop-select-plus class="filter" title="必须包含的副词条" :options="minorOptions" v-model="minorMustHave" />
-                <drop-select-plus class="filter" title="不得包含的副词条" :options="minorOptions" v-model="minorMustNotHave" />
+                <single-select class="filter" title="特殊筛选规则" :options="ruleOptions" v-model="ruleId" />
             </div>
         </div>
     </div>

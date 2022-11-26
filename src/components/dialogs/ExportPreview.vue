@@ -3,7 +3,8 @@ import { computed, ref, watch } from 'vue';
 import { Artifact } from '@/ys/artifact';
 import { download } from '@/store/utils';
 import { useStore } from '@/store';
-import ArtifactCard from './ArtifactCard.vue';
+import ArtifactCard from '@/components/widgets/ArtifactCard.vue';
+
 const store = useStore()
 const props = defineProps<{
     modelValue: boolean,
@@ -11,6 +12,7 @@ const props = defineProps<{
 const emit = defineEmits<{
     (e: 'update:modelValue', value: boolean): void
 }>()
+
 const show = computed<boolean>({
     get() { return props.modelValue },
     set(value) { emit('update:modelValue', value) }
@@ -60,13 +62,17 @@ const exportArts = () => {
         if (a.lock != a.data.lock) {
             indices.push(a.data.index)
             // 记住更改
-            if (remember.value) {
+            if (remember.value || store.state.ws.connected) {
                 a.data.lock = a.lock
             }
         }
     }
     indices.sort((a, b) => a - b)
-    download(JSON.stringify(indices), 'lock.json')
+    if (store.state.ws.connected) {
+        store.dispatch('sendLockReq', { indices })
+    } else {
+        download(JSON.stringify(indices), 'lock.json')
+    }
 }
 </script>
 
@@ -90,7 +96,7 @@ const exportArts = () => {
             <artifact-card v-for="i in artToUnlockShowCount" :artifact="artToUnlock[i - 1]"
                 :key="artToUnlock[i - 1].data.index" :readonly="true" />
         </div>
-        <div style="margin-top: 10px;">
+        <div style="margin-top: 10px;" v-show="!store.state.ws.connected">
             <el-checkbox v-model="remember">记住本次更改，下次导出时将不再包含以上圣遗物</el-checkbox>
         </div>
         <div style="margin-top: 10px; text-align: center;">

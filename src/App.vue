@@ -1,21 +1,27 @@
 <script setup lang="ts">
-import LayoutLeft from '@/components/LayoutLeft.vue';
-import LayoutRight from '@/components/LayoutRight.vue';
+import LayoutTop from '@/components/layouts/LayoutTop.vue';
+import LayoutLeft from '@/components/layouts/LayoutLeft.vue';
+import LayoutRight from '@/components/layouts/LayoutRight.vue';
 import { useStore } from '@/store';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { Download } from '@element-plus/icons-vue'
 import axios from 'axios'
-import cookie from '@/store/cookie';
 
 const store = useStore()
 const loadingSrc = './assets/loading.gif'
+
+store.dispatch('setWebSocket', { ws: new URLSearchParams(window.location.hash.slice(1)).get('ws') })
+
+// watch(() => props.ws, (ws) => {
+//     store.dispatch('setWebSocket', { ws })
+// })
 
 const showUpdateDialog = ref(false)
 const message = ref('Hello')
 const yasVersion = ref('v0.0.0')
 const yasUpdLog = ref('Fix bugs')
 const claim = () => {
-    cookie.set('yas_ver', yasVersion.value)
+    store.commit('setYasVersion', { version: yasVersion.value })
     showUpdateDialog.value = false
 }
 const updYas = () => {
@@ -35,7 +41,7 @@ onMounted(() => {
         if ('tag_name' in r.data) {
             yasVersion.value = r.data['tag_name']
             yasUpdLog.value = r.data['body']
-            let yas_ver = cookie.get('yas_ver')
+            let yas_ver = store.state.yas.version
             if (!yas_ver) {
                 message.value = '你可能还没有下载yas-lock。yas-lock是一个轻量windows端圣遗物导出和加解锁工具，推荐下载！'
             } else if (yas_ver != r.data['tag_name']) {
@@ -48,8 +54,11 @@ onMounted(() => {
 </script>
 
 <template>
-    <layout-left />
-    <layout-right />
+    <layout-top />
+    <div id="left-right">
+        <layout-left />
+        <layout-right />
+    </div>
     <el-dialog v-model="showUpdateDialog" title="更新 yas-lock">
         <div class="update-content">
             <p>{{ message }}</p>
@@ -78,9 +87,17 @@ onMounted(() => {
     bottom: 0;
     top: 0;
     display: flex;
+    align-items: stretch;
+    flex-direction: column;
     font-size: 16px;
     // font-weight: bold;
     user-select: none;
+
+    #left-right {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+    }
 }
 
 .el-select,

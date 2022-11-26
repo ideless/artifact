@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
+
 const props = defineProps<{
     modelValue: number
 }>()
 const emit = defineEmits<{
     (e: 'update:modelValue', value: number): void
 }>()
+
 const fillStyle = computed(() => {
     // 定义clip-path行内样式（略倾斜的进度条）
     let bottomPercentage = 0, topPercentage = 0

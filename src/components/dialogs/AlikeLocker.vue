@@ -2,7 +2,8 @@
 import { computed, ref, watch } from 'vue';
 import { Artifact } from '@/ys/artifact';
 import { useStore } from '@/store';
-import ArtifactCard from './ArtifactCard.vue';
+import ArtifactCard from '@/components/widgets/ArtifactCard.vue';
+
 const store = useStore()
 const props = defineProps<{
     modelValue: boolean,
@@ -11,6 +12,7 @@ const props = defineProps<{
 const emit = defineEmits<{
     (e: 'update:modelValue', value: boolean): void
 }>()
+
 const show = computed<boolean>({
     get() { return props.modelValue },
     set(value) { emit('update:modelValue', value) }

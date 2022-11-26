@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import { computed } from "vue"
+
 const props = defineProps<{
     disabled?: boolean
 }>()
 const emit = defineEmits<{
     (e: 'click'): void
 }>()
+
 const btnClass = computed(() => {
     return {
         'text-button': true,

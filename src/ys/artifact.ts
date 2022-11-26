@@ -2,6 +2,7 @@ import { argmax, argmin, assert, choice, SimpleCache } from "./utils";
 import ArtifactData from "./data/artifact";
 import CharacterData, { IBuild } from "./data/character";
 import { getAffnumCDF } from "./gacha/artifact";
+import { assign } from "@/store/utils";
 
 interface IWeight {
     [key: string]: number;
@@ -85,22 +86,20 @@ export class Artifact implements IArtifact {
         defeat: 0,
         mvec: [] as number[],
     };
-    constructor(obj?: any) {
-        if (typeof obj === "object") {
-            this.set = obj.set || this.set;
-            this.slot = obj.slot || this.slot;
-            this.rarity = obj.rarity || this.rarity;
-            this.level = obj.level || this.level;
-            this.lock = obj.lock || this.lock;
-            this.location = obj.location || this.location;
-            this.mainKey = obj.mainKey || this.mainKey;
-            if (obj.minors instanceof Array) {
-                for (let o of obj.minors) {
-                    this.minors.push(new Affix(o));
-                }
+    constructor(o?: any) {
+        if (!o || typeof o != 'object') return
+        Object.keys(o).forEach(key => {
+            if (this.hasOwnProperty(key) && key != 'minors') {
+                (this as any)[key] = o[key]
             }
-            this.data.lock = this.lock;
+        })
+        this.minors = []
+        if (o.minors instanceof Array) {
+            for (let m of o.minors) {
+                this.minors.push(new Affix(m));
+            }
         }
+        this.data.lock = this.lock;
     }
     clear() {
         this.data.score = 0;

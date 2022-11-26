@@ -3,9 +3,10 @@ import { ref, computed, watch } from 'vue'
 import chs from '@/ys/locale/chs'
 import { useStore } from '@/store';
 import { Affix, Artifact } from '@/ys/artifact';
-import ArtifactCard from './ArtifactCard.vue';
+import ArtifactCard from '@/components/widgets/ArtifactCard.vue';
 import ArtifactData from "@/ys/data/artifact"
 import CharacterData from "@/ys/data/character"
+
 const props = defineProps<{
     modelValue: boolean,
     index: number
@@ -14,6 +15,7 @@ const emit = defineEmits<{
     (e: 'update:modelValue', value: boolean): void
 }>()
 const store = useStore()
+
 const show = computed({
     get() { return props.modelValue },
     set(value: boolean) { emit('update:modelValue', value) }

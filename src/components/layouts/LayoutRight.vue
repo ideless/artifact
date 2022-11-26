@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import ImportSection from './ImportSection.vue';
-import WeightSection from './WeightSection.vue'
-import FilterSection from './FilterSection.vue';
-import SortSection from './SortSection.vue';
-import TextButton from './TextButton.vue';
+import ImportSection from '@/components/sections/ImportSection.vue';
+import WeightSection from '@/components/sections/WeightSection.vue'
+import FilterSection from '@/components/sections/FilterSection.vue';
+import SortSection from '@/components/sections/SortSection.vue';
+import TextButton from '@/components/widgets/TextButton.vue';
 import { useStore } from '@/store';
 const store = useStore()
 const start = () => { store.dispatch('updFilteredArtifacts') }
