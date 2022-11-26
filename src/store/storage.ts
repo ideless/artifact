@@ -1,6 +1,9 @@
 import { YasConfig } from "./types"
 
 export default {
+    hasYasConfig() {
+        return localStorage.getItem('yas_config') != null
+    },
     getYasConfig(): YasConfig {
         return new YasConfig(JSON.parse(localStorage.getItem('yas_config')!))
     },

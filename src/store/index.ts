@@ -300,7 +300,9 @@ export const store = createStore<IState>({
                             }
                             break
                         case 'ConfigNotify':
-                            state.yas.config = new YasConfig(pkt.data.config)
+                            if (!storage.hasYasConfig()) {
+                                state.yas.config = new YasConfig(pkt.data.config)
+                            }
                             break
                         default: break;
                     }
