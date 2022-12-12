@@ -10,6 +10,7 @@ declare module 'vue' {
     ArtifactEditor: typeof import('./src/components/dialogs/ArtifactEditor.vue')['default']
     ArtifactGenerator: typeof import('./src/components/dialogs/ArtifactGenerator.vue')['default']
     ArtifactStats: typeof import('./src/components/dialogs/ArtifactStats.vue')['default']
+    BuildEditor: typeof import('./src/components/dialogs/BuildEditor.vue')['default']
     BuildLoader: typeof import('./src/components/dialogs/BuildLoader.vue')['default']
     CharSelect: typeof import('./src/components/widgets/CharSelect.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
