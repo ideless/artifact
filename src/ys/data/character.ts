@@ -1736,19 +1736,19 @@ export default <ICharacterData>{
             "main": {
                 "flower": ["hp"],
                 "plume": ["atk"],
-                "sands": ["hpp"],
-                "goblet": ["hpp"],
-                "circlet": ["hpp"]
+                "sands": [],
+                "goblet": [],
+                "circlet": []
             },
             "weight": {
                 "hp": 0,
                 "atk": 0,
                 "def": 0,
-                "hpp": 1,
+                "hpp": 0,
                 "atkp": 0,
                 "defp": 0,
                 "em": 0,
-                "er": 1,
+                "er": 0,
                 "cr": 0,
                 "cd": 0
             }

@@ -55,24 +55,24 @@ const updNewArtAffnum = () => {
     modified.value = true
     newArt.value.updateAffnum(store.state.weightInUse)
 }
-const oldArt = computed<Artifact>(() => {
+const oldArt = ref<Artifact>(new Artifact())
+watch(() => show.value, () => {
+    if (!show.value) return
     // reset equiped
     for (let c in CharacterData) {
         equiped[c] = { flower: false, plume: false, sands: false, goblet: false, circlet: false }
     }
-    let ret = new Artifact()
     for (let a of store.state.artifacts) {
         if (a.data.index === props.index) {
             newArt.value = new Artifact(a)
             newArt.value.data.affnum = { ...a.data.affnum }
-            ret = a
+            oldArt.value = a
         }
         if (a.location in equiped) {
             equiped[a.location][a.slot] = true
         }
     }
     modified.value = false
-    return ret
 })
 const location = computed<string>({
     get() { return newArt.value.location },

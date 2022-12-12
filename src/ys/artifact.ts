@@ -89,7 +89,7 @@ export class Artifact implements IArtifact {
     constructor(o?: any) {
         if (!o || typeof o != 'object') return
         Object.keys(o).forEach(key => {
-            if (this.hasOwnProperty(key) && key != 'minors') {
+            if (this.hasOwnProperty(key) && key != 'minors' && key != 'data') {
                 (this as any)[key] = o[key]
             }
         })
