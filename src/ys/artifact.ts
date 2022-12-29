@@ -1,12 +1,9 @@
 import { argmax, argmin, assert, choice, SimpleCache } from "./utils";
 import ArtifactData from "./data/artifact";
-import CharacterData, { IBuild } from "./data/character";
+import CharacterData, { IBuildData } from "./data/character";
 import { getAffnumCDF } from "./gacha/artifact";
 import { assign } from "@/store/utils";
-
-interface IWeight {
-    [key: string]: number;
-}
+import { IWeight, IBuild } from "@/store/types";
 
 const AffnumDistrCache = new SimpleCache(
     ({ main, weight }: { main: string; weight: IWeight }) => {
@@ -58,8 +55,8 @@ interface IArtifact {
             max: number;
         };
         score: number; // 稀有度
-        charScores: Array<{
-            charKey: string;
+        buildScores: Array<{
+            name: string;
             score: number;
         }>;
         defeat: number; // 上位替代数
@@ -82,7 +79,7 @@ export class Artifact implements IArtifact {
         lock: false,
         affnum: { cur: 0, avg: 0, min: 0, max: 0 },
         score: 0,
-        charScores: [] as Array<{ charKey: string; score: number }>,
+        buildScores: [] as Array<{ name: string; score: number }>,
         defeat: 0,
         mvec: [] as number[],
     };
@@ -103,7 +100,7 @@ export class Artifact implements IArtifact {
     }
     clear() {
         this.data.score = 0;
-        this.data.charScores = [];
+        this.data.buildScores = [];
         this.data.defeat = 0;
     }
     validate() {
@@ -121,7 +118,7 @@ export class Artifact implements IArtifact {
             "Invalid artifact: number of minors is not 4"
         );
     }
-    updateAffnum(w: { [key: string]: number }) {
+    updateAffnum(w: IWeight) {
         // Refer to ./README.md for symbols and equations
         this.data.affnum = { cur: 0, avg: 0, min: 0, max: 0 };
         let A: Set<string> = new Set(),
@@ -173,7 +170,7 @@ export class Artifact implements IArtifact {
                 this.data.affnum.cur + (n * w[astar_key] * 0.7) / 0.85;
         }
     }
-    getAvgAffnum(w: { [key: string]: number }) {
+    getAvgAffnum(w: IWeight) {
         let A: Set<string> = new Set(),
             Ac = new Set(ArtifactData.minorKeys),
             sum_w = 0,
@@ -199,9 +196,9 @@ export class Artifact implements IArtifact {
             return cur + ((n * sum_w) / 4) * 0.85;
         }
     }
-    updateScore(charKeys: string[]) {
+    updateScore(buildKeys: string[], builds: IBuild[]) {
         this.data.score = 0;
-        this.data.charScores = [];
+        this.data.buildScores = [];
         // AffnumCache记录不同权重下圣遗物的满级期望词条数
         const AffnumCache = new SimpleCache((weight: IWeight) => {
             return Math.round(this.getAvgAffnum(weight) * 10);
@@ -227,11 +224,10 @@ export class Artifact implements IArtifact {
                 return (p * x + 1 - p) ** 100; // 有没有100其实无所谓，有100更好看一点
             }
         );
-        // 对每个角色分别计算
-        for (let charKey of charKeys) {
-            let b = CharacterData[charKey].build;
+        // 对每个配装分别计算
+        for (let b of builds.filter(b => buildKeys.includes(b.key))) {
             // if the main stat is not recommanded, skip
-            if (!b.main[this.slot].includes(this.mainKey)) continue;
+            if (['sands', 'goblet', 'circlet'].includes(this.slot) && !b.main[this.slot].includes(this.mainKey)) continue;
             // set factor
             let n_set = b.set.includes(this.set) ? 1 : 2;
             // get score
@@ -249,14 +245,14 @@ export class Artifact implements IArtifact {
                 }) ** n_set;
             // update
             this.data.score = Math.max(this.data.score, score);
-            if (score >= 0.001) this.data.charScores.push({ charKey, score });
+            if (score >= 0.001) this.data.buildScores.push({ name: b.name, score });
         }
-        this.data.charScores.sort((a, b) => b.score - a.score);
+        this.data.buildScores.sort((a, b) => b.score - a.score);
     }
-    updateScoreSingle(b: IBuild) {
+    updateScoreSingle(b: IBuildData) {
         this.data.score = 0;
-        this.data.charScores = [];
-        if (!b.main[this.slot].includes(this.mainKey)) return;
+        this.data.buildScores = [];
+        if (['sands', 'goblet', 'circlet'].includes(this.slot) && !b.main[this.slot].includes(this.mainKey)) return;
         let n_set = b.set.includes(this.set) ? 1 : 2;
         let affnum = Math.round(this.getAvgAffnum(b.weight) * 10);
         let distr = AffnumDistrCache.get({

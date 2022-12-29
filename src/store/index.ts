@@ -1,6 +1,6 @@
 import { InjectionKey } from 'vue'
 import { createStore, useStore as baseUseStore, Store } from 'vuex'
-import { IState, YasConfig, IWeight } from './types'
+import { IState, YasConfig, IWeight, IBuild } from './types'
 import { Affix, Artifact } from '@/ys/artifact'
 import CharacterData from "@/ys/data/character"
 import { ElMessage } from 'element-plus'
@@ -15,6 +15,7 @@ export const key: InjectionKey<Store<IState>> = Symbol()
 
 export const store = createStore<IState>({
     state: () => {
+        let builds = storage.getBuilds()
         return {
             artifacts: [],
             filteredArtifacts: [],
@@ -33,13 +34,14 @@ export const store = createStore<IState>({
             sort: {
                 by: 'avg', // 'avg', 'min', 'max', 'cur', 'pmulti', 'psingle', 'defeat', 'index',
                 // pmulti
-                characters: Object.keys(CharacterData).filter(c => CharacterData[c].pop),
+                buildKeys: storage.getSelectedBuildKeys(),
                 // psingle
                 sets: ["NoblesseOblige", "ShimenawasReminiscence", "GladiatorsFinale", "WanderersTroupe", "EmblemOfSeveredFate", "CrimsonWitchOfFlames"],
                 sands: ["em", "er", "atkp"],
                 goblet: ["pyroDB"],
                 circlet: ["cr", "cd"],
             },
+            builds,
             artMode: {
                 showAffnum: false,
                 useMaxAsUnit: false,
@@ -98,7 +100,14 @@ export const store = createStore<IState>({
         setYasVersion(state, { version }: { version: string }) {
             state.yas.version = version
             storage.setYasVersion(version)
-        }
+        },
+        setBuilds(state, { builds }: { builds: IBuild[] }) {
+            state.builds = builds
+            storage.setBuilds(builds)
+
+            let keys = new Set(builds.map(b => b.key))
+            state.sort.buildKeys = state.sort.buildKeys.filter(k => keys.has(k))
+        },
     },
     actions: {
         reload({ state }) {
@@ -116,6 +125,8 @@ export const store = createStore<IState>({
             dispatch('updFilteredArtifacts')
         },
         updFilteredArtifacts({ state }) {
+            storage.setSelectedBuildKeys(state.sort.buildKeys)
+
             state.loading = true
             setTimeout(() => {
                 let ret = state.artifacts
@@ -153,7 +164,7 @@ export const store = createStore<IState>({
                             weight: state.weight
                         })
                     } else if (state.sort.by == 'pmulti') {
-                        a.updateScore(state.sort.characters)
+                        a.updateScore(state.sort.buildKeys, state.builds)
                     }
                     a.updateAffnum(state.weightInUse)
                 }
@@ -252,7 +263,7 @@ export const store = createStore<IState>({
                 state.ws.connected = false
                 return
             }
-            console.log(ws)
+            // console.log(ws)
             state.ws.server = new WebSocket(ws)
             state.ws.server.onopen = () => {
                 state.ws.connected = true

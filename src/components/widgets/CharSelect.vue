@@ -16,16 +16,25 @@ const emit = defineEmits<{
 
 // display
 const text = (o: ICharOption) => {
-    return o.key ? chs.character[o.key] || o.key : '未佩戴'
+    if (o.name) return o.name
+    else return o.key ? chs.character[o.key] || o.key : '未佩戴'
 }
 const icon = (o: ICharOption) => {
-    return o.key ? `./assets/char_faces/${o.key}.webp` : './assets/forbidden.webp'
+    if (o.key == '') {
+        return './assets/forbidden.webp'
+    } else if (o.key.startsWith('0')) {
+        return './assets/char_faces/default.webp'
+    } else if (o.key.startsWith('Traveler')) {
+        return `./assets/char_faces/Traveler.webp`
+    } else {
+        return `./assets/char_faces/${o.key}.webp`
+    }
 }
 const color = (o: ICharOption) => {
-    if (o.key) {
-        return CharacterData[o.key].rarity == 5 ? 'gold' : 'purple'
-    } else {
+    if (o.key == '' || o.key.startsWith('0')) {
         return 'black'
+    } else {
+        return CharacterData[o.key].rarity == 5 ? 'gold' : 'purple'
     }
 }
 
@@ -49,13 +58,24 @@ const optionGroups = computed(() => {
                 g[e] = [omap[key]]
             }
         })
-    return ['pyro', 'hydro', 'cryo', 'electro', 'anemo', 'geo', 'dendro']
+    let ret = ['pyro', 'hydro', 'cryo', 'electro', 'anemo', 'geo', 'dendro']
         .filter(e => e in g)
         .map(e => ({
             icon: `./assets/game_icons/${e}.webp`,
             text: chs.element[e],
             options: g[e],
         }))
+    // 自定义角色
+    let optionsCustom = props.options.filter(o => o.key.startsWith('0'))
+    if (optionsCustom.length) {
+        ret.push({
+            icon: '',
+            text: '自定义',
+            options: optionsCustom
+        })
+    }
+
+    return ret
 })
 
 const selectedKeys = computed<string[]>({
@@ -87,7 +107,7 @@ const selectedOptions = computed(() => {
             </div>
             <div class="option-group" v-for="g in optionGroups">
                 <div class="group-header">
-                    <img :src="g.icon" alt="" class="icon">
+                    <img :src="g.icon" alt="" class="icon" v-if="g.icon">
                     <span class="label">{{ g.text }}</span>
                 </div>
                 <div class="option" v-for="o in g.options">

@@ -3,7 +3,7 @@
  * 配装：https://ngabbs.com/read.php?tid=27859119
  */
 
-export interface IBuild {
+export interface IBuildData {
     set: string[]
     main: {
         [slotKey: string]: string[]
@@ -18,7 +18,7 @@ interface ICharacterData {
         element: string
         rarity: number
         presets: string[]
-        build: IBuild
+        build: IBuildData
         pop?: boolean
     }
 }
@@ -31,8 +31,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ViridescentVenerer"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["em", "atkp"],
                 "goblet": ["em", "anemoDB"],
                 "circlet": ["cr", "cd", "em"]
@@ -58,8 +56,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "ShimenawasReminiscence", "ArchaicPetra", "NoblesseOblige"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["geoDB"],
                 "circlet": ["cr", "cd"]
@@ -85,8 +81,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ShimenawasReminiscence", "GladiatorsFinale", "WanderersTroupe", "EmblemOfSeveredFate", "NoblesseOblige"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["er"],
                 "goblet": ["atkp", "em"],
                 "circlet": ["cr", "cd", "em"]
@@ -112,8 +106,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["EmblemOfSeveredFate", "DeepwoodMemories", "GildedDreams", "NoblesseOblige"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["er", "em"],
                 "goblet": ["dendroDB", "em"],
                 "circlet": ["cr", "cd", "em"]
@@ -140,8 +132,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "NoblesseOblige", "ShimenawasReminiscence", "EmblemOfSeveredFate", "BlizzardStrayer"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["cryoDB"],
                 "circlet": ["cr", "cd"]
@@ -167,8 +157,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ShimenawasReminiscence", "OceanHuedClam", "GladiatorsFinale", "ViridescentVenerer", "NoblesseOblige", "MaidenBeloved"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp", "er"],
                 "goblet": ["anemoDB", "atkp"],
                 "circlet": ["cr", "cd", "atkp", "hb"]
@@ -194,8 +182,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["WanderersTroupe", "EmblemOfSeveredFate", "ThunderingFury"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp", "em", "er"],
                 "goblet": ["electroDB", "atkp", "em"],
                 "circlet": ["cr", "cd", "em"]
@@ -221,8 +207,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["TenacityOfTheMillelith", "MaidenBeloved", "NoblesseOblige", "OceanHuedClam"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["er", "hpp"],
                 "goblet": ["hpp"],
                 "circlet": ["hb", "hpp"]
@@ -248,8 +232,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["NoblesseOblige", "BloodstainedChivalry", "EmblemOfSeveredFate", "PaleFlame", "GladiatorsFinale", "BlizzardStrayer"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp", "er"],
                 "goblet": ["cryoDB", "physicalDB", "atkp"],
                 "circlet": ["cr", "cd"]
@@ -275,8 +257,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "WanderersTroupe", "ShimenawasReminiscence", "CrimsonWitchOfFlames"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp", "em"],
                 "goblet": ["pyroDB"],
                 "circlet": ["cr", "cd"]
@@ -302,8 +282,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ShimenawasReminiscence", "BloodstainedChivalry", "PaleFlame", "GladiatorsFinale"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["physicalDB"],
                 "circlet": ["cr", "cd"]
@@ -329,8 +307,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["CrimsonWitchOfFlames", "NoblesseOblige", "WanderersTroupe"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["pyroDB"],
                 "circlet": ["cr", "cd"]
@@ -355,10 +331,8 @@ export default <ICharacterData>{
         "rarity": 5,
         "presets": ["攻充精双暴", "攻双暴"],
         "build": {
-            "set": ["", "ViridescentVenerer"],
+            "set": ["ViridescentVenerer"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp", "er", "em"],
                 "goblet": ["anemoDB", "em"],
                 "circlet": ["cr", "cd", "em"]
@@ -385,8 +359,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["NoblesseOblige", "ShimenawasReminiscence", "GladiatorsFinale", "WanderersTroupe", "EmblemOfSeveredFate", "CrimsonWitchOfFlames"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["em", "er", "atkp"],
                 "goblet": ["pyroDB"],
                 "circlet": ["cr", "cd"]
@@ -412,8 +384,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "ShimenawasReminiscence", "EmblemOfSeveredFate", "NoblesseOblige", "ThunderingFury"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp", "er"],
                 "goblet": ["electroDB", "atkp"],
                 "circlet": ["cr", "cd"]
@@ -440,8 +410,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "NoblesseOblige", "HeartOfDepth", "ShimenawasReminiscence", "EmblemOfSeveredFate"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp", "er"],
                 "goblet": ["hydroDB"],
                 "circlet": ["cr", "cd"]
@@ -466,10 +434,8 @@ export default <ICharacterData>{
         "rarity": 5,
         "presets": ["攻双暴"],
         "build": {
-            "set": ["ViridescentVenerer", "GladiatorsFinale", "ShimenawasReminiscence", ""],
+            "set": ["ViridescentVenerer", "GladiatorsFinale", "ShimenawasReminiscence"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["anemoDB", "atkp"],
                 "circlet": ["cr", "cd"]
@@ -495,8 +461,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ArchaicPetra", "GladiatorsFinale", "NoblesseOblige", "ShimenawasReminiscence"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["geoDB"],
                 "circlet": ["cr", "cd"]
@@ -523,8 +487,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "WanderersTroupe", "RetracingBolide", "Lavawalker", "ShimenawasReminiscence", "CrimsonWitchOfFlames"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["pyroDB"],
                 "circlet": ["cr", "cd"]
@@ -551,8 +513,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ArchaicPetra", "ShimenawasReminiscence", "GladiatorsFinale", "NoblesseOblige", "TenacityOfTheMillelith"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["hpp", "atkp", "er"],
                 "goblet": ["geoDB", "hpp"],
                 "circlet": ["cr", "cd", "hpp"]
@@ -579,8 +539,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["PaleFlame", "ThunderingFury", "GladiatorsFinale", "BloodstainedChivalry", "ShimenawasReminiscence", "Thundersoother", "TenacityOfTheMillelith"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["electroDB", "physicalDB"],
                 "circlet": ["cr", "cd"]
@@ -607,8 +565,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["OceanHuedClam", "MaidenBeloved", "NoblesseOblige"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["er", "hpp"],
                 "goblet": ["hpp"],
                 "circlet": ["hb", "hpp"]
@@ -635,8 +591,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ShimenawasReminiscence", "NoblesseOblige", "GladiatorsFinale", "WanderersTroupe", "HeartOfDepth"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp", "er", "em"],
                 "goblet": ["hydroDB"],
                 "circlet": ["cr", "cd"]
@@ -662,8 +616,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["RetracingBolide", "GladiatorsFinale", "HuskOfOpulentDreams"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["defp"],
                 "goblet": ["geoDB", "defp"],
                 "circlet": ["cr", "cd"]
@@ -689,8 +641,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["EmblemOfSeveredFate", "MaidenBeloved", "NoblesseOblige", "OceanHuedClam", "TenacityOfTheMillelith"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["er", "atkp"],
                 "goblet": ["atkp"],
                 "circlet": ["hb", "atkp"]
@@ -716,8 +666,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["BlizzardStrayer", "EmblemOfSeveredFate", "Lavawalker", "NoblesseOblige"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["cryoDB"],
                 "circlet": ["cr", "cd"]
@@ -744,8 +692,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["NoblesseOblige", "GladiatorsFinale", "ShimenawasReminiscence", "EmblemOfSeveredFate", "BlizzardStrayer", "WanderersTroupe"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["cryoDB"],
                 "circlet": ["cr", "cd"]
@@ -771,8 +717,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ArchaicPetra", "HuskOfOpulentDreams", "TenacityOfTheMillelith"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["defp"],
                 "goblet": ["geoDB"],
                 "circlet": ["cr", "cd", "defp"]
@@ -798,8 +742,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["OceanHuedClam", "TenacityOfTheMillelith", "MaidenBeloved", "NoblesseOblige"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["hpp", "er"],
                 "goblet": ["hpp"],
                 "circlet": ["hpp", "hb"]
@@ -825,8 +767,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["HeartOfDepth", "WanderersTroupe", "EmblemOfSeveredFate", "NoblesseOblige", "TenacityOfTheMillelith"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["er"],
                 "goblet": ["atkp"],
                 "circlet": ["cr", "cd"]
@@ -853,8 +793,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "NoblesseOblige", "BloodstainedChivalry", "PaleFlame", "Thundersoother", "ShimenawasReminiscence", "ThunderingFury"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["electroDB", "physicalDB"],
                 "circlet": ["cr", "cd"]
@@ -881,8 +819,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "NoblesseOblige", "ShimenawasReminiscence", "ViridescentVenerer"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["em", "er", "atkp"],
                 "goblet": ["em", "anemoDB"],
                 "circlet": ["cr", "cd", "em"]
@@ -908,8 +844,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["PaleFlame", "GladiatorsFinale", "ShimenawasReminiscence", "RetracingBolide", "HuskOfOpulentDreams", "TenacityOfTheMillelith", "BloodstainedChivalry"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["defp", "atkp"],
                 "goblet": ["defp", "physicalDB"],
                 "circlet": ["cr", "cd", "defp"]
@@ -935,8 +869,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "ShimenawasReminiscence", "BlizzardStrayer", "BloodstainedChivalry", "EmblemOfSeveredFate", "PaleFlame", "NoblesseOblige"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp", "er"],
                 "goblet": ["cryoDB", "physicalDB"],
                 "circlet": ["cr"]
@@ -963,8 +895,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["TenacityOfTheMillelith", "WanderersTroupe", "RetracingBolide", "ShimenawasReminiscence", "CrimsonWitchOfFlames"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["hpp", "em"],
                 "goblet": ["pyroDB"],
                 "circlet": ["cr", "cd"]
@@ -989,10 +919,8 @@ export default <ICharacterData>{
         "rarity": 5,
         "presets": ["攻双暴", "攻精双暴", "精充"],
         "build": {
-            "set": ["", "ViridescentVenerer"],
+            "set": ["ViridescentVenerer"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["em", "atkp"],
                 "goblet": ["anemoDB", "em", "atkp"],
                 "circlet": ["cr", "cd", "em", "atkp"]
@@ -1016,10 +944,8 @@ export default <ICharacterData>{
         "rarity": 4,
         "presets": ["攻双暴", "攻精双暴"],
         "build": {
-            "set": ["", "RetracingBolide", "CrimsonWitchOfFlames", "WanderersTroupe"],
+            "set": ["RetracingBolide", "CrimsonWitchOfFlames", "WanderersTroupe"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["pyroDB"],
                 "circlet": ["cr", "cd"]
@@ -1046,8 +972,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "CrimsonWitchOfFlames", "RetracingBolide", "Lavawalker", "ShimenawasReminiscence"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["pyroDB"],
                 "circlet": ["cr", "cd"]
@@ -1073,8 +997,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["TenacityOfTheMillelith", "EmblemOfSeveredFate"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["er", "hpp"],
                 "goblet": ["hpp"],
                 "circlet": ["hpp"]
@@ -1101,8 +1023,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "BloodstainedChivalry", "ShimenawasReminiscence", "PaleFlame"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["physicalDB"],
                 "circlet": ["cr", "cd"]
@@ -1127,10 +1047,8 @@ export default <ICharacterData>{
         "rarity": 5,
         "presets": ["攻充双暴", "攻双暴"],
         "build": {
-            "set": ["", "EmblemOfSeveredFate"],
+            "set": ["EmblemOfSeveredFate"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["er", "atkp"],
                 "goblet": ["electroDB", "atkp"],
                 "circlet": ["cr", "cd"]
@@ -1156,8 +1074,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ShimenawasReminiscence", "OceanHuedClam", "ViridescentVenerer", "MaidenBeloved"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["em", "er", "atkp"],
                 "goblet": ["em", "anemoDB"],
                 "circlet": ["em", "hb", "atkp"]
@@ -1184,8 +1100,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["MaidenBeloved", "OceanHuedClam", "TenacityOfTheMillelith", "HeartOfDepth"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["hpp", "er"],
                 "goblet": ["hydroDB", "hpp"],
                 "circlet": ["hb"]
@@ -1211,8 +1125,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["HuskOfOpulentDreams", "EmblemOfSeveredFate", "MaidenBeloved", "OceanHuedClam", "ArchaicPetra", "NoblesseOblige"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["er"],
                 "goblet": ["defp"],
                 "circlet": ["defp", "hb"]
@@ -1238,8 +1150,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "ThunderingFury", "ShimenawasReminiscence", "EmblemOfSeveredFate", "NoblesseOblige"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["er", "atkp"],
                 "goblet": ["electroDB", "atkp"],
                 "circlet": ["cr", "cd"]
@@ -1266,8 +1176,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ArchaicPetra", "HuskOfOpulentDreams"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["defp"],
                 "goblet": ["geoDB"],
                 "circlet": ["cr", "cd"]
@@ -1294,8 +1202,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ShimenawasReminiscence", "GladiatorsFinale", "ThunderingFury", "Thundersoother", "TenacityOfTheMillelith"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["electroDB"],
                 "circlet": ["cr", "cd"]
@@ -1321,8 +1227,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ViridescentVenerer", "GladiatorsFinale", "ShimenawasReminiscence", "EchoesOfAnOffering"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["anemoDB"],
                 "circlet": ["cr", "cd"]
@@ -1349,8 +1253,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["EmblemOfSeveredFate", "HeartOfDepth", "NoblesseOblige", "TenacityOfTheMillelith"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["hpp", "er"],
                 "goblet": ["hydroDB"],
                 "circlet": ["cr", "cd"]
@@ -1376,8 +1278,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GladiatorsFinale", "ShimenawasReminiscence", "EmblemOfSeveredFate", "NoblesseOblige", "BlizzardStrayer"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp", "er", "em"],
                 "goblet": ["cryoDB"],
                 "circlet": ["cr", "cd"]
@@ -1404,8 +1304,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["ShimenawasReminiscence", "GladiatorsFinale", "NoblesseOblige"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp", "er"],
                 "goblet": ["atkp"],
                 "circlet": ["atkp"]
@@ -1431,8 +1329,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["EmblemOfSeveredFate", "NoblesseOblige", "HuskOfOpulentDreams"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["defp", "er"],
                 "goblet": ["defp"],
                 "circlet": ["defp"]
@@ -1458,8 +1354,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["TenacityOfTheMillelith", "OceanHuedClam", "MaidenBeloved"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["em", "hpp"],
                 "goblet": ["em", "hpp"],
                 "circlet": ["hb", "em"]
@@ -1486,8 +1380,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["EchoesOfAnOffering", "GladiatorsFinale", "HeartOfDepth"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp"],
                 "goblet": ["hydroDB"],
                 "circlet": ["cr", "cd"]
@@ -1513,8 +1405,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["DeepwoodMemories", "GildedDreams", "EmblemOfSeveredFate", "NoblesseOblige"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["atkp", "er"],
                 "goblet": ["dendroDB"],
                 "circlet": ["cr", "cd"]
@@ -1540,8 +1430,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["MaidenBeloved", "OceanHuedClam", "NoblesseOblige", "EmblemOfSeveredFate"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["hpp", "er"],
                 "goblet": ["hpp"],
                 "circlet": ["hb"]
@@ -1568,8 +1456,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["DeepwoodMemories", "GildedDreams", "WanderersTroupe"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["em"],
                 "goblet": ["dendroDB"],
                 "circlet": ["cr", "cd"]
@@ -1596,8 +1482,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GildedDreams", "WanderersTroupe", "TenacityOfTheMillelith"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["hpp"],
                 "goblet": ["hpp"],
                 "circlet": ["hpp"]
@@ -1624,8 +1508,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["GildedDreams", "GladiatorsFinale", "ThunderingFury"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["em", "atkp"],
                 "goblet": ["electroDB"],
                 "circlet": ["cr", "cd"]
@@ -1651,8 +1533,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["EmblemOfSeveredFate", "NoblesseOblige", "TenacityOfTheMillelith"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["er", "hpp"],
                 "goblet": ["hpp", "hydroDB"],
                 "circlet": ["hpp", "cr", "cd"]
@@ -1679,8 +1559,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["WanderersTroupe", "DeepwoodMemories", "GildedDreams"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["em"],
                 "goblet": ["em", "dendroDB"],
                 "circlet": ["em", "cr", "cd"]
@@ -1706,8 +1584,6 @@ export default <ICharacterData>{
         "build": {
             "set": ["NoblesseOblige", "TenacityOfTheMillelith"],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": ["hpp"],
                 "goblet": ["hpp"],
                 "circlet": ["hpp"]
@@ -1734,8 +1610,6 @@ export default <ICharacterData>{
         "build": {
             "set": [],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": [],
                 "goblet": [],
                 "circlet": []
@@ -1761,8 +1635,6 @@ export default <ICharacterData>{
         "build": {
             "set": [],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
                 "sands": [],
                 "goblet": [],
                 "circlet": []
@@ -1789,8 +1661,7 @@ export default <ICharacterData>{
         "build": {
             "set": [],
             "main": {
-                "flower": ["hp"],
-                "plume": ["atk"],
+
                 "sands": [],
                 "goblet": [],
                 "circlet": []

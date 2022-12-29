@@ -10,6 +10,7 @@ export interface IOption {
 
 export interface ICharOption {
     key: string
+    name?: string
     tip?: string
 }
 
@@ -66,6 +67,18 @@ export interface IWeight {
     [key: string]: number
 }
 
+export interface IBuild {
+    key: string
+    name: string
+    set: string[]
+    main: {
+        [slotKey: string]: string[]
+    }
+    weight: {
+        [affixKey: string]: number
+    }
+}
+
 export interface IState {
     artifacts: Artifact[]
     filteredArtifacts: Artifact[]
@@ -83,12 +96,13 @@ export interface IState {
     weightInUse: IWeight
     sort: {
         by: string
-        characters: string[]
+        buildKeys: string[]
         sets: string[]
         sands: string[]
         goblet: string[]
         circlet: string[]
     }
+    builds: IBuild[]
     artMode: {
         [key: string]: any // allow string key
         showAffnum: boolean // 展示词条数而不是数值

@@ -4,10 +4,11 @@ import SingleSelect from '@/components/widgets/SingleSelect.vue';
 import MultiSelect from '@/components/widgets/MultiSelect.vue';
 import CharSelect from '@/components/widgets/CharSelect.vue';
 import BuildLoader from '@/components/dialogs/BuildLoader.vue';
+import BuildEditor from '../dialogs/BuildEditor.vue';
 import { computed, ref } from 'vue'
 import { useStore } from '@/store';
 import chs from '@/ys/locale/chs';
-import ArtfactData from "@/ys/data/artifact"
+import ArtifactData from "@/ys/data/artifact"
 import CharacterData from '@/ys/data/character';
 const store = useStore()
 
@@ -28,11 +29,12 @@ const sortBy = computed<string>({
 })
 
 // 按角色适配概率（多人）
-const charOptions = Object.keys(CharacterData)
-    .map(key => ({ key, tip: '' }))
+const charOptions = computed(() => {
+    return store.state.builds.map(b => ({ key: b.key, name: b.name }))
+})
 const char = computed<string[]>({
-    get() { return store.state.sort.characters },
-    set(v) { store.commit('setSort', { key: 'characters', value: v }) }
+    get() { return store.state.sort.buildKeys },
+    set(v) { store.commit('setSort', { key: 'buildKeys', value: v }) }
 })
 // 按角色适配概率（单人）
 const setsOptions = Object.entries(chs.set).map(([key, label]) => ({
@@ -44,7 +46,7 @@ const sets = computed<string[]>({
     get() { return store.state.sort.sets },
     set(v) { store.commit('setSort', { key: 'sets', value: v }) }
 })
-const sandsOptions = ArtfactData.mainKeys.sands.map(m => ({
+const sandsOptions = ArtifactData.mainKeys.sands.map(m => ({
     key: m,
     label: chs.affix[m]
 }))
@@ -52,7 +54,7 @@ const sands = computed<string[]>({
     get() { return store.state.sort.sands },
     set(v) { store.commit('setSort', { key: 'sands', value: v }) }
 })
-const gobletOptions = ArtfactData.mainKeys.goblet.map(m => ({
+const gobletOptions = ArtifactData.mainKeys.goblet.map(m => ({
     key: m,
     label: chs.affix[m]
 }))
@@ -60,7 +62,7 @@ const goblet = computed<string[]>({
     get() { return store.state.sort.goblet },
     set(v) { store.commit('setSort', { key: 'goblet', value: v }) }
 })
-const circletOptions = ArtfactData.mainKeys.circlet.map(m => ({
+const circletOptions = ArtifactData.mainKeys.circlet.map(m => ({
     key: m,
     label: chs.affix[m]
 }))
@@ -75,6 +77,9 @@ const circlet = computed<string[]>({
 // 配装加载窗口
 const showBuildLoader = ref(false)
 const openBuildLoader = () => showBuildLoader.value = true
+
+const showBuildEditor = ref(false)
+const openBuildEditor = () => showBuildEditor.value = true
 </script>
 
 <template>
@@ -88,12 +93,16 @@ const openBuildLoader = () => showBuildLoader.value = true
                         target="_blank">推荐配装</a>为每个角色计算适配概率（自定义的词条权重不会生效），总的适配概率为所有选中角色适配概率的最大值。
                 </p>
                 <p class="row small">鼠标悬停在圣遗物上可以查看详细的计算结果。</p>
+                <p class="row small">
+                    <span class="text-btn" @click="openBuildEditor">修改配装</span>
+                </p>
                 <char-select class="row" title="角色" :options="charOptions" v-model="char" />
             </div>
             <div v-else-if="sortBy == 'psingle'">
                 <p class="row small">圣遗物a对角色c的适配概率定义为，刷100个满级圣遗物，其中和a同部位同主词条的圣遗物得分均不超过a的满级期望得分的概率。如果a对c是散件则是200个。</p>
                 <p class="row small">
-                    <span class="text-btn" @click="openBuildLoader">加载预设配装</span>
+                    <span class="text-btn" @click="openBuildEditor" style="margin-right: 8px;">修改配装</span>
+                    <span class="text-btn" @click="openBuildLoader">加载配装</span>
                 </p>
                 <multi-select class="row" v-model="sets" :options="setsOptions" title="套装偏好" :use-icon="true" />
                 <multi-select class="row" v-model="sands" :options="sandsOptions" title="时之沙主词条偏好" />
@@ -111,6 +120,7 @@ const openBuildLoader = () => showBuildLoader.value = true
         </div>
     </div>
     <build-loader v-model="showBuildLoader" />
+    <build-editor v-model="showBuildEditor" />
 </template>
 
 <style lang="scss" scoped>

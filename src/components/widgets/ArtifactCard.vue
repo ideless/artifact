@@ -133,19 +133,15 @@ const flipLock = () => {
         emit("flipLock");
     }
 };
-const charScore = computed<string>(() => {
-    return props.artifact.data.charScores
-        .map((cs) => {
-            return `${chs.character[cs.charKey]}${(cs.score * 100).toFixed(
-                1
-            )}%`;
-        })
+const buildScores = computed<string>(() => {
+    return props.artifact.data.buildScores
+        .map(bs => `${bs.name}${(bs.score * 100).toFixed(1)}%`)
         .join(" ");
 });
 </script>
 
 <template>
-    <div :class="artifactCardClass" :title="charScore">
+    <div :class="artifactCardClass" :title="buildScores">
         <div class="head">
             <div class="head-stat">
                 <div class="piece-name">{{ pieceName }}</div>
