@@ -107,6 +107,8 @@ export interface IState {
         [key: string]: any // allow string key
         showAffnum: boolean // 展示词条数而不是数值
         useMaxAsUnit: boolean // 用最大提升量作为1单位词条
+        reverseOrder: boolean // 倒序
+        alikeEnabled: boolean // 联想
     }
     ws: {
         server?: WebSocket

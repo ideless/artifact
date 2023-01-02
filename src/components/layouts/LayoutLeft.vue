@@ -159,10 +159,13 @@ const exportSelection = () => {
 //     scrollbarRef.value!.setScrollTop(0)
 // })
 // 倒序
-const reverseOrder = ref(false);
-watch(reverseOrder, () => {
-    store.dispatch("reload"); // 强制刷新virtual-scroll-grid
-});
+const reverseOrder = computed({
+    get() { return store.state.artMode.reverseOrder },
+    set(v) {
+        store.commit('setArtMode', { reverseOrder: v })
+        store.dispatch("reload"); // 强制刷新virtual-scroll-grid
+    }
+})
 // 圣遗物列表
 const artifacts = computed(() => {
     if (reverseOrder.value) {
@@ -201,7 +204,10 @@ const showCreator = ref(false);
 // 随机生成
 const showGenerator = ref(false);
 // 相似圣遗物
-const alikeEnabled = ref(true);
+const alikeEnabled = computed({
+    get() { return store.state.artMode.alikeEnabled },
+    set(v) { store.commit('setArtMode', { alikeEnabled: v }) }
+})
 const showAlike = ref(false);
 const targetIndex = ref(-1);
 </script>

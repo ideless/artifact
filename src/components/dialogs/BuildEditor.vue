@@ -35,6 +35,7 @@ interface IAvatar {
     text: string
     icon: string
     rarity: number
+    bg: string
 }
 const avatars = computed(() => {
     let ret: { [e: string]: IAvatar[] } = {}
@@ -56,6 +57,7 @@ const avatars = computed(() => {
             text: b.name,
             icon,
             rarity,
+            bg: `./assets/bg${rarity}.webp`,
         })
     }
     for (let e in ret) {
@@ -259,8 +261,9 @@ const delCustomBuilds = () => {
                             </div>
                             <template v-for="a in avatars[e.element]">
                                 <span :class="avatarClass(a.key)" @click="selectBuild(a.key)">
-                                    <span :class="`icon r${a.rarity}`">
-                                        <img :src="a.icon" :alt="a.text">
+                                    <span class="icon-wrapper">
+                                        <img class="bg" :src="a.bg">
+                                        <img class="icon" :src="a.icon" :alt="a.text">
                                     </span>
                                     <span>{{ a.text }}</span>
                                 </span>
@@ -389,33 +392,29 @@ const delCustomBuilds = () => {
                         border-radius: 5px;
                     }
 
-                    .icon {
+                    .icon-wrapper {
                         width: 60px;
                         height: 60px;
                         border-radius: 5px;
                         overflow: hidden;
-                        background-size: cover;
-                        text-align: center;
-
-                        &.r4 {
-                            background-image: url(./assets/bg4.webp), url(./bg4.webp);
-                        }
-
-                        &.r5 {
-                            background-image: url(./assets/bg5.webp), url(./bg5.webp);
-                        }
-
-                        &.r1 {
-                            background-image: url(./assets/bg1.webp), url(./bg1.webp);
-                        }
+                        position: relative;
 
                         img {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
                             height: 100%;
+                        }
+
+                        img.icon {
+                            margin-left: auto;
+                            margin-right: auto;
                             transition: scale 100ms ease;
                         }
                     }
 
-                    &:hover>.icon>img {
+                    &:hover>.icon-wrapper>img.icon {
                         scale: 1.1;
                     }
                 }

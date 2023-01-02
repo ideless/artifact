@@ -1,67 +1,70 @@
-import { IBuild, YasConfig } from "./types"
-import CharacterData from "@/ys/data/character"
-import chs from "@/ys/locale/chs"
+class Item {
+    key: string
+    constructor(key: string) { this.key = key }
+    get value() { return localStorage.getItem(this.key) }
+    set value(v: string | null) {
+        if (v === null) {
+            localStorage.removeItem(this.key)
+        } else {
+            localStorage.setItem(this.key, v)
+        }
+    }
+}
+
+class TypedItem<T> {
+    key: string
+    defaultValue: T
+    constructor(key: string, defaultValue: T) {
+        this.key = key
+        this.defaultValue = defaultValue
+    }
+    get value() {
+        let item = localStorage.getItem(this.key)
+
+        if (item === null) {
+            return this.defaultValue
+        }
+
+        if (typeof this.defaultValue != 'string') {
+            try {
+                return JSON.parse(item) as T
+            } catch {
+                return this.defaultValue
+            }
+        }
+
+        return item as unknown as T
+    }
+    set value(v: T) {
+        if (typeof v == 'string') {
+            localStorage.setItem(this.key, v)
+        } else {
+            localStorage.setItem(this.key, JSON.stringify(v))
+        }
+    }
+    exists() { return localStorage.getItem(this.key) !== null }
+    remove() { localStorage.removeItem(this.key) }
+}
 
 export default {
-    keys: {
-        yas_config: 'yas_config',
-        yas_version: 'yas_version',
-        builds: 'builds',
-        selected_build_keys: 'selected_build_keys',
+    yas: {
+        config: new TypedItem<object>('yas.config', {}),
+        version: new Item('yas.version'),
     },
-    hasYasConfig() {
-        return localStorage.getItem(this.keys.yas_config) != null
+    builds: new TypedItem<object[]>('builds', []),
+    sort: {
+        by: new TypedItem<string>('sort.by', 'avg'),
+        buildKeys: new TypedItem<string[]>('sort.buildKeys', []),
+        sets: new TypedItem<string[]>('sort.sets', []),
+        sands: new TypedItem<string[]>('sort.sands', []),
+        goblet: new TypedItem<string[]>('sort.goblet', []),
+        circlet: new TypedItem<string[]>('sort.circlet', []),
     },
-    getYasConfig(): YasConfig {
-        return new YasConfig(JSON.parse(localStorage.getItem(this.keys.yas_config)!))
-    },
-    setYasConfig(config: YasConfig) {
-        localStorage.setItem(this.keys.yas_config, JSON.stringify(config))
-    },
-    getYasVersion() {
-        return localStorage.getItem(this.keys.yas_version)
-    },
-    setYasVersion(version: string) {
-        localStorage.setItem(this.keys.yas_version, version)
-    },
-    getBuilds() {
-        // 读取localStorage
-        let jsonStored = localStorage.getItem(this.keys.builds) || '[]'
-        let builds = JSON.parse(jsonStored) as IBuild[]
-        // 增量更新
-        let keys = new Set(builds.reduce((p, c) => p.concat([c.key]), [] as string[]))
-        let newKeys = Object.keys(CharacterData).filter(key => !keys.has(key))
-        newKeys.forEach(key => {
-            let c = CharacterData[key]
-            builds.push({
-                key,
-                name: chs.character[key],
-                set: [...c.build.set],
-                main: {
-                    sands: [...c.build.main.sands],
-                    goblet: [...c.build.main.goblet],
-                    circlet: [...c.build.main.circlet],
-                },
-                weight: { ...c.build.weight },
-            })
-        })
-        // 写入localStorage
-        this.setBuilds(builds)
-
-        return builds
-    },
-    setBuilds(builds: IBuild[]) {
-        localStorage.setItem(this.keys.builds, JSON.stringify(builds))
-    },
-    getSelectedBuildKeys() {
-        let jsonStored = localStorage.getItem(this.keys.selected_build_keys)
-        if (jsonStored) {
-            return JSON.parse(jsonStored) as string[]
-        } else {
-            return [] as string[]
-        }
-    },
-    setSelectedBuildKeys(keys: string[]) {
-        localStorage.setItem(this.keys.selected_build_keys, JSON.stringify(keys))
-    },
+    weight: new TypedItem<object>('weight', {}),
+    artMode: {
+        showAffnum: new TypedItem<boolean>('artMode.showAffnum', false),
+        useMaxAsUnit: new TypedItem<boolean>('artMode.useMaxAsUnit', false),
+        reverseOrder: new TypedItem<boolean>('artMode.reverseOrder', false),
+        alikeEnabled: new TypedItem<boolean>('artMode.alikeEnabled', true),
+    }
 }

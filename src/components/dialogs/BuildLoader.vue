@@ -18,22 +18,21 @@ const emit = defineEmits<{
     (e: 'update:modelValue', value: boolean): void
 }>()
 const show = computed<boolean>({
-    get() {
-        return props.modelValue
-    },
-    set(value) {
-        emit('update:modelValue', value)
-    }
+    get() { return props.modelValue },
+    set(value) { emit('update:modelValue', value) }
 })
 const element = ref("")
 const character = ref("")
 const characters = computed<IOption[]>(() => {
     let ret = []
-    for (let c in CharacterData) {
-        if (CharacterData[c].element == element.value) {
+    for (let b of store.state.builds) {
+        if (
+            (b.key.startsWith('0') && element.value == 'custom') ||
+            (b.key in CharacterData && CharacterData[b.key].element == element.value)
+        ) {
             ret.push({
-                value: c,
-                label: chs.character[c]
+                value: b.key,
+                label: b.name,
             })
         }
     }
@@ -43,10 +42,10 @@ const changeElement = () => {
     character.value = ""
 }
 const valid = computed(() => {
-    return character.value in CharacterData
+    return !!character.value
 })
 const apply = () => {
-    store.commit('useBuild', { charKey: character.value })
+    store.commit('useBuild', { buildKey: character.value })
     emit('update:modelValue', false)
 }
 </script>
@@ -62,6 +61,7 @@ const apply = () => {
             <el-col :span="8">
                 <el-select v-model="element" @change="changeElement">
                     <el-option v-for="(label, value) in chs.element" :label="label" :value="value" />
+                    <el-option label="自定义" value="custom" />
                 </el-select>
             </el-col>
         </el-row>
