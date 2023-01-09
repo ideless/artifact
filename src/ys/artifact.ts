@@ -196,7 +196,7 @@ export class Artifact implements IArtifact {
             return cur + ((n * sum_w) / 4) * 0.85;
         }
     }
-    updateScore(buildKeys: string[], builds: IBuild[]) {
+    updateScore(buildKeys: string[], builds: IBuild[], alg: 'sum' | 'max' = 'sum') {
         this.data.score = 0;
         this.data.buildScores = [];
         // AffnumCache记录不同权重下圣遗物的满级期望词条数
@@ -244,8 +244,13 @@ export class Artifact implements IArtifact {
                     affnum,
                 }) ** n_set;
             // update
-            this.data.score = Math.max(this.data.score, score);
-            if (score >= 0.001) this.data.buildScores.push({ name: b.name, score });
+            if (score < 0.001) continue
+            if (alg == 'sum') {
+                this.data.score += score
+            } else if (alg == 'max') {
+                this.data.score = Math.max(this.data.score, score);
+            } else throw new Error('unknown score algorithm')
+            this.data.buildScores.push({ name: b.name, score });
         }
         this.data.buildScores.sort((a, b) => b.score - a.score);
     }

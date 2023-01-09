@@ -1,3 +1,5 @@
+import { IScoreAlg } from "./types"
+
 class Item {
     key: string
     constructor(key: string) { this.key = key }
@@ -55,6 +57,7 @@ export default {
     sort: {
         by: new TypedItem<string>('sort.by', 'avg'),
         buildKeys: new TypedItem<string[]>('sort.buildKeys', []),
+        scoreAlg: new TypedItem<IScoreAlg>('sort.scoreAlg', 'sum'),
         sets: new TypedItem<string[]>('sort.sets', []),
         sands: new TypedItem<string[]>('sort.sands', []),
         goblet: new TypedItem<string[]>('sort.goblet', []),

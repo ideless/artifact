@@ -79,6 +79,8 @@ export interface IBuild {
     }
 }
 
+export type IScoreAlg = 'sum' | 'max'
+
 export interface IState {
     artifacts: Artifact[]
     filteredArtifacts: Artifact[]
@@ -97,6 +99,7 @@ export interface IState {
     sort: {
         by: string
         buildKeys: string[]
+        scoreAlg: IScoreAlg
         sets: string[]
         sands: string[]
         goblet: string[]

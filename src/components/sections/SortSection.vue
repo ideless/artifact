@@ -36,6 +36,10 @@ const char = computed<string[]>({
     get() { return store.state.sort.buildKeys },
     set(v) { store.commit('setSort', { key: 'buildKeys', value: v }) }
 })
+const scoreAlg = computed<string>({
+    get() { return store.state.sort.scoreAlg },
+    set(v) { store.commit('setSort', { key: 'scoreAlg', value: v }) }
+})
 // 按角色适配概率（单人）
 const setsOptions = Object.entries(chs.set).map(([key, label]) => ({
     key,
@@ -90,11 +94,17 @@ const openBuildEditor = () => showBuildEditor.value = true
             <div v-if="sortBy == 'pmulti'">
                 <p class="row small">圣遗物a对角色c的适配概率定义为，刷100个满级圣遗物，其中和a同部位同主词条的圣遗物得分均不超过a的满级期望得分的概率。如果a对c是散件则是200个。</p>
                 <p class="row small">根据<a href="https://ngabbs.com/read.php?tid=27859119"
-                        target="_blank">推荐配装</a>为每个角色计算适配概率（自定义的词条权重不会生效），总的适配概率为所有选中角色适配概率的最大值。
+                        target="_blank">推荐配装</a>为每个角色计算适配概率（自定义的词条权重不会生效），总的适配概率为所有选中角色适配概率的总和或最大值。
                 </p>
                 <p class="row small">鼠标悬停在圣遗物上可以查看详细的计算结果。</p>
                 <p class="row small">
                     <span class="text-btn" @click="openBuildEditor">修改配装</span>
+                </p>
+                <p class="row small">
+                    <el-radio-group v-model="scoreAlg" size="small">
+                        <el-radio label="sum">按总和排序</el-radio>
+                        <el-radio label="max">按最大值排序</el-radio>
+                    </el-radio-group>
                 </p>
                 <char-select class="row" title="角色" :options="charOptions" v-model="char" />
             </div>

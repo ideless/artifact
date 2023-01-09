@@ -62,6 +62,7 @@ export const store = createStore<IState>({
                 by: storage.sort.by.value, // 'avg', 'min', 'max', 'cur', 'pmulti', 'psingle', 'defeat', 'index',
                 // pmulti
                 buildKeys: storage.sort.buildKeys.value,
+                scoreAlg: storage.sort.scoreAlg.value,
                 // psingle
                 sets: storage.sort.sets.value,
                 sands: storage.sort.sands.value,
@@ -202,7 +203,7 @@ export const store = createStore<IState>({
                             weight: state.weight
                         })
                     } else if (state.sort.by == 'pmulti') {
-                        a.updateScore(state.sort.buildKeys, state.builds)
+                        a.updateScore(state.sort.buildKeys, state.builds, state.sort.scoreAlg)
                     }
                     a.updateAffnum(state.weightInUse)
                 }
