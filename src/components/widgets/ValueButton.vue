@@ -122,7 +122,7 @@ const valueString = computed(() => {
         right: 0;
         bottom: 0;
         top: 0;
-        clip-path: polygon(0 0, 60% 0, 40% 100%, 0 100%);
+        clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
         transition: clip-path 200ms ease;
     }
 

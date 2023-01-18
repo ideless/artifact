@@ -123,6 +123,8 @@ export default <ITranslation>{
         "Layla": "莱依拉",
         "Wanderer": "流浪者",
         "Faruzan": "珐露珊",
+        "Yaoyao": "瑶瑶",
+        "Alhaitham": "艾尔海森",
     },
     preset: {
         "攻充": "攻充",

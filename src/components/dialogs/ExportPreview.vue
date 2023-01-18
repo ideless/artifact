@@ -4,6 +4,7 @@ import { Artifact } from '@/ys/artifact';
 import { download } from '@/store/utils';
 import { useStore } from '@/store';
 import ArtifactCard from '@/components/widgets/ArtifactCard.vue';
+import { number } from 'echarts';
 
 const store = useStore()
 const props = defineProps<{
@@ -54,11 +55,17 @@ watch(() => props.modelValue, (value) => {
 })
 // 导出
 const remember = ref(true)
+const useLockV2 = ref(false)
 const exportArts = () => {
     show.value = false
     let indices = []
+    let validation = []
     for (let a of store.state.artifacts) {
         if (!exportable(a)) continue
+        validation.push({
+            index: a.data.index,
+            lock: a.data.lock
+        })
         if (a.lock != a.data.lock) {
             indices.push(a.data.index)
             // 记住更改
@@ -68,10 +75,23 @@ const exportArts = () => {
         }
     }
     indices.sort((a, b) => a - b)
+    validation.sort((a, b) => a.index - b.index)
+
     if (store.state.ws.connected) {
-        store.dispatch('sendLockReq', { indices })
+        store.dispatch('sendLockReq', {
+            indices,
+            validation,
+        })
     } else {
-        download(JSON.stringify(indices), 'lock.json')
+        download(JSON.stringify(
+            useLockV2.value ?
+                {
+                    version: 2,
+                    indices,
+                    validation,
+                } :
+                indices
+        ), 'lock.json')
     }
 }
 </script>
@@ -98,6 +118,7 @@ const exportArts = () => {
         </div>
         <div style="margin-top: 10px;" v-show="!store.state.ws.connected">
             <el-checkbox v-model="remember">记住本次更改，下次导出时将不再包含以上圣遗物</el-checkbox>
+            <el-checkbox v-model="useLockV2">导出格式为v2（yas-lock v1.0.9-beta1起支持）</el-checkbox>
         </div>
         <div style="margin-top: 10px; text-align: center;">
             <el-button type="primary" @click="exportArts">导出</el-button>
