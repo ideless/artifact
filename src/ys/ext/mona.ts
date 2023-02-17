@@ -29,6 +29,8 @@ export default {
             EchoesOfAnOffering: "EchoesOfAnOffering",
             DeepwoodMemories: "DeepwoodMemories",
             GildedDreams: "GildedDreams",
+            DesertPavilionChronicle: "DesertPavilionChronicle",
+            FlowerOfParadiseLost: "FlowerOfParadiseLost",
         },
         affix: <{ [key: string]: string }>{
             hp: 'lifeStatic',
