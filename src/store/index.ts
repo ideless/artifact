@@ -381,7 +381,7 @@ export const store = createStore<IState>({
             }
             state.ws.server.send(JSON.stringify(pkt))
         },
-        sendLockReq({ state }, { indices }: { indices: number[] }) {
+        sendLockReq({ state }, data) {
             if (!state.ws.server) {
                 ElMessage({
                     message: 'WebSocket未连接',
@@ -392,10 +392,9 @@ export const store = createStore<IState>({
             state.loading = true
             let pkt = {
                 cmd: 'LockReq',
-                data: {
+                data: Object.assign(data, {
                     argv: state.yas.config.toArgv(),
-                    indices
-                }
+                })
             }
             state.ws.server.send(JSON.stringify(pkt))
         },
