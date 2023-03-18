@@ -1,40 +1,56 @@
 <script lang="ts" setup>
-import SelectSingleBase from '@/components/widgets/SingleSelectBase.vue';
-import { computed } from 'vue';
+import SelectSingleBase from "@/components/widgets/SingleSelectBase.vue";
+import { computed } from "vue";
+import { i18n } from "@/i18n";
 
 const props = defineProps<{
-    options: any[]
-    modelValue: (string | number)[]
-    title?: string
-}>()
+    options: any[];
+    modelValue: (string | number)[];
+    title?: string;
+}>();
 const emit = defineEmits<{
-    (e: 'update:modelValue', v: (string | number)[]): void
-}>()
+    (e: "update:modelValue", v: (string | number)[]): void;
+}>();
 
 // 选项
 const isAll = computed<boolean>({
-    get() { return props.modelValue.length == props.options.length },
-    set(v) { emit("update:modelValue", props.options.map(o => o.key)) }
-})
+    get() {
+        return props.modelValue.length == props.options.length;
+    },
+    set(v) {
+        emit(
+            "update:modelValue",
+            props.options.map((o) => o.key)
+        );
+    },
+});
 const isPartial = computed<boolean>(() => {
-    return props.modelValue.length > 0
-        && props.modelValue.length < props.options.length
-})
+    return (
+        props.modelValue.length > 0 &&
+        props.modelValue.length < props.options.length
+    );
+});
 const selectedKeys = computed<(string | number)[]>({
-    get() { return props.modelValue },
-    set(v) { emit("update:modelValue", v) }
-})
+    get() {
+        return props.modelValue;
+    },
+    set(v) {
+        emit("update:modelValue", v);
+    },
+});
 const onSelectAllChange = (v: boolean) => {
     if (v)
-        emit("update:modelValue", props.options.map(o => o.key))
-    else
-        emit("update:modelValue", [])
-}
+        emit(
+            "update:modelValue",
+            props.options.map((o) => o.key)
+        );
+    else emit("update:modelValue", []);
+};
 
 // 显示被选中选项个数
 const selectedCount = computed(() => {
-    return `${props.modelValue.length} / ${props.options.length}`
-})
+    return `${props.modelValue.length} / ${props.options.length}`;
+});
 </script>
 
 <template>
@@ -44,9 +60,13 @@ const selectedCount = computed(() => {
         </template>
         <template v-slot:options>
             <div class="options-header">
-                <el-checkbox v-model="isAll" :indeterminate="isPartial" @change="onSelectAllChange">
+                <el-checkbox
+                    v-model="isAll"
+                    :indeterminate="isPartial"
+                    @change="onSelectAllChange"
+                >
                     <div class="options-header-content">
-                        <span class="label">全选</span>
+                        <span class="label" v-text="$t('ui.sel_all')" />
                         <span class="tip">{{ selectedCount }}</span>
                     </div>
                 </el-checkbox>
@@ -84,7 +104,6 @@ const selectedCount = computed(() => {
 
 .options-header,
 .options {
-
     :deep(.el-checkbox),
     :deep(.el-checkbox__label) {
         width: 100%;

@@ -1,31 +1,25 @@
-import { createApp } from 'vue'
-import App from '@/App.vue'
-import { store, key } from "@/store"
-// import router from "@/store/router"
-import 'element-plus/dist/index.css'
+import { createApp } from "vue";
+import App from "@/App.vue";
 
-import ECharts from 'vue-echarts'
-import { use } from "echarts/core"
-import {
-    CanvasRenderer
-} from 'echarts/renderers'
-import {
-    LineChart
-} from 'echarts/charts'
-import {
-    GridComponent,
-    TooltipComponent
-} from 'echarts/components'
+import { createPinia } from "pinia";
 
-use([
-    CanvasRenderer,
-    LineChart,
-    GridComponent,
-    TooltipComponent
-])
+import { i18n } from "./i18n";
+
+import "element-plus/dist/index.css";
+
+import ECharts from "vue-echarts";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import { LineChart } from "echarts/charts";
+import { GridComponent, TooltipComponent } from "echarts/components";
+import { fixStorage } from "./store/fixStorage";
+
+use([CanvasRenderer, LineChart, GridComponent, TooltipComponent]);
+
+fixStorage();
 
 createApp(App)
-    .use(store, key)
-    // .use(router)
-    .component('v-chart', ECharts)
-    .mount('#app')
+    .use(createPinia())
+    .use(i18n)
+    .component("v-chart", ECharts)
+    .mount("#app");

@@ -1,82 +1,114 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { useStore } from "@/store";
+import { computed, ref } from "vue";
+import { useYasStore } from "@/store";
 
 const props = defineProps<{
-    modelValue: boolean
-}>()
+    modelValue: boolean;
+}>();
 const emit = defineEmits<{
-    (e: 'update:modelValue', value: boolean): void
-}>()
-const store = useStore();
+    (e: "update:modelValue", value: boolean): void;
+}>();
+
+const yasStore = useYasStore();
 
 const show = computed<boolean>({
-    get() { return props.modelValue },
-    set(value) { emit('update:modelValue', value) }
-})
+    get() {
+        return props.modelValue;
+    },
+    set(value) {
+        emit("update:modelValue", value);
+    },
+});
 
-const config = computed(() => store.state.yas.config)
+const config = computed(() => yasStore.config);
 
 const confirm = () => {
-    store.commit('setYasConfig', { config: config.value })
-    show.value = false
-}
+    yasStore.config = config.value;
+    show.value = false;
+};
 </script>
 
 <template>
-    <el-dialog title="Yas-lock 配置" v-model="show" top="2vh">
+    <el-dialog
+        :title="$t('ui.yas_configurator_title')"
+        v-model="show"
+        top="2vh"
+    >
         <el-form :model="config" label-width="auto" label-position="left">
-            <el-divider>扫描</el-divider>
-            <el-form-item label="最大扫描行数">
-                <el-input-number v-model="config.max_row" :min="1" :max="1000" />
+            <el-divider>{{ $t("yas.scan.name") }}</el-divider>
+            <el-form-item :label="$t('yas.config.max_row')">
+                <el-input-number
+                    v-model="config.max_row"
+                    :min="1"
+                    :max="1000"
+                />
             </el-form-item>
-            <el-form-item label="最小星级">
+            <el-form-item :label="$t('yas.config.min_star')">
                 <el-input-number v-model="config.min_star" :min="1" :max="5" />
             </el-form-item>
-            <el-form-item label="最小等级">
-                <el-input-number v-model="config.min_level" :min="0" :max="20" />
+            <el-form-item :label="$t('yas.config.min_level')">
+                <el-input-number
+                    v-model="config.min_level"
+                    :min="0"
+                    :max="20"
+                />
             </el-form-item>
-            <el-form-item label="速度（如提示大量重复尝试降低速度）">
+            <el-form-item :label="$t('yas.config.speed')">
                 <el-input-number v-model="config.speed" :min="1" :max="5" />
             </el-form-item>
-            <el-form-item label="指定圣遗物数量（在自动识别数量不准确时使用）">
+            <el-form-item :label="$t('yas.config.number')">
                 <el-input-number v-model="config.number" :min="0" :max="2000" />
             </el-form-item>
-            <el-divider>加解锁</el-divider>
-            <el-form-item label="加解锁停顿时间">
+            <el-divider>{{ $t("yas.lock.name") }}</el-divider>
+            <el-form-item :label="$t('yas.config.lock_stop')">
                 <el-input-number v-model="config.lock_stop" :min="0" />
-                <el-tag style="margin-left: 10px;">毫秒</el-tag>
+                <el-tag style="margin-left: 10px">
+                    {{ $t("ui.millisecond") }}
+                </el-tag>
             </el-form-item>
-            <el-divider>通用</el-divider>
-            <el-form-item label="等待动画、鼠标点击等操作的默认停顿时间">
+            <el-divider>{{ $t("ui.general") }}</el-divider>
+            <el-form-item :label="$t('yas.config.default_stop')">
                 <el-input-number v-model="config.default_stop" :min="0" />
-                <el-tag style="margin-left: 10px;">毫秒</el-tag>
+                <el-tag style="margin-left: 10px">{{
+                    $t("ui.millisecond")
+                }}</el-tag>
             </el-form-item>
-            <el-form-item label="页面滚动停顿时间">
+            <el-form-item :label="$t('yas.config.scroll_stop')">
                 <el-input-number v-model="config.scroll_stop" :min="0" />
-                <el-tag style="margin-left: 10px;">毫秒</el-tag>
+                <el-tag style="margin-left: 10px">{{
+                    $t("ui.millisecond")
+                }}</el-tag>
             </el-form-item>
-            <el-form-item label="切换圣遗物最大等待时间">
-                <el-input-number v-model="config.max_wait_switch_artifact" :min="0" />
-                <el-tag style="margin-left: 10px;">毫秒</el-tag>
+            <el-form-item :label="$t('yas.config.max_wait_switch_artifact')">
+                <el-input-number
+                    v-model="config.max_wait_switch_artifact"
+                    :min="0"
+                />
+                <el-tag style="margin-left: 10px">{{
+                    $t("ui.millisecond")
+                }}</el-tag>
             </el-form-item>
-            <el-form-item label="翻页的最大等待时间（翻页不正确可以考虑加大该选项）">
+            <el-form-item :label="$t('yas.config.max_wait_scroll')">
                 <el-input-number v-model="config.max_wait_scroll" :min="0" />
-                <el-tag style="margin-left: 10px;">毫秒</el-tag>
+                <el-tag style="margin-left: 10px">{{
+                    $t("ui.millisecond")
+                }}</el-tag>
             </el-form-item>
-            <el-form-item label="不检测是否已打开背包等">
+            <el-form-item :label="$t('yas.config.no_check')">
                 <el-switch v-model="config.no_check" />
             </el-form-item>
-            <el-form-item label="使用dxgcap捕获屏幕">
+            <el-form-item :label="$t('yas.config.dxgcap')">
                 <el-switch v-model="config.dxgcap" />
             </el-form-item>
         </el-form>
-        <el-row justify="center" style="margin-top: 30px;">
-            <el-button type="primary" @click="confirm">确认</el-button>
+        <el-row justify="center" style="margin-top: 30px">
+            <el-button
+                type="primary"
+                @click="confirm"
+                v-text="$t('ui.confirm')"
+            />
         </el-row>
     </el-dialog>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

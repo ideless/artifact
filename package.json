@@ -1,36 +1,39 @@
 {
     "name": "artifact",
-    "version": "0.1.0",
+    "private": false,
+    "license": "MIT",
+    "version": "0.0.0",
+    "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vue-tsc --noEmit && vite build",
+        "build": "vue-tsc && vite build",
         "preview": "vite preview",
         "proto": "cd src/ys/p2p && pbjs -t static-module -w es6 --force-long -o proto.js proto/*.proto && pbts -o proto.d.ts proto.js",
         "deploy": "cd ../ideless.github.io && rm -rf artifact && cp -r ../artifact/dist artifact && git add * && git commit -m fix && git push origin -f"
     },
     "dependencies": {
         "@types/emscripten": "^1.39.6",
-        "axios": "^0.26.0",
-        "echarts": "^5.4.0",
-        "element-plus": "^1.3.0-beta.9",
-        "long": "^5.2.0",
-        "protobufjs": "^6.11.2",
-        "sass": "^1.49.0",
-        "vue": "^3.2.25",
-        "vue-echarts": "^6.2.3",
-        "vue-i18n": "^9.1.10",
-        "vue-router": "4",
-        "vue-virtual-scroll-grid": "^1.4.2",
-        "vuex": "4"
+        "@vueuse/core": "^9.13.0",
+        "axios": "^1.3.4",
+        "echarts": "^5.4.1",
+        "element-plus": "^2.3.0",
+        "long": "^5.2.1",
+        "pinia": "^2.0.33",
+        "protobufjs": "^7.2.2",
+        "sass": "^1.59.3",
+        "vue": "^3.2.47",
+        "vue-echarts": "^6.5.4",
+        "vue-i18n": "^9.2.2",
+        "vue-virtual-scroll-grid": "^1.10.1"
     },
     "devDependencies": {
-        "@types/node": "^17.0.23",
-        "@vitejs/plugin-vue": "^2.0.0",
-        "typescript": "^4.4.4",
-        "unplugin-auto-import": "^0.5.11",
-        "unplugin-vue-components": "^0.17.15",
-        "vite": "^2.7.2",
-        "vue-tsc": "^0.29.8"
+        "@types/node": "^18.15.3",
+        "@vitejs/plugin-vue": "^4.1.0",
+        "typescript": "^5.0.2",
+        "unplugin-auto-import": "^0.15.1",
+        "unplugin-vue-components": "^0.24.1",
+        "vite": "^4.2.0",
+        "vue-tsc": "^1.2.0"
     },
     "prettier": {
         "tabWidth": 4

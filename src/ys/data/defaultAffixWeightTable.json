@@ -1,0 +1,138 @@
+[
+    {
+        "set": "*",
+        "type": "*",
+        "label": "",
+        "weight": {
+            "hp": 0,
+            "atk": 0,
+            "def": 0,
+            "hpp": 0,
+            "atkp": 0.25,
+            "defp": 0,
+            "em": 0.25,
+            "er": 0.25,
+            "cr": 1,
+            "cd": 1
+        }
+    },
+    {
+        "set": "*",
+        "type": "goblet_em",
+        "label": "",
+        "weight": {
+            "hp": 0,
+            "atk": 0,
+            "def": 0,
+            "hpp": 0,
+            "atkp": 0.5,
+            "defp": 0,
+            "em": 0,
+            "er": 1,
+            "cr": 0,
+            "cd": 0
+        }
+    },
+    {
+        "set": "*",
+        "type": "circlet_em",
+        "label": "",
+        "weight": {
+            "hp": 0,
+            "atk": 0,
+            "def": 0,
+            "hpp": 0,
+            "atkp": 0.5,
+            "defp": 0,
+            "em": 0,
+            "er": 1,
+            "cr": 0,
+            "cd": 0
+        }
+    },
+    {
+        "set": "*",
+        "type": "circlet_hb",
+        "label": "",
+        "weight": {
+            "hp": 0,
+            "atk": 0,
+            "def": 0,
+            "hpp": 1,
+            "atkp": 0,
+            "defp": 0,
+            "em": 0.5,
+            "er": 0.5,
+            "cr": 0,
+            "cd": 0
+        }
+    },
+    {
+        "set": "MaidenBeloved",
+        "type": "*",
+        "label": "",
+        "weight": {
+            "hp": 0,
+            "atk": 0,
+            "def": 0,
+            "hpp": 1,
+            "atkp": 0,
+            "defp": 0,
+            "em": 0.5,
+            "er": 1,
+            "cr": 0,
+            "cd": 0
+        }
+    },
+    {
+        "set": "ViridescentVenerer",
+        "type": "*",
+        "label": "",
+        "weight": {
+            "hp": 0,
+            "atk": 0,
+            "def": 0,
+            "hpp": 0,
+            "atkp": 0.5,
+            "defp": 0,
+            "em": 1,
+            "er": 1,
+            "cr": 0,
+            "cd": 0
+        }
+    },
+    {
+        "set": "TenacityOfTheMillelith",
+        "type": "*",
+        "label": "",
+        "weight": {
+            "hp": 0,
+            "atk": 0,
+            "def": 0,
+            "hpp": 1,
+            "atkp": 0,
+            "defp": 0,
+            "em": 0.25,
+            "er": 0.5,
+            "cr": 1,
+            "cd": 1
+        }
+    },
+    {
+        "set": "OceanHuedClam",
+        "type": "*",
+        "label": "",
+        "weight": {
+            "hp": 0,
+            "atk": 0,
+            "def": 0,
+            "hpp": 1,
+            "atkp": 0,
+            "defp": 0,
+            "em": 0.5,
+            "er": 1,
+            "cr": 0,
+            "cd": 0
+        }
+    }
+]

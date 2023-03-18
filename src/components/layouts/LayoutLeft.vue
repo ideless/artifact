@@ -1,13 +1,16 @@
 <script lang="ts" setup>
 import ArtifactCard from "@/components/widgets/ArtifactCard.vue";
 import ArtifactEditor from "@/components/dialogs/ArtifactEditor.vue";
-import ArtifactStats from "@/components/dialogs/ArtifactStats.vue"
+import AffnumDistr from "@/components/dialogs/AffnumDistr.vue";
 import ArtifactCreator from "@/components/dialogs/ArtifactCreator.vue";
 import ArtifactGenerator from "@/components/dialogs/ArtifactGenerator.vue";
 import PartialExport from "@/components/dialogs/PartialExport.vue";
 import AlikeLocker from "@/components/dialogs/AlikeLocker.vue";
+import DefeatList from "@/components/dialogs/DefeatList.vue";
+import BuildProbs from "../dialogs/BuildProbs.vue";
+import DatabaseLoader from "../dialogs/DatabaseLoader.vue";
 import Grid from "vue-virtual-scroll-grid";
-import { useStore } from "@/store";
+import { useArtifactStore, useUiStore } from "@/store";
 import { computed, ref, watch } from "vue";
 // import type { ElScrollbar } from "element-plus";
 import {
@@ -16,27 +19,37 @@ import {
     CirclePlus,
     MagicStick,
     Stopwatch,
+    Coin,
 } from "@element-plus/icons-vue";
 import { Artifact } from "@/ys/artifact";
 
-const store = useStore();
-const stat = computed(() => {
-    let nAll = store.state.filteredArtifacts.length;
-    let nFull = 0,
-        nLock = 0;
-    for (let a of store.state.filteredArtifacts) {
-        if (a.level == 20) nFull++;
-        if (a.lock) nLock++;
+const artStore = useArtifactStore();
+const uiStore = useUiStore();
+
+const count = computed(() => {
+    let all = artStore.processedArtifacts.length;
+    let full = 0,
+        lock = 0;
+    for (let a of artStore.processedArtifacts) {
+        if (a.level == 20) full++;
+        if (a.lock) lock++;
     }
-    return `共${nAll}个 满级${nFull}个 加锁${nLock}个 解锁${nAll - nLock}个`;
+    return {
+        all,
+        full,
+        lock,
+        unlock: all - lock,
+    };
 });
+
 const flipLock = (index: number) => {
-    store.dispatch("flipLock", { index });
+    artStore.flipLock(index);
     if (alikeEnabled.value) {
         targetIndex.value = index;
         showAlike.value = true;
     }
 };
+
 const selectMode = ref(false);
 const selection = ref([] as number[]);
 const selectionSet = computed<Set<number>>(() => {
@@ -46,7 +59,12 @@ const selected = (index: number) => {
     return selectionSet.value.has(index);
 };
 const lastSelect = { index: 0, selected: true };
+let onboardingSelectArtsShowed = false;
 const flipSelect = (index: number, shiftKey: boolean) => {
+    if (!onboardingSelectArtsShowed) {
+        onboardingSelectArtsShowed = true;
+        uiStore.popOnboardingDialog("selectArts");
+    }
     if (!selectMode.value) {
         selectMode.value = true;
         selection.value = [index];
@@ -69,7 +87,7 @@ const flipSelect = (index: number, shiftKey: boolean) => {
         let s = selectionSet.value,
             state = 0,
             ends = [index, lastSelect.index];
-        for (let a of store.state.filteredArtifacts) {
+        for (let a of artStore.processedArtifacts) {
             let start = false;
             if (state == 0 && ends.includes(a.data.index)) {
                 state = 1;
@@ -91,7 +109,7 @@ const flipSelect = (index: number, shiftKey: boolean) => {
 };
 const selectAll = () => {
     selection.value = [];
-    for (let a of store.state.filteredArtifacts) {
+    for (let a of artStore.processedArtifacts) {
         selection.value.push(a.data.index);
     }
 };
@@ -100,7 +118,7 @@ const deselectAll = () => {
 };
 const invSelection = () => {
     let S: Set<number> = new Set();
-    for (let a of store.state.filteredArtifacts) {
+    for (let a of artStore.processedArtifacts) {
         S.add(a.data.index);
     }
     for (let i of selection.value) {
@@ -109,15 +127,15 @@ const invSelection = () => {
     selection.value = Array.from(S);
 };
 const lockSelection = () => {
-    store.dispatch("setLock", { lock: true, indices: selection.value });
+    artStore.setLocks(selection.value, true);
     selection.value = [];
 };
 const unlockSelection = () => {
-    store.dispatch("setLock", { lock: false, indices: selection.value });
+    artStore.setLocks(selection.value, false);
     selection.value = [];
 };
 const delSelection = () => {
-    store.dispatch("delArtifacts", { indices: selection.value });
+    artStore.delArtifacts(selection.value);
     selection.value = [];
 };
 const cancelSelect = () => {
@@ -126,9 +144,10 @@ const cancelSelect = () => {
         selection.value = [];
     }, 100);
 };
-const selectionStat = computed(() => {
-    return `已选中 ${selection.value.length}/${store.state.filteredArtifacts.length}`;
-});
+const selcount = computed(() => ({
+    all: artStore.processedArtifacts.length,
+    sel: selection.value.length,
+}));
 // editor
 const showEditor = ref(false);
 const editorIndex = ref(-1);
@@ -137,41 +156,49 @@ const edit = (index: number) => {
     showEditor.value = true;
 };
 // stats
-const showStats = ref(false)
-const statsArt = ref<Artifact>()
+const statsArt = ref<Artifact>();
+const showAffnumDistr = ref(false);
+const showDefeatList = ref(false);
+const showBuildProbs = ref(false);
 const stats = (art: Artifact) => {
-    statsArt.value = art
-    showStats.value = true
-}
+    statsArt.value = art;
+    switch (artStore.sortResultType) {
+        case "affnum":
+            showAffnumDistr.value = true;
+            break;
+        case "defeat":
+            showDefeatList.value = true;
+            break;
+        case "pbuild":
+            showBuildProbs.value = true;
+            break;
+    }
+};
 // export
 const showExport = ref(false);
 const artifactsToExport = ref<Artifact[]>([]);
 const exportSelection = () => {
-    artifactsToExport.value = store.state.filteredArtifacts.filter((a) =>
+    artifactsToExport.value = artStore.processedArtifacts.filter((a) =>
         selectionSet.value.has(a.data.index)
     );
     showExport.value = true;
 };
-// scrollbar
-// const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
-// watch(() => store.state.nReload, () => {
-//     selection.value = []
-//     scrollbarRef.value!.setScrollTop(0)
-// })
 // 倒序
 const reverseOrder = computed({
-    get() { return store.state.artMode.reverseOrder },
+    get() {
+        return artStore.artMode.reverseOrder;
+    },
     set(v) {
-        store.commit('setArtMode', { reverseOrder: v })
-        store.dispatch("reload"); // 强制刷新virtual-scroll-grid
-    }
-})
+        artStore.artMode.reverseOrder = v;
+        uiStore.run(() => {}); // 强制刷新virtual-scroll-grid
+    },
+});
 // 圣遗物列表
 const artifacts = computed(() => {
     if (reverseOrder.value) {
-        return store.state.filteredArtifacts.slice().reverse();
+        return artStore.processedArtifacts.slice().reverse();
     } else {
-        return store.state.filteredArtifacts;
+        return artStore.processedArtifacts;
     }
 });
 // 配置方法见https://vuejsexamples.com/virtual-scroll-grid-for-vue-3/
@@ -181,113 +208,178 @@ const pageProvider = async (pageNumber: number, pageSize: number) => {
         (pageNumber + 1) * pageSize
     );
 };
-// x0.85
-const useMaxAsUnit = computed({
-    get() {
-        return store.state.artMode.useMaxAsUnit;
-    },
-    set(v) {
-        store.commit("setArtMode", { useMaxAsUnit: v });
-    },
-});
-// 显示词条数
-const showAffnum = computed({
-    get() {
-        return store.state.artMode.showAffnum;
-    },
-    set(v) {
-        store.commit("setArtMode", { showAffnum: v });
-    },
-});
 // 手动添加
 const showCreator = ref(false);
 // 随机生成
 const showGenerator = ref(false);
 // 相似圣遗物
 const alikeEnabled = computed({
-    get() { return store.state.artMode.alikeEnabled },
-    set(v) { store.commit('setArtMode', { alikeEnabled: v }) }
-})
+    get() {
+        return artStore.artMode.alikeEnabled;
+    },
+    set(v) {
+        artStore.artMode.alikeEnabled = v;
+    },
+});
 const showAlike = ref(false);
 const targetIndex = ref(-1);
+// 数据库导入/导出
+const showDatabaseLoader = ref(false);
 </script>
 
 <template>
     <div class="layout-left">
         <el-scrollbar ref="scrollbarRef">
             <div class="artifact-opts">
-                <div class="stat">{{ stat }}</div>
+                <div class="count" v-text="$t('ui.art_count', count)" />
                 <div class="btns">
-                    <div :class="{ btn: true, checked: reverseOrder }" @click="reverseOrder = !reverseOrder">
+                    <div
+                        :class="{ btn: true, checked: reverseOrder }"
+                        @click="reverseOrder = !reverseOrder"
+                        role="button"
+                    >
                         <el-icon>
                             <Sort />
                         </el-icon>
-                        <span>倒序</span>
+                        <span v-text="$t('ui.rev_ord')" />
                     </div>
-                    <div :class="{ btn: true, checked: alikeEnabled }" @click="alikeEnabled = !alikeEnabled"
-                        title="加解锁时联想相似圣遗物">
+                    <div
+                        :class="{ btn: true, checked: alikeEnabled }"
+                        @click="alikeEnabled = !alikeEnabled"
+                        :title="$t('ui.alike_desc')"
+                        role="button"
+                    >
                         <el-icon>
                             <Stopwatch />
                         </el-icon>
-                        <span>联想</span>
+                        <span v-text="$t('ui.alike')" />
                     </div>
-                    <div :class="{ btn: true, checked: useMaxAsUnit }" @click="useMaxAsUnit = !useMaxAsUnit">
+                    <div
+                        :class="{
+                            btn: true,
+                            checked: artStore.artMode.normalize,
+                        }"
+                        @click="
+                            artStore.artMode.normalize =
+                                !artStore.artMode.normalize
+                        "
+                        role="button"
+                    >
                         <el-icon>
                             <View />
                         </el-icon>
-                        <span>×0.85</span>
+                        <span v-text="$t('ui.normalize_affixes')" />
                     </div>
-                    <div :class="{ btn: true, checked: showAffnum }" @click="showAffnum = !showAffnum">
-                        <el-icon>
-                            <View />
-                        </el-icon>
-                        <span>显示词条数</span>
-                    </div>
-                    <div class="btn" @click="showCreator = true" title="手动添加">
+                    <div
+                        class="btn"
+                        @click="showCreator = true"
+                        :title="$t('ui.add_art')"
+                        role="button"
+                    >
                         <el-icon>
                             <circle-plus />
                         </el-icon>
                     </div>
-                    <div class="btn" @click="showGenerator = true" title="随机生成">
+                    <div
+                        class="btn"
+                        @click="showGenerator = true"
+                        :title="$t('ui.gen_rand_art')"
+                        role="button"
+                    >
                         <el-icon>
                             <magic-stick />
                         </el-icon>
                     </div>
+                    <div
+                        class="btn"
+                        @click="showDatabaseLoader = true"
+                        :title="$t('ui.database_loader_title')"
+                        role="button"
+                    >
+                        <el-icon>
+                            <Coin />
+                        </el-icon>
+                    </div>
                 </div>
             </div>
-            <Grid class="artifact-grid" :key="store.state.nReload" :length="artifacts.length" :page-size="50"
-                :page-provider="pageProvider">
-                <template v-slot:default="{ item, style, index }">
+            <Grid
+                class="artifact-grid"
+                :key="uiStore.nReload"
+                :length="artifacts.length"
+                :page-size="50"
+                :page-provider="pageProvider"
+            >
+                <template v-slot:default="{ item, style, _index }">
                     <div class="artifact-cell" :style="style">
-                        <artifact-card :artifact="item" :select-mode="selectMode" :selected="selected(item.data.index)"
-                            @flip-select="flipSelect(item.data.index, $event)" @flip-lock="flipLock(item.data.index)"
-                            @edit="edit(item.data.index)" @stats="stats(item)" />
+                        <artifact-card
+                            :artifact="item"
+                            :select-mode="selectMode"
+                            :selected="selected(item.data.index)"
+                            @flip-select="flipSelect(item.data.index, $event)"
+                            @flip-lock="flipLock(item.data.index)"
+                            @edit="edit(item.data.index)"
+                            @stats="stats(item)"
+                        />
                     </div>
                 </template>
             </Grid>
             <transition name="pop">
                 <div class="selection-bar" v-show="selectMode">
-                    <div class="btn" @click="selectAll">全选</div>
-                    <div class="btn" @click="invSelection">反选</div>
+                    <div
+                        class="btn"
+                        @click="selectAll"
+                        v-text="$t('ui.sel_all')"
+                    />
+                    <div
+                        class="btn"
+                        @click="invSelection"
+                        v-text="$t('ui.inv_sel')"
+                    />
                     <div class="split">|</div>
-                    <div class="btn" @click="lockSelection">加锁</div>
-                    <div class="btn" @click="unlockSelection">解锁</div>
+                    <div
+                        class="btn"
+                        @click="lockSelection"
+                        v-text="$t('ui.lock')"
+                    />
+                    <div
+                        class="btn"
+                        @click="unlockSelection"
+                        v-text="$t('ui.unlock')"
+                    />
                     <div class="split">|</div>
-                    <div class="btn" @click="delSelection">删除</div>
-                    <div class="btn" @click="exportSelection">部分导出</div>
+                    <div
+                        class="btn"
+                        @click="delSelection"
+                        v-text="$t('ui.del')"
+                    />
+                    <div
+                        class="btn"
+                        @click="exportSelection"
+                        v-text="$t('ui.partial_expo')"
+                    />
                     <div class="split">|</div>
-                    <div class="btn" @click="cancelSelect">取消</div>
-                    <div class="selection-stat">{{ selectionStat }}</div>
+                    <div
+                        class="btn"
+                        @click="cancelSelect"
+                        v-text="$t('ui.cancel')"
+                    />
+                    <div
+                        class="selection-stat"
+                        v-text="$t('ui.sel_count', selcount)"
+                    />
                 </div>
             </transition>
         </el-scrollbar>
     </div>
     <artifact-editor v-model="showEditor" :index="editorIndex" />
-    <artifact-stats v-model="showStats" :art="statsArt" />
     <artifact-creator v-model="showCreator" />
     <artifact-generator v-model="showGenerator" />
     <partial-export v-model="showExport" :artifacts="artifactsToExport" />
     <alike-locker v-model="showAlike" :index="targetIndex" />
+    <affnum-distr v-model="showAffnumDistr" :art="statsArt" />
+    <defeat-list v-model="showDefeatList" :art="statsArt" />
+    <build-probs v-model="showBuildProbs" :art="statsArt" />
+    <database-loader v-model="showDatabaseLoader" />
 </template>
 
 <style lang="scss" scoped>
@@ -305,7 +397,7 @@ const targetIndex = ref(-1);
         display: flex;
         align-items: center;
 
-        .stat {
+        .count {
             flex: 1;
             line-height: 36px;
         }

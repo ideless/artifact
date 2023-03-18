@@ -1,148 +1,161 @@
 <script lang="ts" setup>
-import SectionTitle from '@/components/sections/SectionTitle.vue';
-import MultiSelect from '@/components/widgets/MultiSelect.vue';
-import SingleSelect from '@/components/widgets/SingleSelect.vue';
-import CharSelect from '@/components/widgets/CharSelect.vue';
-import RangeSlider from '@/components/widgets/RangeSlider.vue';
-import chs from '@/ys/locale/chs';
-import { computed, watch } from 'vue';
-import { useStore } from '@/store';
-import { Artifact } from '@/ys/artifact';
-import ArtfactData from "@/ys/data/artifact"
-import CharacterData from '@/ys/data/character';
-import filterRules from '@/store/filterRules';
-import { IOption } from '@/store/types';
+import SectionTitle from "@/components/sections/SectionTitle.vue";
+import MultiSelect from "@/components/widgets/MultiSelect.vue";
+import SingleSelect from "@/components/widgets/SingleSelect.vue";
+import CharSelect from "@/components/widgets/CharSelect.vue";
+import RangeSlider from "@/components/widgets/RangeSlider.vue";
+import { i18n } from "@/i18n";
+import { computed, watch } from "vue";
+import { useArtifactStore } from "@/store";
+import { Artifact } from "@/ys/artifact";
+import { ArtifactData, CharacterData } from "@/ys/data";
+import filterRules from "@/store/filterRules";
 
-const store = useStore()
+const artStore = useArtifactStore();
 
 const pro = computed<boolean>({
-    get() { return store.state.filter.pro },
-    set(v) { store.commit('setFilter', { pro: v }) }
-})
+    get() {
+        return artStore.filter.pro;
+    },
+    set(v) {
+        artStore.filter.pro = v;
+    },
+});
 
 function countArtifactAttr(key: keyof Artifact) {
-    let c: { [key: string]: number } = {}
-    for (let a of store.state.artifacts) {
-        let akey = a[key].toString()
-        c[akey] = (akey in c) ? c[akey] + 1 : 1
+    let c: { [key: string]: number } = {};
+    for (let a of artStore.artifacts) {
+        let akey = a[key].toString();
+        c[akey] = akey in c ? c[akey] + 1 : 1;
     }
-    return c
+    return c;
 }
 // 套装
 const setOptions = computed(() => {
-    let c = countArtifactAttr('set')
-    return Object.keys(chs.set)
-        .filter(key => key in c)
-        .map(key => ({
+    let c = countArtifactAttr("set");
+    return ArtifactData.setKeys
+        .filter((key) => key in c)
+        .map((key) => ({
             key,
-            label: chs.set[key],
+            label: i18n.global.t("artifact.set." + key),
             icon: `./assets/artifacts/${key}/flower.webp`,
             tip: c[key].toString(),
-        }))
-})
-const set = computed<string[]>({
-    get() { return store.state.filter.set },
-    set(v) { store.commit('setFilter', { set: v }) }
-})
+        }));
+});
 // 部位
 const slotOptions = computed(() => {
-    let c = countArtifactAttr('slot')
-    return Object.keys(chs.slot)
-        .filter(key => key in c)
-        .map(key => ({
+    let c = countArtifactAttr("slot");
+    return ArtifactData.slotKeys
+        .filter((key) => key in c)
+        .map((key) => ({
             key,
-            label: chs.slot[key],
+            label: i18n.global.t("artifact.slot." + key),
             icon: `./assets/game_icons/${key}.webp`,
             tip: c[key].toString(),
-        }))
-})
-const slot = computed<string[]>({
-    get() { return store.state.filter.slot },
-    set(v) { store.commit('setFilter', { slot: v }) }
-})
+        }));
+});
 // 主词条
 const mainOptions = computed(() => {
-    let c = countArtifactAttr('mainKey')
-    return ArtfactData.mainKeys.all
-        .filter(key => key in c)
-        .map(key => ({
+    let c = countArtifactAttr("mainKey");
+    return ArtifactData.mainKeys.all
+        .filter((key) => key in c)
+        .map((key) => ({
             key,
-            label: chs.affix[key],
+            label: i18n.global.t("artifact.affix." + key),
             tip: c[key].toString(),
-        }))
-})
-const main = computed<string[]>({
-    get() { return store.state.filter.main },
-    set(v) { store.commit('setFilter', { main: v }) }
-})
+        }));
+});
 // 锁
 const lockOptions = computed(() => {
-    let c = countArtifactAttr('lock')
-    return ['true', 'false']
-        .filter(key => key in c)
-        .map(key => ({
+    let c = countArtifactAttr("lock");
+    return ["true", "false"]
+        .filter((key) => key in c)
+        .map((key) => ({
             key,
-            label: key == 'true' ? '加锁' : '解锁',
+            label:
+                key == "true"
+                    ? i18n.global.t("ui.locked")
+                    : i18n.global.t("ui.unlocked"),
             tip: c[key].toString(),
-        }))
-})
-const lock = computed<string[]>({
-    get() { return store.state.filter.lock },
-    set(v) { store.commit('setFilter', { lock: v }) }
-})
-// 等级
-const lvRange = computed<number[]>({
-    get() { return store.state.filter.lvRange },
-    set(v) { store.commit('setFilter', { lvRange: v }) }
-})
+        }));
+});
 // 佩戴角色
 const charOptions = computed(() => {
-    let c = countArtifactAttr('location')
-    return ['', 'Traveler'].concat(Object.keys(CharacterData))
-        .filter(key => key in c)
-        .map(key => ({
+    let c = countArtifactAttr("location");
+    return ["", "Traveler"]
+        .concat(Object.keys(CharacterData))
+        .filter((key) => key in c)
+        .map((key) => ({
             key,
             tip: c[key].toString(),
-        }))
-})
-const char = computed<string[]>({
-    get() { return store.state.filter.location },
-    set(v) { store.commit('setFilter', { location: v }) }
-})
+        }));
+});
 // 特殊筛选规则
-const ruleOptions: IOption[] = filterRules.map((v, i) => ({ key: i, label: v.label }))
-const ruleId = computed<number>({
-    get() { return store.state.filter.ruleId },
-    set(v) { store.commit('setFilter', { ruleId: v }) }
-})
+const ruleOptions = filterRules.map((v, i) => ({
+    key: i,
+    label: v.label,
+}));
 // 更新，填充
-watch(() => store.state.nResetFilter, () => {
-    store.commit('setFilter', {
-        set: setOptions.value.map(o => o.key),
-        slot: slotOptions.value.map(o => o.key),
-        main: mainOptions.value.map(o => o.key),
-        lock: lockOptions.value.map(o => o.key),
-        lvRange: [0, 20],
-        location: charOptions.value.map(o => o.key)
-    })
-})
+watch(
+    () => artStore.nResetFilter,
+    () => {
+        artStore.filter.set = setOptions.value.map((o) => o.key);
+        artStore.filter.slot = slotOptions.value.map((o) => o.key);
+        artStore.filter.main = mainOptions.value.map((o) => o.key);
+        artStore.filter.lock = lockOptions.value.map((o) => o.key);
+        artStore.filter.lvRange = [0, 20];
+        artStore.filter.location = charOptions.value.map((o) => o.key);
+    }
+);
 </script>
 
 <template>
     <div class="section">
-        <section-title title="筛选">
-            <span v-show="pro" @click="pro = false">基本</span>
-            <span v-show="!pro" @click="pro = true">高级</span>
+        <section-title :title="$t('ui.filter')">
+            <span v-show="pro" @click="pro = false" v-text="$t('ui.basic')" />
+            <span v-show="!pro" @click="pro = true" v-text="$t('ui.pro')" />
         </section-title>
         <div class="section-content">
-            <multi-select class="filter" title="套装" :options="setOptions" v-model="set" :use-icon="true" />
-            <multi-select class="filter" title="部位" :options="slotOptions" v-model="slot" :use-icon="true" />
-            <multi-select class="filter" title="主词条" :options="mainOptions" v-model="main" />
-            <multi-select class="filter" title="锁" :options="lockOptions" v-model="lock" />
-            <range-slider class="filter" v-model="lvRange" />
+            <multi-select
+                class="filter"
+                :title="$t('ui.art_set')"
+                :options="setOptions"
+                v-model="artStore.filter.set"
+                :use-icon="true"
+            />
+            <multi-select
+                class="filter"
+                :title="$t('ui.art_slot')"
+                :options="slotOptions"
+                v-model="artStore.filter.slot"
+                :use-icon="true"
+            />
+            <multi-select
+                class="filter"
+                :title="$t('ui.art_main')"
+                :options="mainOptions"
+                v-model="artStore.filter.main"
+            />
+            <multi-select
+                class="filter"
+                :title="$t('ui.art_lock')"
+                :options="lockOptions"
+                v-model="artStore.filter.lock"
+            />
+            <range-slider class="filter" v-model="artStore.filter.lvRange" />
             <div v-show="pro">
-                <char-select class="filter" title="角色" :options="charOptions" v-model="char" />
-                <single-select class="filter" title="特殊筛选规则" :options="ruleOptions" v-model="ruleId" />
+                <char-select
+                    class="filter"
+                    :title="$t('ui.art_location')"
+                    :options="charOptions"
+                    v-model="artStore.filter.location"
+                />
+                <single-select
+                    class="filter"
+                    :title="$t('ui.filter_rule')"
+                    :options="ruleOptions"
+                    v-model="artStore.filter.ruleId"
+                />
             </div>
         </div>
     </div>

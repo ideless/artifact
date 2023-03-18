@@ -2,9 +2,10 @@
 import { computed } from "vue";
 import { Edit, Histogram } from "@element-plus/icons-vue";
 import { Affix, Artifact } from "@/ys/artifact";
-import chs from "@/ys/locale/chs";
-import ArtifactData from "@/ys/data/artifact";
-import { useStore } from "@/store";
+import { i18n } from "@/i18n";
+import { ArtifactData, CharacterData } from "@/ys/data";
+import { useArtifactStore } from "@/store";
+import { IAffnumResult, IDefeatResult, IPBuildResult } from "@/ys/sort";
 
 const props = defineProps<{
     artifact: Artifact;
@@ -19,25 +20,29 @@ const emit = defineEmits<{
     (e: "stats"): void;
 }>();
 
-const store = useStore();
+const artStore = useArtifactStore();
+
 const pieceName = computed(() => {
-    if (props.artifact.set in chs.set && props.artifact.slot in chs.slot) {
-        let name = chs.set[props.artifact.set];
-        let slot = chs.slot[props.artifact.slot][2]; // "花","羽"...
+    if (
+        ArtifactData.setKeys.includes(props.artifact.set) &&
+        ArtifactData.slotKeys.includes(props.artifact.slot)
+    ) {
+        let name = i18n.global.t("artifact.set." + props.artifact.set);
+        let slot = i18n.global.t("artifact.slot_short." + props.artifact.slot);
         return `${name} · ${slot}`;
     } else {
-        return "未知";
+        return i18n.global.t("ui.unknown");
     }
 });
 const pieceImgSrc = computed(() => {
-    if (props.artifact.set in chs.set) {
+    if (ArtifactData.setKeys.includes(props.artifact.set)) {
         return `./assets/artifacts/${props.artifact.set}/${props.artifact.slot}.webp`;
     } else {
         return "";
     }
 });
 const affixName = (key: string) => {
-    let name: string = chs.affix[key];
+    let name = i18n.global.t("artifact.affix." + key);
     if (name.endsWith("%")) {
         name = name.substring(0, name.length - 1);
     }
@@ -48,14 +53,14 @@ const main = computed(() => {
         let key = props.artifact.mainKey,
             value =
                 ArtifactData.mainStat[props.artifact.mainKey][
-                props.artifact.level
+                    props.artifact.level
                 ];
         return {
-            name: chs.affix[key],
+            name: i18n.global.t("artifact.affix." + key),
             value: new Affix({ key, value }).valueString(),
         };
     } else {
-        return { name: "未知", value: 0 };
+        return { name: i18n.global.t("ui.unknown"), value: "0" };
     }
 });
 const level = computed(() => {
@@ -65,47 +70,35 @@ const minors = computed(() => {
     let ret = [];
     for (let a of props.artifact.minors) {
         let name = affixName(a.key),
-            value;
-        if (store.state.artMode.showAffnum) {
+            value,
+            opacity = 1;
+        if (artStore.artMode.normalize) {
             if (["atkp", "defp", "hpp"].includes(a.key)) {
                 name += "%";
             }
-            value = a.value / ArtifactData.minorStat[a.key].v / 0.85;
-            if (store.state.artMode.useMaxAsUnit) {
-                value *= 0.85;
-            }
+            value = a.value / ArtifactData.minorStat[a.key];
             value = value.toFixed(1);
         } else {
             value = a.valueString();
         }
+        // set affix opacity
+        if (["atk", "hp", "def"].includes(a.key)) {
+            opacity = 0.5;
+        } else if (
+            ["avg", "psingle"].includes(artStore.sort.by) &&
+            !artStore.sort.weight[a.key as "hpp"]
+        ) {
+            opacity = 0.5;
+        }
         ret.push({
             text: `${name}+${value}`,
-            style: `opacity: ${store.state.weightInUse[a.key] > 0 ? 1 : 0.5};`,
+            style: { opacity },
             count: Math.ceil(
-                Math.round((a.value / ArtifactData.minorStat[a.key].v) * 10) /
-                10
+                Math.round((a.value / ArtifactData.minorStat[a.key]) * 10) / 10
             ),
         });
     }
     return ret;
-});
-const affnum = computed(() => {
-    let a = props.artifact.data.affnum;
-    if (store.state.artMode.useMaxAsUnit) {
-        return {
-            cur: (a.cur * 0.85).toFixed(1),
-            avg: (a.avg * 0.85).toFixed(1),
-            max: (a.max * 0.85).toFixed(1),
-            min: (a.min * 0.85).toFixed(1),
-        };
-    } else {
-        return {
-            cur: a.cur.toFixed(1),
-            avg: a.avg.toFixed(1),
-            max: a.max.toFixed(1),
-            min: a.min.toFixed(1),
-        };
-    }
 });
 const lockImgSrc = computed(() => {
     return props.artifact.lock
@@ -122,7 +115,7 @@ const select = (evt: MouseEvent) => {
 };
 const starImgSrc = "./assets/stars.webp";
 const charSrc = computed<string>(() => {
-    if (props.artifact.location in chs.character) {
+    if (props.artifact.location in CharacterData) {
         return `./assets/char_sides/${props.artifact.location}.webp`;
     } else {
         return "";
@@ -133,15 +126,52 @@ const flipLock = () => {
         emit("flipLock");
     }
 };
-const buildScores = computed<string>(() => {
-    return props.artifact.data.buildScores
-        .map(bs => `${bs.name}${(bs.score * 100).toFixed(1)}%`)
-        .join(" ");
+
+// display sort results according to current sort type
+const sortResultDisplayType = computed(() => {
+    if (!artStore.sortResults || !artStore.sortResults.has(props.artifact))
+        return "";
+    switch (artStore.sortResultType) {
+        case "affnum":
+            return props.artifact.level < 20 ? "affnum-mam" : "affnum-c";
+        case "pbuild":
+            return "pbuild";
+        case "defeat":
+            return "defeat";
+        default:
+            return "";
+    }
+});
+const affnumResult = computed(
+    () => artStore.sortResults!.get(props.artifact) as IAffnumResult
+);
+const formatAffnum = (n: number) => {
+    n *= artStore.affnumMultiplier;
+    return n.toFixed(1);
+};
+const pBuildResultStr = computed(() => {
+    let result = artStore.sortResults!.get(props.artifact) as IPBuildResult;
+    let probs: [string, number][] = [];
+    for (let buildKey in result.buildProbs) {
+        let b = artStore.builds.filter((b) => b.key == buildKey)[0];
+        probs.push([b ? b.name : "", result.buildProbs[buildKey]]);
+    }
+    // sort in descending order
+    probs.sort((a, b) => b[1] - a[1]);
+    // formatting
+    return (
+        probs.map((x) => x[0] + (x[1] * 100).toFixed(1) + "%").join(" ") ||
+        "<0.1%"
+    );
+});
+const defeatResultStr = computed(() => {
+    let result = artStore.sortResults!.get(props.artifact) as IDefeatResult;
+    return result.defeat;
 });
 </script>
 
 <template>
-    <div :class="artifactCardClass" :title="buildScores">
+    <div :class="artifactCardClass">
         <div class="head">
             <div class="head-stat">
                 <div class="piece-name">{{ pieceName }}</div>
@@ -155,10 +185,19 @@ const buildScores = computed<string>(() => {
         </div>
         <div class="body">
             <div class="body-head">
-                <span class="level">{{ level }}</span>
-                <span class="cur-an">{{ affnum.cur }}</span>
+                <span
+                    :class="{
+                        level: true,
+                        full: artifact.level == 20,
+                    }"
+                    v-text="level"
+                />
                 <div class="lock-img-container">
-                    <img :src="lockImgSrc" @click="flipLock" :class="readonly ? 'readonly' : ''" />
+                    <img
+                        :src="lockImgSrc"
+                        @click="flipLock"
+                        :class="{ readonly }"
+                    />
                 </div>
             </div>
             <div class="minor-affixes">
@@ -167,30 +206,68 @@ const buildScores = computed<string>(() => {
                     <span>{{ a.text }}</span>
                 </div>
             </div>
-            <div class="affix-numbers" v-if="artifact.level < 20">
-                <div class="min-an">最小{{ affnum.min }}</div>
-                <div class="avg-an">期望{{ affnum.avg }}</div>
-                <div class="max-an">最大{{ affnum.max }}</div>
+            <div class="sort-result">
+                <template v-if="sortResultDisplayType == 'affnum-mam'">
+                    <div
+                        class="min-an"
+                        v-text="$t('ui.min') + formatAffnum(affnumResult.min)"
+                    />
+                    <div
+                        class="avg-an"
+                        v-text="$t('ui.avg') + formatAffnum(affnumResult.avg)"
+                    />
+                    <div
+                        class="max-an"
+                        v-text="$t('ui.max') + formatAffnum(affnumResult.max)"
+                    />
+                </template>
+                <template v-else-if="sortResultDisplayType == 'affnum-c'">
+                    <div
+                        class="full-an"
+                        v-text="
+                            $t('ui.fullaffnum', {
+                                n: formatAffnum(affnumResult.cur),
+                            })
+                        "
+                    />
+                </template>
+                <template v-else-if="sortResultDisplayType == 'pbuild'">
+                    <div class="pbuild" v-text="pBuildResultStr" />
+                </template>
+                <template v-else-if="sortResultDisplayType == 'defeat'">
+                    <div class="defeat" v-text="defeatResultStr" />
+                </template>
             </div>
-            <div class="full-an" v-else>已满级，{{ affnum.cur }}词条</div>
         </div>
         <div class="location" v-show="charSrc">
             <img :src="charSrc" />
         </div>
-        <div class="select-box" @click="select" v-show="!readonly" />
-        <div class="edit-box" @click="emit('edit')" v-show="!readonly">
+        <div
+            class="select-box"
+            @click="select"
+            v-show="!readonly"
+            role="checkbox"
+        />
+        <div
+            class="edit-box"
+            @click="emit('edit')"
+            v-show="!readonly"
+            role="button"
+        >
             <el-icon :size="16">
                 <edit />
             </el-icon>
-            <span>编辑</span>
         </div>
-        <div class="defeat-num" v-show="artifact.data.defeat">
-            {{ -artifact.data.defeat }}
-        </div>
-        <div class="stats" @click="emit('stats')" v-show="!readonly">
+        <div
+            class="stats"
+            @click="emit('stats')"
+            v-show="!readonly"
+            role="button"
+        >
             <el-icon>
                 <Histogram />
             </el-icon>
+            <span v-text="$t('ui.more')" />
         </div>
     </div>
 </template>
@@ -222,9 +299,11 @@ const buildScores = computed<string>(() => {
         display: flex;
         justify-content: space-between;
         background: rgb(102, 87, 88);
-        background: linear-gradient(165deg,
-                rgba(102, 87, 88, 1) 0%,
-                rgba(214, 169, 90, 1) 100%);
+        background: linear-gradient(
+            165deg,
+            rgba(102, 87, 88, 1) 0%,
+            rgba(214, 169, 90, 1) 100%
+        );
 
         .head-stat {
             display: flex;
@@ -275,12 +354,10 @@ const buildScores = computed<string>(() => {
             .level {
                 @extend %tag;
                 background-color: #333;
-            }
 
-            .cur-an {
-                @extend %tag;
-                background-color: #66c238;
-                margin-left: 5px;
+                &.full {
+                    background-color: #66c238;
+                }
             }
 
             .lock-img-container {
@@ -323,7 +400,7 @@ const buildScores = computed<string>(() => {
             }
         }
 
-        .affix-numbers {
+        .sort-result {
             position: absolute;
             left: 0;
             bottom: 0;
@@ -348,18 +425,23 @@ const buildScores = computed<string>(() => {
                 background: #ff5733;
                 width: 33.3%;
             }
-        }
 
-        .full-an {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            height: 20px;
-            color: white;
-            text-align: center;
-            line-height: 20px;
-            background: #66c238;
+            .full-an {
+                background: #66c238;
+                width: 100%;
+            }
+
+            .pbuild {
+                background: cornflowerblue;
+                width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .defeat {
+                background: lightcoral;
+                width: 100%;
+            }
         }
     }
 
@@ -396,16 +478,16 @@ const buildScores = computed<string>(() => {
         transition: background-color 100ms ease;
     }
 
-    &.selected>.select-box {
+    &.selected > .select-box {
         background-color: $primary-color;
     }
 
-    &:hover>.select-box,
-    &.select-mode>.select-box {
+    &:hover > .select-box,
+    &.select-mode > .select-box {
         display: block;
     }
 
-    .edit-box {
+    .stats {
         position: absolute;
         width: 100%;
         height: 20px;
@@ -428,29 +510,11 @@ const buildScores = computed<string>(() => {
         }
     }
 
-    &:hover .edit-box {
+    &:hover .stats {
         display: flex;
     }
 
-    .defeat-num {
-        position: absolute;
-        right: 20px;
-        bottom: 40px;
-        color: #ff5733;
-        font-weight: bolder;
-        font-family: fantasy;
-        font-size: 20px;
-        width: 36px;
-        height: 36px;
-        border: 4px solid #ff5733;
-        border-radius: 18px;
-        line-height: 28px;
-        text-align: center;
-        transform: rotate(15deg);
-        opacity: 0.5;
-    }
-
-    .stats {
+    .edit-box {
         display: none;
         position: absolute;
         right: 10px;
@@ -468,7 +532,7 @@ const buildScores = computed<string>(() => {
         }
     }
 
-    &:hover .stats {
+    &:hover .edit-box {
         display: block;
     }
 }

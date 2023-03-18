@@ -1,0 +1,14 @@
+{
+    "*": ["circlet_em", "circlet_cr", "circlet_cd"],
+    "ThunderingFury": ["sands_atkp", "goblet_electroDB"],
+    "MaidenBeloved": ["sands_hpp", "goblet_hpp", "circlet_hb"],
+    "ViridescentVenerer": ["sands_em", "goblet_em", "goblet_anemoDB"],
+    "CrimsonWitchOfFlames": ["sands_atkp", "sands_em", "goblet_pyroDB"],
+    "BlizzardStrayer": ["sands_atkp", "goblet_cryoDB"],
+    "HeartOfDepth": ["sands_atkp", "goblet_hydroDB"],
+    "TenacityOfTheMillelith": ["sands_hpp", "goblet_hpp", "circlet_hpp"],
+    "PaleFlame": ["sands_atkp", "goblet_physicalDB"],
+    "OceanHuedClam": ["sands_hpp", "goblet_hpp", "circlet_hb"],
+    "DeepwoodMemories": ["sands_em", "goblet_em", "goblet_dendroDB"],
+    "GildedDreams": ["sands_em", "goblet_em"]
+}

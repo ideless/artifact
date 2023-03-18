@@ -1,64 +1,77 @@
 <script lang="ts" setup>
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, ref } from "vue";
 
 const props = defineProps<{
-    options: any[]
-    title?: string
-    persistant?: boolean
-}>()
+    options: any[];
+    title?: string;
+    persistant?: boolean;
+}>();
 
 // 下拉菜单：位置、弹出收起
-const show = ref(false)
-const top = ref(false)
-const optionsEl = ref()
+const show = ref(false);
+const top = ref(false);
+const optionsEl = ref();
 const drop = (e: MouseEvent) => {
     if (show.value) {
-        show.value = false
+        show.value = false;
     } else {
-        show.value = true
-        top.value = false
+        show.value = true;
+        top.value = false;
         nextTick(() => {
             let height = Math.min(360, optionsEl.value.clientHeight),
-                rect = optionsEl.value.getBoundingClientRect()
+                rect = optionsEl.value.getBoundingClientRect();
             // console.log(rect)
-            optionsEl.value.style.height = height + 'px'
-            top.value = rect.top + height > window.innerHeight
-        })
+            optionsEl.value.style.height = height + "px";
+            top.value = rect.top + height > window.innerHeight;
+        });
     }
-}
-const rootEl = ref()
+};
+const rootEl = ref();
 const blur = (e: FocusEvent) => {
     if (!rootEl.value.contains(e.relatedTarget)) {
-        show.value = false
+        show.value = false;
     }
-}
-const optionsKey = computed(() => JSON.stringify(props.options))
+};
+const optionsKey = computed(() => JSON.stringify(props.options));
 const click = (e: MouseEvent) => {
     if (props.persistant) {
-        e.stopPropagation()
+        e.stopPropagation();
     }
-}
+};
 
 // dom class
 const rootClass = computed(() => ({
-    'drop-select': true,
-    show: show.value
-}))
+    "drop-select": true,
+    show: show.value,
+}));
 const optionsClass = computed(() => ({
     options: true,
-    top: top.value
-}))
+    top: top.value,
+}));
 </script>
 
 <template>
-    <div :class="rootClass" ref="rootEl" tabindex="-1" @click="drop" @focusout="blur">
+    <div
+        :class="rootClass"
+        ref="rootEl"
+        tabindex="-1"
+        @click="drop"
+        @focusout="blur"
+        role="button"
+    >
         <div class="selected-wrapper">
             <slot name="selected" />
         </div>
         <img class="select-arrow" src="/assets/arrow.webp" />
         <span class="title">{{ title }}</span>
         <transition name="pop">
-            <div :class="optionsClass" ref="optionsEl" v-show="show" :key="optionsKey" @click="click">
+            <div
+                :class="optionsClass"
+                ref="optionsEl"
+                v-show="show"
+                :key="optionsKey"
+                @click="click"
+            >
                 <el-scrollbar>
                     <slot name="options" />
                 </el-scrollbar>
@@ -122,7 +135,6 @@ const optionsClass = computed(() => ({
         padding: 0 5px;
     }
 
-
     .options {
         position: absolute;
         top: calc(100% + 6px);
@@ -144,7 +156,6 @@ const optionsClass = computed(() => ({
             top: unset;
             bottom: calc(100% + 6px);
         }
-
     }
 }
 </style>

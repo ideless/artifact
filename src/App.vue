@@ -1,56 +1,62 @@
 <script setup lang="ts">
-import LayoutTop from '@/components/layouts/LayoutTop.vue';
-import LayoutLeft from '@/components/layouts/LayoutLeft.vue';
-import LayoutRight from '@/components/layouts/LayoutRight.vue';
-import { useStore } from '@/store';
-import { onMounted, ref, watch } from 'vue';
-import { Download } from '@element-plus/icons-vue'
-import axios from 'axios'
+import LayoutTop from "@/components/layouts/LayoutTop.vue";
+import LayoutLeft from "@/components/layouts/LayoutLeft.vue";
+import LayoutRight from "@/components/layouts/LayoutRight.vue";
+import { useYasStore, useUiStore } from "@/store";
+import { onMounted, ref, watch } from "vue";
+import { Download } from "@element-plus/icons-vue";
+import axios from "axios";
 
-const store = useStore()
-const loadingSrc = './assets/loading.gif'
+const yasStore = useYasStore();
+const uiStore = useUiStore();
 
-store.dispatch('setWebSocket', { ws: new URLSearchParams(window.location.hash.slice(1)).get('ws') })
+const loadingSrc = "./assets/loading.gif";
 
-// watch(() => props.ws, (ws) => {
-//     store.dispatch('setWebSocket', { ws })
-// })
+yasStore.setSocket(
+    new URLSearchParams(window.location.hash.slice(1)).get("ws")
+);
 
-const showUpdateDialog = ref(false)
-const message = ref('Hello')
-const yasVersion = ref('v0.0.0')
-const yasUpdLog = ref('Fix bugs')
+const showUpdateDialog = ref(false);
+const message = ref("Hello");
+const yasVersion = ref("v0.0.0");
+const yasUpdLog = ref("Fix bugs");
 const claim = () => {
-    store.commit('setYasVersion', { version: yasVersion.value })
-    showUpdateDialog.value = false
-}
+    yasStore.version = yasVersion.value;
+    showUpdateDialog.value = false;
+};
 const updYas = () => {
-    claim()
-    window.open('https://ghproxy.com/https://github.com/ideless/yas-lock/releases/latest/download/yas-lock.exe', '_blank')
-}
+    claim();
+    window.open(
+        "https://ghproxy.com/https://github.com/ideless/yas-lock/releases/latest/download/yas-lock.exe",
+        "_blank"
+    );
+};
 
 onMounted(() => {
     try {
-        if (process.env.NODE_ENV == 'development') {
-            console.log('DEV')
-            return
+        if (process.env.NODE_ENV == "development") {
+            console.log("DEV");
+            return;
         }
-    } catch (e) { }
-    console.log('Checking for yas-lock updates...')
-    axios.get('https://api.github.com/repos/ideless/yas-lock/releases/latest').then(r => {
-        if ('tag_name' in r.data) {
-            yasVersion.value = r.data['tag_name']
-            yasUpdLog.value = r.data['body']
-            let yas_ver = store.state.yas.version
-            if (!yas_ver) {
-                message.value = '你可能还没有下载yas-lock。yas-lock是一个轻量windows端圣遗物导出和加解锁工具，推荐下载！'
-            } else if (yas_ver != r.data['tag_name']) {
-                message.value = `你的yas-lock当前版本为${yas_ver}，最新版本为${r.data['tag_name']}，建议更新！`
-            } else return
-            showUpdateDialog.value = true
-        }
-    })
-})
+    } catch (e) {}
+    console.log("Checking for yas-lock updates...");
+    axios
+        .get("https://api.github.com/repos/ideless/yas-lock/releases/latest")
+        .then((r) => {
+            if ("tag_name" in r.data) {
+                yasVersion.value = r.data["tag_name"];
+                yasUpdLog.value = r.data["body"];
+                let yas_ver = yasStore.version;
+                if (!yas_ver) {
+                    message.value =
+                        "你可能还没有下载yas-lock。yas-lock是一个轻量windows端圣遗物导出和加解锁工具，推荐下载！";
+                } else if (yas_ver != r.data["tag_name"]) {
+                    message.value = `你的yas-lock当前版本为${yas_ver}，最新版本为${r.data["tag_name"]}，建议更新！`;
+                } else return;
+                showUpdateDialog.value = true;
+            }
+        });
+});
 </script>
 
 <template>
@@ -63,17 +69,21 @@ onMounted(() => {
         <div class="update-content">
             <p>{{ message }}</p>
             <p>
-                <el-button :icon="Download" type="primary" @click="updYas">下载 yas-lock {{ yasVersion }}</el-button>
-                <el-button @click="claim" style="margin-left: 10px;">我已有此版本</el-button>
+                <el-button :icon="Download" type="primary" @click="updYas"
+                    >下载 yas-lock {{ yasVersion }}</el-button
+                >
+                <el-button @click="claim" style="margin-left: 10px"
+                    >我已有此版本</el-button
+                >
             </p>
             <p>
                 <b>更新日志：</b>
             </p>
-            <p style="white-space: pre-wrap;">{{ yasUpdLog }}</p>
+            <p style="white-space: pre-wrap">{{ yasUpdLog }}</p>
         </div>
     </el-dialog>
     <transition name="fade">
-        <div class="modal" v-show="store.state.loading">
+        <div class="modal" v-show="uiStore.loading">
             <img :src="loadingSrc" />
         </div>
     </transition>

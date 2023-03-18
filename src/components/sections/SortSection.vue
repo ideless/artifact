@@ -1,136 +1,227 @@
 <script lang="ts" setup>
-import SectionTitle from '@/components/sections/SectionTitle.vue';
-import SingleSelect from '@/components/widgets/SingleSelect.vue';
-import MultiSelect from '@/components/widgets/MultiSelect.vue';
-import CharSelect from '@/components/widgets/CharSelect.vue';
-import BuildLoader from '@/components/dialogs/BuildLoader.vue';
-import BuildEditor from '../dialogs/BuildEditor.vue';
-import { computed, ref } from 'vue'
-import { useStore } from '@/store';
-import chs from '@/ys/locale/chs';
-import ArtifactData from "@/ys/data/artifact"
-import CharacterData from '@/ys/data/character';
-const store = useStore()
+import SectionTitle from "@/components/sections/SectionTitle.vue";
+import SingleSelect from "@/components/widgets/SingleSelect.vue";
+import MultiSelect from "@/components/widgets/MultiSelect.vue";
+import CharSelect from "@/components/widgets/CharSelect.vue";
+import PresetLoader from "@/components/dialogs/PresetLoader.vue";
+import BuildLoader from "@/components/dialogs/BuildLoader.vue";
+import BuildEditor from "@/components/dialogs/BuildEditor.vue";
+import ValueButton from "@/components/widgets/ValueButton.vue";
+import AffnumTable from "../dialogs/AffnumTable.vue";
+import { computed, ref } from "vue";
+import { useArtifactStore } from "@/store";
+import { ArtifactData } from "@/ys/data";
+import { i18n } from "@/i18n";
+
+const artStore = useArtifactStore();
 
 // 排序方式
 const sortByOptions = [
-    { key: 'cur', label: '按当前词条数' },
-    { key: 'min', label: '按满级最小词条数' },
-    { key: 'avg', label: '按满级期望词条数' },
-    { key: 'max', label: '按满级最大词条数' },
-    { key: 'pmulti', label: '按角色适配概率（多人）' },
-    { key: 'psingle', label: '按角色适配概率（单人）' },
-    { key: 'defeat', label: '按上位替代数' },
-    { key: 'index', label: '不排序' },
-]
-const sortBy = computed<string>({
-    get() { return store.state.sort.by },
-    set(v) { store.commit('setSort', { key: 'by', value: v }) }
-})
+    "avg",
+    "avgpro",
+    "pmulti",
+    "psingle",
+    "defeat",
+    "set",
+    "index",
+].map((key) => ({
+    key,
+    label: i18n.global.t(`sort.${key}.name`),
+}));
+
+// 按满级期望词条数
+const showPresetLoader = ref(false);
+const openPresetLoader = () => (showPresetLoader.value = true);
+const multiplierOptions = [
+    {
+        key: "1",
+        label: i18n.global.t("ui.multiplier_max"),
+    },
+    {
+        key: "1/0.85",
+        label: i18n.global.t("ui.multiplier_avg"),
+    },
+    {
+        key: "7.8",
+        label: i18n.global.t("ui.multiplier_crit"),
+    },
+];
 
 // 按角色适配概率（多人）
 const charOptions = computed(() => {
-    return store.state.builds.map(b => ({ key: b.key, name: b.name }))
-})
-const char = computed<string[]>({
-    get() { return store.state.sort.buildKeys },
-    set(v) { store.commit('setSort', { key: 'buildKeys', value: v }) }
-})
-const scoreAlg = computed<string>({
-    get() { return store.state.sort.scoreAlg },
-    set(v) { store.commit('setSort', { key: 'scoreAlg', value: v }) }
-})
+    return artStore.builds.map((b) => ({ key: b.key, name: b.name }));
+});
 // 按角色适配概率（单人）
-const setsOptions = Object.entries(chs.set).map(([key, label]) => ({
+const setsOptions = ArtifactData.setKeys.map((key) => ({
     key,
-    label,
+    label: i18n.global.t("artifact.set." + key),
     icon: `./assets/artifacts/${key}/flower.webp`,
-}))
-const sets = computed<string[]>({
-    get() { return store.state.sort.sets },
-    set(v) { store.commit('setSort', { key: 'sets', value: v }) }
-})
-const sandsOptions = ArtifactData.mainKeys.sands.map(m => ({
+}));
+const sandsOptions = ArtifactData.mainKeys.sands.map((m) => ({
     key: m,
-    label: chs.affix[m]
-}))
-const sands = computed<string[]>({
-    get() { return store.state.sort.sands },
-    set(v) { store.commit('setSort', { key: 'sands', value: v }) }
-})
-const gobletOptions = ArtifactData.mainKeys.goblet.map(m => ({
+    label: i18n.global.t("artifact.affix." + m),
+}));
+const gobletOptions = ArtifactData.mainKeys.goblet.map((m) => ({
     key: m,
-    label: chs.affix[m]
-}))
-const goblet = computed<string[]>({
-    get() { return store.state.sort.goblet },
-    set(v) { store.commit('setSort', { key: 'goblet', value: v }) }
-})
-const circletOptions = ArtifactData.mainKeys.circlet.map(m => ({
+    label: i18n.global.t("artifact.affix." + m),
+}));
+const circletOptions = ArtifactData.mainKeys.circlet.map((m) => ({
     key: m,
-    label: chs.affix[m]
-}))
-const circlet = computed<string[]>({
-    get() { return store.state.sort.circlet },
-    set(v) { store.commit('setSort', { key: 'circlet', value: v }) }
-})
+    label: i18n.global.t("artifact.affix." + m),
+}));
 // 按上位替代数
 // 不排序
 // *词条数
 
 // 配装加载窗口
-const showBuildLoader = ref(false)
-const openBuildLoader = () => showBuildLoader.value = true
+const showBuildLoader = ref(false);
+const openBuildLoader = () => (showBuildLoader.value = true);
 
-const showBuildEditor = ref(false)
-const openBuildEditor = () => showBuildEditor.value = true
+const showBuildEditor = ref(false);
+const openBuildEditor = () => (showBuildEditor.value = true);
+
+const showAffnumTable = ref(false);
+const openAffnumTable = () => (showAffnumTable.value = true);
 </script>
 
 <template>
     <div class="section">
-        <section-title title="排序" />
+        <section-title :title="$t('ui.sort')" />
         <div class="content">
-            <single-select class="row" v-model="sortBy" :options="sortByOptions" title="排序方式" />
-            <div v-if="sortBy == 'pmulti'">
-                <p class="row small">圣遗物a对角色c的适配概率定义为，刷100个满级圣遗物，其中和a同部位同主词条的圣遗物得分均不超过a的满级期望得分的概率。如果a对c是散件则是200个。</p>
-                <p class="row small">根据<a href="https://ngabbs.com/read.php?tid=27859119"
-                        target="_blank">推荐配装</a>为每个角色计算适配概率（自定义的词条权重不会生效），总的适配概率为所有选中角色适配概率的总和或最大值。
-                </p>
-                <p class="row small">鼠标悬停在圣遗物上可以查看详细的计算结果。</p>
+            <single-select
+                class="row"
+                v-model="artStore.sort.by"
+                :options="sortByOptions"
+                :title="$t('ui.sortby')"
+            />
+            <div v-if="artStore.sort.by == 'avg'">
+                <p class="row small" v-text="$t('sort.avg.desc')" />
                 <p class="row small">
-                    <span class="text-btn" @click="openBuildEditor">修改配装</span>
+                    <span
+                        class="text-btn"
+                        @click="openPresetLoader"
+                        v-text="$t('ui.load_preset')"
+                        role="button"
+                    />
                 </p>
+                <p
+                    class="info"
+                    style="margin-top: 10px"
+                    v-text="$t('ui.weight_btn_help')"
+                />
+                <value-button
+                    class="weight-button"
+                    v-for="(_, key) in artStore.sort.weight"
+                    v-model="artStore.sort.weight[key]"
+                >
+                    {{ $t("artifact.affix." + key) }}
+                </value-button>
+                <single-select
+                    :title="$t('ui.multiplier')"
+                    :options="multiplierOptions"
+                    v-model="artStore.affnumMultiplierKey"
+                    style="margin-top: 10px"
+                />
+            </div>
+            <div v-else-if="artStore.sort.by == 'avgpro'">
+                <p class="row small" v-text="$t('sort.avg.desc')" />
+                <p class="row small" v-text="$t('sort.avgpro.desc')" />
                 <p class="row small">
-                    <el-radio-group v-model="scoreAlg" size="small">
-                        <el-radio label="sum">按总和排序</el-radio>
-                        <el-radio label="max">按最大值排序</el-radio>
-                    </el-radio-group>
+                    <span
+                        class="text-btn"
+                        v-text="$t('ui.edit_table')"
+                        @click="openAffnumTable"
+                    />
                 </p>
-                <char-select class="row" title="角色" :options="charOptions" v-model="char" />
+                <single-select
+                    :title="$t('ui.multiplier')"
+                    :options="multiplierOptions"
+                    v-model="artStore.affnumMultiplierKey"
+                    style="margin-top: 10px"
+                />
             </div>
-            <div v-else-if="sortBy == 'psingle'">
-                <p class="row small">圣遗物a对角色c的适配概率定义为，刷100个满级圣遗物，其中和a同部位同主词条的圣遗物得分均不超过a的满级期望得分的概率。如果a对c是散件则是200个。</p>
+            <div v-else-if="artStore.sort.by == 'pmulti'">
+                <p class="row small" v-text="$t('sort.pmulti.desc')" />
+                <p class="row small" v-html="$t('sort.pmulti.desc2')" />
                 <p class="row small">
-                    <span class="text-btn" @click="openBuildEditor" style="margin-right: 8px;">修改配装</span>
-                    <span class="text-btn" @click="openBuildLoader">加载配装</span>
+                    <span
+                        class="text-btn"
+                        @click="openBuildEditor"
+                        v-text="$t('ui.edit_builds')"
+                        role="button"
+                    />
                 </p>
-                <multi-select class="row" v-model="sets" :options="setsOptions" title="套装偏好" :use-icon="true" />
-                <multi-select class="row" v-model="sands" :options="sandsOptions" title="时之沙主词条偏好" />
-                <multi-select class="row" v-model="goblet" :options="gobletOptions" title="空之杯主词条偏好" />
-                <multi-select class="row" v-model="circlet" :options="circletOptions" title="理之冠主词条偏好" />
+                <char-select
+                    class="row"
+                    :title="$t('ui.build')"
+                    :options="charOptions"
+                    v-model="artStore.sort.buildKeys"
+                />
             </div>
-            <div v-else-if="sortBy == 'defeat'">
-                <p class="row small">圣遗物b是圣遗物a的上位替代，如果它们部位和主词条相同，且a的所有副词条（除小攻/小生/小防外）b都有而且数值更大。</p>
+            <div v-else-if="artStore.sort.by == 'psingle'">
+                <p class="row small" v-text="$t('sort.pmulti.desc')" />
+                <p class="row small">
+                    <span
+                        class="text-btn"
+                        @click="openBuildEditor"
+                        style="margin-right: 8px"
+                        v-text="$t('ui.edit_builds')"
+                        role="button"
+                    />
+                    <span
+                        class="text-btn"
+                        @click="openBuildLoader"
+                        v-text="$t('ui.load_build')"
+                        role="button"
+                    />
+                </p>
+                <p
+                    class="info"
+                    style="margin-top: 10px"
+                    v-text="$t('ui.weight_btn_help')"
+                />
+                <value-button
+                    class="weight-button"
+                    v-for="(_, key) in artStore.sort.weight"
+                    v-model="artStore.sort.weight[key]"
+                >
+                    {{ $t("artifact.affix." + key) }}
+                </value-button>
+                <multi-select
+                    class="row"
+                    v-model="artStore.sort.set"
+                    :options="setsOptions"
+                    :title="$t('sort.psingle.set')"
+                    :use-icon="true"
+                />
+                <multi-select
+                    class="row"
+                    v-model="artStore.sort.sands"
+                    :options="sandsOptions"
+                    :title="$t('sort.psingle.sands')"
+                />
+                <multi-select
+                    class="row"
+                    v-model="artStore.sort.goblet"
+                    :options="gobletOptions"
+                    :title="$t('sort.psingle.goblet')"
+                />
+                <multi-select
+                    class="row"
+                    v-model="artStore.sort.circlet"
+                    :options="circletOptions"
+                    :title="$t('sort.psingle.circlet')"
+                />
             </div>
-            <div v-else-if="sortBy == 'index'">
-            </div>
-            <div v-else>
-                <p class="row small">圣遗物的“词条数”是各个副词条数值除以单次平均提升量，再根据词条权重计算的加权和。</p>
+            <div v-else-if="artStore.sort.by == 'defeat'">
+                <p class="row small" v-text="$t('sort.defeat.desc')" />
             </div>
         </div>
     </div>
+    <preset-loader v-model="showPresetLoader" />
     <build-loader v-model="showBuildLoader" />
     <build-editor v-model="showBuildEditor" />
+    <affnum-table v-model="showAffnumTable" />
 </template>
 
 <style lang="scss" scoped>
@@ -164,6 +255,10 @@ const openBuildEditor = () => showBuildEditor.value = true
         &:hover {
             text-decoration: underline;
         }
+    }
+
+    .weight-button {
+        margin: 10px 10px 0 0;
     }
 }
 </style>

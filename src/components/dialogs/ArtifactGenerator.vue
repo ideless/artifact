@@ -1,133 +1,156 @@
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue'
-import ArtifactData from "@/ys/data/artifact"
-import chs from '@/ys/locale/chs'
-import { useStore } from '@/store';
-import { Artifact } from '@/ys/artifact';
+import { ref, computed, watch } from "vue";
+import { ArtifactData } from "@/ys/data";
+import { useArtifactStore } from "@/store";
+import { Artifact } from "@/ys/artifact";
+import { i18n } from "@/i18n";
 
 const props = defineProps<{
-    modelValue: boolean,
-}>()
+    modelValue: boolean;
+}>();
 const emit = defineEmits<{
-    (e: 'update:modelValue', value: boolean): void
-}>()
-const store = useStore()
+    (e: "update:modelValue", value: boolean): void;
+}>();
+
+const artStore = useArtifactStore();
 
 const show = computed({
-    get() { return props.modelValue },
-    set(value: boolean) { emit('update:modelValue', value) }
-})
-const affixes = ArtifactData.minorKeys.map(key => ({
-    value: key,
-    label: chs.affix[key]
-}))
+    get() {
+        return props.modelValue;
+    },
+    set(value: boolean) {
+        emit("update:modelValue", value);
+    },
+});
 // 套装
-const sets = Object.entries(chs.set).map(([key, label]) => ({
+const sets = ArtifactData.setKeys.map((key) => ({
     value: key,
-    label,
-}))
-const setCands = ref<string[]>([])
+    label: i18n.global.t("artifact.set." + key),
+}));
+const setCands = ref<string[]>([]);
 // 部位
-const slots = Object.entries(chs.slot).map(([key, val]) => ({
+const slots = ArtifactData.slotKeys.map((key) => ({
     value: key,
-    label: val
-}))
-const slot = ref('') // ''表示任意部位
+    label: i18n.global.t("artifact.slot." + key),
+}));
+const slot = ref(""); // ''表示任意部位
 watch(slot, () => {
     if (slot.value in ArtifactData.mainKeys) {
         if (!ArtifactData.mainKeys[slot.value].includes(mainKey.value))
-            mainKey.value = ''
+            mainKey.value = "";
     } else {
-        mainKey.value = ''
+        mainKey.value = "";
     }
-})
+});
 // 主词条（可选项依赖部位）
 const mains = computed(() => {
     if (slot.value in ArtifactData.mainKeys) {
         return ArtifactData.mainKeys[slot.value].map((key: string) => ({
             value: key,
-            label: chs.affix[key]
-        }))
+            label: i18n.global.t("artifact.affix." + key),
+        }));
     } else {
-        return []
+        return [];
     }
-})
-const mainKey = ref('') // ''表示任意主词条
+});
+const mainKey = ref(""); // ''表示任意主词条
 // 等级
-const level = ref(0)
+const level = ref(0);
 // 个数
-const count = ref(1)
+const count = ref(1);
 // 简单检查合法性
 const valid = computed(() => {
-    return setCands.value.length
-})
+    return setCands.value.length;
+});
 const save = () => {
-    let artifacts: Artifact[] = []
+    let artifacts: Artifact[] = [];
     for (let i = 0; i < count.value; ++i) {
-        artifacts.push(Artifact.rand({
-            sets: setCands.value,
-            slot: slot.value,
-            mainKey: mainKey.value,
-            level: level.value,
-        }))
+        artifacts.push(
+            Artifact.rand({
+                sets: setCands.value,
+                slot: slot.value,
+                mainKey: mainKey.value,
+                level: level.value,
+            })
+        );
     }
-    store.dispatch('addArtifacts', { artifacts })
-    emit('update:modelValue', false)
-}
+    artStore.addArtifacts(artifacts);
+    emit("update:modelValue", false);
+};
 </script>
 
 <template>
-    <el-dialog v-model="show" title="随机圣遗物生成器" top="8vh">
+    <el-dialog v-model="show" :title="$t('ui.rand_art_generator')" top="8vh">
         <el-row :gutter="20">
             <el-col :span="3">
-                <span>套装</span>
+                <span>{{ $t("ui.art_set") }}</span>
             </el-col>
             <el-col :span="21">
-                <el-select v-model="setCands" multiple clearable style="width:100%;">
-                    <el-option v-for="o in sets" :value="o.value" :label="o.label" />
+                <el-select
+                    v-model="setCands"
+                    multiple
+                    clearable
+                    style="width: 100%"
+                >
+                    <el-option
+                        v-for="o in sets"
+                        :value="o.value"
+                        :label="o.label"
+                    />
                 </el-select>
             </el-col>
         </el-row>
         <el-row :gutter="20">
             <el-col :span="3">
-                <span>部位</span>
+                <span>{{ $t("ui.art_slot") }}</span>
             </el-col>
             <el-col :span="9">
                 <el-select v-model="slot">
-                    <el-option value="" label="任意" />
-                    <el-option v-for="o in slots" :value="o.value" :label="o.label" />
+                    <el-option value="" :label="$t('ui.any')" />
+                    <el-option
+                        v-for="o in slots"
+                        :value="o.value"
+                        :label="o.label"
+                    />
                 </el-select>
             </el-col>
             <el-col :span="3">
-                <span>主词条</span>
+                <span>{{ $t("ui.art_main") }}</span>
             </el-col>
             <el-col :span="9">
                 <el-select v-model="mainKey">
-                    <el-option value="" label="任意" />
-                    <el-option v-for="o in mains" :value="o.value" :label="o.label" />
+                    <el-option value="" :label="$t('ui.any')" />
+                    <el-option
+                        v-for="o in mains"
+                        :value="o.value"
+                        :label="o.label"
+                    />
                 </el-select>
             </el-col>
         </el-row>
         <el-row :gutter="20">
             <el-col :span="3">
-                <span>等级</span>
+                <span>{{ $t("ui.art_level") }}</span>
             </el-col>
             <el-col :span="9">
                 <el-input-number v-model="level" :min="0" :max="20" />
             </el-col>
             <el-col :span="3">
-                <span>个数</span>
+                <span>{{ $t("ui.count") }}</span>
             </el-col>
             <el-col :span="9">
                 <el-input-number v-model="count" :min="1" />
             </el-col>
         </el-row>
-        <el-row justify="center" style="margin-top: 30px;">
-            <el-button type="primary" :disabled="!valid" @click="save">生成</el-button>
+        <el-row justify="center" style="margin-top: 30px">
+            <el-button
+                type="primary"
+                :disabled="!valid"
+                @click="save"
+                v-text="$t('ui.confirm')"
+            />
         </el-row>
     </el-dialog>
 </template>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

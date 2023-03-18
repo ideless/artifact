@@ -1,29 +1,27 @@
 <script lang="ts" setup>
-import SingleSelectBase from '@/components/widgets/SingleSelectBase.vue';
-import { computed } from 'vue';
-import { IOption } from '@/store/types';
+import SingleSelectBase from "@/components/widgets/SingleSelectBase.vue";
+import { computed } from "vue";
+import { IOption } from "@/store/types";
 
 const props = defineProps<{
-    options: IOption[]
-    modelValue: string | number
-    title?: string
-}>()
+    options: IOption[];
+    modelValue: string | number;
+    title?: string;
+}>();
 const emit = defineEmits<{
-    (e: 'update:modelValue', v: string | number): void
-}>()
+    (e: "update:modelValue", v: string | number): void;
+}>();
 
 // 显示被选中选项
 const selectedLabel = computed(() => {
-    for (let o of props.options)
-        if (o.key == props.modelValue)
-            return o.label
-    return '错误：未知的选项'
-})
+    for (let o of props.options) if (o.key == props.modelValue) return o.label;
+    return props.modelValue;
+});
 
 // 选择
 const select = (key: string | number) => {
-    emit('update:modelValue', key)
-}
+    emit("update:modelValue", key);
+};
 </script>
 
 <template>
@@ -32,7 +30,12 @@ const select = (key: string | number) => {
             <div class="selected">{{ selectedLabel }}</div>
         </template>
         <template v-slot:options>
-            <div :class="{ option: true, selected: o.key == modelValue }" v-for="o in options" @click="select(o.key)">
+            <div
+                :class="{ option: true, selected: o.key == modelValue }"
+                v-for="o in options"
+                @click="select(o.key)"
+                role="menuitem"
+            >
                 <span class="label">{{ o.label }}</span>
                 <span class="tip">{{ o.tip }}</span>
             </div>

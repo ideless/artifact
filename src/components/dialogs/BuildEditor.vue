@@ -1,88 +1,95 @@
 <script lang="ts" setup>
-import { ref, computed, watch, reactive } from 'vue';
-import { ElMessage, ElMessageBox } from 'element-plus';
-import CharData from "@/ys/data/character"
-import ArtifactData from '@/ys/data/artifact';
-import chs from '@/ys/locale/chs';
-import { useStore } from '@/store';
+import { ref, computed, watch, reactive } from "vue";
+import { ArtifactData, CharacterData } from "@/ys/data";
+import { useArtifactStore, useUiStore } from "@/store";
+import { i18n } from "@/i18n";
 
 const props = defineProps<{
-    modelValue: boolean
-}>()
+    modelValue: boolean;
+}>();
 const emit = defineEmits<{
-    (e: 'update:modelValue', v: boolean): void
-}>()
-const store = useStore()
+    (e: "update:modelValue", v: boolean): void;
+}>();
+
+const artStore = useArtifactStore();
+const uiStore = useUiStore();
 
 const show = computed<boolean>({
-    get() { return props.modelValue },
-    set(v) { emit('update:modelValue', v) }
-})
+    get() {
+        return props.modelValue;
+    },
+    set(v) {
+        emit("update:modelValue", v);
+    },
+});
 
 // left
-const elements = ['pyro', 'hydro', 'cryo', 'electro', 'anemo', 'geo', 'dendro']
-    .map(e => ({
+const elements = ["pyro", "hydro", "cryo", "electro", "anemo", "geo", "dendro"]
+    .map((e) => ({
         element: e,
         icon: `./assets/game_icons/${e}.webp`,
-        text: chs.element[e],
-    })).concat([{
-        element: 'custom',
-        icon: '',
-        text: '自定义'
-    }])
+        text: i18n.global.t("element." + e),
+    }))
+    .concat([
+        {
+            element: "custom",
+            icon: "",
+            text: i18n.global.t("ui.custom"),
+        },
+    ]);
 interface IAvatar {
-    key: string
-    text: string
-    icon: string
-    rarity: number
-    bg: string
+    key: string;
+    text: string;
+    icon: string;
+    rarity: number;
+    bg: string;
 }
 const avatars = computed(() => {
-    let ret: { [e: string]: IAvatar[] } = {}
-    for (let b of store.state.builds) {
+    let ret: { [e: string]: IAvatar[] } = {};
+    for (let b of artStore.builds) {
         let element, icon, rarity;
-        if (b.key.startsWith('0')) {
-            element = 'custom'
-            icon = './assets/char_faces/default.webp'
-            rarity = 1
+        if (b.key.startsWith("0")) {
+            element = "custom";
+            icon = "./assets/char_faces/default.webp";
+            rarity = 1;
         } else {
-            element = CharData[b.key].element
-            icon = b.key.startsWith('Traveler') ? './assets/char_faces/Traveler.webp'
-                : `./assets/char_faces/${b.key}.webp`
-            rarity = CharData[b.key].rarity
+            element = CharacterData[b.key].element;
+            icon = b.key.startsWith("Traveler")
+                ? "./assets/char_faces/Traveler.webp"
+                : `./assets/char_faces/${b.key}.webp`;
+            rarity = CharacterData[b.key].rarity;
         }
-        if (!(element in ret)) ret[element] = [] as IAvatar[]
+        if (!(element in ret)) ret[element] = [] as IAvatar[];
         ret[element].push({
             key: b.key,
             text: b.name,
             icon,
             rarity,
             bg: `./assets/bg${rarity}.webp`,
-        })
+        });
     }
     for (let e in ret) {
-        ret[e].sort((a: any, b: any) => b.rarity - a.rarity)
+        ret[e].sort((a: any, b: any) => b.rarity - a.rarity);
     }
-    return ret
-})
+    return ret;
+});
 
 // build
-const selectedBuildKey = ref('')
-const isCustom = computed(() => selectedBuildKey.value.startsWith('0'))
-const isNew = ref(false)
-const avatarClass = (key: string) => ({ avatar: true, selected: key == selectedBuildKey.value })
-const setOptions = Object.entries(chs.set).map(p => ({ key: p[0], label: p[1] }))
-const sandsOptions = ArtifactData.mainKeys.sands.map(m => ({ key: m, label: chs.affix[m] }))
-const gobletOptions = ArtifactData.mainKeys.goblet.map(m => ({ key: m, label: chs.affix[m] }))
-const circletOptions = ArtifactData.mainKeys.circlet.map(m => ({ key: m, label: chs.affix[m] }))
+const selectedBuildKey = ref("");
+const isCustom = computed(() => selectedBuildKey.value.startsWith("0"));
+const isNew = ref(false);
+const avatarClass = (key: string) => ({
+    avatar: true,
+    selected: key == selectedBuildKey.value,
+});
 const build = reactive({
-    name: '',
+    name: "",
     set: [] as string[],
     sands: [] as string[],
     goblet: [] as string[],
     circlet: [] as string[],
-    weightJson: ''
-})
+    weightJson: "",
+});
 /**
  * depends on key:
  * - null: select Diluc
@@ -90,180 +97,179 @@ const build = reactive({
  * - non-existing key: select blank build to edit
  */
 const selectBuild = (key?: string) => {
-    if (!key) key = 'Diluc'
-    selectedBuildKey.value = key
-    let b = store.state.builds.filter(b => b.key == key)[0]
+    if (!key) key = "Diluc";
+    selectedBuildKey.value = key;
+    let b = artStore.builds.filter((b) => b.key == key)[0];
     if (b) {
-        isNew.value = false
-        build.name = b.name
-        build.set = [...b.set]
-        build.sands = [...b.main.sands]
-        build.goblet = [...b.main.goblet]
-        build.circlet = [...b.main.circlet]
-        build.weightJson = JSON.stringify(b.weight)
+        isNew.value = false;
+        build.name = b.name;
+        build.set = [...b.set];
+        build.sands = [...b.main.sands];
+        build.goblet = [...b.main.goblet];
+        build.circlet = [...b.main.circlet];
+        build.weightJson = JSON.stringify(b.weight);
     } else {
-        isNew.value = true
-        build.name = ''
-        build.set = []
-        build.sands = []
-        build.goblet = []
-        build.circlet = []
-        build.weightJson = '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0,"defp":0,"em":0,"er":0,"cr":0,"cd":0}'
+        isNew.value = true;
+        build.name = "";
+        build.set = [];
+        build.sands = [];
+        build.goblet = [];
+        build.circlet = [];
+        build.weightJson =
+            '{"hp":0,"atk":0,"def":0,"hpp":0,"atkp":0,"defp":0,"em":0,"er":0,"cr":0,"cd":0}';
     }
-}
-selectBuild()
+};
+selectBuild();
 const rules = reactive({
-    name: [{ required: true, message: '必填', trigger: 'blur' }],
-    weightJson: [{
-        required: true,
-        validator: (rule: never, value: string, callback: any) => {
-            try {
-                let w = JSON.parse(value)
-                if (typeof w != 'object') return callback(new Error('格式错误'))
-                if (ArtifactData.minorKeys.length != Object.keys(w).length) return callback(new Error('键缺失或多余'))
-                for (let key in w) {
-                    if (!ArtifactData.minorKeys.includes(key)) return callback(new Error('不存在的键：' + key))
-                    if (typeof w[key] != 'number') return callback(new Error(key + '的值不是数值'))
-                    if (w[key] < 0 || w[key] > 1) return callback(new Error(key + '的值不在[0,1]内'))
-                }
-                callback()
-            } catch {
-                callback(new Error('语法错误'))
-            }
-        },
-        trigger: 'blur',
-    }],
-})
-const formEl = ref<any>(null)
+    name: uiStore.getFormRule(),
+    weightJson: uiStore.getFormRule(true, uiStore.affixWeightJsonValidator),
+});
+const formEl = ref<any>(null);
+
 // actions
 const saveBuild = (formEl: any) => {
-    if (!formEl) return
+    if (!formEl) return;
     formEl.validate((valid: boolean) => {
-        if (valid && selectedBuildKey.value) {
-            let builds = store.state.builds, idx = -1
-            builds.forEach((b, i) => {
-                if (b.key == selectedBuildKey.value)
-                    idx = i
-            })
-            if (idx >= 0) {
-                builds[idx].name = build.name
-                builds[idx].main.sands = [...build.sands]
-                builds[idx].main.goblet = [...build.goblet]
-                builds[idx].main.circlet = [...build.circlet]
-                builds[idx].set = [...build.set]
-                builds[idx].weight = JSON.parse(build.weightJson)
-            } else {
-                isNew.value = false
-                builds.push({
-                    key: selectedBuildKey.value,
-                    name: build.name,
-                    set: [...build.set],
-                    main: {
-                        sands: [...build.sands],
-                        goblet: [...build.goblet],
-                        circlet: [...build.circlet],
-                    },
-                    weight: JSON.parse(build.weightJson),
-                })
-            }
-            store.commit('setBuilds', { builds })
-            ElMessage({ message: '保存成功', type: 'success' })
+        if (!valid || !selectedBuildKey.value) return;
+        let builds = artStore.customizedBuilds,
+            idx = -1;
+        builds.forEach((b, i) => {
+            if (b.key == selectedBuildKey.value) idx = i;
+        });
+        if (idx >= 0) {
+            builds[idx].name = build.name;
+            builds[idx].main.sands = [...build.sands];
+            builds[idx].main.goblet = [...build.goblet];
+            builds[idx].main.circlet = [...build.circlet];
+            builds[idx].set = [...build.set];
+            builds[idx].weight = JSON.parse(build.weightJson);
+        } else {
+            isNew.value = false;
+            builds.push({
+                key: selectedBuildKey.value,
+                name: build.name,
+                set: [...build.set],
+                main: {
+                    sands: [...build.sands],
+                    goblet: [...build.goblet],
+                    circlet: [...build.circlet],
+                },
+                weight: JSON.parse(build.weightJson),
+            });
         }
-    })
-}
+        uiStore.alert(i18n.global.t("ui.saved"), "success");
+    });
+};
 const addBuild = () => {
-    selectBuild(Math.random().toString())
-}
-const _resetBuild = (key: string) => {
-    let b = store.state.builds.filter(b => b.key == key)[0]
-    if (!b) return
-    let c = CharData[key]
-    if (!c) return
-    b.name = chs.character[key]
-    b.set = [...c.build.set]
-    b.main.sands = [...c.build.main.sands]
-    b.main.goblet = [...c.build.main.goblet]
-    b.main.circlet = [...c.build.main.circlet]
-    b.weight = { ...c.build.weight }
-}
+    selectBuild(Math.random().toString());
+};
+const _delCustomizedBuild = (key: string) => {
+    if (!(key in CharacterData)) return;
+    let idx = -1;
+    artStore.customizedBuilds.forEach((b, i) => {
+        if (b.key == key) idx = i;
+    });
+    if (idx < 0) return;
+    artStore.customizedBuilds.splice(idx, 1);
+};
 const resetBuild = () => {
     if (selectedBuildKey.value) {
-        _resetBuild(selectedBuildKey.value)
-        selectBuild(selectedBuildKey.value)
-        store.commit('setBuilds', { builds: store.state.builds })
-        ElMessage({ message: '重置成功', type: 'success' })
+        _delCustomizedBuild(selectedBuildKey.value);
+        selectBuild(selectedBuildKey.value);
+        uiStore.alert(i18n.global.t("ui.reseted"), "success");
     }
-}
+};
+
 const resetAllBuilds = () => {
-    ElMessageBox.confirm(
-        '将会重置所有角色配装（自定义配装除外），是否继续？',
-        '警告',
-        {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
-            type: 'warning',
-        }
-    ).then(() => {
-        Object.keys(CharData).forEach(key => _resetBuild(key))
-        store.commit('setBuilds', { builds: store.state.builds })
-        ElMessage({ message: '重置成功', type: 'success' })
-    })
-}
+    uiStore
+        .popConfirm(i18n.global.t("ui.confirm_reset_builds"))
+        .then(() => {
+            Object.keys(CharacterData).forEach((key) =>
+                _delCustomizedBuild(key)
+            );
+            uiStore.alert(i18n.global.t("ui.reseted"), "success");
+        })
+        .catch(() => {});
+};
 const delCustomBuild = () => {
-    ElMessageBox.confirm(
-        `将会删除自定义配装：${build.name}，是否继续？`,
-        '警告',
-        {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
-            type: 'warning',
-        }
-    ).then(() => {
-        store.commit('setBuilds', { builds: store.state.builds.filter(b => b.key != selectedBuildKey.value) })
-        ElMessage({ message: '删除成功', type: 'success' })
-        selectBuild()
-    })
-}
+    uiStore
+        .popConfirm(
+            i18n.global.t("ui.confirm_del_custom_build", {
+                build_name: build.name,
+            })
+        )
+        .then(() => {
+            _delCustomizedBuild(selectedBuildKey.value);
+            uiStore.alert(i18n.global.t("ui.deleted"), "success");
+            selectBuild();
+        })
+        .catch(() => {});
+};
 const delCustomBuilds = () => {
-    ElMessageBox.confirm(
-        '将会删除所有自定义配装，是否继续？',
-        '警告',
-        {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
-            type: 'warning',
-        }
-    ).then(() => {
-        store.commit('setBuilds', { builds: store.state.builds.filter(b => !b.key.startsWith('0')) })
-        ElMessage({ message: '删除成功', type: 'success' })
-        if (selectedBuildKey.value.startsWith('0')) {
-            selectBuild()
-        }
-    })
-}
+    uiStore
+        .popConfirm(i18n.global.t("ui.confirm_del_all_custom_builds"))
+        .then(() => {
+            artStore.customizedBuilds = artStore.customizedBuilds.filter(
+                (b) => !b.key.startsWith("0")
+            );
+            uiStore.alert(i18n.global.t("ui.deleted"), "success");
+            if (selectedBuildKey.value.startsWith("0")) {
+                selectBuild();
+            }
+        })
+        .catch(() => {});
+};
 </script>
 
 <template>
-    <el-dialog v-model="show" title="修改角色配装" top="2vh" bottom="2vh" width="90%">
+    <el-dialog
+        v-model="show"
+        :title="$t('ui.build_editor')"
+        top="2vh"
+        width="90%"
+    >
         <div id="root">
             <div id="left">
                 <div id="left-top">
-                    <span class="button" @click="addBuild">新增配装</span>
-                    <span class="button" @click="resetAllBuilds">全部重置</span>
-                    <span class="button" @click="delCustomBuilds">删除自定义配装</span>
+                    <span
+                        class="button"
+                        @click="addBuild"
+                        v-text="$t('ui.add_build')"
+                    />
+                    <span
+                        class="button"
+                        @click="resetAllBuilds"
+                        v-text="$t('ui.reset_builds')"
+                    />
+                    <span
+                        class="button"
+                        @click="delCustomBuilds"
+                        v-text="$t('ui.del_all_custom_builds')"
+                    />
                 </div>
                 <div id="left-body">
                     <el-scrollbar>
                         <div class="char-group" v-for="e in elements">
                             <div class="group-hdr">
-                                <img class="element-icon" :src="e.icon" v-if="e.icon">
+                                <img
+                                    class="element-icon"
+                                    :src="e.icon"
+                                    v-if="e.icon"
+                                />
                                 <span class="element-text">{{ e.text }}</span>
                             </div>
                             <template v-for="a in avatars[e.element]">
-                                <span :class="avatarClass(a.key)" @click="selectBuild(a.key)">
+                                <span
+                                    :class="avatarClass(a.key)"
+                                    @click="selectBuild(a.key)"
+                                >
                                     <span class="icon-wrapper">
-                                        <img class="bg" :src="a.bg">
-                                        <img class="icon" :src="a.icon" :alt="a.text">
+                                        <img class="bg" :src="a.bg" />
+                                        <img
+                                            class="icon"
+                                            :src="a.icon"
+                                            :alt="a.text"
+                                        />
                                     </span>
                                     <span>{{ a.text }}</span>
                                 </span>
@@ -274,51 +280,113 @@ const delCustomBuilds = () => {
             </div>
             <div id="right">
                 <el-scrollbar>
-                    <el-form ref="formEl" :model="build" :rules="rules" label-width="80px">
-                        <el-form-item label="角色名" prop="name">
+                    <el-form
+                        ref="formEl"
+                        :model="build"
+                        :rules="rules"
+                        label-width="80px"
+                    >
+                        <el-form-item :label="$t('ui.build_name')" prop="name">
                             <el-input v-model="build.name" />
                         </el-form-item>
-                        <el-form-item label="套装">
-                            <el-select v-model="build.set" multiple style="width:100%;">
-                                <el-option v-for="o in setOptions" :value="o.key" :label="o.label" />
+                        <el-form-item :label="$t('ui.art_set')">
+                            <el-select
+                                v-model="build.set"
+                                multiple
+                                style="width: 100%"
+                            >
+                                <el-option
+                                    v-for="k in ArtifactData.setKeys"
+                                    :value="k"
+                                    :label="$t('artifact.set.' + k)"
+                                />
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="时之沙">
-                            <el-select v-model="build.sands" multiple style="width:100%;">
-                                <el-option v-for="o in sandsOptions" :value="o.key" :label="o.label" />
+                        <el-form-item :label="$t('artifact.slot.sands')">
+                            <el-select
+                                v-model="build.sands"
+                                multiple
+                                style="width: 100%"
+                            >
+                                <el-option
+                                    v-for="k in ArtifactData.mainKeys.sands"
+                                    :value="k"
+                                    :label="$t('artifact.affix.' + k)"
+                                />
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="空之杯">
-                            <el-select v-model="build.goblet" multiple style="width:100%;">
-                                <el-option v-for="o in gobletOptions" :value="o.key" :label="o.label" />
+                        <el-form-item :label="$t('artifact.slot.goblet')">
+                            <el-select
+                                v-model="build.goblet"
+                                multiple
+                                style="width: 100%"
+                            >
+                                <el-option
+                                    v-for="k in ArtifactData.mainKeys.goblet"
+                                    :value="k"
+                                    :label="$t('artifact.affix.' + k)"
+                                />
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="理之冠">
-                            <el-select v-model="build.circlet" multiple style="width:100%;">
-                                <el-option v-for="o in circletOptions" :value="o.key" :label="o.label" />
+                        <el-form-item :label="$t('artifact.slot.circlet')">
+                            <el-select
+                                v-model="build.circlet"
+                                multiple
+                                style="width: 100%"
+                            >
+                                <el-option
+                                    v-for="k in ArtifactData.mainKeys.circlet"
+                                    :value="k"
+                                    :label="$t('artifact.affix.' + k)"
+                                />
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="词条权重" prop="weightJson">
-                            <el-input v-model="build.weightJson" autosize type="textarea" class="code" />
+                        <el-form-item
+                            :label="$t('ui.affix_weight')"
+                            prop="weightJson"
+                        >
+                            <el-input
+                                v-model="build.weightJson"
+                                autosize
+                                type="textarea"
+                                class="code"
+                            />
                         </el-form-item>
                         <el-form-item>
-                            <el-alert type="info" show-icon :closable="false" style="line-height: 1.4;">
-                                hp=小生命，hpp=大生命，atk=小攻击，atkp=大攻击，def=小防御，defp=大防御，em=精通，er=充能，cr=暴击，cd=爆伤
-                            </el-alert>
+                            <el-alert
+                                type="info"
+                                show-icon
+                                :closable="false"
+                                style="line-height: 1.4"
+                                :description="$t('ui.weight_json_help')"
+                            />
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="danger" @click="delCustomBuild" v-if="isCustom"
-                                :disabled="isNew">删除</el-button>
-                            <el-button @click="resetBuild" v-else>恢复默认</el-button>
-                            <el-button type="primary" @click="saveBuild(formEl)">保存</el-button>
+                            <el-button
+                                v-if="isCustom"
+                                type="danger"
+                                @click="delCustomBuild"
+                                :disabled="isNew"
+                                v-text="$t('ui.del')"
+                            />
+                            <el-button
+                                v-else
+                                @click="resetBuild"
+                                v-text="$t('ui.reset')"
+                            />
+                            <el-button
+                                type="primary"
+                                @click="saveBuild(formEl)"
+                                v-text="$t('ui.save')"
+                            />
                         </el-form-item>
                     </el-form>
-                    <el-alert title="关于默认配装" type="info" v-show="!isCustom">
-                        默认配装是作者个人根据
-                        <a href="https://ngabbs.com/read.php?tid=27859119">NGA推荐配装</a>
-                        更新的。如有错漏或不及时之处欢迎提
-                        <a href="https://github.com/ideless/artifact/issues">Issue</a>
-                        ！
+                    <el-alert
+                        :title="$t('ui.about_default_builds')"
+                        type="info"
+                        v-show="!isCustom"
+                    >
+                        <p v-html="$t('ui.default_builds_desc')" />
                     </el-alert>
                 </el-scrollbar>
             </div>
@@ -368,7 +436,11 @@ const delCustomBuilds = () => {
                     display: flex;
                     align-items: center;
                     background: rgb(255, 249, 238);
-                    background: linear-gradient(90deg, rgba(255, 249, 238, 1) 0%, rgba(255, 255, 255, 1) 100%);
+                    background: linear-gradient(
+                        90deg,
+                        rgba(255, 249, 238, 1) 0%,
+                        rgba(255, 255, 255, 1) 100%
+                    );
 
                     .element-icon {
                         width: 30px;
@@ -414,7 +486,7 @@ const delCustomBuilds = () => {
                         }
                     }
 
-                    &:hover>.icon-wrapper>img.icon {
+                    &:hover > .icon-wrapper > img.icon {
                         scale: 1.1;
                     }
                 }
@@ -429,7 +501,7 @@ const delCustomBuilds = () => {
         overflow-y: hidden;
 
         .code {
-            font-family: 'Courier New', Courier, monospace;
+            font-family: "Courier New", Courier, monospace;
         }
     }
 }

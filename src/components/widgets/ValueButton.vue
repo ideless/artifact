@@ -1,17 +1,18 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref } from "vue";
 
 const props = defineProps<{
-    modelValue: number
-}>()
+    modelValue: number;
+}>();
 const emit = defineEmits<{
-    (e: 'update:modelValue', value: number): void
-}>()
+    (e: "update:modelValue", value: number): void;
+}>();
 
 const fillStyle = computed(() => {
     // 定义clip-path行内样式（略倾斜的进度条）
-    let bottomPercentage = 0, topPercentage = 0
-    bottomPercentage = topPercentage = 100 * props.modelValue
+    let bottomPercentage = 0,
+        topPercentage = 0;
+    bottomPercentage = topPercentage = 100 * props.modelValue;
     // 分段线性
     // if (props.modelValue <= 0.5) {
     //     bottomPercentage = 80 * props.modelValue
@@ -20,41 +21,43 @@ const fillStyle = computed(() => {
     //     bottomPercentage = 120 * props.modelValue - 20
     //     topPercentage = 80 * props.modelValue + 20
     // }
-    return `clip-path: polygon(0 0, ${topPercentage}% 0, ${bottomPercentage}% 100%, 0 100%);`
-})
-let startX = 0, timer: any = undefined, dragging = ref(false)
+    return `clip-path: polygon(0 0, ${topPercentage}% 0, ${bottomPercentage}% 100%, 0 100%);`;
+});
+let startX = 0,
+    timer: any = undefined,
+    dragging = ref(false);
 const btnClass = computed(() => {
     return {
-        'value-button': true,
-        'dragging': dragging.value
-    }
-})
+        "value-button": true,
+        dragging: dragging.value,
+    };
+});
 const mousemove = (e: MouseEvent) => {
-    dragging.value = true
+    dragging.value = true;
     // 全局鼠标移动事件，用来拖动进度条
-    let v = props.modelValue + e.movementX / 120 // 分母可以适当放大，越大调控越精细
+    let v = props.modelValue + e.movementX / 120; // 分母可以适当放大，越大调控越精细
     // let v = (e.clientX - startX) / 85
     // console.log(e.clientX, startX, e)
-    v = Math.min(Math.max(v, 0), 1) // 新的value必须在0~1之间
-    v = Math.round(v * 100) / 100 //新的value保留2位小数
-    emit('update:modelValue', v)
-}
+    v = Math.min(Math.max(v, 0), 1); // 新的value必须在0~1之间
+    v = Math.round(v * 100) / 100; //新的value保留2位小数
+    emit("update:modelValue", v);
+};
 const mouseup = () => {
     // clearTimeout(timer)
-    window.removeEventListener('mousemove', mousemove)
-    window.removeEventListener('mouseup', mouseup)
+    window.removeEventListener("mousemove", mousemove);
+    window.removeEventListener("mouseup", mouseup);
     if (!dragging.value) {
         //如果没有进入dragging状态就松开按键，value变成0/0.5/1
         if (props.modelValue >= 1) {
-            emit('update:modelValue', 0)
+            emit("update:modelValue", 0);
         } else if (props.modelValue >= 0.5) {
-            emit('update:modelValue', 1)
+            emit("update:modelValue", 1);
         } else if (props.modelValue >= 0) {
-            emit('update:modelValue', 0.5)
+            emit("update:modelValue", 0.5);
         }
     }
-    dragging.value = false
-}
+    dragging.value = false;
+};
 const mousedown = (e: MouseEvent) => {
     // timer = setTimeout(() => {
     // 添加draging类，显示value数字
@@ -63,15 +66,15 @@ const mousedown = (e: MouseEvent) => {
     // startX = e.clientX
     // startX = (e.target as Element).getBoundingClientRect().left
     // 添加全局鼠标移动事件
-    window.addEventListener('mousemove', mousemove)
+    window.addEventListener("mousemove", mousemove);
     // }, 100)
     // 添加全局mouseup事件
-    window.addEventListener('mouseup', mouseup)
-}
+    window.addEventListener("mouseup", mouseup);
+};
 const valueString = computed(() => {
     // 美化value，显示固定2位小数
-    return props.modelValue.toFixed(2)
-})
+    return props.modelValue.toFixed(2);
+});
 </script>
 
 <template>
@@ -102,7 +105,6 @@ const valueString = computed(() => {
     overflow: hidden;
     position: relative;
     transition: all 100ms ease;
-
 
     .blank {
         // background: white;

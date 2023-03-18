@@ -1,38 +1,39 @@
-import { Artifact } from "../artifact"
-import { assert, whatis } from "../utils"
+import { Artifact } from "../artifact";
+import { assert, whatis } from "../utils";
+
+const keymap = {
+    affix: <{ [key: string]: string }>{
+        hp: "hp",
+        atk: "atk",
+        def: "def",
+        hpp: "hp_",
+        atkp: "atk_",
+        defp: "def_",
+        em: "eleMas",
+        er: "enerRech_",
+        hb: "heal_",
+        cr: "critRate_",
+        cd: "critDMG_",
+        pyroDB: "pyro_dmg_",
+        hydroDB: "hydro_dmg_",
+        electroDB: "electro_dmg_",
+        anemoDB: "anemo_dmg_",
+        cryoDB: "cryo_dmg_",
+        geoDB: "geo_dmg_",
+        physicalDB: "physical_dmg_",
+        dendroDB: "dendro_dmg_",
+    },
+};
 
 export default {
-    keymap: {
-        affix: <{ [key: string]: string }>{
-            hp: 'hp',
-            atk: 'atk',
-            def: 'def',
-            hpp: 'hp_',
-            atkp: 'atk_',
-            defp: 'def_',
-            em: 'eleMas',
-            er: 'enerRech_',
-            hb: 'heal_',
-            cr: 'critRate_',
-            cd: 'critDMG_',
-            pyroDB: 'pyro_dmg_',
-            hydroDB: 'hydro_dmg_',
-            electroDB: 'electro_dmg_',
-            anemoDB: 'anemo_dmg_',
-            cryoDB: 'cryo_dmg_',
-            geoDB: 'geo_dmg_',
-            physicalDB: 'physical_dmg_',
-            dendroDB: 'dendro_dmg_'
-        }
-    },
     loads(json: string) {
-        let good = JSON.parse(json)
-        assert(typeof good == 'object' && 'artifacts' in good)
-        assert(good.artifacts instanceof Array)
-        let source = (good.source || '*') + '/good'
-        let ret = []
+        let good = JSON.parse(json);
+        assert(typeof good == "object" && "artifacts" in good);
+        assert(good.artifacts instanceof Array);
+        let source = (good.source || "*") + "/good";
+        let ret = [];
         for (let a of good.artifacts) {
-            if (a.rarity !== 5) continue
+            if (a.rarity !== 5) continue;
             let artifact = new Artifact({
                 set: a.setKey,
                 slot: a.slotKey,
@@ -40,21 +41,26 @@ export default {
                 rarity: a.rarity,
                 location: a.location,
                 lock: a.lock,
-                mainKey: whatis(a.mainStatKey, this.keymap.affix) as string,
-                minors: (a.substats as any[]).map(x => ({
-                    key: whatis(x.key, this.keymap.affix),
-                    value: x.value
-                }))
-            })
-            artifact.data.index = ret.length
-            artifact.data.source = source
+                mainKey: whatis(a.mainStatKey, keymap.affix) as string,
+                minors: (a.substats as any[]).map((x) => ({
+                    key: whatis(x.key, keymap.affix),
+                    value: x.value,
+                })),
+            });
+            artifact.data.index = ret.length;
+            artifact.data.source = source;
             // artifact.validate()
-            ret.push(artifact)
+            ret.push(artifact);
         }
-        return ret
+        return ret;
     },
     dumps(artifacts: Artifact[]) {
-        let good = { format: 'GOOD', version: 1, source: 'yas-lock', artifacts: <any[]>[] }
+        let good = {
+            format: "GOOD",
+            version: 1,
+            source: "",
+            artifacts: <any[]>[],
+        };
         for (let a of artifacts) {
             good.artifacts.push({
                 setKey: a.set,
@@ -63,13 +69,13 @@ export default {
                 rarity: a.rarity,
                 lock: a.lock,
                 location: a.location,
-                mainStatKey: this.keymap.affix[a.mainKey],
-                substats: a.minors.map(m => ({
-                    key: this.keymap.affix[m.key],
-                    value: m.value
-                }))
-            })
+                mainStatKey: keymap.affix[a.mainKey],
+                substats: a.minors.map((m) => ({
+                    key: keymap.affix[m.key],
+                    value: m.value,
+                })),
+            });
         }
-        return JSON.stringify(good)
-    }
-}
+        return JSON.stringify(good);
+    },
+};
