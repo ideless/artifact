@@ -21,13 +21,13 @@
             "min_level": "最小等级",
             "speed": "速度（如提示大量重复尝试降低速度）",
             "number": "指定圣遗物数量（在自动识别数量不准确时使用）",
-            "lock_stop": "加解锁停顿时间",
             "default_stop": "等待动画、鼠标点击等操作的默认停顿时间",
             "scroll_stop": "页面滚动停顿时间",
             "max_wait_switch_artifact": "切换圣遗物最大等待时间",
             "max_wait_scroll": "翻页的最大等待时间（翻页不正确可以考虑加大该选项）",
             "no_check": "不检测是否已打开背包等",
-            "dxgcap": "使用dxgcap捕获屏幕"
+            "dxgcap": "使用dxgcap捕获屏幕",
+            "max_wait_lock": "加解锁最大等待时间"
         }
     },
     "artifact": {

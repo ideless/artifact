@@ -13,13 +13,13 @@ class YasConfig {
     min_level = 0;
     max_wait_switch_artifact = 800;
     default_stop = 500;
-    lock_stop = 100;
     scroll_stop = 100;
     number = 0;
     speed = 5;
     max_wait_scroll = 0;
     no_check = false;
     dxgcap = false;
+    max_wait_lock = 800;
 
     constructor(o?: any) {
         assign(this, o);
@@ -47,7 +47,12 @@ export const useYasStore = defineStore("yas", () => {
 
     const version = useLocalStorage("yas.version", "");
     // const config = reactive(new YasConfig());
-    const config = useLocalStorage("yas.config", new YasConfig());
+    const config = useLocalStorage("yas.config", new YasConfig(), {
+        serializer: {
+            read: (v: string) => new YasConfig(JSON.parse(v)),
+            write: (v: YasConfig) => JSON.stringify(v),
+        },
+    });
     const connected = ref(false);
     const socketUrl = ref("");
 
@@ -88,8 +93,8 @@ export const useYasStore = defineStore("yas", () => {
                         } else {
                             uiStore.alert(
                                 i18n.global.t("yas.scan.error") +
-                                ": " +
-                                pkt.data.message,
+                                    ": " +
+                                    pkt.data.message,
                                 "error"
                             );
                         }
@@ -104,8 +109,8 @@ export const useYasStore = defineStore("yas", () => {
                         } else {
                             uiStore.alert(
                                 i18n.global.t("yas.lock.error") +
-                                ": " +
-                                pkt.data.message,
+                                    ": " +
+                                    pkt.data.message,
                                 "error"
                             );
                         }
