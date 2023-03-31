@@ -22,6 +22,7 @@ interface IArtifactData {
         [slotKey: string]: { [key: string]: number };
     };
     setKeys: string[];
+    setGroups: { [key: string]: string[] };
     slotKeys: string[];
     typeKeys: string[];
 }
@@ -239,6 +240,17 @@ const artifactData: IArtifactData = {
         "DesertPavilionChronicle",
         "FlowerOfParadiseLost",
     ],
+    setGroups: {
+        "s:atkp": [
+            "GladiatorsFinale",
+            "ShimenawasReminiscence",
+            "VermillionHereafter",
+            "EchoesOfAnOffering",
+        ],
+        "s:em": ["WanderersTroupe", "GildedDreams", "FlowerOfParadiseLost"],
+        "s:hb": ["MaidenBeloved", "OceanHuedClam"],
+        "s:anemoDB": ["ViridescentVenerer", "DesertPavilionChronicle"],
+    },
     slotKeys: ["flower", "plume", "sands", "goblet", "circlet"],
     typeKeys: [],
 };

@@ -88,8 +88,8 @@ export const useYasStore = defineStore("yas", () => {
                         } else {
                             uiStore.alert(
                                 i18n.global.t("yas.scan.error") +
-                                    ": " +
-                                    pkt.data.message,
+                                ": " +
+                                pkt.data.message,
                                 "error"
                             );
                         }
@@ -104,14 +104,14 @@ export const useYasStore = defineStore("yas", () => {
                         } else {
                             uiStore.alert(
                                 i18n.global.t("yas.lock.error") +
-                                    ": " +
-                                    pkt.data.message,
+                                ": " +
+                                pkt.data.message,
                                 "error"
                             );
                         }
                         break;
                     case "ConfigNotify":
-                        assign(config, pkt.data.config);
+                        assign(config.value, pkt.data.config);
                         break;
                     default:
                         console.warn("unknown packet: ", pkt);

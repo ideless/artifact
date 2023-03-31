@@ -121,14 +121,12 @@ watch(
                 :title="$t('ui.art_set')"
                 :options="setOptions"
                 v-model="artStore.filter.set"
-                :use-icon="true"
             />
             <multi-select
                 class="filter"
                 :title="$t('ui.art_slot')"
                 :options="slotOptions"
                 v-model="artStore.filter.slot"
-                :use-icon="true"
             />
             <multi-select
                 class="filter"

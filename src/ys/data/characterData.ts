@@ -28,7 +28,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻充精双暴"],
         build: {
-            set: ["ViridescentVenerer"],
+            set: ["s:anemoDB"],
             main: {
                 sands: ["em", "atkp"],
                 goblet: ["em", "anemoDB"],
@@ -53,12 +53,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻充双暴"],
         build: {
-            set: [
-                "GladiatorsFinale",
-                "ShimenawasReminiscence",
-                "ArchaicPetra",
-                "NoblesseOblige",
-            ],
+            set: ["s:atkp", "ArchaicPetra", "NoblesseOblige"],
             main: {
                 sands: ["atkp"],
                 goblet: ["geoDB"],
@@ -83,13 +78,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["充", "攻充双暴"],
         build: {
-            set: [
-                "ShimenawasReminiscence",
-                "GladiatorsFinale",
-                "WanderersTroupe",
-                "EmblemOfSeveredFate",
-                "NoblesseOblige",
-            ],
+            set: ["s:atkp", "s:em", "EmblemOfSeveredFate", "NoblesseOblige"],
             main: {
                 sands: ["er"],
                 goblet: ["atkp", "em"],
@@ -117,7 +106,7 @@ export default <ICharacterData>{
             set: [
                 "EmblemOfSeveredFate",
                 "DeepwoodMemories",
-                "GildedDreams",
+                "s:em",
                 "NoblesseOblige",
             ],
             main: {
@@ -145,9 +134,8 @@ export default <ICharacterData>{
         presets: ["攻双暴", "攻精双暴"],
         build: {
             set: [
-                "GladiatorsFinale",
+                "s:atkp",
                 "NoblesseOblige",
-                "ShimenawasReminiscence",
                 "EmblemOfSeveredFate",
                 "BlizzardStrayer",
             ],
@@ -175,14 +163,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻充双暴", "攻双暴"],
         build: {
-            set: [
-                "ShimenawasReminiscence",
-                "OceanHuedClam",
-                "GladiatorsFinale",
-                "ViridescentVenerer",
-                "NoblesseOblige",
-                "MaidenBeloved",
-            ],
+            set: ["s:atkp", "s:hb", "s:anemoDB", "NoblesseOblige"],
             main: {
                 sands: ["atkp", "er"],
                 goblet: ["anemoDB", "atkp"],
@@ -207,7 +188,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["攻双暴"],
         build: {
-            set: ["WanderersTroupe", "EmblemOfSeveredFate", "ThunderingFury"],
+            set: ["s:em", "EmblemOfSeveredFate", "ThunderingFury"],
             main: {
                 sands: ["atkp", "em", "er"],
                 goblet: ["electroDB", "atkp", "em"],
@@ -232,12 +213,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["生充"],
         build: {
-            set: [
-                "TenacityOfTheMillelith",
-                "MaidenBeloved",
-                "NoblesseOblige",
-                "OceanHuedClam",
-            ],
+            set: ["TenacityOfTheMillelith", "s:hb", "NoblesseOblige"],
             main: {
                 sands: ["er", "hpp"],
                 goblet: ["hpp"],
@@ -267,7 +243,7 @@ export default <ICharacterData>{
                 "BloodstainedChivalry",
                 "EmblemOfSeveredFate",
                 "PaleFlame",
-                "GladiatorsFinale",
+                "s:atkp",
                 "BlizzardStrayer",
             ],
             main: {
@@ -294,12 +270,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻双暴", "攻精双暴"],
         build: {
-            set: [
-                "GladiatorsFinale",
-                "WanderersTroupe",
-                "ShimenawasReminiscence",
-                "CrimsonWitchOfFlames",
-            ],
+            set: ["s:atkp", "s:em", "CrimsonWitchOfFlames"],
             main: {
                 sands: ["atkp", "em"],
                 goblet: ["pyroDB"],
@@ -324,12 +295,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["攻双暴"],
         build: {
-            set: [
-                "ShimenawasReminiscence",
-                "BloodstainedChivalry",
-                "PaleFlame",
-                "GladiatorsFinale",
-            ],
+            set: ["s:atkp", "BloodstainedChivalry", "PaleFlame"],
             main: {
                 sands: ["atkp"],
                 goblet: ["physicalDB"],
@@ -354,7 +320,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["攻双暴", "攻精双暴"],
         build: {
-            set: ["CrimsonWitchOfFlames", "NoblesseOblige", "WanderersTroupe"],
+            set: ["CrimsonWitchOfFlames", "NoblesseOblige", "s:em"],
             main: {
                 sands: ["atkp"],
                 goblet: ["pyroDB"],
@@ -379,7 +345,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻充精双暴", "攻双暴"],
         build: {
-            set: ["ViridescentVenerer"],
+            set: ["s:anemoDB"],
             main: {
                 sands: ["atkp", "er", "em"],
                 goblet: ["anemoDB", "em"],
@@ -406,9 +372,8 @@ export default <ICharacterData>{
         build: {
             set: [
                 "NoblesseOblige",
-                "ShimenawasReminiscence",
-                "GladiatorsFinale",
-                "WanderersTroupe",
+                "s:atkp",
+                "s:em",
                 "EmblemOfSeveredFate",
                 "CrimsonWitchOfFlames",
             ],
@@ -437,8 +402,7 @@ export default <ICharacterData>{
         presets: ["攻双暴"],
         build: {
             set: [
-                "GladiatorsFinale",
-                "ShimenawasReminiscence",
+                "s:atkp",
                 "EmblemOfSeveredFate",
                 "NoblesseOblige",
                 "ThunderingFury",
@@ -468,10 +432,9 @@ export default <ICharacterData>{
         presets: ["攻双暴", "攻精双暴", "攻充精双暴"],
         build: {
             set: [
-                "GladiatorsFinale",
+                "s:atkp",
                 "NoblesseOblige",
                 "HeartOfDepth",
-                "ShimenawasReminiscence",
                 "EmblemOfSeveredFate",
             ],
             main: {
@@ -498,11 +461,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻双暴"],
         build: {
-            set: [
-                "ViridescentVenerer",
-                "GladiatorsFinale",
-                "ShimenawasReminiscence",
-            ],
+            set: ["s:anemoDB", "s:atkp"],
             main: {
                 sands: ["atkp"],
                 goblet: ["anemoDB", "atkp"],
@@ -527,12 +486,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["攻双暴"],
         build: {
-            set: [
-                "ArchaicPetra",
-                "GladiatorsFinale",
-                "NoblesseOblige",
-                "ShimenawasReminiscence",
-            ],
+            set: ["ArchaicPetra", "s:atkp", "NoblesseOblige"],
             main: {
                 sands: ["atkp"],
                 goblet: ["geoDB"],
@@ -558,11 +512,10 @@ export default <ICharacterData>{
         presets: ["攻双暴", "攻精双暴"],
         build: {
             set: [
-                "GladiatorsFinale",
-                "WanderersTroupe",
+                "s:atkp",
+                "s:em",
                 "RetracingBolide",
                 "Lavawalker",
-                "ShimenawasReminiscence",
                 "CrimsonWitchOfFlames",
             ],
             main: {
@@ -591,8 +544,7 @@ export default <ICharacterData>{
         build: {
             set: [
                 "ArchaicPetra",
-                "ShimenawasReminiscence",
-                "GladiatorsFinale",
+                "s:atkp",
                 "NoblesseOblige",
                 "TenacityOfTheMillelith",
             ],
@@ -623,9 +575,8 @@ export default <ICharacterData>{
             set: [
                 "PaleFlame",
                 "ThunderingFury",
-                "GladiatorsFinale",
+                "s:atkp",
                 "BloodstainedChivalry",
-                "ShimenawasReminiscence",
                 "Thundersoother",
                 "TenacityOfTheMillelith",
             ],
@@ -653,7 +604,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["攻双暴", "攻精双暴", "攻充精双暴"],
         build: {
-            set: ["OceanHuedClam", "MaidenBeloved", "NoblesseOblige"],
+            set: ["s:hb", "NoblesseOblige"],
             main: {
                 sands: ["er", "hpp"],
                 goblet: ["hpp"],
@@ -678,13 +629,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻双暴", "攻精双暴"],
         build: {
-            set: [
-                "ShimenawasReminiscence",
-                "NoblesseOblige",
-                "GladiatorsFinale",
-                "WanderersTroupe",
-                "HeartOfDepth",
-            ],
+            set: ["s:atkp", "NoblesseOblige", "s:em", "HeartOfDepth"],
             main: {
                 sands: ["atkp", "er", "em"],
                 goblet: ["hydroDB"],
@@ -709,7 +654,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["攻双暴", "攻防双暴", "攻防充双暴", "防双暴"],
         build: {
-            set: ["RetracingBolide", "GladiatorsFinale", "HuskOfOpulentDreams"],
+            set: ["RetracingBolide", "s:atkp", "HuskOfOpulentDreams"],
             main: {
                 sands: ["defp"],
                 goblet: ["geoDB", "defp"],
@@ -736,9 +681,8 @@ export default <ICharacterData>{
         build: {
             set: [
                 "EmblemOfSeveredFate",
-                "MaidenBeloved",
+                "s:hb",
                 "NoblesseOblige",
-                "OceanHuedClam",
                 "TenacityOfTheMillelith",
             ],
             main: {
@@ -797,11 +741,10 @@ export default <ICharacterData>{
         build: {
             set: [
                 "NoblesseOblige",
-                "GladiatorsFinale",
-                "ShimenawasReminiscence",
+                "s:atkp",
                 "EmblemOfSeveredFate",
                 "BlizzardStrayer",
-                "WanderersTroupe",
+                "s:em",
             ],
             main: {
                 sands: ["atkp"],
@@ -856,12 +799,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["生充"],
         build: {
-            set: [
-                "OceanHuedClam",
-                "TenacityOfTheMillelith",
-                "MaidenBeloved",
-                "NoblesseOblige",
-            ],
+            set: ["s:hb", "TenacityOfTheMillelith", "NoblesseOblige"],
             main: {
                 sands: ["hpp", "er"],
                 goblet: ["hpp"],
@@ -888,7 +826,7 @@ export default <ICharacterData>{
         build: {
             set: [
                 "HeartOfDepth",
-                "WanderersTroupe",
+                "s:em",
                 "EmblemOfSeveredFate",
                 "NoblesseOblige",
                 "TenacityOfTheMillelith",
@@ -918,12 +856,11 @@ export default <ICharacterData>{
         presets: ["攻双暴"],
         build: {
             set: [
-                "GladiatorsFinale",
+                "s:atkp",
                 "NoblesseOblige",
                 "BloodstainedChivalry",
                 "PaleFlame",
                 "Thundersoother",
-                "ShimenawasReminiscence",
                 "ThunderingFury",
             ],
             main: {
@@ -950,12 +887,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["精"],
         build: {
-            set: [
-                "GladiatorsFinale",
-                "NoblesseOblige",
-                "ShimenawasReminiscence",
-                "ViridescentVenerer",
-            ],
+            set: ["s:atkp", "NoblesseOblige", "s:anemoDB"],
             main: {
                 sands: ["em", "er", "atkp"],
                 goblet: ["em", "anemoDB"],
@@ -982,8 +914,7 @@ export default <ICharacterData>{
         build: {
             set: [
                 "PaleFlame",
-                "GladiatorsFinale",
-                "ShimenawasReminiscence",
+                "s:atkp",
                 "RetracingBolide",
                 "HuskOfOpulentDreams",
                 "TenacityOfTheMillelith",
@@ -1014,8 +945,7 @@ export default <ICharacterData>{
         presets: ["攻双暴", "攻精双暴"],
         build: {
             set: [
-                "GladiatorsFinale",
-                "ShimenawasReminiscence",
+                "s:atkp",
                 "BlizzardStrayer",
                 "BloodstainedChivalry",
                 "EmblemOfSeveredFate",
@@ -1048,9 +978,9 @@ export default <ICharacterData>{
         build: {
             set: [
                 "TenacityOfTheMillelith",
-                "WanderersTroupe",
+                "s:em",
                 "RetracingBolide",
-                "ShimenawasReminiscence",
+                "s:atkp",
                 "CrimsonWitchOfFlames",
             ],
             main: {
@@ -1077,7 +1007,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻双暴", "攻精双暴", "精充"],
         build: {
-            set: ["ViridescentVenerer"],
+            set: ["s:anemoDB"],
             main: {
                 sands: ["em", "atkp"],
                 goblet: ["anemoDB", "em", "atkp"],
@@ -1102,7 +1032,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["攻双暴", "攻精双暴"],
         build: {
-            set: ["RetracingBolide", "CrimsonWitchOfFlames", "WanderersTroupe"],
+            set: ["RetracingBolide", "CrimsonWitchOfFlames", "s:em"],
             main: {
                 sands: ["atkp"],
                 goblet: ["pyroDB"],
@@ -1128,11 +1058,10 @@ export default <ICharacterData>{
         presets: ["攻双暴", "攻精双暴"],
         build: {
             set: [
-                "GladiatorsFinale",
+                "s:atkp",
                 "CrimsonWitchOfFlames",
                 "RetracingBolide",
                 "Lavawalker",
-                "ShimenawasReminiscence",
             ],
             main: {
                 sands: ["atkp"],
@@ -1183,12 +1112,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻充双暴", "攻击爆伤", "攻双暴"],
         build: {
-            set: [
-                "GladiatorsFinale",
-                "BloodstainedChivalry",
-                "ShimenawasReminiscence",
-                "PaleFlame",
-            ],
+            set: ["s:atkp", "BloodstainedChivalry", "PaleFlame"],
             main: {
                 sands: ["atkp"],
                 goblet: ["physicalDB"],
@@ -1238,12 +1162,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["攻充双暴", "攻双暴"],
         build: {
-            set: [
-                "ShimenawasReminiscence",
-                "OceanHuedClam",
-                "ViridescentVenerer",
-                "MaidenBeloved",
-            ],
+            set: ["s:atkp", "s:hb", "s:anemoDB"],
             main: {
                 sands: ["em", "er", "atkp"],
                 goblet: ["em", "anemoDB"],
@@ -1268,12 +1187,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["生充", "生攻充", "生攻精充"],
         build: {
-            set: [
-                "MaidenBeloved",
-                "OceanHuedClam",
-                "TenacityOfTheMillelith",
-                "HeartOfDepth",
-            ],
+            set: ["s:hb", "TenacityOfTheMillelith", "HeartOfDepth"],
             main: {
                 sands: ["hpp", "er"],
                 goblet: ["hydroDB", "hpp"],
@@ -1301,8 +1215,7 @@ export default <ICharacterData>{
             set: [
                 "HuskOfOpulentDreams",
                 "EmblemOfSeveredFate",
-                "MaidenBeloved",
-                "OceanHuedClam",
+                "s:hb",
                 "ArchaicPetra",
                 "NoblesseOblige",
             ],
@@ -1331,9 +1244,8 @@ export default <ICharacterData>{
         presets: ["攻充双暴", "攻双暴"],
         build: {
             set: [
-                "GladiatorsFinale",
+                "s:atkp",
                 "ThunderingFury",
-                "ShimenawasReminiscence",
                 "EmblemOfSeveredFate",
                 "NoblesseOblige",
             ],
@@ -1387,8 +1299,7 @@ export default <ICharacterData>{
         presets: ["攻精双暴", "攻充精双暴"],
         build: {
             set: [
-                "ShimenawasReminiscence",
-                "GladiatorsFinale",
+                "s:atkp",
                 "ThunderingFury",
                 "Thundersoother",
                 "TenacityOfTheMillelith",
@@ -1417,12 +1328,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["攻双暴"],
         build: {
-            set: [
-                "ViridescentVenerer",
-                "GladiatorsFinale",
-                "ShimenawasReminiscence",
-                "EchoesOfAnOffering",
-            ],
+            set: ["s:anemoDB", "s:atkp"],
             main: {
                 sands: ["atkp"],
                 goblet: ["anemoDB"],
@@ -1478,8 +1384,7 @@ export default <ICharacterData>{
         presets: ["攻双暴", "攻精双暴"],
         build: {
             set: [
-                "GladiatorsFinale",
-                "ShimenawasReminiscence",
+                "s:atkp",
                 "EmblemOfSeveredFate",
                 "NoblesseOblige",
                 "BlizzardStrayer",
@@ -1508,11 +1413,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻充", "攻双暴"],
         build: {
-            set: [
-                "ShimenawasReminiscence",
-                "GladiatorsFinale",
-                "NoblesseOblige",
-            ],
+            set: ["s:atkp", "NoblesseOblige"],
             main: {
                 sands: ["atkp", "er"],
                 goblet: ["atkp"],
@@ -1566,7 +1467,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["生", "生精"],
         build: {
-            set: ["TenacityOfTheMillelith", "OceanHuedClam", "MaidenBeloved"],
+            set: ["TenacityOfTheMillelith", "s:hb"],
             main: {
                 sands: ["em", "hpp"],
                 goblet: ["em", "hpp"],
@@ -1591,7 +1492,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻双暴", "攻生双暴"],
         build: {
-            set: ["EchoesOfAnOffering", "GladiatorsFinale", "HeartOfDepth"],
+            set: ["s:atkp", "HeartOfDepth"],
             main: {
                 sands: ["atkp"],
                 goblet: ["hydroDB"],
@@ -1618,7 +1519,7 @@ export default <ICharacterData>{
         build: {
             set: [
                 "DeepwoodMemories",
-                "GildedDreams",
+                "s:em",
                 "EmblemOfSeveredFate",
                 "NoblesseOblige",
             ],
@@ -1646,12 +1547,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["生充"],
         build: {
-            set: [
-                "MaidenBeloved",
-                "OceanHuedClam",
-                "NoblesseOblige",
-                "EmblemOfSeveredFate",
-            ],
+            set: ["s:hb", "NoblesseOblige", "EmblemOfSeveredFate"],
             main: {
                 sands: ["hpp", "er"],
                 goblet: ["hpp"],
@@ -1676,7 +1572,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["精双暴", "攻精双暴"],
         build: {
-            set: ["DeepwoodMemories", "GildedDreams", "WanderersTroupe"],
+            set: ["DeepwoodMemories", "s:em"],
             main: {
                 sands: ["em"],
                 goblet: ["dendroDB"],
@@ -1701,12 +1597,8 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["生精双暴", "生精充双暴"],
         build: {
-            set: ["GildedDreams", "WanderersTroupe", "TenacityOfTheMillelith"],
-            main: {
-                sands: ["hpp"],
-                goblet: ["hpp"],
-                circlet: ["hpp"],
-            },
+            set: ["s:em", "TenacityOfTheMillelith"],
+            main: { sands: ["hpp"], goblet: ["hpp"], circlet: ["hpp"] },
             weight: {
                 hp: 0,
                 atk: 0,
@@ -1726,7 +1618,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻精双暴", "攻精充双暴"],
         build: {
-            set: ["GildedDreams", "GladiatorsFinale", "ThunderingFury"],
+            set: ["s:em", "s:atkp", "ThunderingFury"],
             main: {
                 sands: ["em", "atkp"],
                 goblet: ["electroDB"],
@@ -1780,7 +1672,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["精", "精双暴"],
         build: {
-            set: ["WanderersTroupe", "DeepwoodMemories", "GildedDreams"],
+            set: ["s:em", "DeepwoodMemories"],
             main: {
                 sands: ["em"],
                 goblet: ["em", "dendroDB"],
@@ -1806,11 +1698,7 @@ export default <ICharacterData>{
         presets: ["生充"],
         build: {
             set: ["NoblesseOblige", "TenacityOfTheMillelith"],
-            main: {
-                sands: ["hpp"],
-                goblet: ["hpp"],
-                circlet: ["hpp"],
-            },
+            main: { sands: ["hpp"], goblet: ["hpp"], circlet: ["hpp"] },
             weight: {
                 hp: 0,
                 atk: 0,
@@ -1830,13 +1718,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["攻双暴"],
         build: {
-            set: [
-                "DesertPavilionChronicle",
-                "ShimenawasReminiscence",
-                "EchoesOfAnOffering",
-                "ViridescentVenerer",
-                "GladiatorsFinale",
-            ],
+            set: ["s:anemoDB", "s:atkp"],
             main: {
                 sands: ["atkp"],
                 goblet: ["anemoDB", "atkp"],
@@ -1861,11 +1743,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["攻双暴", "攻充双暴", "充"],
         build: {
-            set: [
-                "NoblesseOblige",
-                "TenacityOfTheMillelith",
-                "ViridescentVenerer",
-            ],
+            set: ["NoblesseOblige", "TenacityOfTheMillelith", "s:anemoDB"],
             main: {
                 sands: ["er", "atkp"],
                 goblet: ["anemoDB", "atkp"],
@@ -1890,12 +1768,7 @@ export default <ICharacterData>{
         rarity: 4,
         presets: ["生", "生精"],
         build: {
-            set: [
-                "MaidenBeloved",
-                "TenacityOfTheMillelith",
-                "DeepwoodMemories",
-                "OceanHuedClam",
-            ],
+            set: ["s:hb", "TenacityOfTheMillelith", "DeepwoodMemories"],
             main: {
                 sands: ["hpp", "em"],
                 goblet: ["hpp"],
@@ -1920,7 +1793,7 @@ export default <ICharacterData>{
         rarity: 5,
         presets: ["精双暴", "攻精双暴", "攻精充双暴"],
         build: {
-            set: ["GildedDreams", "DeepwoodMemories", "WanderersTroupe"],
+            set: ["s:em", "DeepwoodMemories"],
             main: {
                 sands: ["em"],
                 goblet: ["dendroDB", "em"],

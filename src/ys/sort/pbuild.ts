@@ -34,6 +34,15 @@ const AffnumCDFCache = new SimpleCache(
     }
 );
 
+function setIncludes(set: string[], target: string) {
+    for (let s of set) {
+        if (s.startsWith("s:")) {
+            if (ArtifactData.setGroups[s].includes(target)) return true;
+        } else if (s === target) return true;
+    }
+    return false;
+}
+
 function calcPBuild(art: Artifact, builds: IBuild[], threshold: number) {
     const ret: IPBuildResult = {
         maxProb: 0,
@@ -61,7 +70,7 @@ function calcPBuild(art: Artifact, builds: IBuild[], threshold: number) {
         )
             continue;
         // set factor
-        let n_set = b.set.includes(art.set) ? 1 : 2;
+        let n_set = setIncludes(b.set, art.set) ? 1 : 2;
         // prob
         let prob = ProbCache.get(b.weight) ** n_set;
         // update result

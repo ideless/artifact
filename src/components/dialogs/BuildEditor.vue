@@ -295,11 +295,20 @@ const delCustomBuilds = () => {
                                 multiple
                                 style="width: 100%"
                             >
-                                <el-option
-                                    v-for="k in ArtifactData.setKeys"
-                                    :value="k"
-                                    :label="$t('artifact.set.' + k)"
-                                />
+                                <el-option-group :label="$t('ui.set_group')">
+                                    <el-option
+                                        v-for="(_, k) in ArtifactData.setGroups"
+                                        :value="k"
+                                        :label="$t('artifact.set_group.' + k)"
+                                    />
+                                </el-option-group>
+                                <el-option-group :label="$t('ui.art_set')">
+                                    <el-option
+                                        v-for="k in ArtifactData.setKeys"
+                                        :value="k"
+                                        :label="$t('artifact.set.' + k)"
+                                    />
+                                </el-option-group>
                             </el-select>
                         </el-form-item>
                         <el-form-item :label="$t('artifact.slot.sands')">

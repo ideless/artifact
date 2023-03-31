@@ -12,6 +12,7 @@ import { computed, ref } from "vue";
 import { useArtifactStore } from "@/store";
 import { ArtifactData } from "@/ys/data";
 import { i18n } from "@/i18n";
+import type { IOption } from "@/store/types";
 
 const artStore = useArtifactStore();
 
@@ -52,11 +53,18 @@ const charOptions = computed(() => {
     return artStore.builds.map((b) => ({ key: b.key, name: b.name }));
 });
 // 按角色适配概率（单人）
-const setsOptions = ArtifactData.setKeys.map((key) => ({
-    key,
-    label: i18n.global.t("artifact.set." + key),
-    icon: `./assets/artifacts/${key}/flower.webp`,
-}));
+const setsOptions: IOption[] = Object.keys(ArtifactData.setGroups)
+    .map((key) => ({
+        key,
+        label: i18n.global.t("artifact.set_group." + key),
+    }))
+    .concat(
+        ArtifactData.setKeys.map((key) => ({
+            key,
+            label: i18n.global.t("artifact.set." + key),
+            icon: `./assets/artifacts/${key}/flower.webp`,
+        }))
+    );
 const sandsOptions = ArtifactData.mainKeys.sands.map((m) => ({
     key: m,
     label: i18n.global.t("artifact.affix." + m),
@@ -192,7 +200,6 @@ const openAffnumTable = () => (showAffnumTable.value = true);
                     v-model="artStore.sort.set"
                     :options="setsOptions"
                     :title="$t('sort.psingle.set')"
-                    :use-icon="true"
                 />
                 <multi-select
                     class="row"
