@@ -26,7 +26,7 @@ export default <ICharacterData>{
     TravelerAnemo: {
         element: "anemo",
         rarity: 5,
-        presets: ["攻充精双暴"],
+        presets: ["攻精充双暴"],
         build: {
             set: ["s:anemoDB"],
             main: {
@@ -343,7 +343,7 @@ export default <ICharacterData>{
     Venti: {
         element: "anemo",
         rarity: 5,
-        presets: ["攻充精双暴", "攻双暴"],
+        presets: ["攻精充双暴", "攻双暴"],
         build: {
             set: ["s:anemoDB"],
             main: {
@@ -368,7 +368,7 @@ export default <ICharacterData>{
     Xiangling: {
         element: "pyro",
         rarity: 4,
-        presets: ["攻双暴", "攻精双暴", "攻充精双暴"],
+        presets: ["攻双暴", "攻精双暴", "攻精充双暴"],
         build: {
             set: [
                 "NoblesseOblige",
@@ -429,7 +429,7 @@ export default <ICharacterData>{
     Xingqiu: {
         element: "hydro",
         rarity: 4,
-        presets: ["攻双暴", "攻精双暴", "攻充精双暴"],
+        presets: ["攻双暴", "攻精双暴", "攻精充双暴"],
         build: {
             set: [
                 "s:atkp",
@@ -570,7 +570,7 @@ export default <ICharacterData>{
     Fischl: {
         element: "electro",
         rarity: 4,
-        presets: ["攻充双暴", "攻充精双暴", "攻双暴"],
+        presets: ["攻充双暴", "攻精充双暴", "攻双暴"],
         build: {
             set: [
                 "PaleFlame",
@@ -602,9 +602,9 @@ export default <ICharacterData>{
     Bennett: {
         element: "pyro",
         rarity: 4,
-        presets: ["攻双暴", "攻精双暴", "攻充精双暴"],
+        presets: ["攻双暴", "攻精双暴", "攻精充双暴"],
         build: {
-            set: ["s:hb", "NoblesseOblige"],
+            set: ["NoblesseOblige"], // 教官
             main: {
                 sands: ["er", "hpp"],
                 goblet: ["hpp"],
@@ -822,7 +822,7 @@ export default <ICharacterData>{
     Mona: {
         element: "hydro",
         rarity: 5,
-        presets: ["攻双暴", "攻精双暴", "攻充精双暴"],
+        presets: ["攻双暴", "攻精双暴", "攻精充双暴"],
         build: {
             set: [
                 "HeartOfDepth",
@@ -1085,25 +1085,25 @@ export default <ICharacterData>{
     Thoma: {
         element: "pyro",
         rarity: 4,
-        presets: ["生充"],
+        presets: ["生充", "生精充"],
         build: {
-            set: ["TenacityOfTheMillelith", "EmblemOfSeveredFate"],
+            set: ["TenacityOfTheMillelith", "EmblemOfSeveredFate", "s:em"],
             main: {
-                sands: ["er", "hpp"],
-                goblet: ["hpp"],
-                circlet: ["hpp"],
+                sands: ["er", "hpp", "em"],
+                goblet: ["hpp", "em"],
+                circlet: ["hpp", "em"],
             },
             weight: {
                 hp: 0,
                 atk: 0,
                 def: 0,
-                hpp: 1,
-                atkp: 0.25,
+                hpp: 0.25,
+                atkp: 0,
                 defp: 0,
-                em: 0.25,
-                er: 1,
-                cr: 0.5,
-                cd: 0.25,
+                em: 1,
+                er: 0.5,
+                cr: 0.25,
+                cd: 0,
             },
         },
     },
@@ -1185,7 +1185,7 @@ export default <ICharacterData>{
     SangonomiyaKokomi: {
         element: "hydro",
         rarity: 5,
-        presets: ["生充", "生攻充", "生攻精充"],
+        presets: ["生充", "攻生充", "攻生精充"],
         build: {
             set: ["s:hb", "TenacityOfTheMillelith", "HeartOfDepth"],
             main: {
@@ -1296,7 +1296,7 @@ export default <ICharacterData>{
     YaeMiko: {
         element: "electro",
         rarity: 5,
-        presets: ["攻精双暴", "攻充精双暴"],
+        presets: ["攻精双暴", "攻精充双暴"],
         build: {
             set: [
                 "s:atkp",
