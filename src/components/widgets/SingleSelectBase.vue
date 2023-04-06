@@ -11,7 +11,7 @@ const props = defineProps<{
 const show = ref(false);
 const top = ref(false);
 const optionsEl = ref();
-const drop = (e: MouseEvent) => {
+const drop = (_e: MouseEvent) => {
     if (show.value) {
         show.value = false;
     } else {

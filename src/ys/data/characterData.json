@@ -1,0 +1,1824 @@
+{
+    "TravelerAnemo": {
+        "element": "anemo",
+        "rarity": 5,
+        "presets": ["攻精充双暴"],
+        "build": {
+            "set": ["s:anemoDB"],
+            "main": {
+                "sands": ["em", "atkp"],
+                "goblet": ["em", "anemoDB"],
+                "circlet": ["cr", "cd", "em"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.25,
+                "defp": 0,
+                "em": 1,
+                "er": 1,
+                "cr": 0.5,
+                "cd": 0.25
+            }
+        }
+    },
+    "TravelerGeo": {
+        "element": "geo",
+        "rarity": 5,
+        "presets": ["攻充双暴"],
+        "build": {
+            "set": ["s:atkp", "ArchaicPetra", "NoblesseOblige"],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["geoDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "TravelerElectro": {
+        "element": "electro",
+        "rarity": 5,
+        "presets": ["充", "攻充双暴"],
+        "build": {
+            "set": ["s:atkp", "s:em", "EmblemOfSeveredFate", "NoblesseOblige"],
+            "main": {
+                "sands": ["er"],
+                "goblet": ["atkp", "em"],
+                "circlet": ["cr", "cd", "em"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "TravelerDendro": {
+        "element": "dendro",
+        "rarity": 5,
+        "presets": ["精双暴", "精充双暴", "攻精双暴", "攻精充双暴"],
+        "build": {
+            "set": [
+                "EmblemOfSeveredFate",
+                "DeepwoodMemories",
+                "s:em",
+                "NoblesseOblige"
+            ],
+            "main": {
+                "sands": ["er", "em"],
+                "goblet": ["dendroDB", "em"],
+                "circlet": ["cr", "cd", "em"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "KamisatoAyaka": {
+        "element": "cryo",
+        "rarity": 5,
+        "presets": ["攻双暴", "攻精双暴"],
+        "build": {
+            "set": [
+                "s:atkp",
+                "NoblesseOblige",
+                "EmblemOfSeveredFate",
+                "BlizzardStrayer"
+            ],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["cryoDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Jean": {
+        "element": "anemo",
+        "rarity": 5,
+        "presets": ["攻充双暴", "攻双暴"],
+        "build": {
+            "set": ["s:atkp", "s:hb", "s:anemoDB", "NoblesseOblige"],
+            "main": {
+                "sands": ["atkp", "er"],
+                "goblet": ["anemoDB", "atkp"],
+                "circlet": ["cr", "cd", "atkp", "hb"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Lisa": {
+        "element": "electro",
+        "rarity": 4,
+        "presets": ["攻双暴"],
+        "build": {
+            "set": ["s:em", "EmblemOfSeveredFate", "ThunderingFury"],
+            "main": {
+                "sands": ["atkp", "em", "er"],
+                "goblet": ["electroDB", "atkp", "em"],
+                "circlet": ["cr", "cd", "em"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Barbara": {
+        "element": "hydro",
+        "rarity": 4,
+        "presets": ["生充"],
+        "build": {
+            "set": ["s:hpp", "s:hb", "NoblesseOblige"],
+            "main": {
+                "sands": ["er", "hpp"],
+                "goblet": ["hpp"],
+                "circlet": ["hb", "hpp"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0.25,
+                "defp": 0,
+                "em": 0.25,
+                "er": 1,
+                "cr": 0.5,
+                "cd": 0.25
+            }
+        }
+    },
+    "Kaeya": {
+        "element": "cryo",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻精双暴"],
+        "build": {
+            "set": [
+                "NoblesseOblige",
+                "BloodstainedChivalry",
+                "EmblemOfSeveredFate",
+                "PaleFlame",
+                "s:atkp",
+                "BlizzardStrayer"
+            ],
+            "main": {
+                "sands": ["atkp", "er"],
+                "goblet": ["cryoDB", "physicalDB", "atkp"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Diluc": {
+        "element": "pyro",
+        "rarity": 5,
+        "presets": ["攻双暴", "攻精双暴"],
+        "build": {
+            "set": ["s:atkp", "s:em", "CrimsonWitchOfFlames"],
+            "main": {
+                "sands": ["atkp", "em"],
+                "goblet": ["pyroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Razor": {
+        "element": "electro",
+        "rarity": 4,
+        "presets": ["攻双暴"],
+        "build": {
+            "set": ["s:atkp", "BloodstainedChivalry", "PaleFlame"],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["physicalDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Amber": {
+        "element": "pyro",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻精双暴"],
+        "build": {
+            "set": ["CrimsonWitchOfFlames", "NoblesseOblige", "s:em"],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["pyroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Venti": {
+        "element": "anemo",
+        "rarity": 5,
+        "presets": ["攻精充双暴", "攻双暴"],
+        "build": {
+            "set": ["s:anemoDB"],
+            "main": {
+                "sands": ["atkp", "er", "em"],
+                "goblet": ["anemoDB", "em"],
+                "circlet": ["cr", "cd", "em"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Xiangling": {
+        "element": "pyro",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻精双暴", "攻精充双暴"],
+        "build": {
+            "set": [
+                "NoblesseOblige",
+                "s:atkp",
+                "s:em",
+                "EmblemOfSeveredFate",
+                "CrimsonWitchOfFlames"
+            ],
+            "main": {
+                "sands": ["em", "er", "atkp"],
+                "goblet": ["pyroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Beidou": {
+        "element": "electro",
+        "rarity": 4,
+        "presets": ["攻双暴"],
+        "build": {
+            "set": [
+                "s:atkp",
+                "EmblemOfSeveredFate",
+                "NoblesseOblige",
+                "ThunderingFury"
+            ],
+            "main": {
+                "sands": ["atkp", "er"],
+                "goblet": ["electroDB", "atkp"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Xingqiu": {
+        "element": "hydro",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻精双暴", "攻精充双暴"],
+        "build": {
+            "set": [
+                "s:atkp",
+                "NoblesseOblige",
+                "s:hydroDB",
+                "EmblemOfSeveredFate"
+            ],
+            "main": {
+                "sands": ["atkp", "er"],
+                "goblet": ["hydroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Xiao": {
+        "element": "anemo",
+        "rarity": 5,
+        "presets": ["攻双暴"],
+        "build": {
+            "set": ["s:anemoDB", "s:atkp"],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["anemoDB", "atkp"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Ningguang": {
+        "element": "geo",
+        "rarity": 4,
+        "presets": ["攻双暴"],
+        "build": {
+            "set": ["ArchaicPetra", "s:atkp", "NoblesseOblige"],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["geoDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Klee": {
+        "element": "pyro",
+        "rarity": 5,
+        "presets": ["攻双暴", "攻精双暴"],
+        "build": {
+            "set": [
+                "s:atkp",
+                "s:em",
+                "RetracingBolide",
+                "Lavawalker",
+                "CrimsonWitchOfFlames"
+            ],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["pyroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Zhongli": {
+        "element": "geo",
+        "rarity": 5,
+        "presets": ["攻双暴", "攻生充双暴", "攻生双暴"],
+        "build": {
+            "set": ["ArchaicPetra", "s:atkp", "NoblesseOblige", "s:hpp"],
+            "main": {
+                "sands": ["hpp", "atkp", "er"],
+                "goblet": ["geoDB", "hpp"],
+                "circlet": ["cr", "cd", "hpp"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0.5,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Fischl": {
+        "element": "electro",
+        "rarity": 4,
+        "presets": ["攻充双暴", "攻精充双暴", "攻双暴"],
+        "build": {
+            "set": [
+                "PaleFlame",
+                "ThunderingFury",
+                "s:atkp",
+                "BloodstainedChivalry",
+                "Thundersoother",
+                "s:hpp"
+            ],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["electroDB", "physicalDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Bennett": {
+        "element": "pyro",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻精双暴", "攻精充双暴"],
+        "build": {
+            "set": ["NoblesseOblige", "Instructor"],
+            "main": {
+                "sands": ["er", "hpp"],
+                "goblet": ["hpp"],
+                "circlet": ["hb", "hpp"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0.25,
+                "defp": 0,
+                "em": 0.25,
+                "er": 1,
+                "cr": 0.25,
+                "cd": 0.25
+            }
+        }
+    },
+    "Tartaglia": {
+        "element": "hydro",
+        "rarity": 5,
+        "presets": ["攻双暴", "攻精双暴"],
+        "build": {
+            "set": ["s:atkp", "NoblesseOblige", "s:em", "s:hydroDB"],
+            "main": {
+                "sands": ["atkp", "er", "em"],
+                "goblet": ["hydroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Noelle": {
+        "element": "geo",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻防双暴", "攻防充双暴", "防双暴"],
+        "build": {
+            "set": ["RetracingBolide", "s:atkp", "HuskOfOpulentDreams"],
+            "main": {
+                "sands": ["defp"],
+                "goblet": ["geoDB", "defp"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.25,
+                "defp": 0.5,
+                "em": 0,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Qiqi": {
+        "element": "cryo",
+        "rarity": 5,
+        "presets": ["攻双暴"],
+        "build": {
+            "set": ["EmblemOfSeveredFate", "s:hb", "NoblesseOblige", "s:hpp"],
+            "main": {
+                "sands": ["er", "atkp"],
+                "goblet": ["atkp"],
+                "circlet": ["hb", "atkp"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 1,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 0.25,
+                "cd": 0.25
+            }
+        }
+    },
+    "Chongyun": {
+        "element": "cryo",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻精双暴"],
+        "build": {
+            "set": [
+                "BlizzardStrayer",
+                "EmblemOfSeveredFate",
+                "Lavawalker",
+                "NoblesseOblige"
+            ],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["cryoDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Ganyu": {
+        "element": "cryo",
+        "rarity": 5,
+        "presets": ["攻双暴", "攻精双暴"],
+        "build": {
+            "set": [
+                "NoblesseOblige",
+                "s:atkp",
+                "EmblemOfSeveredFate",
+                "BlizzardStrayer",
+                "s:em"
+            ],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["cryoDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Albedo": {
+        "element": "geo",
+        "rarity": 5,
+        "presets": ["防双暴"],
+        "build": {
+            "set": ["ArchaicPetra", "HuskOfOpulentDreams", "s:hpp"],
+            "main": {
+                "sands": ["defp"],
+                "goblet": ["geoDB"],
+                "circlet": ["cr", "cd", "defp"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.25,
+                "defp": 0.5,
+                "em": 0,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Diona": {
+        "element": "cryo",
+        "rarity": 4,
+        "presets": ["生充"],
+        "build": {
+            "set": ["s:hb", "s:hpp", "NoblesseOblige"],
+            "main": {
+                "sands": ["hpp", "er"],
+                "goblet": ["hpp"],
+                "circlet": ["hpp", "hb"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 0.5,
+                "cd": 0.25
+            }
+        }
+    },
+    "Mona": {
+        "element": "hydro",
+        "rarity": 5,
+        "presets": ["攻双暴", "攻精双暴", "攻精充双暴"],
+        "build": {
+            "set": [
+                "s:hydroDB",
+                "s:em",
+                "EmblemOfSeveredFate",
+                "NoblesseOblige",
+                "s:hpp"
+            ],
+            "main": {
+                "sands": ["er"],
+                "goblet": ["atkp"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Keqing": {
+        "element": "electro",
+        "rarity": 5,
+        "presets": ["攻双暴"],
+        "build": {
+            "set": [
+                "s:atkp",
+                "NoblesseOblige",
+                "BloodstainedChivalry",
+                "PaleFlame",
+                "Thundersoother",
+                "ThunderingFury"
+            ],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["electroDB", "physicalDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Sucrose": {
+        "element": "anemo",
+        "rarity": 4,
+        "presets": ["精"],
+        "build": {
+            "set": ["s:atkp", "NoblesseOblige", "s:anemoDB"],
+            "main": {
+                "sands": ["em", "er", "atkp"],
+                "goblet": ["em", "anemoDB"],
+                "circlet": ["cr", "cd", "em"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.25,
+                "defp": 0,
+                "em": 1,
+                "er": 0.5,
+                "cr": 0.5,
+                "cd": 0.25
+            }
+        }
+    },
+    "Xinyan": {
+        "element": "pyro",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻防双暴"],
+        "build": {
+            "set": [
+                "PaleFlame",
+                "s:atkp",
+                "RetracingBolide",
+                "HuskOfOpulentDreams",
+                "s:hpp",
+                "BloodstainedChivalry"
+            ],
+            "main": {
+                "sands": ["defp", "atkp"],
+                "goblet": ["defp", "physicalDB"],
+                "circlet": ["cr", "cd", "defp"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0.5,
+                "em": 0,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Rosaria": {
+        "element": "cryo",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻精双暴"],
+        "build": {
+            "set": [
+                "s:atkp",
+                "BlizzardStrayer",
+                "BloodstainedChivalry",
+                "EmblemOfSeveredFate",
+                "PaleFlame",
+                "NoblesseOblige"
+            ],
+            "main": {
+                "sands": ["atkp", "er"],
+                "goblet": ["cryoDB", "physicalDB"],
+                "circlet": ["cr"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "HuTao": {
+        "element": "pyro",
+        "rarity": 5,
+        "presets": ["攻双暴", "攻生精双暴", "生精双暴", "生精爆伤"],
+        "build": {
+            "set": [
+                "s:hpp",
+                "s:em",
+                "RetracingBolide",
+                "s:atkp",
+                "CrimsonWitchOfFlames"
+            ],
+            "main": {
+                "sands": ["hpp", "em"],
+                "goblet": ["pyroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0.5,
+                "atkp": 0.25,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "KaedeharaKazuha": {
+        "element": "anemo",
+        "rarity": 5,
+        "presets": ["攻双暴", "攻精双暴", "精充"],
+        "build": {
+            "set": ["s:anemoDB"],
+            "main": {
+                "sands": ["em", "atkp"],
+                "goblet": ["anemoDB", "em", "atkp"],
+                "circlet": ["cr", "cd", "em", "atkp"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 1,
+                "er": 0.5,
+                "cr": 0.5,
+                "cd": 0.5
+            }
+        }
+    },
+    "Yanfei": {
+        "element": "pyro",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻精双暴"],
+        "build": {
+            "set": ["RetracingBolide", "CrimsonWitchOfFlames", "s:em"],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["pyroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Yoimiya": {
+        "element": "pyro",
+        "rarity": 5,
+        "presets": ["攻双暴", "攻精双暴"],
+        "build": {
+            "set": [
+                "s:atkp",
+                "CrimsonWitchOfFlames",
+                "RetracingBolide",
+                "Lavawalker"
+            ],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["pyroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Thoma": {
+        "element": "pyro",
+        "rarity": 4,
+        "presets": ["生充", "生精充"],
+        "build": {
+            "set": ["s:hpp", "EmblemOfSeveredFate", "s:em"],
+            "main": {
+                "sands": ["er", "hpp", "em"],
+                "goblet": ["hpp", "em"],
+                "circlet": ["hpp", "em"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0.25,
+                "atkp": 0,
+                "defp": 0,
+                "em": 1,
+                "er": 0.5,
+                "cr": 0.25,
+                "cd": 0
+            }
+        }
+    },
+    "Eula": {
+        "element": "cryo",
+        "rarity": 5,
+        "presets": ["攻充双暴", "攻击爆伤", "攻双暴"],
+        "build": {
+            "set": ["s:atkp", "BloodstainedChivalry", "PaleFlame"],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["physicalDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "RaidenShogun": {
+        "element": "electro",
+        "rarity": 5,
+        "presets": ["攻充双暴", "攻双暴"],
+        "build": {
+            "set": ["EmblemOfSeveredFate"],
+            "main": {
+                "sands": ["er", "atkp"],
+                "goblet": ["electroDB", "atkp"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Sayu": {
+        "element": "anemo",
+        "rarity": 4,
+        "presets": ["攻充双暴", "攻双暴"],
+        "build": {
+            "set": ["s:atkp", "s:hb", "s:anemoDB"],
+            "main": {
+                "sands": ["em", "er", "atkp"],
+                "goblet": ["em", "anemoDB"],
+                "circlet": ["em", "hb", "atkp"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 1,
+                "defp": 0,
+                "em": 0.5,
+                "er": 1,
+                "cr": 0.5,
+                "cd": 0.25
+            }
+        }
+    },
+    "SangonomiyaKokomi": {
+        "element": "hydro",
+        "rarity": 5,
+        "presets": ["生充", "攻生充", "攻生精充"],
+        "build": {
+            "set": ["s:hb", "s:hpp", "s:hydroDB"],
+            "main": {
+                "sands": ["hpp", "er"],
+                "goblet": ["hydroDB", "hpp"],
+                "circlet": ["hb"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.5,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    "Gorou": {
+        "element": "geo",
+        "rarity": 4,
+        "presets": ["防充"],
+        "build": {
+            "set": [
+                "HuskOfOpulentDreams",
+                "EmblemOfSeveredFate",
+                "s:hb",
+                "ArchaicPetra",
+                "NoblesseOblige"
+            ],
+            "main": {
+                "sands": ["er"],
+                "goblet": ["defp"],
+                "circlet": ["defp", "hb"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.25,
+                "defp": 1,
+                "em": 0.25,
+                "er": 1,
+                "cr": 0.5,
+                "cd": 0.25
+            }
+        }
+    },
+    "KujouSara": {
+        "element": "electro",
+        "rarity": 4,
+        "presets": ["攻充双暴", "攻双暴"],
+        "build": {
+            "set": [
+                "s:atkp",
+                "ThunderingFury",
+                "EmblemOfSeveredFate",
+                "NoblesseOblige"
+            ],
+            "main": {
+                "sands": ["er", "atkp"],
+                "goblet": ["electroDB", "atkp"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "AratakiItto": {
+        "element": "geo",
+        "rarity": 5,
+        "presets": ["攻双暴", "攻防双暴", "攻防充双暴", "防双暴"],
+        "build": {
+            "set": ["ArchaicPetra", "HuskOfOpulentDreams"],
+            "main": {
+                "sands": ["defp"],
+                "goblet": ["geoDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0.5,
+                "em": 0,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "YaeMiko": {
+        "element": "electro",
+        "rarity": 5,
+        "presets": ["攻精双暴", "攻精充双暴"],
+        "build": {
+            "set": ["s:atkp", "ThunderingFury", "Thundersoother", "s:hpp"],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["electroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "ShikanoinHeizou": {
+        "element": "anemo",
+        "rarity": 4,
+        "presets": ["攻双暴"],
+        "build": {
+            "set": ["s:anemoDB", "s:atkp"],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["anemoDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Yelan": {
+        "element": "hydro",
+        "rarity": 5,
+        "presets": ["生双暴", "生充双暴"],
+        "build": {
+            "set": [
+                "EmblemOfSeveredFate",
+                "s:hydroDB",
+                "NoblesseOblige",
+                "s:hpp"
+            ],
+            "main": {
+                "sands": ["hpp", "er"],
+                "goblet": ["hydroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Aloy": {
+        "element": "cryo",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻精双暴"],
+        "build": {
+            "set": [
+                "s:atkp",
+                "EmblemOfSeveredFate",
+                "NoblesseOblige",
+                "BlizzardStrayer"
+            ],
+            "main": {
+                "sands": ["atkp", "er", "em"],
+                "goblet": ["cryoDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Shenhe": {
+        "element": "cryo",
+        "rarity": 5,
+        "presets": ["攻充", "攻双暴"],
+        "build": {
+            "set": ["s:atkp", "NoblesseOblige"],
+            "main": {
+                "sands": ["atkp", "er"],
+                "goblet": ["atkp"],
+                "circlet": ["atkp"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 1,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.5,
+                "cr": 0.5,
+                "cd": 0.25
+            }
+        }
+    },
+    "YunJin": {
+        "element": "geo",
+        "rarity": 4,
+        "presets": ["防充"],
+        "build": {
+            "set": [
+                "EmblemOfSeveredFate",
+                "NoblesseOblige",
+                "HuskOfOpulentDreams"
+            ],
+            "main": {
+                "sands": ["defp", "er"],
+                "goblet": ["defp"],
+                "circlet": ["defp"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.25,
+                "defp": 1,
+                "em": 0.25,
+                "er": 1,
+                "cr": 0.5,
+                "cd": 0.25
+            }
+        }
+    },
+    "KukiShinobu": {
+        "element": "electro",
+        "rarity": 4,
+        "presets": ["生", "生精"],
+        "build": {
+            "set": ["s:hpp", "s:hb"],
+            "main": {
+                "sands": ["em", "hpp"],
+                "goblet": ["em", "hpp"],
+                "circlet": ["hb", "em"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 1,
+                "er": 0,
+                "cr": 0.5,
+                "cd": 0
+            }
+        }
+    },
+    "KamisatoAyato": {
+        "element": "hydro",
+        "rarity": 5,
+        "presets": ["攻双暴", "攻生双暴"],
+        "build": {
+            "set": ["s:atkp", "s:hydroDB"],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["hydroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0.25,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0,
+                "er": 0,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Collei": {
+        "element": "dendro",
+        "rarity": 4,
+        "presets": ["精双暴", "精充双暴", "攻精双暴", "攻精充双暴"],
+        "build": {
+            "set": [
+                "DeepwoodMemories",
+                "s:em",
+                "EmblemOfSeveredFate",
+                "NoblesseOblige"
+            ],
+            "main": {
+                "sands": ["atkp", "er"],
+                "goblet": ["dendroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Dori": {
+        "element": "electro",
+        "rarity": 4,
+        "presets": ["生充"],
+        "build": {
+            "set": ["s:hb", "NoblesseOblige", "EmblemOfSeveredFate"],
+            "main": {
+                "sands": ["hpp", "er"],
+                "goblet": ["hpp"],
+                "circlet": ["hb"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    "Tighnari": {
+        "element": "dendro",
+        "rarity": 5,
+        "presets": ["精双暴", "攻精双暴"],
+        "build": {
+            "set": ["DeepwoodMemories", "s:em"],
+            "main": {
+                "sands": ["em"],
+                "goblet": ["dendroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Nilou": {
+        "element": "hydro",
+        "rarity": 5,
+        "presets": ["生精双暴", "生精充双暴"],
+        "build": {
+            "set": ["s:em", "s:hpp"],
+            "main": { "sands": ["hpp"], "goblet": ["hpp"], "circlet": ["hpp"] },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 1,
+                "er": 0,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    "Cyno": {
+        "element": "electro",
+        "rarity": 5,
+        "presets": ["攻精双暴", "攻精充双暴"],
+        "build": {
+            "set": ["s:em", "s:atkp", "ThunderingFury"],
+            "main": {
+                "sands": ["em", "atkp"],
+                "goblet": ["electroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.25,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Candace": {
+        "element": "hydro",
+        "rarity": 4,
+        "presets": ["生充"],
+        "build": {
+            "set": ["EmblemOfSeveredFate", "NoblesseOblige", "s:hpp"],
+            "main": {
+                "sands": ["er", "hpp"],
+                "goblet": ["hpp", "hydroDB"],
+                "circlet": ["hpp", "cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    "Nahida": {
+        "element": "dendro",
+        "rarity": 5,
+        "presets": ["精", "精双暴"],
+        "build": {
+            "set": ["s:em", "DeepwoodMemories"],
+            "main": {
+                "sands": ["em"],
+                "goblet": ["em", "dendroDB"],
+                "circlet": ["em", "cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.25,
+                "defp": 0,
+                "em": 1,
+                "er": 0,
+                "cr": 0.5,
+                "cd": 0.5
+            }
+        }
+    },
+    "Layla": {
+        "element": "cryo",
+        "rarity": 4,
+        "presets": ["生充"],
+        "build": {
+            "set": ["NoblesseOblige", "s:hpp"],
+            "main": { "sands": ["hpp"], "goblet": ["hpp"], "circlet": ["hpp"] },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    "Wanderer": {
+        "element": "anemo",
+        "rarity": 5,
+        "presets": ["攻双暴"],
+        "build": {
+            "set": ["s:anemoDB", "s:atkp"],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["anemoDB", "atkp"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0,
+                "er": 0,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Faruzan": {
+        "element": "anemo",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻充双暴", "充"],
+        "build": {
+            "set": ["NoblesseOblige", "s:hpp", "s:anemoDB"],
+            "main": {
+                "sands": ["er", "atkp"],
+                "goblet": ["anemoDB", "atkp"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 1,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Yaoyao": {
+        "element": "dendro",
+        "rarity": 4,
+        "presets": ["生", "生精"],
+        "build": {
+            "set": ["s:hb", "s:hpp", "DeepwoodMemories"],
+            "main": {
+                "sands": ["hpp", "em"],
+                "goblet": ["hpp"],
+                "circlet": ["hb"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 0.25,
+                "cd": 0
+            }
+        }
+    },
+    "Alhaitham": {
+        "element": "dendro",
+        "rarity": 5,
+        "presets": ["精双暴", "攻精双暴", "攻精充双暴"],
+        "build": {
+            "set": ["s:em", "DeepwoodMemories"],
+            "main": {
+                "sands": ["em"],
+                "goblet": ["dendroDB", "em"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 1,
+                "er": 0,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Dehya": {
+        "element": "pyro",
+        "rarity": 5,
+        "presets": ["攻充双暴", "攻精充双暴", "攻生精充双暴"],
+        "build": {
+            "set": [
+                "s:hpp",
+                "CrimsonWitchOfFlames",
+                "EmblemOfSeveredFate",
+                "Instructor"
+            ],
+            "main": {
+                "sands": ["hpp", "atkp"],
+                "goblet": ["pyroDB", "atkp", "hpp"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0.5,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.5,
+                "er": 0,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Mika": {
+        "element": "cryo",
+        "rarity": 4,
+        "presets": ["生", "生精"],
+        "build": {
+            "set": ["NoblesseOblige", "EmblemOfSeveredFate", "s:hb", "s:hpp"],
+            "main": {
+                "sands": ["hpp", "er"],
+                "goblet": ["hpp"],
+                "circlet": ["hb"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 0.25,
+                "cd": 0
+            }
+        }
+    }
+}

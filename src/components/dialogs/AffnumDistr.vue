@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { graphic } from "echarts";
 import { Artifact } from "@/ys/artifact";
-import { getAffnumCDF, getIncrePDF } from "@/ys/gacha/artifact";
+import { getAffnumPdf, getIncreAffnumPdf } from "@/ys/gacha/reliq";
 import { computed, ref, watch } from "vue";
 import { useArtifactStore } from "@/store";
 import { moment, toCDF, toPDF, zeros } from "@/ys/gacha/utils";
@@ -217,22 +217,25 @@ const updPlots = () => {
     setBonus = result.setBonus;
     // calc PDFs
     pdfs.value = [];
-    let curLv = Math.floor(props.art.level / 4),
+    let curLv = props.art.nMinorsUpgraded,
         cur = Math.round((result.cur - result.setBonus) * 10);
     for (let i = curLv; i <= 5; ++i) {
         let label = i < 5 ? `${i * 4} +` : `20`;
-        let data = getIncrePDF(
+        let data = getIncreAffnumPdf(
             props.art.mainKey,
             result.weight,
-            props.art.minors.map((m) => m.key),
-            i - curLv
+            i - curLv,
+            props.art.minors.map((m) => m.key)
         );
         data = zeros(cur).concat(data);
         pdfs.value.push({ label, data });
     }
     // calc pdfs2
-    cdf2 = getAffnumCDF(props.art.mainKey, result.weight, 5);
-    let p = ArtifactData.mainDistr[props.art.slot][props.art.mainKey] / 5;
+    cdf2 = toCDF(
+        getAffnumPdf(props.art.mainKey, result.weight, props.art.rarity)
+    );
+    let p =
+        (ArtifactData.mainProbs as any)[props.art.slot][props.art.mainKey] / 5;
     pdfs2 = counts.map((c) => {
         let n = parseInt(c);
         return {

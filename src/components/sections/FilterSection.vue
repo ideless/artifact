@@ -25,7 +25,7 @@ const pro = computed<boolean>({
 function countArtifactAttr(key: keyof Artifact) {
     let c: { [key: string]: number } = {};
     for (let a of artStore.artifacts) {
-        let akey = a[key].toString();
+        let akey = a[key]!.toString();
         c[akey] = akey in c ? c[akey] + 1 : 1;
     }
     return c;

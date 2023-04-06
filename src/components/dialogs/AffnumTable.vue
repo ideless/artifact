@@ -4,6 +4,7 @@ import { useArtifactStore, useUiStore } from "@/store";
 import { Delete, Edit, Plus, InfoFilled } from "@element-plus/icons-vue";
 import { ArtifactData } from "@/ys/data";
 import { i18n } from "@/i18n";
+import type { ISlotKey } from "@/ys/types";
 
 const props = defineProps<{
     modelValue: boolean;
@@ -141,6 +142,15 @@ function submitAffixWeightForm(formEl: any) {
         showAffixWeightEditor.value = false;
     });
 }
+
+let typeKeys = [] as string[];
+ArtifactData.slotKeys.forEach((slotKey) => {
+    typeKeys = typeKeys.concat(
+        ArtifactData.mainKeys[slotKey as ISlotKey].map(
+            (mainKey) => `${slotKey}_${mainKey}`
+        )
+    );
+});
 
 // fmt
 function fmtSet(set: string) {
@@ -318,7 +328,7 @@ function fmtSetAndType(set: string, type: string) {
                         style="width: 100%"
                     >
                         <el-option
-                            v-for="k in ArtifactData.typeKeys"
+                            v-for="k in typeKeys"
                             :label="$t('artifact.type.' + k)"
                             :value="k"
                         />
@@ -359,7 +369,7 @@ function fmtSetAndType(set: string, type: string) {
                     <el-select v-model="affixWeightForm.type">
                         <el-option :label="$t('ui.any')" value="*" />
                         <el-option
-                            v-for="k in ArtifactData.typeKeys"
+                            v-for="k in typeKeys"
                             :label="$t('artifact.type.' + k)"
                             :value="k"
                         />

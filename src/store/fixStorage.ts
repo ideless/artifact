@@ -1,11 +1,11 @@
-import type { IBuild } from "@/ys/types";
+import type { IBuild, ICharKey } from "@/ys/types";
 import { CharacterData } from "@/ys/data";
 import { isSame } from "./utils";
 import { i18n } from "@/i18n";
 
 function createBuildFromData(key: string) {
     if (!(key in CharacterData)) return undefined;
-    let c = CharacterData[key].build;
+    let c = CharacterData[key as ICharKey].build;
     return {
         key,
         name: i18n.global.t("character." + key),

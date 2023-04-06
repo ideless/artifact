@@ -5,6 +5,7 @@ import { Affix, Artifact } from "@/ys/artifact";
 import ArtifactCard from "@/components/widgets/ArtifactCard.vue";
 import { ArtifactData, CharacterData } from "@/ys/data";
 import { i18n } from "@/i18n";
+import type { ICharKey } from "@/ys/types";
 
 const props = defineProps<{
     modelValue: boolean;
@@ -27,10 +28,11 @@ const show = computed({
 const characters = computed(() => {
     let tmp: { [key: string]: string[] } = {};
     for (let c in CharacterData) {
-        if (CharacterData[c].element in tmp) {
-            tmp[CharacterData[c].element].push(c);
+        let data = CharacterData[c as ICharKey];
+        if (data.element in tmp) {
+            tmp[data.element].push(c);
         } else {
-            tmp[CharacterData[c].element] = [c];
+            tmp[data.element] = [c];
         }
     }
     let ret = [

@@ -4,6 +4,8 @@ import { ArtifactData } from "@/ys/data";
 import { useArtifactStore } from "@/store";
 import { Artifact } from "@/ys/artifact";
 import { i18n } from "@/i18n";
+import { choice } from "@/ys/utils";
+import type { ISlotKey } from "@/ys/types";
 
 const props = defineProps<{
     modelValue: boolean;
@@ -36,7 +38,11 @@ const slots = ArtifactData.slotKeys.map((key) => ({
 const slot = ref(""); // ''表示任意部位
 watch(slot, () => {
     if (slot.value in ArtifactData.mainKeys) {
-        if (!ArtifactData.mainKeys[slot.value].includes(mainKey.value))
+        if (
+            !ArtifactData.mainKeys[slot.value as ISlotKey].includes(
+                mainKey.value
+            )
+        )
             mainKey.value = "";
     } else {
         mainKey.value = "";
@@ -45,10 +51,12 @@ watch(slot, () => {
 // 主词条（可选项依赖部位）
 const mains = computed(() => {
     if (slot.value in ArtifactData.mainKeys) {
-        return ArtifactData.mainKeys[slot.value].map((key: string) => ({
-            value: key,
-            label: i18n.global.t("artifact.affix." + key),
-        }));
+        return ArtifactData.mainKeys[slot.value as ISlotKey].map(
+            (key: string) => ({
+                value: key,
+                label: i18n.global.t("artifact.affix." + key),
+            })
+        );
     } else {
         return [];
     }
@@ -65,11 +73,14 @@ const valid = computed(() => {
 const save = () => {
     let artifacts: Artifact[] = [];
     for (let i = 0; i < count.value; ++i) {
+        let set = choice(setCands.value),
+            rarity = ArtifactData.setKeysR4.includes(set) ? 4 : 5;
         artifacts.push(
             Artifact.rand({
-                sets: setCands.value,
+                set,
                 slot: slot.value,
                 mainKey: mainKey.value,
+                rarity,
                 level: level.value,
             })
         );

@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import MultiSelectBase from "@/components/widgets/MultiSelectBase.vue";
-import { ICharOption } from "@/store/types";
+import type { ICharOption } from "@/store/types";
 import { i18n } from "@/i18n";
 import { CharacterData } from "@/ys/data";
 import { computed } from "vue";
+import type { ICharKey } from "@/ys/types";
 
 const props = defineProps<{
     options: ICharOption[];
@@ -37,7 +38,7 @@ const color = (o: ICharOption) => {
     if (o.key == "" || o.key.startsWith("0")) {
         return "black";
     } else {
-        return CharacterData[o.key].rarity == 5 ? "gold" : "purple";
+        return CharacterData[o.key as ICharKey].rarity == 5 ? "gold" : "purple";
     }
 };
 
@@ -54,9 +55,13 @@ const optionGroups = computed(() => {
         g: { [e: string]: ICharOption[] } = {};
     Object.keys(CharacterData)
         .filter((key) => key in omap)
-        .sort((k1, k2) => CharacterData[k2].rarity - CharacterData[k1].rarity)
+        .sort(
+            (k1, k2) =>
+                CharacterData[k2 as ICharKey].rarity -
+                CharacterData[k1 as ICharKey].rarity
+        )
         .forEach((key) => {
-            let e = CharacterData[key].element;
+            let e = CharacterData[key as ICharKey].element;
             if (e in g) {
                 g[e].push(omap[key]);
             } else {

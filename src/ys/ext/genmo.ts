@@ -3,6 +3,7 @@ import { whatis, assert } from "../utils";
 
 const keymap = {
     set: <{ [key: string]: string }>{
+        Instructor: "instructor",
         GladiatorsFinale: "gladiators_finale",
         WanderersTroupe: "wanderers_troupe",
         Thundersoother: "thundersoother",
@@ -29,6 +30,8 @@ const keymap = {
         GildedDreams: "gilded_dreams",
         DesertPavilionChronicle: "desert_pavilion_chronicle",
         FlowerOfParadiseLost: "flower_of_paradise_lost",
+        NymphsDream: "nymphs_dream",
+        VourukashasGlow: "vourukashas_glow",
     },
     affix: <{ [key: string]: string }>{
         hp: "flatHP",
@@ -82,7 +85,7 @@ export default {
         assert(genmo instanceof Array);
         let ret = [];
         for (let a of genmo) {
-            if (a["rarity"] !== 5) continue;
+            if (a["rarity"] < 4) continue;
             let set = whatis(a["asKey"], keymap.set);
             if (!set) {
                 console.warn(`Ignoring unrecognized artifact: ${a["asKey"]}`);

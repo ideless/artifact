@@ -72,9 +72,9 @@ const showPreview = ref(false);
 // 预览Yas配置器
 const showYasConfig = ref(false);
 // 测试
-// nextTick(() => {
-//     artStore.setArtifacts(testArts, false);
-// });
+nextTick(() => {
+    artStore.setArtifacts(testArts, false);
+});
 </script>
 
 <template>

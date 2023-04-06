@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ref, computed } from "vue";
 import { useArtifactStore } from "@/store";
-import { CharacterData } from "@/ys/data";
-import { MiscData } from "@/ys/data";
+import { CharacterData, MiscData } from "@/ys/data";
+import type { ICharKey } from "@/ys/types";
 
 const artStore = useArtifactStore();
 
@@ -33,7 +33,7 @@ const characters = computed<IOption[]>(() => {
         if (
             (b.key.startsWith("0") && element.value == "custom") ||
             (b.key in CharacterData &&
-                CharacterData[b.key].element == element.value)
+                CharacterData[b.key as ICharKey].element == element.value)
         ) {
             ret.push({
                 value: b.key,

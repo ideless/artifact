@@ -3,7 +3,6 @@ import { computed, ref, watch } from "vue";
 import { Artifact } from "@/ys/artifact";
 import { useArtifactStore } from "@/store";
 import ArtifactCard from "@/components/widgets/ArtifactCard.vue";
-import { i18n } from "@/i18n";
 
 const props = defineProps<{
     modelValue: boolean;

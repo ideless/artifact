@@ -1,5 +1,6 @@
 import { assert, choice } from "./utils";
 import { ArtifactData } from "./data";
+import type { ISlotKey, IMinorAffixKey } from "./types";
 
 export class Affix {
     key = "";
@@ -22,7 +23,7 @@ export class Affix {
 export class Artifact {
     set = "";
     slot = "";
-    rarity = 5;
+    rarity = 5; // 4, 5
     level = 0;
     lock = false;
     location = "";
@@ -47,111 +48,136 @@ export class Artifact {
             }
         }
         this.data.lock = this.lock;
+
+        this.validate();
     }
+
     validate() {
-        assert(this.rarity == 5, "Only 5 star artifacts are supported");
-        assert(
-            [3, 4].includes(this.minors.length),
-            "Invalid artifact: number of minors is not 3 or 4"
-        );
-        assert(
-            this.level >= 0 && this.level <= 20,
-            "Invalid artifact: invalid level"
-        );
-        assert(
-            this.level < 4 || this.minors.length == 4,
-            "Invalid artifact: number of minors is not 4"
-        );
+        if (this.rarity != 4 && this.rarity != 5) {
+            throw new Error("Invalid rarity");
+        }
     }
-    /**
-     * 注意：要指定主词条(mainKey)，必须同时指定一个正确的位置(slot)
-     */
+
+    get mainStats() {
+        let mainStatsAll;
+
+        if (this.rarity === 5) {
+            mainStatsAll = ArtifactData.mainStatsR5;
+        } else if (this.rarity === 4) {
+            mainStatsAll = ArtifactData.mainStatsR4;
+        } else {
+            throw new Error("Invalid rarity");
+        }
+
+        if (this.mainKey in mainStatsAll) {
+            return mainStatsAll[this.mainKey as keyof typeof mainStatsAll];
+        } else if (this.mainKey.endsWith("DB")) {
+            return mainStatsAll.elementalDB;
+        } else {
+            return undefined;
+        }
+    }
+
+    get minorStats() {
+        if (this.rarity === 5) {
+            return ArtifactData.minorStatsR5;
+        } else if (this.rarity === 4) {
+            return ArtifactData.minorStatsR4;
+        } else {
+            throw new Error("Invalid rarity");
+        }
+    }
+
+    get nMinorsUpgraded() {
+        return Math.floor(this.level / 4);
+    }
+
+    get nMinorsToUpgrade() {
+        return this.rarity - this.nMinorsUpgraded;
+    }
+
     static rand({
-        sets,
+        set,
         slot,
         mainKey,
-        init_3,
+        rarity = 5,
         level = 0,
     }: {
-        sets?: string[];
+        set?: string;
         slot?: string;
         mainKey?: string;
-        init_3?: boolean;
+        rarity?: number;
         level?: number;
     }) {
-        let artifact = new Artifact();
-        // 套装
-        if (sets instanceof Array && sets.length) {
-            artifact.set = choice(sets);
-        }
-        // 部位
-        if (
-            slot &&
-            ["flower", "plume", "sands", "goblet", "circlet"].includes(slot)
-        ) {
-            artifact.slot = slot;
+        let A = new Artifact();
+        // set
+        if (set) {
+            assert(ArtifactData.setKeys.includes(set), "Invalid set key");
+            A.set = set;
         } else {
-            artifact.slot = choice([
-                "flower",
-                "plume",
-                "sands",
-                "goblet",
-                "circlet",
-            ]);
+            A.set = choice(ArtifactData.setKeys);
         }
-        // 主词条
-        if (mainKey && ArtifactData.mainKeys[artifact.slot].includes(mainKey)) {
-            artifact.mainKey = mainKey;
+        // slot
+        if (slot) {
+            assert(ArtifactData.slotKeys.includes(slot), "Invalid slot key");
+            A.slot = slot;
         } else {
-            let mains: string[] = [],
-                main_prs: number[] = [];
-            for (let key in ArtifactData.mainDistr[artifact.slot]) {
-                mains.push(key);
-                main_prs.push(ArtifactData.mainDistr[artifact.slot][key]);
-            }
-            artifact.mainKey = choice(mains, main_prs);
+            A.slot = choice(ArtifactData.slotKeys);
         }
-        // 是否初始3词条
-        if (init_3 == undefined) {
-            init_3 = Math.random() < 0.8;
-        }
-        // 等级
-        artifact.level = level;
-        // 副词条列表
-        let p_all =
-            artifact.mainKey in ArtifactData.minorStat
-                ? 1 - ArtifactData.minorDistr[artifact.mainKey]
-                : 1;
-        let all_minors: string[] = [],
-            minor_prs: number[] = [];
-        for (let m in ArtifactData.minorDistr)
-            if (m != artifact.mainKey) {
-                all_minors.push(m);
-                minor_prs.push(ArtifactData.minorStat[m] / p_all);
-            }
-        let minor_keys = choice(all_minors, minor_prs, 4);
-        let minor_values = [0, 0, 0, 0];
-        for (let i = 0; i < 4; ++i) {
-            minor_values[i] = 7 + choice(4);
-        }
-        let n_level_up = Math.floor(level / 4);
-        if (init_3) n_level_up--;
-        for (let i = 0; i < n_level_up; ++i) {
-            let j = choice(4);
-            let k = 7 + choice(4);
-            minor_values[j] += k;
-        }
-        let len = init_3 && level < 4 ? 3 : 4;
-        for (let i = 0; i < len; ++i) {
-            artifact.minors.push(
-                new Affix({
-                    key: minor_keys[i],
-                    value:
-                        (minor_values[i] / 10) *
-                        ArtifactData.minorStat[minor_keys[i]],
-                })
+        // main affix
+        if (mainKey) {
+            assert(
+                // ArtifactData.mainKeys[
+                //     A.slot as keyof typeof ArtifactData.mainKeys
+                // ].includes(mainKey),
+                ArtifactData.mainKeys.all.includes(mainKey),
+                "Invalid main key"
+            );
+            A.mainKey = mainKey;
+        } else {
+            A.mainKey = choice(
+                Object.keys(ArtifactData.mainProbs[A.slot as ISlotKey]),
+                Object.values(ArtifactData.mainProbs[A.slot as ISlotKey])
             );
         }
-        return artifact;
+        // rarity
+        assert([4, 5].includes(rarity), "Invalid rarity");
+        A.rarity = rarity;
+        // level
+        assert(
+            Number.isInteger(level) && level >= 0 && level <= 4 * rarity,
+            "Invalid level"
+        );
+        A.level = level;
+        // minor affixes
+        let nMinorsInit = Math.random() < 0.8 ? A.rarity - 2 : A.rarity - 1,
+            nMinorsUpgrade = Math.floor(A.level / 4),
+            nMinors = nMinorsInit + nMinorsUpgrade,
+            minorStats =
+                A.rarity == 5
+                    ? ArtifactData.minorStatsR5
+                    : ArtifactData.minorStatsR4;
+        A.minors = choice(
+            ArtifactData.minorKeys.filter((k) => k != A.mainKey),
+            Object.entries(ArtifactData.minorPickWeights)
+                .filter((e) => e[0] != A.mainKey)
+                .map((e) => e[1]),
+            Math.min(nMinors, 4)
+        ).map(
+            (key) =>
+                new Affix({
+                    key,
+                    value:
+                        minorStats[key as IMinorAffixKey] *
+                        choice([0.7, 0.8, 0.9, 1.0]),
+                })
+        );
+        for (let _ = 4; _ < nMinors; ++_) {
+            let minor = choice(A.minors);
+            minor.value +=
+                minorStats[minor.key as IMinorAffixKey] *
+                choice([0.7, 0.8, 0.9, 1.0]);
+        }
+        return A;
     }
 }

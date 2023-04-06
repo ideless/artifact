@@ -3,7 +3,8 @@ import { calcAffnum } from "./affnum";
 import { SimpleCache } from "../utils";
 import type { IWeight } from "../types";
 import { ArtifactData } from "../data";
-import { getAffnumCDF } from "../gacha/artifact";
+import { getAffnumPdf } from "../gacha/reliq";
+import { toCDF } from "../gacha/utils";
 
 export interface IBuild {
     key: string;
@@ -25,19 +26,34 @@ export interface IPBuildResult {
 export type IPBuildResults = Map<Artifact, IPBuildResult>;
 
 const AffnumCDFCache = new SimpleCache(
-    ({ mainKey, weight }: { mainKey: string; weight: IWeight }) => {
+    ({
+        mainKey,
+        weight,
+        rarity,
+    }: {
+        mainKey: string;
+        weight: IWeight;
+        rarity: number;
+    }) => {
         let w = { ...weight };
         ArtifactData.minorKeys.forEach((key) => {
             w[key] ||= 0;
         });
-        return getAffnumCDF(mainKey, w);
+        let pdf = getAffnumPdf(mainKey, w, rarity);
+        return toCDF(pdf);
     }
 );
 
 function setIncludes(set: string[], target: string) {
     for (let s of set) {
         if (s.startsWith("s:")) {
-            if (ArtifactData.setGroups[s].includes(target)) return true;
+            if (
+                s in ArtifactData.setGroups &&
+                ArtifactData.setGroups[
+                    s as keyof typeof ArtifactData.setGroups
+                ].includes(target)
+            )
+                return true;
         } else if (s === target) return true;
     }
     return false;
@@ -55,9 +71,13 @@ function calcPBuild(art: Artifact, builds: IBuild[], threshold: number) {
     });
     // ProbCache记录不同权重下的（无套装）适配概率
     const ProbCache = new SimpleCache((weight: IWeight) => {
-        let p = ArtifactData.mainDistr[art.slot][art.mainKey] / 5,
+        let p = (ArtifactData.mainProbs as any)[art.slot][art.mainKey] / 5,
             a = AvgAffnumCache.get(weight),
-            d = AffnumCDFCache.get({ mainKey: art.mainKey, weight }),
+            d = AffnumCDFCache.get({
+                mainKey: art.mainKey,
+                weight,
+                rarity: art.rarity,
+            }),
             x = a >= d.length ? 1 : d[a];
         return (p * x + 1 - p) ** 100; // 有没有100其实无所谓，有100更好看一点
     });

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ref, computed } from "vue";
 import { useArtifactStore } from "@/store";
-import { PresetData, CharacterData } from "@/ys/data";
+import { PresetData, CharacterData, MiscData } from "@/ys/data";
 import { i18n } from "@/i18n";
-import { MiscData } from "@/ys/data";
+import type { ICharKey, IPresetKey } from "@/ys/types";
 
 const artStore = useArtifactStore();
 
@@ -31,7 +31,7 @@ const character = ref("");
 const characters = computed<IOption[]>(() => {
     let ret = [];
     for (let c in CharacterData) {
-        if (CharacterData[c].element == element.value) {
+        if (CharacterData[c as ICharKey].element == element.value) {
             ret.push({
                 value: c,
                 label: i18n.global.t(`character.${c}`),
@@ -45,7 +45,7 @@ const presets = computed<IOption[]>(() => {
     let ret = [];
     for (let c in CharacterData) {
         if (c == character.value) {
-            for (let i of CharacterData[c].presets) {
+            for (let i of CharacterData[c as ICharKey].presets) {
                 ret.push({
                     value: i,
                     label: i,
@@ -64,7 +64,7 @@ const changeCharacter = () => {
     preset.value = "";
 };
 const apply = () => {
-    let w = PresetData[preset.value];
+    let w = PresetData[preset.value as IPresetKey];
     if (w) {
         artStore.sort.weight = { ...w } as any;
     }
