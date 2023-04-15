@@ -1,9 +1,9 @@
 import { Affix, Artifact } from "../artifact";
-import { ArtifactData } from "../data";
 import { whatis, assert } from "../utils";
 
 const keymap = {
     set: <{ [key: string]: string }>{
+        Instructor: "instructor",
         GladiatorsFinale: "gladiatorFinale",
         WanderersTroupe: "wandererTroupe",
         Thundersoother: "thunderSmoother",
@@ -30,6 +30,8 @@ const keymap = {
         GildedDreams: "GildedDreams",
         DesertPavilionChronicle: "DesertPavilionChronicle",
         FlowerOfParadiseLost: "FlowerOfParadiseLost",
+        NymphsDream: "NymphsDream",
+        VourukashasGlow: "VourukashasGlow",
     },
     affix: <{ [key: string]: string }>{
         hp: "lifeStatic",
@@ -80,7 +82,7 @@ export default {
         for (let mtype of mtypes) {
             assert(mtype in mona && mona[mtype] instanceof Array);
             for (let martifact of mona[mtype]) {
-                if (martifact["star"] !== 5) continue;
+                if (martifact["star"] < 4) continue;
                 let set = whatis(martifact["setName"], keymap.set);
                 if (!set) {
                     console.warn(
@@ -117,15 +119,17 @@ export default {
             head: [],
         };
         for (let a of artifacts) {
-            let type = keymap.slot[a.slot];
+            let type = keymap.slot[a.slot],
+                mainStats = a.mainStats;
+            if (!mainStats) continue;
             mona[type].push({
                 setName: keymap.set[a.set],
                 position: type,
                 mainTag: {
                     name: keymap.affix[a.mainKey],
                     value: ["hp", "atk", "em"].includes(a.mainKey)
-                        ? ArtifactData.mainStat[a.mainKey][a.level]
-                        : ArtifactData.mainStat[a.mainKey][a.level] / 100,
+                        ? mainStats[a.level]
+                        : mainStats[a.level] / 100,
                 },
                 normalTags: a.minors.map((m) => ({
                     name: keymap.affix[m.key],

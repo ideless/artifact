@@ -10,6 +10,7 @@ import type {
     IAffnumResults,
     IPBuildResults,
     IDefeatResults,
+    ICharKey,
 } from "@/ys/types";
 import filterRules from "../filterRules";
 import { useLocalStorage } from "@vueuse/core";
@@ -20,20 +21,6 @@ import {
     DefaultSetBonusTable,
 } from "@/ys/data";
 import { i18n } from "@/i18n";
-import { isSame } from "../utils";
-
-function isCustomizedBuild(b: IBuild) {
-    if (!(b.key in CharacterData)) return true;
-
-    let c = CharacterData[b.key].build;
-    if (!isSame(b.set, c.set)) return true;
-    if (!isSame(b.main.sands, c.main.sands)) return true;
-    if (!isSame(b.main.goblet, c.main.goblet)) return true;
-    if (!isSame(b.main.circlet, c.main.circlet)) return true;
-    if (!isSame(b.weight, c.weight)) return true;
-
-    return false;
-}
 
 export type ISortBy =
     | "avg"
@@ -94,7 +81,7 @@ export const useArtifactStore = defineStore("artifact", () => {
             if (cbuildMap.has(key)) {
                 ret.push(cbuildMap.get(key)!);
             } else {
-                let c = CharacterData[key];
+                let c = CharacterData[key as ICharKey];
                 ret.push({
                     key,
                     name: i18n.global.t(`character.${key}`),

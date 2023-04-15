@@ -1,5 +1,6 @@
 import { Artifact } from "../artifact";
 import { assert, whatis } from "../utils";
+import { ArtifactData } from "../data";
 
 const keymap = {
     affix: <{ [key: string]: string }>{
@@ -31,9 +32,14 @@ export default {
         assert(typeof good == "object" && "artifacts" in good);
         assert(good.artifacts instanceof Array);
         let source = (good.source || "*") + "/good";
-        let ret = [];
+        let ret = [],
+            allSetKeys = new Set(ArtifactData.setKeys);
         for (let a of good.artifacts) {
-            if (a.rarity !== 5) continue;
+            if (a.rarity < 4) continue;
+            if (!allSetKeys.has(a.setKey)) {
+                console.warn(`Ignoring unrecognized artifact: ${a.setKey}`);
+                continue;
+            }
             let artifact = new Artifact({
                 set: a.setKey,
                 slot: a.slotKey,

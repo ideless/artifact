@@ -1,6 +1,8 @@
 // implementation of some python-like utilities
 
 export function range(...args: number[]) {
+    if (args.length == 0 || args.length > 3)
+        throw new Error("invalid range arguments");
     let d = [];
     if (args.length == 1) {
         for (let i = 0; i < args[0]; ++i) d.push(i);
@@ -16,9 +18,9 @@ export function range(...args: number[]) {
     return d;
 }
 
-export function product(...args: Array<any[]>) {
-    if (args.length == 0) return [];
-    let d: any[] = [],
+export function product<T>(...args: T[][]) {
+    if (args.length == 0) return [[]];
+    let d: T[][] = [],
         indices = [];
     for (let a of args) {
         if (a.length == 0) return d;
@@ -26,7 +28,7 @@ export function product(...args: Array<any[]>) {
     }
     while (true) {
         // push element
-        let b: any[] = [];
+        let b: T[] = [];
         for (let i = 0; i < args.length; ++i) b.push(args[i][indices[i]]);
         d.push(b);
         // increase indices by 1
@@ -47,6 +49,11 @@ export function zeros(shape: number[] | number, start: number = 0) {
     } else if (start == shape.length - 1) {
         for (let i = 0; i < shape[start]; ++i) d.push(0);
     } else if (start < shape.length - 1) {
+        for (let l of shape) {
+            if (l == 0) {
+                return [];
+            }
+        }
         for (let i = 0; i < shape[start]; ++i) d.push(zeros(shape, start + 1));
     }
     return d;
@@ -58,7 +65,7 @@ export function swap(arr: any[], i: number, j: number) {
     arr[j] = tmp;
 }
 
-function _permutations(arr: any[], n: number, d: any[], start: number = 0) {
+function _permutations<T>(arr: T[], n: number, d: T[][], start: number = 0) {
     if (start == n) {
         d.push(arr.slice(0, n));
     } else {
@@ -70,10 +77,11 @@ function _permutations(arr: any[], n: number, d: any[], start: number = 0) {
     }
 }
 
-export function permutations(arr: any[], n?: number): any[][] {
+export function permutations<T>(arr: T[], n?: number): T[][] {
     if (n == undefined) n = arr.length;
-    if (n < 1 || n > arr.length) throw new Error("permutations: invalid n");
-    let d: any[] = [];
+    if (n < 0 || n > arr.length) throw new Error("permutations: invalid n");
+    if (n == 0) return [[]];
+    let d: T[][] = [];
     _permutations([...arr], n, d);
     return d;
 }
@@ -118,7 +126,7 @@ export function toCDF(d: number[]) {
 
 export function moment(d: number[], t: number = 1) {
     let s = 0;
-    for (let n = 1; n < d.length; ++n) {
+    for (let n = 0; n < d.length; ++n) {
         s += d[n] * n ** t;
     }
     return s;
@@ -164,39 +172,16 @@ export function shrink(d: number[]) {
     while (d[d.length - 1] == 0) d.pop();
 }
 
-export function choice(m: number): number;
-export function choice<Type>(arr: Type[]): Type;
-export function choice<Type>(arr: Type[], n: number, p: number[]): Type[];
-export function choice<Type>(
-    mOrArr: number | Type[],
-    n?: number,
-    p?: number[]
-): number | Type | Type[] {
-    if (typeof mOrArr === "number") {
-        return Math.floor(Math.random() * mOrArr);
-    } else if (n !== undefined && p !== undefined) {
-        let a = [...mOrArr];
-        let d = [...p];
-        let sum = 0;
-        for (let w of d) {
-            sum += w;
-        }
-        for (let i = 0; i < n; ++i) {
-            let r = Math.random() * sum;
-            let acc = 0;
-            for (let j = i; j < a.length; ++j) {
-                acc += d[j];
-                if (r <= acc) {
-                    sum -= d[j];
-                    swap(a, i, j);
-                    swap(d, i, j);
-                    break;
-                }
-            }
-        }
-        return a.slice(0, n);
-    } else {
-        let i = Math.floor(Math.random() * mOrArr.length);
-        return mOrArr[i];
-    }
+export function discretize(pdf: number[], x: number, w = 1) {
+    let L = Math.floor(x),
+        R = L + 1;
+    pdf[L] += (R - x) * w;
+    if (x > L) pdf[R] += (x - L) * w;
+}
+
+export function normalize(pdf: number[], _shrink = true) {
+    if (_shrink) shrink(pdf);
+    let s = 0;
+    for (let p of pdf) s += p;
+    for (let i = 0; i < pdf.length; ++i) pdf[i] /= s;
 }

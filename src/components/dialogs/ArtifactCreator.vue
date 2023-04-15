@@ -5,6 +5,7 @@ import { i18n } from "@/i18n";
 import { useArtifactStore } from "@/store";
 import { Affix, Artifact } from "@/ys/artifact";
 import ArtifactCard from "@/components/widgets/ArtifactCard.vue";
+import type { ISlotKey } from "@/ys/types";
 
 const props = defineProps<{
     modelValue: boolean;
@@ -51,18 +52,24 @@ const slot = computed({
     set(newSlot: string) {
         art.value.slot = newSlot;
         // 自动纠正主词条
-        if (!ArtifactData.mainKeys[newSlot].includes(art.value.mainKey)) {
-            art.value.mainKey = ArtifactData.mainKeys[newSlot][0];
+        if (
+            !ArtifactData.mainKeys[newSlot as ISlotKey].includes(
+                art.value.mainKey
+            )
+        ) {
+            art.value.mainKey = ArtifactData.mainKeys[newSlot as ISlotKey][0];
         }
     },
 });
 // 主词条（可选项依赖部位）
 const mains = computed(() => {
     if (art.value.slot in ArtifactData.mainKeys) {
-        return ArtifactData.mainKeys[art.value.slot].map((key: string) => ({
-            value: key,
-            label: i18n.global.t("artifact.affix." + key),
-        }));
+        return ArtifactData.mainKeys[art.value.slot as ISlotKey].map(
+            (key: string) => ({
+                value: key,
+                label: i18n.global.t("artifact.affix." + key),
+            })
+        );
     } else {
         return [];
     }

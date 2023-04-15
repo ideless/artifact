@@ -32,6 +32,7 @@
     },
     "artifact": {
         "set": {
+            "Instructor": "教官",
             "GladiatorsFinale": "角斗士的终幕礼",
             "WanderersTroupe": "流浪大地的乐团",
             "Thundersoother": "平息鸣雷的尊者",
@@ -57,13 +58,17 @@
             "DeepwoodMemories": "深林的记忆",
             "GildedDreams": "饰金之梦",
             "DesertPavilionChronicle": "沙上楼阁史话",
-            "FlowerOfParadiseLost": "乐园遗落之花"
+            "FlowerOfParadiseLost": "乐园遗落之花",
+            "NymphsDream": "水仙之梦",
+            "VourukashasGlow": "花海甘露之光"
         },
         "set_group": {
             "s:atkp": "攻击2",
             "s:em": "精通2",
             "s:hb": "治疗2",
-            "s:anemoDB": "风2"
+            "s:anemoDB": "风2",
+            "s:hpp": "生命2",
+            "s:hydroDB": "水2"
         },
         "affix": {
             "hp": "生命值",
@@ -180,6 +185,7 @@
         "YaeMiko": "八重神子",
         "ShikanoinHeizou": "鹿野院平藏",
         "Yelan": "夜兰",
+        "Kirara": "绮良良",
         "Aloy": "埃洛伊",
         "Shenhe": "申鹤",
         "YunJin": "云堇",
@@ -196,7 +202,11 @@
         "Wanderer": "流浪者",
         "Faruzan": "珐露珊",
         "Yaoyao": "瑶瑶",
-        "Alhaitham": "艾尔海森"
+        "Alhaitham": "艾尔海森",
+        "Dehya": "迪希雅",
+        "Mika": "米卡",
+        "Kaveh": "卡维",
+        "Baizhu": "白术"
     },
     "element": {
         "pyro": "火元素",
@@ -239,7 +249,7 @@
         "pcap_not_supp": "米哈游加强了数据包加密，暂不支持pcap文件解析",
         "file_not_text": "可能不是文本文件",
         "cant_read_file": "无法读取文件",
-        "art_imported": "成功导入{count}个5星圣遗物",
+        "art_imported": "成功导入{count}个圣遗物",
         "import": "导入",
         "export": "导出",
         "tutorial": "教程",

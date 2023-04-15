@@ -3,6 +3,7 @@ import { ref, computed, watch, reactive } from "vue";
 import { ArtifactData, CharacterData } from "@/ys/data";
 import { useArtifactStore, useUiStore } from "@/store";
 import { i18n } from "@/i18n";
+import type { ICharKey } from "@/ys/types";
 
 const props = defineProps<{
     modelValue: boolean;
@@ -47,17 +48,18 @@ interface IAvatar {
 const avatars = computed(() => {
     let ret: { [e: string]: IAvatar[] } = {};
     for (let b of artStore.builds) {
-        let element, icon, rarity;
+        let element, icon, rarity, data;
         if (b.key.startsWith("0")) {
             element = "custom";
             icon = "./assets/char_faces/default.webp";
             rarity = 1;
         } else {
-            element = CharacterData[b.key].element;
+            data = CharacterData[b.key as ICharKey];
+            element = data.element;
             icon = b.key.startsWith("Traveler")
                 ? "./assets/char_faces/Traveler.webp"
                 : `./assets/char_faces/${b.key}.webp`;
-            rarity = CharacterData[b.key].rarity;
+            rarity = data.rarity;
         }
         if (!(element in ret)) ret[element] = [] as IAvatar[];
         ret[element].push({

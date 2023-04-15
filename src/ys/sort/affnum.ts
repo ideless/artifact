@@ -1,7 +1,7 @@
 import { Artifact } from "../artifact";
 import { ArtifactData } from "../data";
-import { argmax, argmin } from "../utils";
-import type { IWeight } from "../types";
+import type { IMinorAffixKey, IWeight } from "../types";
+import { getIncreAffnumMinMaxAvg } from "../gacha/reliq";
 
 export interface ISetBonusTable {
     [setKey: string]: string[];
@@ -30,65 +30,41 @@ export function calcAffnum(
     weight: IWeight,
     setBonus = 0
 ): IAffnumResult {
-    let A: Set<string> = new Set(),
-        Ac = new Set(ArtifactData.minorKeys),
-        w: IWeight = { ...weight },
-        sum_w = 0,
-        ret = {
+    let _weight: IWeight = { ...weight },
+        result = {
             cur: setBonus,
             min: 0,
             max: 0,
             avg: 0,
-            weight: w,
+            weight: _weight,
             setBonus,
-        };
+        },
+        minorStats = art.minorStats;
 
     ArtifactData.minorKeys.forEach((key) => {
-        w[key] ||= 0;
+        _weight[key] ||= 0;
     });
 
-    Ac.delete(art.mainKey);
-    for (let a of art.minors) {
-        ret.cur += (w[a.key] * a.value) / ArtifactData.minorStat[a.key];
-        A.add(a.key);
-        Ac.delete(a.key);
-        sum_w += w[a.key];
-    }
+    // calcuate current affnum
+    art.minors.forEach((m) => {
+        result.cur +=
+            (_weight[m.key] * m.value) / minorStats[m.key as IMinorAffixKey];
+    });
 
-    if (art.minors.length == 3) {
-        // avg
-        let dn = 0,
-            nm = 0; // denominator and numerator
-        Ac.forEach((a_key) => {
-            nm += w[a_key] * ArtifactData.minorDistr[a_key];
-            dn += ArtifactData.minorDistr[a_key];
-        });
-        ret.avg = ret.cur + 0.85 * sum_w + (1.7 * nm) / dn;
-        // max
-        let a4_key = argmax(w, Ac) as string;
-        A.add(a4_key);
-        let astar_key = argmax(w, A) as string;
-        A.delete(a4_key);
-        ret.max = ret.cur + w[a4_key] + 4 * w[astar_key];
-        // min
-        a4_key = argmin(w, Ac) as string;
-        A.add(a4_key);
-        astar_key = argmin(w, A) as string;
-        A.delete(a4_key);
-        ret.min = ret.cur + (w[a4_key] + 4 * w[astar_key]) * 0.7;
-    } else if (art.minors.length == 4) {
-        let n = Math.ceil((20 - art.level) / 4); // n.o. upgrades
-        // avg
-        ret.avg = ret.cur + ((n * sum_w) / 4) * 0.85;
-        // max
-        let astar_key = argmax(w, A) as string;
-        ret.max = ret.cur + n * w[astar_key];
-        // min
-        astar_key = argmin(w, A) as string;
-        ret.min = ret.cur + n * w[astar_key] * 0.7;
-    }
+    result.min = result.max = result.avg = result.cur;
 
-    return ret;
+    let increMinMaxAvg = getIncreAffnumMinMaxAvg(
+        art.mainKey,
+        _weight,
+        art.nMinorsToUpgrade,
+        art.minors.map((m) => m.key)
+    );
+
+    result.min += increMinMaxAvg.min;
+    result.max += increMinMaxAvg.max;
+    result.avg += increMinMaxAvg.avg;
+
+    return result;
 }
 
 /**

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { useArtifactStore } from "./artifactStore";
 import { useUiStore } from "./uiStore";
 import { GoodFormat } from "@/ys/ext";
