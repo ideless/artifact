@@ -8,5 +8,10 @@ export type {
     IAffnumResult,
     IAffnumResults,
 } from "./affnum";
-export type { IBuild, IPBuildResult, IPBuildResults } from "./pbuild";
+export type {
+    IBuild,
+    IPBuildResult,
+    IPBuildResults,
+    IPBuildSortBy,
+} from "./pbuild";
 export type { IDefeatResult, IDefeatResults } from "./defeat";

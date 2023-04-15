@@ -14,6 +14,7 @@ export type {
     IBuild,
     IPBuildResult,
     IPBuildResults,
+    IPBuildSortBy,
     // defeat
     IDefeatResults,
 } from "./sort";

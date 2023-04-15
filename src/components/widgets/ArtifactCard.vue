@@ -119,7 +119,10 @@ const select = (evt: MouseEvent) => {
 };
 const starImgSrc = "./assets/stars.webp";
 const charSrc = computed<string>(() => {
-    if (props.artifact.location in CharacterData) {
+    if (
+        props.artifact.location == "Traveler" ||
+        props.artifact.location in CharacterData
+    ) {
         return `./assets/char_sides/${props.artifact.location}.webp`;
     } else {
         return "";

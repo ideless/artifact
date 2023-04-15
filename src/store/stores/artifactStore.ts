@@ -11,6 +11,7 @@ import type {
     IPBuildResults,
     IDefeatResults,
     ICharKey,
+    IPBuildSortBy,
 } from "@/ys/types";
 import filterRules from "../filterRules";
 import { useLocalStorage } from "@vueuse/core";
@@ -67,6 +68,7 @@ export const useArtifactStore = defineStore("artifact", () => {
         goblet: [] as string[],
         circlet: [] as string[],
     });
+    const pBuildSortBy = ref<IPBuildSortBy>("max");
     const customizedBuilds = useLocalStorage<IBuild[]>("customized_builds", []);
     const builds = computed(() => {
         let ret: IBuild[] = [];
@@ -187,26 +189,30 @@ export const useArtifactStore = defineStore("artifact", () => {
                 case "pmulti":
                     sortResults.value = PBuildSort.sort(
                         arts,
-                        builds.value.filter((b) =>
-                            sort.value.buildKeys.includes(b.key)
-                        )
+                        builds.value,
+                        sort.value.buildKeys,
+                        pBuildSortBy.value
                     );
                     sortResultType.value = "pbuild";
                     break;
                 case "psingle":
-                    sortResults.value = PBuildSort.sort(arts, [
-                        {
-                            key: "",
-                            name: "",
-                            set: sort.value.set,
-                            main: {
-                                sands: sort.value.sands,
-                                goblet: sort.value.goblet,
-                                circlet: sort.value.circlet,
+                    sortResults.value = PBuildSort.sort(
+                        arts,
+                        [
+                            {
+                                key: "",
+                                name: "",
+                                set: sort.value.set,
+                                main: {
+                                    sands: sort.value.sands,
+                                    goblet: sort.value.goblet,
+                                    circlet: sort.value.circlet,
+                                },
+                                weight: sort.value.weight,
                             },
-                            weight: sort.value.weight,
-                        },
-                    ]);
+                        ],
+                        [""]
+                    );
                     sortResultType.value = "pbuild";
                     break;
                 case "defeat":
@@ -316,6 +322,7 @@ export const useArtifactStore = defineStore("artifact", () => {
         processedArtifacts,
         filter,
         sort,
+        pBuildSortBy,
         customizedBuilds,
         builds,
         setBonusTable,

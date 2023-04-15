@@ -25,6 +25,8 @@ export interface IPBuildResult {
 
 export type IPBuildResults = Map<Artifact, IPBuildResult>;
 
+export type IPBuildSortBy = "max" | "owner";
+
 const AffnumCDFCache = new SimpleCache(
     ({
         mainKey,
@@ -107,14 +109,31 @@ function calcPBuild(art: Artifact, builds: IBuild[], threshold: number) {
  * 其中和a同部位同主词条的圣遗物得分均不超过a的满级期望得分的概率。
  * 如果a对b是散件则是200个。
  * @param arts 圣遗物列表，会被修改
- * @param builds 配装列表
+ * @param allBuilds 配装列表
+ * @param selectedBuildKeys 选中的配装key
+ * @param sortBy 排序依据
+ *   - max: 最大适配概率
+ *   - owner: 如果已装配，按装配者的概率排序，否则按最大适配概率排序
  * @returns results
  */
-export function sort(arts: Artifact[], builds: IBuild[], threshold = 0.001) {
-    const results = new Map<Artifact, IPBuildResult>();
+export function sort(
+    arts: Artifact[],
+    allBuilds: IBuild[],
+    selectedBuildKeys: string[],
+    sortBy: IPBuildSortBy = "max",
+    threshold = 0.001
+) {
+    const results = new Map<Artifact, IPBuildResult>(),
+        builds = allBuilds.filter((b) => selectedBuildKeys.includes(b.key));
 
     for (let art of arts) {
-        let pbuild = calcPBuild(art, builds, threshold);
+        let _builds = [...builds];
+        if (sortBy == "owner") {
+            _builds = _builds.concat(
+                allBuilds.filter((b) => b.key === art.location)
+            );
+        }
+        let pbuild = calcPBuild(art, _builds, threshold);
         results.set(art, pbuild);
     }
 
@@ -124,7 +143,19 @@ export function sort(arts: Artifact[], builds: IBuild[], threshold = 0.001) {
         if (pbuildA === undefined || pbuildB === undefined) {
             throw new Error("Unexpected undefined");
         }
-        return pbuildB.maxProb - pbuildA.maxProb;
+        if (sortBy === "max") {
+            return pbuildB.maxProb - pbuildA.maxProb;
+        } else if (sortBy === "owner") {
+            let pa = a.location
+                    ? pbuildA.buildProbs[a.location] || 0
+                    : pbuildA.maxProb,
+                pb = b.location
+                    ? pbuildB.buildProbs[b.location] || 0
+                    : pbuildB.maxProb;
+            return pb - pa;
+        } else {
+            throw new Error("Unexpected sortBy");
+        }
     });
 
     return results;

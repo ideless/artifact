@@ -33,15 +33,15 @@ const fmtAffnum = (n: number) => {
     n = (n / 10 + setBonus) * artStore.affnumMultiplier;
     return n.toFixed(1);
 };
-const toProb = (p: number) => (p * 100).toFixed(1) + "%";
+const fmtProb = (p: number) => (p * 100).toFixed(1) + "%";
 function tooltipFormatter(dataIndex: number, value: number, cdf: number[]) {
     return `<table>
         <tr><td>${i18n.global.t("ui.affnum")}: </td>
             <td>${fmtAffnum(dataIndex)}</td><tr>
         <tr><td>${i18n.global.t("ui.prob")}: </td>
-            <td>${toProb(value)}</td><tr>
+            <td>${fmtProb(value)}</td><tr>
         <tr><td>1-${i18n.global.t("ui.cumprob")}: </td>
-            <td>${toProb(1 - cdf[dataIndex])}</td><tr>
+            <td>${fmtProb(1 - cdf[dataIndex])}</td><tr>
     <table>`;
 }
 
@@ -138,13 +138,13 @@ const setCount = (c: string) => {
             (option2.value.series[0].data as any) = p.data;
             cdf2 = toCDF(p.data);
             mean2.value = fmtAffnum(moment(p.data));
-            for (let q of pdfs.value) {
-                if (q.label == "20") {
-                    prob.value = toProb(
-                        q.data.reduce((a, b, c) => a + b * cdf2[c], 0)
-                    );
-                    break;
-                }
+            if (pdfs.value.length > 0) {
+                prob.value = fmtProb(
+                    pdfs.value[pdfs.value.length - 1].data.reduce(
+                        (a, b, c) => a + b * cdf2[c],
+                        0
+                    )
+                );
             }
             return;
         }
@@ -219,8 +219,9 @@ const updPlots = () => {
     pdfs.value = [];
     let curLv = props.art.nMinorsUpgraded,
         cur = Math.round((result.cur - result.setBonus) * 10);
-    for (let i = curLv; i <= 5; ++i) {
-        let label = i < 5 ? `${i * 4} +` : `20`;
+    for (let i = curLv; i <= props.art.rarity; ++i) {
+        let label = (i * 4).toString();
+        if (i < props.art.rarity) label += "+";
         let data = getIncreAffnumPdf(
             props.art.mainKey,
             result.weight,
@@ -262,7 +263,7 @@ const updPlots = () => {
         }
     });
     // update plot
-    setLevel("20");
+    setLevel(pdfs.value[pdfs.value.length - 1].label);
     setCount("100");
     return true;
 };

@@ -52,6 +52,10 @@ const multiplierOptions = [
 const charOptions = computed(() => {
     return artStore.builds.map((b) => ({ key: b.key, name: b.name }));
 });
+const pBuildSortByOptions = ["max", "owner"].map((key) => ({
+    key,
+    label: i18n.global.t(`sort.pmulti.sortBy.${key}`),
+}));
 // 按角色适配概率（单人）
 const setsOptions: IOption[] = Object.keys(ArtifactData.setGroups)
     .map((key) => ({
@@ -164,6 +168,12 @@ const openAffnumTable = () => (showAffnumTable.value = true);
                     :title="$t('ui.build')"
                     :options="charOptions"
                     v-model="artStore.sort.buildKeys"
+                />
+                <single-select
+                    :title="$t('ui.pbuild_sort_by')"
+                    :options="pBuildSortByOptions"
+                    v-model="artStore.pBuildSortBy"
+                    style="margin-top: 10px"
                 />
             </div>
             <div v-else-if="artStore.sort.by == 'psingle'">

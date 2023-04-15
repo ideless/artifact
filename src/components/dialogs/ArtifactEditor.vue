@@ -28,6 +28,7 @@ const show = computed({
 const characters = computed(() => {
     let tmp: { [key: string]: string[] } = {};
     for (let c in CharacterData) {
+        if (c.startsWith("Traveler")) continue;
         let data = CharacterData[c as ICharKey];
         if (data.element in tmp) {
             tmp[data.element].push(c);
@@ -38,7 +39,13 @@ const characters = computed(() => {
     let ret = [
         {
             label: "",
-            options: [{ value: "", label: i18n.global.t("ui.unequiped") }],
+            options: [
+                { value: "", label: i18n.global.t("ui.unequiped") },
+                {
+                    value: "Traveler",
+                    label: i18n.global.t("character.Traveler"),
+                },
+            ],
         },
     ];
     for (let element in tmp) {
@@ -66,6 +73,7 @@ watch(
         if (!show.value) return;
         // reset equiped
         for (let c in CharacterData) {
+            if (c.startsWith("Traveler")) c = "Traveler";
             equiped[c] = {
                 flower: false,
                 plume: false,

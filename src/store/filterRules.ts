@@ -6,6 +6,18 @@ export default [
         accept: (_a: Artifact) => true,
     },
     {
+        label: "三词条",
+        accept: (a: Artifact) => {
+            return a.minors.length === 3;
+        },
+    },
+    {
+        label: "四词条",
+        accept: (a: Artifact) => {
+            return a.minors.length === 4;
+        },
+    },
+    {
         label: "三词条单暴",
         accept: (a: Artifact) => {
             if (a.minors.length != 3) return false;

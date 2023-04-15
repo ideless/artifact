@@ -373,7 +373,8 @@
         "database_loader_title": "数据库",
         "database_loader_help": "建议将网页数据库保存至本地，以避免配置丢失。",
         "database_imported": "数据导入成功，请手动刷新页面",
-        "set_group": "组"
+        "set_group": "组",
+        "pbuild_sort_by": "排序方式"
     },
     "sort": {
         "avg": {
@@ -387,7 +388,11 @@
         "pmulti": {
             "name": "按角色适配概率（多人）",
             "desc": "圣遗物a对角色c的适配概率定义为，刷100个满级圣遗物，其中和a同部位同主词条的圣遗物得分均不超过a的满级期望得分的概率。如果a对c是散件则是200个。",
-            "desc2": "根据<a href='https://ngabbs.com/read.php?tid=27859119' target='_blank'>推荐配装</a>为每个角色计算适配概率，总的适配概率为所有选中角色适配概率的总和。"
+            "desc2": "根据<a href='https://ngabbs.com/read.php?tid=27859119' target='_blank'>推荐配装</a>为每个角色计算适配概率。",
+            "sortBy": {
+                "max": "按最大适配概率",
+                "owner": "优先按拥有者适配概率"
+            }
         },
         "psingle": {
             "name": "按角色适配概率（单人）",
