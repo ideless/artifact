@@ -374,7 +374,8 @@
         "database_loader_help": "建议将网页数据库保存至本地，以避免配置丢失。",
         "database_imported": "数据导入成功，请手动刷新页面",
         "set_group": "组",
-        "pbuild_sort_by": "排序方式"
+        "pbuild_sort_by": "排序方式",
+        "pbuild_ignore_individual": "忽略散件"
     },
     "sort": {
         "avg": {

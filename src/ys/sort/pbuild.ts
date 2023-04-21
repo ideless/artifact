@@ -61,7 +61,21 @@ function setIncludes(set: string[], target: string) {
     return false;
 }
 
-function calcPBuild(art: Artifact, builds: IBuild[], threshold: number) {
+function calcPBuild(
+    art: Artifact,
+    builds: IBuild[],
+    {
+        threshold = 0.001,
+        numInSet = 100,
+        numIndividual = 200,
+        ignoreIndividual = false,
+    }: {
+        threshold?: number;
+        numInSet?: number;
+        numIndividual?: number;
+        ignoreIndividual?: boolean;
+    }
+) {
     const ret: IPBuildResult = {
         maxProb: 0,
         buildProbs: {},
@@ -81,7 +95,7 @@ function calcPBuild(art: Artifact, builds: IBuild[], threshold: number) {
                 rarity: art.rarity,
             }),
             x = a >= d.length ? 1 : d[a];
-        return (p * x + 1 - p) ** 100; // 有没有100其实无所谓，有100更好看一点
+        return p * x + 1 - p;
     });
 
     for (const b of builds) {
@@ -91,10 +105,13 @@ function calcPBuild(art: Artifact, builds: IBuild[], threshold: number) {
             !b.main[art.slot].includes(art.mainKey)
         )
             continue;
+        // if not in recommanded set, and should ignore individual artifact, skip
+        let inSet = setIncludes(b.set, art.set);
+        if (!inSet && ignoreIndividual) continue;
         // set factor
-        let n_set = setIncludes(b.set, art.set) ? 1 : 2;
+        let nSet = inSet ? numInSet : numIndividual;
         // prob
-        let prob = ProbCache.get(b.weight) ** n_set;
+        let prob = ProbCache.get(b.weight) ** nSet;
         // update result
         if (prob < threshold) continue;
         ret.maxProb = Math.max(ret.maxProb, prob);
@@ -120,8 +137,19 @@ export function sort(
     arts: Artifact[],
     allBuilds: IBuild[],
     selectedBuildKeys: string[],
-    sortBy: IPBuildSortBy = "max",
-    threshold = 0.001
+    {
+        sortBy = "max",
+        threshold = 0.001,
+        numInSet = 100,
+        numIndividual = 200,
+        ignoreIndividual = false,
+    }: {
+        sortBy?: IPBuildSortBy;
+        threshold?: number;
+        numInSet?: number;
+        numIndividual?: number;
+        ignoreIndividual?: boolean;
+    }
 ) {
     const results = new Map<Artifact, IPBuildResult>(),
         builds = allBuilds.filter((b) => selectedBuildKeys.includes(b.key));
@@ -133,7 +161,12 @@ export function sort(
                 allBuilds.filter((b) => b.key === art.location)
             );
         }
-        let pbuild = calcPBuild(art, _builds, threshold);
+        let pbuild = calcPBuild(art, _builds, {
+            threshold,
+            numInSet,
+            numIndividual,
+            ignoreIndividual,
+        });
         results.set(art, pbuild);
     }
 

@@ -54,12 +54,10 @@ test("Min/max/avg of affnum", () => {
         max: 0,
         avg: 0,
     });
-    // TODO: fix this
-    // expect(getIncreAffnumMinMaxAvg("atkp", weight, 4, [])).toEqual({
-    //     min: 0,
-    //     max: 11 / 6,
-    //     avg: 367406465531 / 34247584800 / 20,
-    // });
+    const result = getIncreAffnumMinMaxAvg("atkp", weight, 4, []);
+    expect(result.min).toBeCloseTo(0);
+    expect(result.max).toBeCloseTo(11 / 6);
+    expect(result.avg).toBeCloseTo(367406465531 / 34247584800 / 20);
 });
 
 test("Affnum PDF", () => {
