@@ -68,7 +68,8 @@ export const useArtifactStore = defineStore("artifact", () => {
         goblet: [] as string[],
         circlet: [] as string[],
     });
-    const pBuildSortBy = ref<IPBuildSortBy>("max");
+    const pBuildSortBy = ref<IPBuildSortBy>("max"); // TODO
+    const pBuildIgnoreIndividual = ref(false); // TODO
     const customizedBuilds = useLocalStorage<IBuild[]>("customized_builds", []);
     const builds = computed(() => {
         let ret: IBuild[] = [];
@@ -191,7 +192,10 @@ export const useArtifactStore = defineStore("artifact", () => {
                         arts,
                         builds.value,
                         sort.value.buildKeys,
-                        pBuildSortBy.value
+                        {
+                            sortBy: pBuildSortBy.value,
+                            ignoreIndividual: pBuildIgnoreIndividual.value,
+                        }
                     );
                     sortResultType.value = "pbuild";
                     break;
@@ -211,7 +215,10 @@ export const useArtifactStore = defineStore("artifact", () => {
                                 weight: sort.value.weight,
                             },
                         ],
-                        [""]
+                        [""],
+                        {
+                            ignoreIndividual: pBuildIgnoreIndividual.value,
+                        }
                     );
                     sortResultType.value = "pbuild";
                     break;
@@ -323,6 +330,7 @@ export const useArtifactStore = defineStore("artifact", () => {
         filter,
         sort,
         pBuildSortBy,
+        pBuildIgnoreIndividual,
         customizedBuilds,
         builds,
         setBonusTable,

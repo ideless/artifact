@@ -175,6 +175,12 @@ const openAffnumTable = () => (showAffnumTable.value = true);
                     v-model="artStore.pBuildSortBy"
                     style="margin-top: 10px"
                 />
+                <p style="text-align: center">
+                    <el-checkbox
+                        v-model="artStore.pBuildIgnoreIndividual"
+                        :label="$t('ui.pbuild_ignore_individual')"
+                    />
+                </p>
             </div>
             <div v-else-if="artStore.sort.by == 'psingle'">
                 <p class="row small" v-text="$t('sort.pmulti.desc')" />
@@ -229,6 +235,12 @@ const openAffnumTable = () => (showAffnumTable.value = true);
                     :options="circletOptions"
                     :title="$t('sort.psingle.circlet')"
                 />
+                <p style="text-align: center">
+                    <el-checkbox
+                        v-model="artStore.pBuildIgnoreIndividual"
+                        :label="$t('ui.pbuild_ignore_individual')"
+                    />
+                </p>
             </div>
             <div v-else-if="artStore.sort.by == 'defeat'">
                 <p class="row small" v-text="$t('sort.defeat.desc')" />
