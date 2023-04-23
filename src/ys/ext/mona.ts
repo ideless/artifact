@@ -102,6 +102,7 @@ export default {
                 for (let ma of martifact["normalTags"]) {
                     artifact.minors.push(getAffix(ma["name"], ma["value"]));
                 }
+                artifact.location = martifact["equip"] ?? "";
                 artifact.data.index = ret.length;
                 artifact.data.source = "*/mona";
                 // artifact.validate()
@@ -140,6 +141,7 @@ export default {
                 omit: false,
                 star: a.rarity,
                 level: a.level,
+                equip: a.location,
             });
         }
         return JSON.stringify(mona);
