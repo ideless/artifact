@@ -25,7 +25,19 @@ export type IAffnumResult = {
 
 export type IAffnumResults = Map<Artifact, IAffnumResult>;
 
-export function calcAffnum(
+export function calcAffnumCur(art: Artifact, weight: IWeight): number {
+    let result = 0,
+        minorStats = art.minorStats;
+
+    art.minors.forEach((m) => {
+        result +=
+            (weight[m.key] * m.value) / minorStats[m.key as IMinorAffixKey];
+    });
+
+    return result;
+}
+
+export function calcAffnumFull(
     art: Artifact,
     weight: IWeight,
     setBonus = 0
@@ -38,19 +50,13 @@ export function calcAffnum(
             avg: 0,
             weight: _weight,
             setBonus,
-        },
-        minorStats = art.minorStats;
+        };
 
     ArtifactData.minorKeys.forEach((key) => {
         _weight[key] ||= 0;
     });
 
-    // calcuate current affnum
-    art.minors.forEach((m) => {
-        result.cur +=
-            (_weight[m.key] * m.value) / minorStats[m.key as IMinorAffixKey];
-    });
-
+    result.cur += calcAffnumCur(art, _weight);
     result.min = result.max = result.avg = result.cur;
 
     let increMinMaxAvg = getIncreAffnumMinMaxAvg(
@@ -131,7 +137,7 @@ export function sort(
             },
             maxAvg = -Infinity;
         filteredRules.forEach((rule) => {
-            const affnum = calcAffnum(art, rule.weight, setBonus);
+            const affnum = calcAffnumFull(art, rule.weight, setBonus);
             if (affnum.avg > maxAvg) {
                 result = affnum;
                 maxAvg = affnum.avg;

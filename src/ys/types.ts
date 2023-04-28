@@ -17,6 +17,8 @@ export type {
     IPBuildSortBy,
     // defeat
     IDefeatResults,
+    // pequip
+    IPEquipResults,
 } from "./sort";
 
 export type IMinorAffixKey =
