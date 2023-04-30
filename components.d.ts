@@ -50,6 +50,7 @@ declare module '@vue/runtime-core' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    EquipProbs: typeof import('./src/components/dialogs/EquipProbs.vue')['default']
     ExportPreview: typeof import('./src/components/dialogs/ExportPreview.vue')['default']
     FilterSection: typeof import('./src/components/sections/FilterSection.vue')['default']
     ImportSection: typeof import('./src/components/sections/ImportSection.vue')['default']

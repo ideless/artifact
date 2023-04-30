@@ -5,7 +5,12 @@ import { Affix, Artifact } from "@/ys/artifact";
 import { i18n } from "@/i18n";
 import { ArtifactData, CharacterData } from "@/ys/data";
 import { useArtifactStore } from "@/store";
-import { IAffnumResult, IDefeatResult, IPBuildResult } from "@/ys/sort";
+import {
+    IAffnumResult,
+    IDefeatResult,
+    IPBuildResult,
+    IPEquipResult,
+} from "@/ys/sort";
 import { IMinorAffixKey } from "@/ys/types";
 
 const props = defineProps<{
@@ -13,6 +18,7 @@ const props = defineProps<{
     selected?: boolean;
     selectMode?: boolean;
     readonly?: boolean;
+    fixedStats?: string;
 }>();
 const emit = defineEmits<{
     (e: "flipSelect", shiftKey: boolean): void;
@@ -143,6 +149,8 @@ const sortResultDisplayType = computed(() => {
             return props.artifact.level < 20 ? "affnum-mam" : "affnum-c";
         case "pbuild":
             return "pbuild";
+        case "pequip":
+            return "pequip";
         case "defeat":
             return "defeat";
         default:
@@ -162,6 +170,21 @@ const pBuildResultStr = computed(() => {
     for (let buildKey in result.buildProbs) {
         let b = artStore.builds.filter((b) => b.key == buildKey)[0];
         probs.push([b ? b.name : "", result.buildProbs[buildKey]]);
+    }
+    // sort in descending order
+    probs.sort((a, b) => b[1] - a[1]);
+    // formatting
+    return (
+        probs.map((x) => x[0] + (x[1] * 100).toFixed(1) + "%").join(" ") ||
+        "<0.1%"
+    );
+});
+const pEquipResultStr = computed(() => {
+    let result = artStore.sortResults!.get(props.artifact) as IPEquipResult;
+    let probs: [string, number][] = [];
+    for (let charKey in result.charProbs) {
+        let b = artStore.builds.filter((b) => b.key == charKey)[0];
+        probs.push([b ? b.name : "", result.charProbs[charKey].prob]);
     }
     // sort in descending order
     probs.sort((a, b) => b[1] - a[1]);
@@ -214,7 +237,10 @@ const defeatResultStr = computed(() => {
                 </div>
             </div>
             <div class="sort-result">
-                <template v-if="sortResultDisplayType == 'affnum-mam'">
+                <template v-if="readonly && fixedStats !== undefined">
+                    <div class="fixed-stats" v-text="fixedStats" />
+                </template>
+                <template v-else-if="sortResultDisplayType == 'affnum-mam'">
                     <div
                         class="min-an"
                         v-text="$t('ui.min') + formatAffnum(affnumResult.min)"
@@ -240,6 +266,9 @@ const defeatResultStr = computed(() => {
                 </template>
                 <template v-else-if="sortResultDisplayType == 'pbuild'">
                     <div class="pbuild" v-text="pBuildResultStr" />
+                </template>
+                <template v-else-if="sortResultDisplayType == 'pequip'">
+                    <div class="pequip" v-text="pEquipResultStr" />
                 </template>
                 <template v-else-if="sortResultDisplayType == 'defeat'">
                     <div class="defeat" v-text="defeatResultStr" />
@@ -427,6 +456,11 @@ const defeatResultStr = computed(() => {
             line-height: 20px;
             display: flex;
 
+            .fixed-stats {
+                background: #d14bd1;
+                width: 100%;
+            }
+
             .min-an {
                 background: #a6a6a6;
                 width: 33.3%;
@@ -447,7 +481,8 @@ const defeatResultStr = computed(() => {
                 width: 100%;
             }
 
-            .pbuild {
+            .pbuild,
+            .pequip {
                 background: cornflowerblue;
                 width: 100%;
                 overflow: hidden;

@@ -1,5 +1,5 @@
 import { Artifact } from "../artifact";
-import { calcAffnum } from "./affnum";
+import { calcAffnumFull } from "./affnum";
 import { SimpleCache } from "../utils";
 import type { IWeight } from "../types";
 import { ArtifactData } from "../data";
@@ -83,7 +83,7 @@ function calcPBuild(
 
     // AvgAffnumCache记录不同权重下圣遗物的满级期望词条数
     const AvgAffnumCache = new SimpleCache((weight: IWeight) => {
-        return Math.round(calcAffnum(art, weight).avg * 10);
+        return Math.round(calcAffnumFull(art, weight).avg * 10);
     });
     // ProbCache记录不同权重下的（无套装）适配概率
     const ProbCache = new SimpleCache((weight: IWeight) => {

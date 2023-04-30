@@ -2,7 +2,7 @@ import { Affix, Artifact } from "@/ys/artifact";
 import { defineStore } from "pinia";
 import { computed, reactive, ref } from "vue";
 import { useUiStore } from "./uiStore";
-import { AffnumSort, PBuildSort, DefeatSort } from "@/ys/sort";
+import { AffnumSort, PBuildSort, DefeatSort, PEquipSort } from "@/ys/sort";
 import type {
     IBuild,
     ISetBonusTable,
@@ -12,6 +12,7 @@ import type {
     IDefeatResults,
     ICharKey,
     IPBuildSortBy,
+    IPEquipResults,
 } from "@/ys/types";
 import filterRules from "../filterRules";
 import { useLocalStorage } from "@vueuse/core";
@@ -23,15 +24,20 @@ import {
 } from "@/ys/data";
 import { i18n } from "@/i18n";
 
-export type ISortBy =
-    | "avg"
-    | "avgpro"
-    | "psingle"
-    | "pmulti"
-    | "defeat"
-    | "set"
-    | "index";
-export type ISortResultType = "affnum" | "pbuild" | "defeat";
+export const SortByKeys = [
+    "avg",
+    "avgpro",
+    "psingle",
+    "pmulti",
+    "defeat",
+    "set",
+    "pequip",
+    "index",
+] as const;
+
+export type ISortBy = (typeof SortByKeys)[number];
+
+export type ISortResultType = "affnum" | "pbuild" | "defeat" | "pequip";
 
 export const useArtifactStore = defineStore("artifact", () => {
     const uiStore = useUiStore();
@@ -70,6 +76,7 @@ export const useArtifactStore = defineStore("artifact", () => {
     });
     const pBuildSortBy = ref<IPBuildSortBy>("max"); // TODO
     const pBuildIgnoreIndividual = ref(false); // TODO
+    const pEquipIgnoreIndividual = ref(false); // TODO
     const customizedBuilds = useLocalStorage<IBuild[]>("customized_builds", []);
     const builds = computed(() => {
         let ret: IBuild[] = [];
@@ -114,7 +121,9 @@ export const useArtifactStore = defineStore("artifact", () => {
         "affix_weight_table",
         DefaultAffixWeightTable
     );
-    const sortResults = ref<IAffnumResults | IPBuildResults | IDefeatResults>();
+    const sortResults = ref<
+        IAffnumResults | IPBuildResults | IDefeatResults | IPEquipResults
+    >();
     const sortResultType = ref<ISortResultType>();
     const canExport = ref(false);
     const artMode = reactive({
@@ -221,6 +230,12 @@ export const useArtifactStore = defineStore("artifact", () => {
                         }
                     );
                     sortResultType.value = "pbuild";
+                    break;
+                case "pequip":
+                    sortResults.value = PEquipSort.sort(arts, builds.value, {
+                        ignoreIndividual: pEquipIgnoreIndividual.value,
+                    });
+                    sortResultType.value = "pequip";
                     break;
                 case "defeat":
                     sortResults.value = DefeatSort.sort(arts);
@@ -331,6 +346,7 @@ export const useArtifactStore = defineStore("artifact", () => {
         sort,
         pBuildSortBy,
         pBuildIgnoreIndividual,
+        pEquipIgnoreIndividual,
         customizedBuilds,
         builds,
         setBonusTable,

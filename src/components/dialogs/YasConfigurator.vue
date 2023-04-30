@@ -60,6 +60,12 @@ const confirm = () => {
                 <el-input-number v-model="config.number" :min="0" :max="2000" />
             </el-form-item>
             <el-divider>{{ $t("yas.lock.name") }}</el-divider>
+            <el-form-item :label="$t('yas.config.lock_stop')">
+                <el-input-number v-model="config.lock_stop" :min="0" />
+                <el-tag style="margin-left: 10px">
+                    {{ $t("ui.millisecond") }}
+                </el-tag>
+            </el-form-item>
             <el-form-item :label="$t('yas.config.max_wait_lock')">
                 <el-input-number v-model="config.max_wait_lock" :min="0" />
                 <el-tag style="margin-left: 10px">

@@ -9,7 +9,7 @@ import BuildEditor from "@/components/dialogs/BuildEditor.vue";
 import ValueButton from "@/components/widgets/ValueButton.vue";
 import AffnumTable from "../dialogs/AffnumTable.vue";
 import { computed, ref } from "vue";
-import { useArtifactStore } from "@/store";
+import { useArtifactStore, SortByKeys } from "@/store";
 import { ArtifactData } from "@/ys/data";
 import { i18n } from "@/i18n";
 import type { IOption } from "@/store/types";
@@ -17,15 +17,7 @@ import type { IOption } from "@/store/types";
 const artStore = useArtifactStore();
 
 // 排序方式
-const sortByOptions = [
-    "avg",
-    "avgpro",
-    "pmulti",
-    "psingle",
-    "defeat",
-    "set",
-    "index",
-].map((key) => ({
+const sortByOptions = SortByKeys.map((key) => ({
     key,
     label: i18n.global.t(`sort.${key}.name`),
 }));
@@ -82,8 +74,8 @@ const circletOptions = ArtifactData.mainKeys.circlet.map((m) => ({
     label: i18n.global.t("artifact.affix." + m),
 }));
 // 按上位替代数
+// pequip: TODO
 // 不排序
-// *词条数
 
 // 配装加载窗口
 const showBuildLoader = ref(false);
@@ -239,6 +231,24 @@ const openAffnumTable = () => (showAffnumTable.value = true);
                     <el-checkbox
                         v-model="artStore.pBuildIgnoreIndividual"
                         :label="$t('ui.pbuild_ignore_individual')"
+                    />
+                </p>
+            </div>
+            <div v-else-if="artStore.sort.by == 'pequip'">
+                <p class="row small" v-text="$t('sort.pequip.desc')" />
+                <p class="row small">
+                    <span
+                        class="text-btn"
+                        @click="openBuildEditor"
+                        style="margin-right: 8px"
+                        v-text="$t('ui.edit_builds')"
+                        role="button"
+                    />
+                </p>
+                <p style="text-align: center">
+                    <el-checkbox
+                        v-model="artStore.pEquipIgnoreIndividual"
+                        :label="$t('ui.pequip_ignore_individual')"
                     />
                 </p>
             </div>
