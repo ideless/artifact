@@ -8,6 +8,7 @@ import PartialExport from "@/components/dialogs/PartialExport.vue";
 import AlikeLocker from "@/components/dialogs/AlikeLocker.vue";
 import DefeatList from "@/components/dialogs/DefeatList.vue";
 import BuildProbs from "../dialogs/BuildProbs.vue";
+import EquipProbs from "../dialogs/EquipProbs.vue";
 import DatabaseLoader from "../dialogs/DatabaseLoader.vue";
 import Grid from "vue-virtual-scroll-grid";
 import { useArtifactStore, useUiStore } from "@/store";
@@ -160,6 +161,7 @@ const statsArt = ref<Artifact>();
 const showAffnumDistr = ref(false);
 const showDefeatList = ref(false);
 const showBuildProbs = ref(false);
+const showEquipProbs = ref(false);
 const stats = (art: Artifact) => {
     statsArt.value = art;
     switch (artStore.sortResultType) {
@@ -171,6 +173,9 @@ const stats = (art: Artifact) => {
             break;
         case "pbuild":
             showBuildProbs.value = true;
+            break;
+        case "pequip":
+            showEquipProbs.value = true;
             break;
     }
 };
@@ -379,6 +384,7 @@ const showDatabaseLoader = ref(false);
     <affnum-distr v-model="showAffnumDistr" :art="statsArt" />
     <defeat-list v-model="showDefeatList" :art="statsArt" />
     <build-probs v-model="showBuildProbs" :art="statsArt" />
+    <equip-probs v-model="showEquipProbs" :art="statsArt" />
     <database-loader v-model="showDatabaseLoader" />
 </template>
 

@@ -234,6 +234,24 @@ const openAffnumTable = () => (showAffnumTable.value = true);
                     />
                 </p>
             </div>
+            <div v-else-if="artStore.sort.by == 'pequip'">
+                <p class="row small" v-text="$t('sort.pequip.desc')" />
+                <p class="row small">
+                    <span
+                        class="text-btn"
+                        @click="openBuildEditor"
+                        style="margin-right: 8px"
+                        v-text="$t('ui.edit_builds')"
+                        role="button"
+                    />
+                </p>
+                <p style="text-align: center">
+                    <el-checkbox
+                        v-model="artStore.pEquipIgnoreIndividual"
+                        :label="$t('ui.pequip_ignore_individual')"
+                    />
+                </p>
+            </div>
             <div v-else-if="artStore.sort.by == 'defeat'">
                 <p class="row small" v-text="$t('sort.defeat.desc')" />
             </div>

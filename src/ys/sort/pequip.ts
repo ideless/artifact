@@ -16,7 +16,12 @@ type ISlotKey = keyof ICharEqiup;
 
 export interface IPEquipResult {
     maxProb: number;
-    charProbs: { [charKey: string]: number };
+    charProbs: {
+        [charKey: string]: {
+            prob: number;
+            art: Artifact;
+        };
+    };
 }
 
 export type IPEquipResults = Map<Artifact, IPEquipResult>;
@@ -98,7 +103,10 @@ export function sort(
                 );
             if (artCur > otherArtCur) {
                 result.maxProb = 1.0;
-                result.charProbs[charKey] = 1.0;
+                result.charProbs[charKey] = {
+                    prob: 1.0,
+                    art: otherArt,
+                };
             } else {
                 const pdf = getIncreAffnumPdf(
                         art.mainKey,
@@ -112,7 +120,10 @@ export function sort(
                     prob = 1 - cdf[delta];
                 if (prob < threshold) return;
                 result.maxProb = Math.max(result.maxProb, prob);
-                result.charProbs[charKey] = prob;
+                result.charProbs[charKey] = {
+                    prob,
+                    art: otherArt,
+                };
             }
         });
         results.set(art, result);

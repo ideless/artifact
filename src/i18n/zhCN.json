@@ -23,6 +23,7 @@
             "number": "指定圣遗物数量（在自动识别数量不准确时使用）",
             "default_stop": "等待动画、鼠标点击等操作的默认停顿时间",
             "scroll_stop": "页面滚动停顿时间",
+            "lock_stop": "加解锁停顿时间",
             "max_wait_switch_artifact": "切换圣遗物最大等待时间",
             "max_wait_scroll": "翻页的最大等待时间（翻页不正确可以考虑加大该选项）",
             "no_check": "不检测是否已打开背包等",
@@ -375,7 +376,9 @@
         "database_imported": "数据导入成功，请手动刷新页面",
         "set_group": "组",
         "pbuild_sort_by": "排序方式",
-        "pbuild_ignore_individual": "忽略散件"
+        "pbuild_ignore_individual": "忽略散件",
+        "pequip_ignore_individual": "忽略散件",
+        "equip_probs_title": "装备提升概率"
     },
     "sort": {
         "avg": {
@@ -401,6 +404,10 @@
             "sands": "时之沙偏好",
             "goblet": "空之杯偏好",
             "circlet": "理之冠主词条偏好"
+        },
+        "pequip": {
+            "name": "按装备提升概率",
+            "desc": "计算升到满级后词条数超过已装备圣遗物的概率，词条数按装备角色的配装中的副词条权重计。目前只支持五星圣遗物，且已装备圣遗物必须是满级。"
         },
         "defeat": {
             "name": "按上位替代数",

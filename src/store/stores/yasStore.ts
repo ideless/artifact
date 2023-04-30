@@ -19,7 +19,8 @@ class YasConfig {
     max_wait_scroll = 0;
     no_check = false;
     dxgcap = false;
-    max_wait_lock = 800;
+    lock_stop = 100;
+    max_wait_lock = 0;
 
     constructor(o?: any) {
         assign(this, o);
