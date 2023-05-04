@@ -378,7 +378,8 @@
         "pbuild_sort_by": "排序方式",
         "pbuild_ignore_individual": "忽略散件",
         "pequip_ignore_individual": "忽略散件",
-        "equip_probs_title": "装备提升概率"
+        "equip_probs_title": "装备提升概率",
+        "equip_char_filter": "筛选角色"
     },
     "sort": {
         "avg": {
@@ -406,7 +407,7 @@
             "circlet": "理之冠主词条偏好"
         },
         "pequip": {
-            "name": "按装备提升概率",
+            "name": "按装备提升概率（beta)",
             "desc": "计算升到满级后词条数超过已装备圣遗物的概率，词条数按装备角色的配装中的副词条权重计。目前只支持五星圣遗物，且已装备圣遗物必须是满级。"
         },
         "defeat": {

@@ -28,7 +28,9 @@ export type IPEquipResults = Map<Artifact, IPEquipResult>;
 
 export function sort(
     arts: Artifact[],
+    allArts: Artifact[],
     builds: IBuild[],
+    charKeys: string[],
     {
         threshold = 0.001,
         ignoreIndividual = false,
@@ -41,14 +43,15 @@ export function sort(
     // if there are multiple artifacts in the same slot of the same character,
     // pick the last one
     const equip = new Map<
-        string,
-        {
-            arts: ICharEqiup;
-            build: IBuild;
-        }
-    >();
-    for (let art of arts) {
-        if (!art.location) continue;
+            string,
+            {
+                arts: ICharEqiup;
+                build: IBuild;
+            }
+        >(),
+        charKeySet = new Set(charKeys);
+    for (let art of allArts) {
+        if (!art.location || !charKeySet.has(art.location)) continue;
         const charKey = art.location;
         if (!equip.has(charKey)) {
             const build = builds.find((b) => b.key === charKey);

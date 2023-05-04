@@ -77,6 +77,7 @@ export const useArtifactStore = defineStore("artifact", () => {
     const pBuildSortBy = ref<IPBuildSortBy>("max"); // TODO
     const pBuildIgnoreIndividual = ref(false); // TODO
     const pEquipIgnoreIndividual = ref(false); // TODO
+    const pEquipCharKeys = ref<string[]>([]);
     const customizedBuilds = useLocalStorage<IBuild[]>("customized_builds", []);
     const builds = computed(() => {
         let ret: IBuild[] = [];
@@ -232,9 +233,15 @@ export const useArtifactStore = defineStore("artifact", () => {
                     sortResultType.value = "pbuild";
                     break;
                 case "pequip":
-                    sortResults.value = PEquipSort.sort(arts, builds.value, {
-                        ignoreIndividual: pEquipIgnoreIndividual.value,
-                    });
+                    sortResults.value = PEquipSort.sort(
+                        arts,
+                        artifacts.value,
+                        builds.value,
+                        pEquipCharKeys.value,
+                        {
+                            ignoreIndividual: pEquipIgnoreIndividual.value,
+                        }
+                    );
                     sortResultType.value = "pequip";
                     break;
                 case "defeat":
@@ -282,6 +289,8 @@ export const useArtifactStore = defineStore("artifact", () => {
             if (!indices_set.has(a.data.index)) arts.push(a);
         }
         processedArtifacts.value = arts;
+        // reset filter
+        nResetFilter.value++;
         // show reload
         uiStore.run(() => {});
     }
@@ -347,6 +356,7 @@ export const useArtifactStore = defineStore("artifact", () => {
         pBuildSortBy,
         pBuildIgnoreIndividual,
         pEquipIgnoreIndividual,
+        pEquipCharKeys,
         customizedBuilds,
         builds,
         setBonusTable,

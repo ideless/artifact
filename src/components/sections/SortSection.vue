@@ -8,11 +8,11 @@ import BuildLoader from "@/components/dialogs/BuildLoader.vue";
 import BuildEditor from "@/components/dialogs/BuildEditor.vue";
 import ValueButton from "@/components/widgets/ValueButton.vue";
 import AffnumTable from "../dialogs/AffnumTable.vue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useArtifactStore, SortByKeys } from "@/store";
-import { ArtifactData } from "@/ys/data";
+import { ArtifactData, CharacterData } from "@/ys/data";
 import { i18n } from "@/i18n";
-import type { IOption } from "@/store/types";
+import type { IOption, ICharOption } from "@/store/types";
 
 const artStore = useArtifactStore();
 
@@ -74,7 +74,32 @@ const circletOptions = ArtifactData.mainKeys.circlet.map((m) => ({
     label: i18n.global.t("artifact.affix." + m),
 }));
 // 按上位替代数
-// pequip: TODO
+// 按装备提升概率
+const pEquipCharOptions = ref<ICharOption[]>([]);
+watch(
+    () => artStore.nResetFilter,
+    () => {
+        const options: ICharOption[] = [],
+            equipCount = new Map<string, number>();
+        artStore.artifacts.forEach((a) => {
+            if (a.rarity != 5 || a.level != 20) return;
+            if (!a.location || !(a.location in CharacterData)) return;
+            if (!equipCount.has(a.location)) {
+                equipCount.set(a.location, 0);
+            }
+            equipCount.set(a.location, equipCount.get(a.location)! + 1);
+        });
+        equipCount.forEach((count, charKey) => {
+            options.push({
+                key: charKey,
+                name: i18n.global.t("character." + charKey),
+                tip: count.toString(),
+            });
+        });
+        pEquipCharOptions.value = options;
+        artStore.pEquipCharKeys = options.map((o) => o.key);
+    }
+);
 // 不排序
 
 // 配装加载窗口
@@ -245,6 +270,12 @@ const openAffnumTable = () => (showAffnumTable.value = true);
                         role="button"
                     />
                 </p>
+                <char-select
+                    class="row"
+                    :title="$t('ui.equip_char_filter')"
+                    :options="pEquipCharOptions"
+                    v-model="artStore.pEquipCharKeys"
+                />
                 <p style="text-align: center">
                     <el-checkbox
                         v-model="artStore.pEquipIgnoreIndividual"
