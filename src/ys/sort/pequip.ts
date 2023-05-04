@@ -1,5 +1,6 @@
 import { Artifact } from "../artifact";
 import type { IBuild } from "./pbuild";
+import { setIncludes } from "./pbuild";
 import { calcAffnumCur } from "./affnum";
 import { getIncreAffnumPdf } from "../gacha/reliq";
 import { toCDF } from "../gacha/utils";
@@ -99,7 +100,7 @@ export function sort(
             )
                 return;
             const build = charEquip.build;
-            if (ignoreIndividual && !build.set.includes(art.set)) return;
+            if (ignoreIndividual && !setIncludes(build.set, art.set)) return;
             const artCur = Math.round(calcAffnumCur(art, build.weight) * 10),
                 otherArtCur = Math.round(
                     calcAffnumCur(otherArt, build.weight) * 10

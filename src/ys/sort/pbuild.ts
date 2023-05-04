@@ -46,7 +46,7 @@ const AffnumCDFCache = new SimpleCache(
     }
 );
 
-function setIncludes(set: string[], target: string) {
+export function setIncludes(set: string[], target: string) {
     for (let s of set) {
         if (s.startsWith("s:")) {
             if (

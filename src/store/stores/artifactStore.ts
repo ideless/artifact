@@ -29,9 +29,9 @@ export const SortByKeys = [
     "avgpro",
     "psingle",
     "pmulti",
+    "pequip",
     "defeat",
     "set",
-    "pequip",
     "index",
 ] as const;
 
@@ -76,7 +76,7 @@ export const useArtifactStore = defineStore("artifact", () => {
     });
     const pBuildSortBy = ref<IPBuildSortBy>("max"); // TODO
     const pBuildIgnoreIndividual = ref(false); // TODO
-    const pEquipIgnoreIndividual = ref(false); // TODO
+    const pEquipIgnoreIndividual = ref(true); // TODO
     const pEquipCharKeys = ref<string[]>([]);
     const customizedBuilds = useLocalStorage<IBuild[]>("customized_builds", []);
     const builds = computed(() => {
