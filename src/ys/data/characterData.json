@@ -1820,5 +1820,62 @@
                 "cd": 0
             }
         }
+    },
+    "Kaveh": {
+        "element": "dendro",
+        "rarity": 4,
+        "presets": ["精充"],
+        "build": {
+            "set": ["s:em", "DeepwoodMemories"],
+            "main": {
+                "sands": ["er"],
+                "goblet": ["em"],
+                "circlet": ["em", "hb"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0,
+                "defp": 0,
+                "em": 1,
+                "er": 1,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
+    "Baizhu": {
+        "element": "dendro",
+        "rarity": 5,
+        "presets": ["生充"],
+        "build": {
+            "set": [
+                "s:hpp",
+                "s:hb",
+                "EmblemOfSeveredFate",
+                "TenacityOfTheMillelith",
+                "NoblesseOblige",
+                "DeepwoodMemories"
+            ],
+            "main": {
+                "sands": ["hpp", "er"],
+                "goblet": ["hpp"],
+                "circlet": ["hb"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0.25,
+                "er": 1,
+                "cr": 0.25,
+                "cd": 0
+            }
+        }
     }
 }
