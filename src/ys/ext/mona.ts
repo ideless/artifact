@@ -1,6 +1,31 @@
 import { Affix, Artifact } from "../artifact";
 import { whatis, assert } from "../utils";
 
+interface IMonaTag {
+    name: string;
+    value: number;
+}
+
+interface IMonaArtifact {
+    setName: string;
+    position: string;
+    mainTag: IMonaTag;
+    normalTags: IMonaTag[];
+    star: number;
+    level: number;
+    omit?: boolean;
+    equip?: string;
+}
+
+interface IMonaFormat {
+    version?: string;
+    flower?: IMonaArtifact[];
+    feather?: IMonaArtifact[];
+    sand?: IMonaArtifact[];
+    cup?: IMonaArtifact[];
+    head?: IMonaArtifact[];
+}
+
 const keymap = {
     set: <{ [key: string]: string }>{
         Instructor: "instructor",
@@ -74,44 +99,44 @@ function getAffix(key: string, value: number) {
 
 export default {
     loads(json: string) {
-        let mona = JSON.parse(json);
+        let mona = JSON.parse(json) as IMonaFormat;
         // assert(mona.version == '1', 'Unsupported version')
         assert(mona instanceof Object);
-        let ret = [];
-        const mtypes = ["flower", "feather", "sand", "cup", "head"];
-        for (let mtype of mtypes) {
-            assert(mtype in mona && mona[mtype] instanceof Array);
-            for (let martifact of mona[mtype]) {
-                if (martifact["star"] < 4) continue;
-                let set = whatis(martifact["setName"], keymap.set);
+        let result: Artifact[] = [],
+            mona_positions = [
+                "flower",
+                "feather",
+                "sand",
+                "cup",
+                "head",
+            ] as const;
+        mona_positions.forEach((key) => {
+            assert(key in mona && mona[key] instanceof Array);
+            mona[key]!.forEach((a) => {
+                if (a.star < 4) return;
+                let set = whatis(a.setName, keymap.set);
                 if (!set) {
                     console.warn(
-                        `Ignoring unrecognized artifact: ${martifact["setName"]}`
+                        `Ignoring unrecognized artifact: ${a.setName}`
                     );
-                    continue;
+                    return;
                 }
-                let artifact = new Artifact();
-                artifact.set = set;
-                artifact.slot = whatis(mtype, keymap.slot) as string;
-                artifact.level = martifact["level"];
-                artifact.rarity = martifact["star"];
-                artifact.mainKey = whatis(
-                    martifact["mainTag"]["name"],
-                    keymap.affix
-                ) as string;
-                for (let ma of martifact["normalTags"]) {
-                    artifact.minors.push(getAffix(ma["name"], ma["value"]));
-                }
-                artifact.data.index = ret.length;
+                let artifact = new Artifact({
+                    set,
+                    slot: whatis(a.position, keymap.slot) as string,
+                    level: a.level,
+                    rarity: a.star,
+                    mainKey: whatis(a.mainTag.name, keymap.affix) as string,
+                    minors: a.normalTags.map((t) => getAffix(t.name, t.value)),
+                });
                 artifact.data.source = "*/mona";
-                // artifact.validate()
-                ret.push(artifact);
-            }
-        }
-        return ret;
+                result.push(artifact);
+            });
+        });
+        return result;
     },
     dumps(artifacts: Artifact[]) {
-        let mona: { [key: string]: any[] } = {
+        let mona: IMonaFormat = {
             flower: [],
             feather: [],
             sand: [],
@@ -119,12 +144,12 @@ export default {
             head: [],
         };
         for (let a of artifacts) {
-            let type = keymap.slot[a.slot],
+            let position = keymap.slot[a.slot],
                 mainStats = a.mainStats;
             if (!mainStats) continue;
-            mona[type].push({
+            mona[position as "cup"]!.push({
                 setName: keymap.set[a.set],
-                position: type,
+                position: position,
                 mainTag: {
                     name: keymap.affix[a.mainKey],
                     value: ["hp", "atk", "em"].includes(a.mainKey)

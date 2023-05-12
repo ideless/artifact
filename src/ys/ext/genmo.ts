@@ -1,6 +1,22 @@
 import { Affix, Artifact } from "../artifact";
 import { whatis, assert } from "../utils";
 
+type IGenmoFormat = Array<{
+    asKey: string;
+    rarity: number;
+    slot: string;
+    level: number;
+    mainStat: string;
+    subStat1Type: string;
+    subStat1Value: number;
+    subStat2Type: string;
+    subStat2Value: number;
+    subStat3Type: string;
+    subStat3Value: number;
+    subStat4Type?: string;
+    subStat4Value?: number;
+}>;
+
 const keymap = {
     set: <{ [key: string]: string }>{
         Instructor: "instructor",
@@ -81,74 +97,72 @@ function getSubStatValue(artifact: Artifact, index: number) {
 
 export default {
     loads(json: string) {
-        let genmo = JSON.parse(json);
+        let genmo = JSON.parse(json) as IGenmoFormat;
         assert(genmo instanceof Array);
-        let ret = [];
-        for (let a of genmo) {
-            if (a["rarity"] < 4) continue;
-            let set = whatis(a["asKey"], keymap.set);
+        let result: Artifact[] = [];
+        genmo.forEach((a, i) => {
+            if (a.rarity < 4) return;
+            let set = whatis(a.asKey, keymap.set);
             if (!set) {
-                console.warn(`Ignoring unrecognized artifact: ${a["asKey"]}`);
-                continue;
+                console.warn(`Ignoring unrecognized artifact: ${a.asKey}`);
+                return;
             }
-            let artifact = new Artifact();
-            artifact.set = set;
-            artifact.slot = whatis(a["slot"], keymap.slot) as string;
-            artifact.level = a["level"];
-            artifact.rarity = a["rarity"];
-            artifact.mainKey = whatis(a["mainStat"], keymap.affix) as string;
+            let artifact = new Artifact({
+                set,
+                slot: whatis(a.slot, keymap.slot) as string,
+                level: a.level,
+                rarity: a.rarity,
+                mainKey: whatis(a.mainStat, keymap.affix) as string,
+            });
             artifact.minors.push(
                 new Affix({
-                    key: whatis(a["subStat1Type"], keymap.affix),
-                    value: a["subStat1Value"],
+                    key: whatis(a.subStat1Type, keymap.affix),
+                    value: a.subStat1Value,
                 })
             );
             artifact.minors.push(
                 new Affix({
-                    key: whatis(a["subStat2Type"], keymap.affix),
-                    value: a["subStat2Value"],
+                    key: whatis(a.subStat2Type, keymap.affix),
+                    value: a.subStat2Value,
                 })
             );
             artifact.minors.push(
                 new Affix({
-                    key: whatis(a["subStat3Type"], keymap.affix),
-                    value: a["subStat3Value"],
+                    key: whatis(a.subStat3Type, keymap.affix),
+                    value: a.subStat3Value,
                 })
             );
-            if (a["subStat4Value"]) {
+            if (a.subStat4Value) {
                 artifact.minors.push(
                     new Affix({
-                        key: whatis(a["subStat4Type"], keymap.affix),
-                        value: a["subStat4Value"],
+                        key: whatis(a.subStat4Type!, keymap.affix),
+                        value: a.subStat4Value,
                     })
                 );
             }
-            artifact.data.index = ret.length;
+            artifact.data.index = i;
             artifact.data.source = "*/genmo";
             // artifact.validate()
-            ret.push(artifact);
-        }
-        return ret;
+            result.push(artifact);
+        });
+        return result;
     },
     dumps(artifacts: Artifact[]) {
-        let genmo: any[] = [];
-        for (let a of artifacts) {
-            genmo.push({
-                asKey: keymap.set[a.set],
-                rarity: a.rarity,
-                slot: keymap.slot[a.slot],
-                level: a.level,
-                mainStat: keymap.affix[a.mainKey],
-                subStat1Type: getSubStatType(a, 0),
-                subStat1Value: getSubStatValue(a, 0),
-                subStat2Type: getSubStatType(a, 1),
-                subStat2Value: getSubStatValue(a, 1),
-                subStat3Type: getSubStatType(a, 2),
-                subStat3Value: getSubStatValue(a, 2),
-                subStat4Type: getSubStatType(a, 3),
-                subStat4Value: getSubStatValue(a, 3),
-            });
-        }
+        let genmo: IGenmoFormat = artifacts.map((a) => ({
+            asKey: keymap.set[a.set],
+            rarity: a.rarity,
+            slot: keymap.slot[a.slot],
+            level: a.level,
+            mainStat: keymap.affix[a.mainKey],
+            subStat1Type: getSubStatType(a, 0),
+            subStat1Value: getSubStatValue(a, 0),
+            subStat2Type: getSubStatType(a, 1),
+            subStat2Value: getSubStatValue(a, 1),
+            subStat3Type: getSubStatType(a, 2),
+            subStat3Value: getSubStatValue(a, 2),
+            subStat4Type: getSubStatType(a, 3),
+            subStat4Value: getSubStatValue(a, 3),
+        }));
         return JSON.stringify(genmo);
     },
 };

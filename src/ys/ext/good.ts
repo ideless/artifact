@@ -2,6 +2,25 @@ import { Artifact } from "../artifact";
 import { assert, whatis } from "../utils";
 import { ArtifactData } from "../data";
 
+interface IGoodFormat {
+    format: "GOOD";
+    version: number;
+    source: string;
+    artifacts?: Array<{
+        setKey: string;
+        slotKey: string;
+        level: number;
+        rarity: number;
+        mainStatKey: string;
+        location: string;
+        lock: boolean;
+        substats: Array<{
+            key: string;
+            value: number;
+        }>;
+    }>;
+}
+
 const keymap = {
     affix: <{ [key: string]: string }>{
         hp: "hp",
@@ -28,17 +47,17 @@ const keymap = {
 
 export default {
     loads(json: string) {
-        let good = JSON.parse(json);
+        let good = JSON.parse(json) as IGoodFormat;
         assert(typeof good == "object" && "artifacts" in good);
         assert(good.artifacts instanceof Array);
         let source = (good.source || "*") + "/good";
-        let ret = [],
+        let result: Artifact[] = [],
             allSetKeys = new Set(ArtifactData.setKeys);
-        for (let a of good.artifacts) {
-            if (a.rarity < 4) continue;
+        good.artifacts!.forEach((a, i) => {
+            if (a.rarity < 4) return;
             if (!allSetKeys.has(a.setKey)) {
                 console.warn(`Ignoring unrecognized artifact: ${a.setKey}`);
-                continue;
+                return;
             }
             let artifact = new Artifact({
                 set: a.setKey,
@@ -48,27 +67,24 @@ export default {
                 location: a.location,
                 lock: a.lock,
                 mainKey: whatis(a.mainStatKey, keymap.affix) as string,
-                minors: (a.substats as any[]).map((x) => ({
+                minors: a.substats.map((x) => ({
                     key: whatis(x.key, keymap.affix),
                     value: x.value,
                 })),
             });
-            artifact.data.index = ret.length;
+            artifact.data.index = i;
             artifact.data.source = source;
             // artifact.validate()
-            ret.push(artifact);
-        }
-        return ret;
+            result.push(artifact);
+        });
+        return result;
     },
     dumps(artifacts: Artifact[]) {
-        let good = {
+        let good: IGoodFormat = {
             format: "GOOD",
             version: 1,
             source: "",
-            artifacts: <any[]>[],
-        };
-        for (let a of artifacts) {
-            good.artifacts.push({
+            artifacts: artifacts.map((a) => ({
                 setKey: a.set,
                 slotKey: a.slot,
                 level: a.level,
@@ -80,8 +96,8 @@ export default {
                     key: keymap.affix[m.key],
                     value: m.value,
                 })),
-            });
-        }
+            })),
+        };
         return JSON.stringify(good);
     },
 };
