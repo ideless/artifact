@@ -39,6 +39,13 @@ onMounted(() => {
             return;
         }
     } catch (e) {}
+
+    if (window.location.hostname !== "ideless.gitee.io") {
+        uiStore.popConfirm("跳转到大陆镜像站点").then(() => {
+            window.location.href = "https://ideless.gitee.io/artifact";
+        });
+    }
+
     console.log("Checking for yas-lock updates...");
     axios
         .get("https://api.github.com/repos/ideless/yas-lock/releases/latest")

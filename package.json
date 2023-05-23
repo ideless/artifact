@@ -8,7 +8,7 @@
         "build": "vue-tsc && vite build",
         "preview": "vite preview",
         "proto": "cd src/ys/p2p && pbjs -t static-module -w es6 --force-long -o proto.js proto/*.proto && pbts -o proto.d.ts proto.js",
-        "deploy": "cd ../ideless.github.io && rm -rf artifact && cp -r ../artifact/dist artifact && git add * && git commit -m fix && git push origin -f",
+        "deploy": "bash scripts/deploy.sh",
         "test": "vitest"
     },
     "dependencies": {
