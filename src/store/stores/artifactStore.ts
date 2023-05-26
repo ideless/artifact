@@ -27,6 +27,8 @@ import { i18n } from "@/i18n";
 export const SortByKeys = [
     "avg",
     "avgpro",
+    "min",
+    "max",
     "psingle",
     "pmulti",
     "pequip",
@@ -179,14 +181,21 @@ export const useArtifactStore = defineStore("artifact", () => {
             // sort
             switch (sort.value.by) {
                 case "avg":
-                    sortResults.value = AffnumSort.sort(arts, {}, [
-                        {
-                            set: "*",
-                            type: "*",
-                            label: "",
-                            weight: sort.value.weight,
-                        },
-                    ]);
+                case "min":
+                case "max":
+                    sortResults.value = AffnumSort.sort(
+                        arts,
+                        {},
+                        [
+                            {
+                                set: "*",
+                                type: "*",
+                                label: "",
+                                weight: sort.value.weight,
+                            },
+                        ],
+                        sort.value.by
+                    );
                     sortResultType.value = "affnum";
                     break;
                 case "avgpro":

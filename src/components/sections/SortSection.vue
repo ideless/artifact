@@ -123,7 +123,13 @@ const openAffnumTable = () => (showAffnumTable.value = true);
                 :options="sortByOptions"
                 :title="$t('ui.sortby')"
             />
-            <div v-if="artStore.sort.by == 'avg'">
+            <div
+                v-if="
+                    artStore.sort.by == 'avg' ||
+                    artStore.sort.by == 'min' ||
+                    artStore.sort.by == 'max'
+                "
+            >
                 <p class="row small" v-text="$t('sort.avg.desc')" />
                 <p class="row small">
                     <span

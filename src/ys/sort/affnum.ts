@@ -83,7 +83,8 @@ export function calcAffnumFull(
 export function sort(
     arts: Artifact[],
     setBonusTable: ISetBonusTable,
-    affixWeightTable: IAffixWeightTable
+    affixWeightTable: IAffixWeightTable,
+    sortBy: "avg" | "max" | "min" | "cur" = "avg"
 ): IAffnumResults {
     const results = new Map<Artifact, IAffnumResult>();
 
@@ -153,7 +154,16 @@ export function sort(
         if (aAffnum === undefined || bAffnum === undefined) {
             throw new Error("Unexpected undefined");
         }
-        return bAffnum.avg - aAffnum.avg;
+        switch (sortBy) {
+            case "avg":
+                return bAffnum.avg - aAffnum.avg;
+            case "max":
+                return bAffnum.max - aAffnum.max;
+            case "min":
+                return bAffnum.min - aAffnum.min;
+            case "cur":
+                return bAffnum.cur - aAffnum.cur;
+        }
     });
 
     return results;
