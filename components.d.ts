@@ -35,7 +35,6 @@ declare module '@vue/runtime-core' {
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
-    ElLink: typeof import('element-plus/es')['ElLink']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElOptionGroup: typeof import('element-plus/es')['ElOptionGroup']
     ElRadio: typeof import('element-plus/es')['ElRadio']
@@ -70,7 +69,6 @@ declare module '@vue/runtime-core' {
     SingleSelectBase: typeof import('./src/components/widgets/SingleSelectBase.vue')['default']
     SortSection: typeof import('./src/components/sections/SortSection.vue')['default']
     TextButton: typeof import('./src/components/widgets/TextButton.vue')['default']
-    TypeFilter: typeof import('./src/components/dialogs/TypeFilter.vue')['default']
     ValueButton: typeof import('./src/components/widgets/ValueButton.vue')['default']
     YasConfigurator: typeof import('./src/components/dialogs/YasConfigurator.vue')['default']
   }
