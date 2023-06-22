@@ -103,7 +103,16 @@ body {
 }
 
 .small-title {
-    padding-left: 8px;
-    border-left: 5px solid $primary-color;
-    // border-radius: 3px;
+    display: flex;
+    align-items: center;
+
+    &::before {
+        content: "";
+        display: inline-block;
+        width: 5px;
+        height: 15px;
+        margin-right: 8px;
+        border-radius: 5px;
+        background-color: $primary-color;
+    }
 }

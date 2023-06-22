@@ -3,6 +3,7 @@ import { useArtifactStore } from "@/store";
 import { computed, ref, watch } from "vue";
 import { Artifact } from "@/ys/artifact";
 import { IDefeatResult } from "@/ys/sort";
+import ArtifactList from "@/components/widgets/ArtifactList.vue";
 
 const props = defineProps<{
     modelValue: boolean;
@@ -25,19 +26,6 @@ const artStore = useArtifactStore();
 
 // 列表
 const defeatByList = ref<Artifact[]>([]);
-const defeatByListShowCount = ref(0);
-const loadDefeatByList = () => {
-    if (defeatByListShowCount.value < defeatByList.value.length) {
-        defeatByListShowCount.value = Math.min(
-            defeatByList.value.length,
-            defeatByListShowCount.value + 10
-        );
-    }
-};
-const loadDefeatByListDisabled = computed(
-    () => defeatByListShowCount.value >= defeatByList.value.length
-);
-
 const updDefeatByList = () => {
     /* update defeatByList according sort results */
     if (!props.art) return false;
@@ -46,7 +34,6 @@ const updDefeatByList = () => {
     const result = artStore.sortResults.get(props.art) as IDefeatResult;
     if (!result) return false;
     defeatByList.value = result.by;
-    defeatByListShowCount.value = Math.min(result.by.length, 10);
     return true;
 };
 
@@ -67,20 +54,7 @@ watch(
             class="small-title"
             v-text="$t('ui.defeat_count', { count: defeatByList.length })"
         />
-        <div
-            class="preview-artifact-list"
-            v-infinite-scroll="loadDefeatByList"
-            :infinite-scroll-immediate="false"
-            :infinite-scroll-disabled="loadDefeatByListDisabled"
-            :key="art ? art.data.index : -1"
-        >
-            <artifact-card
-                v-for="i in defeatByListShowCount"
-                :artifact="defeatByList[i - 1]"
-                :key="defeatByList[i - 1].data.index"
-                :readonly="true"
-            />
-        </div>
+        <artifact-list :arts="defeatByList" />
     </el-dialog>
 </template>
 

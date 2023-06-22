@@ -95,18 +95,6 @@ const ruleOptions = filterRules.map((v, i) => ({
     key: i,
     label: v.label,
 }));
-// 更新，填充
-watch(
-    () => artStore.nResetFilter,
-    () => {
-        artStore.filter.set = setOptions.value.map((o) => o.key);
-        artStore.filter.slot = slotOptions.value.map((o) => o.key);
-        artStore.filter.main = mainOptions.value.map((o) => o.key);
-        artStore.filter.lock = lockOptions.value.map((o) => o.key);
-        artStore.filter.lvRange = [0, 20];
-        artStore.filter.location = charOptions.value.map((o) => o.key);
-    }
-);
 </script>
 
 <template>

@@ -2,7 +2,7 @@
 import { computed, ref, watch } from "vue";
 import { Artifact } from "@/ys/artifact";
 import { useArtifactStore } from "@/store";
-import ArtifactCard from "@/components/widgets/ArtifactCard.vue";
+import ArtifactList from "@/components/widgets/ArtifactList.vue";
 
 const props = defineProps<{
     modelValue: boolean;
@@ -24,18 +24,6 @@ const show = computed<boolean>({
 });
 /* 相似圣遗物 */
 const artAlike = ref<Artifact[]>([]);
-const artAlikeShowCount = ref(0);
-const loadArtAlike = () => {
-    if (artAlikeShowCount.value < artAlike.value.length) {
-        artAlikeShowCount.value = Math.min(
-            artAlike.value.length,
-            artAlikeShowCount.value + 10
-        );
-    }
-};
-const loadArtAlikeDisabled = computed(
-    () => artAlikeShowCount.value >= artAlike.value.length
-);
 function isSubset(A: Set<any>, B: Set<any>) {
     for (let a of A) {
         if (!B.has(a)) {
@@ -86,7 +74,6 @@ const updArtLike = () => {
             }
         }
     }
-    artAlikeShowCount.value = Math.min(artAlike.value.length, 10);
     if (artAlike.value.length == 0) return false;
     return true;
 };
@@ -122,19 +109,7 @@ const click = () => {
                     : $t('ui.suggest_unlock', { count: artAlike.length })
             "
         />
-        <div
-            class="preview-artifact-list"
-            v-infinite-scroll="loadArtAlike"
-            :infinite-scroll-immediate="false"
-            :infinite-scroll-disabled="loadArtAlikeDisabled"
-        >
-            <artifact-card
-                v-for="i in artAlikeShowCount"
-                :artifact="artAlike[i - 1]"
-                :key="artAlike[i - 1].data.index"
-                :readonly="true"
-            />
-        </div>
+        <artifact-list :arts="artAlike" />
         <div style="margin-top: 10px; text-align: center">
             <el-button
                 type="primary"
@@ -144,18 +119,3 @@ const click = () => {
         </div>
     </el-dialog>
 </template>
-
-<style lang="scss">
-.preview-artifact-list {
-    display: flex;
-    width: 100%;
-    overflow: auto;
-    margin-top: 10px;
-
-    > * {
-        margin: 5px;
-        margin-bottom: 10px;
-        zoom: 80%;
-    }
-}
-</style>

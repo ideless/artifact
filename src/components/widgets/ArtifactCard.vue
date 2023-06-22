@@ -23,6 +23,7 @@ const props = defineProps<{
 const emit = defineEmits<{
     (e: "flipSelect", shiftKey: boolean): void;
     (e: "flipLock"): void;
+    (e: "filter"): void;
     (e: "edit"): void;
     (e: "stats"): void;
 }>();
@@ -198,6 +199,15 @@ const defeatResultStr = computed(() => {
     let result = artStore.sortResults!.get(props.artifact) as IDefeatResult;
     return result.defeat;
 });
+
+/* set & type count */
+const typeCount = computed(() => {
+    if (!props.artifact) return [0, 0];
+    const a = props.artifact;
+    const key1 = `${a.set}:${a.slot}_${a.mainKey}`;
+    const key2 = `*:${a.slot}_${a.mainKey}`;
+    return [artStore.setTypeCount[key1] || 0, artStore.setTypeCount[key2] || 0];
+});
 </script>
 
 <template>
@@ -285,7 +295,17 @@ const defeatResultStr = computed(() => {
             role="checkbox"
         />
         <div
-            class="edit-box"
+            class="filter-btn"
+            @click="emit('filter')"
+            v-show="!readonly"
+            role="button"
+        >
+            <span class="top" v-text="typeCount[0]" />
+            <span class="divider" />
+            <span class="bottom" v-text="typeCount[1]" />
+        </div>
+        <div
+            class="edit-btn"
             @click="emit('edit')"
             v-show="!readonly"
             role="button"
@@ -315,6 +335,27 @@ const defeatResultStr = computed(() => {
     border-radius: 3px;
     background-color: black;
     color: white;
+}
+
+%btn {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 30px;
+    padding: 10px;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+    color: white;
+    box-shadow: 0 0 4px 0 gray;
+    background-color: #2a82e4;
+    cursor: pointer;
+
+    &:hover {
+        filter: brightness(1.1);
+    }
 }
 
 .artifact-card {
@@ -565,26 +606,41 @@ const defeatResultStr = computed(() => {
         display: flex;
     }
 
-    .edit-box {
-        display: none;
-        position: absolute;
+    .edit-btn {
+        @extend %btn;
         right: 10px;
-        bottom: 30px;
-        padding: 10px;
-        line-height: 0;
-        border-radius: 100px;
-        color: white;
-        box-shadow: 0 0 4px 0 gray;
-        background-color: #2a82e4;
-        cursor: pointer;
+    }
 
-        &:hover {
-            filter: brightness(1.1);
+    &:hover .edit-btn {
+        display: flex;
+    }
+
+    .filter-btn {
+        @extend %btn;
+        right: 50px;
+        flex-direction: column;
+        padding: 0;
+        span {
+            display: block;
+            scale: 0.6;
+        }
+        .top {
+            transform-origin: bottom;
+        }
+        .bottom {
+            transform-origin: top;
+        }
+        .divider {
+            flex: 0;
+            scale: 1;
+            width: 16px;
+            line-height: 0;
+            border-top: 1px solid white;
         }
     }
 
-    &:hover .edit-box {
-        display: block;
+    &:hover .filter-btn {
+        display: flex;
     }
 }
 </style>

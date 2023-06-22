@@ -77,7 +77,7 @@ const circletOptions = ArtifactData.mainKeys.circlet.map((m) => ({
 // 按装备提升概率
 const pEquipCharOptions = ref<ICharOption[]>([]);
 watch(
-    () => artStore.nResetFilter,
+    () => artStore.filter,
     () => {
         const options: ICharOption[] = [],
             equipCount = new Map<string, number>();

@@ -2,7 +2,7 @@
 import { computed, ref, watch } from "vue";
 import { Artifact } from "@/ys/artifact";
 import { useArtifactStore, useYasStore, useUiStore } from "@/store";
-import ArtifactCard from "@/components/widgets/ArtifactCard.vue";
+import ArtifactList from "@/components/widgets/ArtifactList.vue";
 
 const props = defineProps<{
     modelValue: boolean;
@@ -25,33 +25,7 @@ const show = computed<boolean>({
 });
 // 预览
 const artToLock = ref<Artifact[]>([]);
-const artToLockShowCount = ref(0);
-const loadArtToLock = () => {
-    // console.log('load art to lock')
-    if (artToLockShowCount.value < artToLock.value.length) {
-        artToLockShowCount.value = Math.min(
-            artToLock.value.length,
-            artToLockShowCount.value + 10
-        );
-    }
-};
-const loadArtToLockDisabled = computed(
-    () => artToLockShowCount.value >= artToLock.value.length
-);
 const artToUnlock = ref<Artifact[]>([]);
-const artToUnlockShowCount = ref(0);
-const loadArtToUnlock = () => {
-    // console.log('load art to unlock')
-    if (artToUnlockShowCount.value < artToUnlock.value.length) {
-        artToUnlockShowCount.value = Math.min(
-            artToUnlock.value.length,
-            artToUnlockShowCount.value + 10
-        );
-    }
-};
-const loadArtToUnlockDisabled = computed(
-    () => artToUnlockShowCount.value >= artToUnlock.value.length
-);
 function exportable(a: Artifact) {
     return a.data.source == "yas-lock/good" || a.data.source == "pcap/good";
 }
@@ -66,9 +40,6 @@ watch(
             if (a.lock && !a.data.lock) artToLock.value.push(a);
             if (!a.lock && a.data.lock) artToUnlock.value.push(a);
         }
-        artToLockShowCount.value = Math.min(artToLock.value.length, 10);
-        artToUnlockShowCount.value = Math.min(artToUnlock.value.length, 10);
-        // console.log(artToLockShowCount.value, artToUnlockShowCount.value)
     }
 );
 // 导出
@@ -134,37 +105,13 @@ const exportArts = () => {
             style="margin-top: 10px"
             v-text="$t('ui.arts_to_lock', { count: artToLock.length })"
         />
-        <div
-            class="preview-artifact-list"
-            v-infinite-scroll="loadArtToLock"
-            :infinite-scroll-immediate="false"
-            :infinite-scroll-disabled="loadArtToLockDisabled"
-        >
-            <artifact-card
-                v-for="i in artToLockShowCount"
-                :artifact="artToLock[i - 1]"
-                :key="artToLock[i - 1].data.index"
-                :readonly="true"
-            />
-        </div>
+        <artifact-list :arts="artToLock" />
         <div
             class="small-title"
             style="margin-top: 10px"
             v-text="$t('ui.arts_to_unlock', { count: artToUnlock.length })"
         />
-        <div
-            class="preview-artifact-list"
-            v-infinite-scroll="loadArtToUnlock"
-            :infinite-scroll-immediate="false"
-            :infinite-scroll-disabled="loadArtToUnlockDisabled"
-        >
-            <artifact-card
-                v-for="i in artToUnlockShowCount"
-                :artifact="artToUnlock[i - 1]"
-                :key="artToUnlock[i - 1].data.index"
-                :readonly="true"
-            />
-        </div>
+        <artifact-list :arts="artToUnlock" />
         <div style="margin-top: 10px" v-show="!yasStore.connected">
             <el-checkbox v-model="remember">{{
                 $t("ui.remember_lock_change")

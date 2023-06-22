@@ -379,7 +379,11 @@
         "pbuild_ignore_individual": "忽略散件",
         "pequip_ignore_individual": "忽略散件",
         "equip_probs_title": "装备提升概率",
-        "equip_char_filter": "筛选角色"
+        "equip_char_filter": "筛选角色",
+        "quick_filter": "快速筛选",
+        "quick_filter_apply": "一键筛选",
+        "count_hint": "（共{count}个）",
+        "other_sets": "其他套装"
     },
     "sort": {
         "avg": {

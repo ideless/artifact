@@ -7,9 +7,10 @@ import ArtifactGenerator from "@/components/dialogs/ArtifactGenerator.vue";
 import PartialExport from "@/components/dialogs/PartialExport.vue";
 import AlikeLocker from "@/components/dialogs/AlikeLocker.vue";
 import DefeatList from "@/components/dialogs/DefeatList.vue";
-import BuildProbs from "../dialogs/BuildProbs.vue";
-import EquipProbs from "../dialogs/EquipProbs.vue";
-import DatabaseLoader from "../dialogs/DatabaseLoader.vue";
+import BuildProbs from "@/components/dialogs/BuildProbs.vue";
+import EquipProbs from "@/components/dialogs/EquipProbs.vue";
+import DatabaseLoader from "@/components/dialogs/DatabaseLoader.vue";
+import QuickFilter from "@/components/dialogs/QuickFilter.vue";
 import Grid from "vue-virtual-scroll-grid";
 import { useArtifactStore, useUiStore } from "@/store";
 import { computed, ref, watch } from "vue";
@@ -149,6 +150,8 @@ const selcount = computed(() => ({
     all: artStore.processedArtifacts.length,
     sel: selection.value.length,
 }));
+// target artifact
+const tgtArt = ref<Artifact>();
 // editor
 const showEditor = ref(false);
 const editorIndex = ref(-1);
@@ -156,14 +159,19 @@ const edit = (index: number) => {
     editorIndex.value = index;
     showEditor.value = true;
 };
+// filter
+const showQuickFilter = ref(false);
+const filter = (art: Artifact) => {
+    tgtArt.value = art;
+    showQuickFilter.value = true;
+};
 // stats
-const statsArt = ref<Artifact>();
 const showAffnumDistr = ref(false);
 const showDefeatList = ref(false);
 const showBuildProbs = ref(false);
 const showEquipProbs = ref(false);
 const stats = (art: Artifact) => {
-    statsArt.value = art;
+    tgtArt.value = art;
     switch (artStore.sortResultType) {
         case "affnum":
             showAffnumDistr.value = true;
@@ -323,6 +331,7 @@ const showDatabaseLoader = ref(false);
                             @flip-select="flipSelect(item.data.index, $event)"
                             @flip-lock="flipLock(item.data.index)"
                             @edit="edit(item.data.index)"
+                            @filter="filter(item)"
                             @stats="stats(item)"
                         />
                     </div>
@@ -377,14 +386,15 @@ const showDatabaseLoader = ref(false);
         </el-scrollbar>
     </div>
     <artifact-editor v-model="showEditor" :index="editorIndex" />
+    <quick-filter v-model="showQuickFilter" :art="tgtArt" />
     <artifact-creator v-model="showCreator" />
     <artifact-generator v-model="showGenerator" />
     <partial-export v-model="showExport" :artifacts="artifactsToExport" />
     <alike-locker v-model="showAlike" :index="targetIndex" />
-    <affnum-distr v-model="showAffnumDistr" :art="statsArt" />
-    <defeat-list v-model="showDefeatList" :art="statsArt" />
-    <build-probs v-model="showBuildProbs" :art="statsArt" />
-    <equip-probs v-model="showEquipProbs" :art="statsArt" />
+    <affnum-distr v-model="showAffnumDistr" :art="tgtArt" />
+    <defeat-list v-model="showDefeatList" :art="tgtArt" />
+    <build-probs v-model="showBuildProbs" :art="tgtArt" />
+    <equip-probs v-model="showEquipProbs" :art="tgtArt" />
     <database-loader v-model="showDatabaseLoader" />
 </template>
 
