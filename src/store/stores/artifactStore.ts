@@ -2,7 +2,13 @@ import { Affix, Artifact } from "@/ys/artifact";
 import { defineStore } from "pinia";
 import { computed, reactive, ref } from "vue";
 import { useUiStore } from "./uiStore";
-import { AffnumSort, PBuildSort, DefeatSort, PEquipSort } from "@/ys/sort";
+import {
+    AffnumSort,
+    PBuildSort,
+    DefeatSort,
+    PEquipSort,
+    NormalSort,
+} from "@/ys/sort";
 import type {
     IBuild,
     ISetBonusTable,
@@ -288,11 +294,7 @@ export const useArtifactStore = defineStore("artifact", () => {
                     sortResultType.value = "defeat";
                     break;
                 case "set":
-                    const setIndex: { [key: string]: number } = {};
-                    ArtifactData.setKeys.forEach((key, i) => {
-                        setIndex[key] = i;
-                    });
-                    arts.sort((a, b) => setIndex[a.set] - setIndex[b.set]);
+                    NormalSort.sort(arts);
                     sortResults.value = undefined;
                     sortResultType.value = undefined;
                     break;
