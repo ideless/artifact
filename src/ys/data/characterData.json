@@ -1335,6 +1335,31 @@
             }
         }
     },
+    "Kirara": {
+        "element": "dendro",
+        "rarity": 4,
+        "presets": ["生充"],
+        "build": {
+            "set": ["Instructor", "s:hpp", "DeepwoodMemories"],
+            "main": {
+                "sands": ["hpp"],
+                "goblet": ["hpp"],
+                "circlet": ["hpp"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 1,
+                "atkp": 0,
+                "defp": 0,
+                "em": 0,
+                "er": 1,
+                "cr": 0,
+                "cd": 0
+            }
+        }
+    },
     "Aloy": {
         "element": "cryo",
         "rarity": 4,
@@ -1875,6 +1900,91 @@
                 "er": 1,
                 "cr": 0.25,
                 "cd": 0
+            }
+        }
+    },
+    "Lynette": {
+        "element": "anemo",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻充双暴"],
+        "build": {
+            "set": ["MarechausseeHunter", "s:anemoDB"],
+            "main": {
+                "sands": ["er", "atkp"],
+                "goblet": ["anemoDB", "atkp"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0,
+                "er": 0.5,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Lyney": {
+        "element": "pyro",
+        "rarity": 5,
+        "presets": ["攻双暴"],
+        "build": {
+            "set": [
+                "MarechausseeHunter",
+                "CrimsonWitchOfFlames",
+                "WanderersTroupe",
+                "s:atkp"
+            ],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["pyroDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0,
+                "er": 0,
+                "cr": 1,
+                "cd": 1
+            }
+        }
+    },
+    "Freminet": {
+        "element": "cryo",
+        "rarity": 4,
+        "presets": ["攻双暴", "攻充双暴", "攻精充双暴"],
+        "build": {
+            "set": [
+                "PaleFlame",
+                "BloodstainedChivalry",
+                "s:atkp",
+                "BlizzardStrayer"
+            ],
+            "main": {
+                "sands": ["atkp"],
+                "goblet": ["physicalDB"],
+                "circlet": ["cr", "cd"]
+            },
+            "weight": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "hpp": 0,
+                "atkp": 0.5,
+                "defp": 0,
+                "em": 0.25,
+                "er": 0.25,
+                "cr": 1,
+                "cd": 1
             }
         }
     }

@@ -61,7 +61,9 @@
             "DesertPavilionChronicle": "沙上楼阁史话",
             "FlowerOfParadiseLost": "乐园遗落之花",
             "NymphsDream": "水仙之梦",
-            "VourukashasGlow": "花海甘露之光"
+            "VourukashasGlow": "花海甘露之光",
+            "MarechausseeHunter": "逐影猎人",
+            "GoldenTroupe": "黄金剧团"
         },
         "set_group": {
             "s:atkp": "攻击2",
@@ -207,7 +209,12 @@
         "Dehya": "迪希雅",
         "Mika": "米卡",
         "Kaveh": "卡维",
-        "Baizhu": "白术"
+        "Baizhu": "白术",
+        "Lynette": "琳妮特",
+        "Lyney": "林尼",
+        "Freminet": "菲米尼",
+        "Wriothesley": "莱欧斯利",
+        "Neuvillette": "那维莱特"
     },
     "element": {
         "pyro": "火元素",
