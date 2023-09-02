@@ -1,10 +1,11 @@
 import requests
-from diskcache import Cache
 from random import randint
 import logging
 import re
+from bs4 import BeautifulSoup
+import bbcode
 
-cache = Cache(".cache")
+from cache import cache, cache_expire
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)-8s %(message)s", level=logging.DEBUG)
@@ -18,6 +19,7 @@ class NGAGuest:
         cookie: str = None,
         logger: logging.Logger = None
     ):
+        self.host = host
         self.cookie = cookie
         self.logger = logger
 
@@ -36,39 +38,56 @@ class NGAGuest:
         self.cookie = "; ".join([f"{k}={v}" for k, v in cookie_dict.items()])
         self._log(f"Updated cookie: {self.cookie}")
 
-    def _get(self, url: str, max_retries: int = 3):
-        rsp = requests.get(
-            self.host + url + f"&rand={randint(0, 999)}",
-            headers={"Cookie": self.cookie}
-        )
-        self._log_response(rsp)
+    @cache.memoize(expire=cache_expire, tag="nga_guest_get", ignore=(0, 2))
+    def _get(self, url: str, max_retries: int = 5):
+        while True:
+            rsp = requests.get(
+                self.host + url + f"&rand={randint(0, 999)}",
+                headers={"Cookie": self.cookie}
+            )
+            self._log_response(rsp)
 
-        if rsp.status_code == 200:
-            return rsp.text
+            if rsp.status_code == 200:
+                return rsp.text
 
-        if max_retries <= 0:
-            raise Exception(f"Failed to get {url}: no more retries")
+            if max_retries <= 0:
+                raise Exception(f"Failed to get {url}: no more retries")
+            else:
+                max_retries -= 1
 
-        if "Set-Cookie" in rsp.headers:
-            lastvisit = re.search(r"lastvisit=(\d+);",
-                                  rsp.headers["Set-Cookie"])
-            ngaPassportUid = re.search(
-                r"ngaPassportUid=(\w+);", rsp.headers["Set-Cookie"])
-            if lastvisit and ngaPassportUid:
-                self._update_cookie({
-                    "lastvisit": lastvisit.group(1),
-                    "ngaPassportUid": ngaPassportUid.group(1),
-                    "guestJs": lastvisit.group(1),
-                })
+            if "Set-Cookie" in rsp.headers:
+                lastvisit = re.search(r"lastvisit=(\d+);",
+                                      rsp.headers["Set-Cookie"])
+                ngaPassportUid = re.search(
+                    r"ngaPassportUid=(\w+);", rsp.headers["Set-Cookie"])
+                if lastvisit and ngaPassportUid:
+                    self._update_cookie({
+                        "lastvisit": lastvisit.group(1),
+                        "ngaPassportUid": ngaPassportUid.group(1),
+                        "guestJs": lastvisit.group(1),
+                    })
 
-        return self._get(url, max_retries=max_retries - 1)
+    def get_thread(self, tid: int):
+        url = f"/read.php?tid={tid}"
+        html = self._get(url)
 
-    def get_post(self, post_id: int):
-        url = f"/read.php?tid={post_id}"
-        return self._get(url)
+        soup = BeautifulSoup(html, features="html.parser")
+
+        subject = soup.select_one("#postsubject0").text
+        content = soup.select_one("#postcontent0").text
+
+        print(bbcode.render_html(content))
 
 
 if __name__ == "__main__":
     logger.info("Test NGA Guest")
+
     nga = NGAGuest(logger=logger)
-    nga.get_post(27859119)
+
+    nga.get_thread(27859119)
+
+    for tid in [
+        # 27859119,  # 前言
+
+    ]:
+        pass

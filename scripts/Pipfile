@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 requests = "*"
 diskcache = "*"
+beautifulsoup4 = "*"
+pydantic = "*"
+bbcode = "*"
 
 [dev-packages]
 
